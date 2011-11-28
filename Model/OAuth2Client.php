@@ -52,6 +52,11 @@ class OAuth2Client implements OAuth2ClientInterface
         $this->secret = $secret;
     }
 
+    public function getSecret()
+    {
+        return $this->secret;
+    }
+
     public function checkSecret($secret)
     {
         return $this->secret === NULL || $secret === $this->secret;

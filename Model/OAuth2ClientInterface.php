@@ -16,6 +16,8 @@ interface OAuth2ClientInterface extends IOAuth2Client
 
     function checkSecret($secret);
 
+    function getSecret();
+
     function setRedirectUris(array $redirectUris);
 
     function setAllowedGrantTypes(array $grantTypes);
