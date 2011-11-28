@@ -31,6 +31,11 @@ class OAuth2Token implements OAuth2TokenInterface
         $this->expiresAt = $timestamp;
     }
 
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
     public function getExpiresIn()
     {
         if ($this->expiresAt) {

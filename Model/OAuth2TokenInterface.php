@@ -12,6 +12,8 @@ interface OAuth2TokenInterface extends IOAuth2Token
 
     function setExpiresAt($timestamp);
 
+    function getExpiresAt();
+
     function setToken($token);
 
     function setScope($scope);
