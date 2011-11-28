@@ -215,7 +215,7 @@ imports:
 
 Import the routing.yml configuration file in app/config/routing.yml:
 
-```
+``` yaml
 # app/config/routing.yml
 alb_oauth2:
     resource: "@AlbOAuth2ServerBundle/Resources/config/routing.yml"
@@ -246,7 +246,7 @@ if ($form->isValid()) {
     try {
         $response = $service->finishClientAuthorization(true, $currentUser, $request, $scope);
         return $response;
-    } catch(OAuth2ServerException $e) {
+    } catch(\OAuth2\OAuth2ServerException $e) {
         return $e->getHttpResponse();
     }
 }
@@ -262,6 +262,6 @@ if ($form->isValid()) {
 ## Credits
 
 - Arnaud Le Blanc
-- Inspirated by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSApiBundle](https://github.com/FriendsOfSymfony/FOSUserBundl)
-- Installation doc adapted from [FOSApiBundle](https://github.com/FriendsOfSymfony/FOSUserBundl) doc.
+- Inspirated by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
+- Installation doc adapted from [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle) doc.
 
