@@ -48,14 +48,14 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser
         return $this->accessTokenManager->findTokenByToken($token);
     }
 
-    public function createAccessToken($token, IOAuth2Client $client, $data, $expires, $scope = null)
+    public function createAccessToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
     {
         if (!$client instanceof OAuth2ClientInterface) {
             throw new \InvalidArgumentException;
         }
 
         $token = $this->accessTokenManager->createToken();
-        $token->setToken($token);
+        $token->setToken($tokenString);
         $token->setClient($client);
         $token->setData($data);
         $token->setExpiresAt($expires);
