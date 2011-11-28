@@ -1,0 +1,43 @@
+<?php
+
+namespace Alb\OAuth2ServerBundle\Entity;
+
+use Alb\OAuth2ServerBundle\Model\OAuth2ClientManager as BaseOAuth2ClientManager;
+use Doctrine\ORM\EntityManager;
+use Alb\OAuth2ServerBundle\Model\OAuth2ClientInterface;
+
+class OAuth2ClientManager extends BaseOAuth2ClientManager
+{
+    protected $em;
+
+    protected $repository;
+
+    protected $class;
+
+    public function __construct(EntityManager $em, $class)
+    {
+        $this->em = $em;
+        $this->repository = $em->getRepository($class);
+        $this->class = $class;
+    }
+
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    public function findClientBy(array $criteria)
+    {
+        return $this->repository->findOneBy($criteria);
+    }
+
+    public function updateClient(OAuth2ClientInterface $client, $andFlush = true)
+    {
+        $this->em->persist($client);
+        
+        if ($andFlush) {
+            $this->em->flush();
+        }
+    }
+}
+

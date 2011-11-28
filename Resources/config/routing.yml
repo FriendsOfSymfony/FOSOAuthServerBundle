@@ -1,0 +1,6 @@
+
+alb_oauth2_server_token:
+    pattern:    /oauth/v2/token
+    defaults:
+        _controller: alb.oauth2.controller.server:tokenAction
+

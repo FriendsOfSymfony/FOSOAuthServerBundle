@@ -1,0 +1,15 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="alb.oauth2.server.authentication.factory.class">Alb\OAuth2ServerBundle\DependencyInjection\Security\Factory\OAuth2Factory</parameter>
+    </parameters>
+
+    <services>
+        <service id="security.authentication.factory.alb_oauth2_server"
+            class="%alb.oauth2.server.authentication.factory.class%" public="false">
+            <tag name="security.listener.factory" />
+        </service>
+    </services>
+</container>
