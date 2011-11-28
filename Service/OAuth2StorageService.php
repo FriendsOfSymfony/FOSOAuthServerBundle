@@ -40,7 +40,7 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser
             throw new \InvalidArgumentException;
         }
 
-        return $client->checkSecret($client);
+        return $client->checkSecret($client_secret);
     }
 
     public function getAccessToken($token)
