@@ -88,7 +88,13 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser
 
         $encoder = $this->encoderFactory->getEncoder($user);
 
-        return $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
+        if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
+            return array(
+                'data' => $user,
+            );
+        }
+
+        return false;
     }
 }
 

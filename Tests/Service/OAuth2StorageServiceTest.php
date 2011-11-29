@@ -184,7 +184,9 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
             ->with($user)
             ->will($this->returnValue($encoder));
 
-        $this->assertTrue($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
+        $this->assertSame(array(
+            'data' => $user,
+        ), $this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
 
     public function testCheckUserCredentialsReturnsFalseOnInvalidCredentials()
