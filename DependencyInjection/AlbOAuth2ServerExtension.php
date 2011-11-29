@@ -29,7 +29,7 @@ class AlbOAuth2ServerExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        if (!in_array(strtolower($config['db_driver']), array('orm'))) {
+        if (!in_array(strtolower($config['db_driver']), array('orm', 'odm'))) {
             throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
         }
         $loader->load(sprintf('%s.xml', $config['db_driver']));
