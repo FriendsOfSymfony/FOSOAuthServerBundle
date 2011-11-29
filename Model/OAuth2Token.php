@@ -47,7 +47,11 @@ class OAuth2Token implements OAuth2TokenInterface
 
     public function hasExpired()
     {
-        return time() > $this->expiresAt;
+        if ($this->expiresAt) {
+            return time() > $this->expiresAt;
+        } else {
+            return false;
+        }
     }
 
     public function setToken($token)
