@@ -57,8 +57,11 @@ class OAuth2Provider implements AuthenticationProviderInterface
 
                 if (null !== $data) {
                     $token->setUser($data);
-                    return $token;
                 }
+
+                $token->setAuthenticated(true);
+
+                return $token;
             }
         } catch(OAuth2ServerException $e) {
             throw new AuthenticationException('OAuth2 authentification failed', null, 0, $e);
