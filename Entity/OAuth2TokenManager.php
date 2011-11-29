@@ -31,11 +31,11 @@ class OAuth2TokenManager extends BaseOAuth2TokenManager
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateToken(OAuth2TokenInterface $client, $andFlush = true)
+    public function updateToken(OAuth2TokenInterface $token, $andFlush = true)
     {
-        $this->em->persist($client);
+        $this->em->persist($token);
 
-        if (!$andFlush) {
+        if ($andFlush) {
             $this->em->flush();
         }
     }
