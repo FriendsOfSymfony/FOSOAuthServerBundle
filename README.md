@@ -14,10 +14,11 @@ Installation is a quick 6 step process:
 5. Configure your application's security.yml
 6. Configure the AlbOAuth2ServerBundle
 
-### Step 1: Download AlbOAuth2ServerBundle
+### Step 1: Download AlbOAuth2ServerBundle and oauth2-php
 
 Ultimately, the AlbOAuth2ServerBundle files should be downloaded to the
-`vendor/bundles/Alb/OAuth2ServerBundle` directory.
+`vendor/bundles/Alb/OAuth2ServerBundle` directory and the oauth2-php files to
+the `vendor/oauth2-php` directory.
 
 This can be done in several ways, depending on your preference. The first
 method is the standard Symfony2 method.
@@ -30,6 +31,8 @@ Add the following lines in your `deps` file:
 [AlbOAuth2ServerBundle]
     git=git://github.com/arnaud-lb/AlbOAuth2ServerBundle.git
     target=bundles/Alb/OAuth2ServerBundle
+[oauth2-php]
+    git=git://github.com/arnaud-lb/oauth2-php.git
 ```
 
 Now, run the vendors script to download the bundle:
@@ -44,12 +47,13 @@ If you prefer instead to use git submodules, then run the following:
 
 ``` bash
 $ git submodule add git://github.com/arnaud-lb/AlbOAuth2ServerBundle.git vendor/bundles/Alb/OAuth2ServerBundle
+$ git submodule add git://github.com/arnaud-lb/oauth2-php.git vendor/oauth2-php
 $ git submodule update --init
 ```
 
 ### Step 2: Configure the Autoloader
 
-Add the `Alb` namespace to your autoloader:
+Add the `Alb` and `OAuth2` namespaces to your autoloader:
 
 ``` php
 <?php
@@ -57,7 +61,8 @@ Add the `Alb` namespace to your autoloader:
 
 $loader->registerNamespaces(array(
     // ...
-    'Alb' => __DIR__.'/../vendor/bundles',
+    'Alb'    => __DIR__.'/../vendor/bundles',
+    'OAuth2' => __DIR__.'/../vendor/oauth2-php/lib',
 ));
 ```
 
@@ -254,8 +259,8 @@ if ($form->isValid()) {
 
 ## TODO
 
-- Tests (the OAuth2 lib is tested; not the bundle)
-- Add some model classes for OAuth2AuthCode, OAuth2RefreshToken
+- More tests
+- Add model classes for OAuth2AuthCode, OAuth2RefreshToken
 - Add methods for authorization_code and refresh_token authorization types in the default storage adapter
 - Add a default controler for the /authorize endpoint
 
