@@ -32,10 +32,5 @@ class OAuth2Token extends AbstractToken
     {
         return $this->token;
     }
-
-    public function setAuthenticated($x)
-    {
-        throw new \Exception;
-    }
 }
 
