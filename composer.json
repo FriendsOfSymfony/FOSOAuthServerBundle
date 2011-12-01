@@ -1,0 +1,23 @@
+{
+    "name": "alb/oauth2-server-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony2 OAuth2 server bundle",
+    "keywords": ["oauth", "oauth2"],
+    "homepage": "https://github.com/arnaud-lb/AlbOAuth2ServerBundle",
+    "authors": [
+        {"name": "Arnaud Le Blanc", "email": "arnaud.lb@gmail.com"}
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "alb/oauth2-php": "*",
+        "symfony/framework-bundle": "2.*"
+    },
+    "suggest": {
+        "symfony/doctrine-bundle": "*",
+        "symfony/mongodb-odm-bundle": "*"
+    },
+    "autoload": {
+        "psr-0": { "Alb\\OAuth2ServerBundle": "" }
+    },
+    "target-dir": "Alb/OAuth2ServerBundle"
+}
