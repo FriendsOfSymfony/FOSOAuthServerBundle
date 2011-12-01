@@ -1,0 +1,15 @@
+[submodule "vendor/symfony"]
+	path = vendor/symfony
+	url = https://github.com/symfony/symfony
+[submodule "vendor/doctrine"]
+	path = vendor/doctrine
+	url = https://github.com/doctrine/doctrine2
+[submodule "vendor/doctrine-common"]
+	path = vendor/doctrine-common
+	url = https://github.com/doctrine/common.git
+[submodule "vendor/doctrine-dbal"]
+	path = vendor/doctrine-dbal
+	url = https://github.com/doctrine/dbal.git
+[submodule "vendor/oauth2-php"]
+	path = vendor/oauth2-php
+	url = https://github.com/arnaud-lb/oauth2-php
