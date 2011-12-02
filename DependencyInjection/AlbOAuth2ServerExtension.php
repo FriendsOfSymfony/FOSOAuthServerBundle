@@ -48,5 +48,6 @@ class AlbOAuth2ServerExtension extends Extension
 
         $container->setParameter('alb.oauth2.server.model.client.class', $config['oauth2_client_class']);
         $container->setParameter('alb.oauth2.server.model.access.token.class', $config['oauth2_access_token_class']);
+        $container->setParameter('alb.oauth2.server.model.auth.code.class', $config['oauth2_auth_code_class']);
     }
 }

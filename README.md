@@ -89,6 +89,7 @@ This bundle needs to persist some classes to a database:
 
 - `OAuth2Client` (OAuth2 consumers)
 - `OAuth2AccessToken`
+- `OAuth2AuthCode`
 
 Your first job, then, is to create these classes for your application.
 These classes can look and act however you want: add any
@@ -183,6 +184,41 @@ class OAuth2AccessToken extends BaseOAuth2AccessToken
 }
 ```
 
+``` php
+<?php
+// src/Acme/ApiBundle/Entity/OAuth2AuthCode.php
+
+namespace Acme\ApiBundle\Entity;
+
+use Alb\OAuth2Server\Entity\OAuth2AuthCode as BaseOAuth2AuthCode;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ */
+class OAuth2AuthCode extends BaseOAuth2AuthCode
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="OAuth2Client")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $client;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+    }
+}
+```
+
 ### Step 5: Configure your application's security.yml
 
 In order for Symfony's security component to use the AlbOAuth2ServerBundle, you must
@@ -235,6 +271,7 @@ alb_o_auth2_server:
     db_driver:  orm
     oauth2_client_class:        Acme\ApiBundle\Entity\OAuth2Client
     oauth2_access_token_class:  Acme\ApiBundle\Entity\OAuth2AccessToken
+    oauth2_auth_code_class:     Acme\ApiBundle\Entity\OAuth2AuthCode
 ```
 
 ## Usage
@@ -260,8 +297,8 @@ if ($form->isValid()) {
 ## TODO
 
 - More tests
-- Add model classes for OAuth2AuthCode, OAuth2RefreshToken
-- Add methods for authorization_code and refresh_token authorization types in the default storage adapter
+- Add model classes for OAuth2RefreshToken
+- Add methods for refresh_token authorization types in the default storage adapter
 - Add a default controler for the /authorize endpoint
 
 ## Credits

@@ -28,6 +28,7 @@
 
             <argument type="service" id="alb.oauth2.server.client.manager" />
             <argument type="service" id="alb.oauth2.server.access.token.manager" />
+            <argument type="service" id="alb.oauth2.server.auth.code.manager" />
             <argument>null</argument>
             <argument type="service" id="security.encoder_factory"></argument> <!-- encoder  -->
         </service>
@@ -61,6 +62,7 @@
 
         <service id="alb.oauth2.server.client.manager" alias="alb.oauth2.server.client.manager.default" />
         <service id="alb.oauth2.server.access.token.manager" alias="alb.oauth2.server.access.token.manager.default" />
+        <service id="alb.oauth2.server.auth.code.manager" alias="alb.oauth2.server.auth.code.manager.default" />
 
     </services>
 
