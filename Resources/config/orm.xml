@@ -5,23 +5,29 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="alt.oauth2.server.model.client.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2ClientManager</parameter>
-        <parameter key="alt.oauth2.server.model.access.token.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2AccessTokenManager</parameter>
-
+        <parameter key="alb.oauth2.server.model.client.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2ClientManager</parameter>
+        <parameter key="alb.oauth2.server.model.access.token.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2AccessTokenManager</parameter>
+        <parameter key="alb.oauth2.server.model.auth.code.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2AuthCodeManager</parameter>
     </parameters>
 
     <services>
 
         <service id="alb.oauth2.server.client.manager.default"
-            class="%alt.oauth2.server.model.client.manager.class%">
+            class="%alb.oauth2.server.model.client.manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%alb.oauth2.server.model.client.class%</argument>
         </service>
 
         <service id="alb.oauth2.server.access.token.manager.default"
-            class="%alt.oauth2.server.model.access.token.manager.class%">
+            class="%alb.oauth2.server.model.access.token.manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%alb.oauth2.server.model.access.token.class%</argument>
+        </service>
+
+        <service id="alb.oauth2.server.auth.code.manager.default"
+            class="%alb.oauth2.server.model.auth.code.manager.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%alb.oauth2.server.model.auth.code.class%</argument>
         </service>
 
     </services>
