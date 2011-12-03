@@ -10,9 +10,9 @@ abstract class OAuth2AuthCodeManager implements OAuth2AuthCodeManagerInterface
         return new $class;
     }
 
-    public function findAuthCodeByCode($code)
+    public function findAuthCodeByToken($token)
     {
-        return $this->findAuthCodeBy(array('code' => $code));
+        return $this->findAuthCodeBy(array('token' => $token));
     }
 }
 

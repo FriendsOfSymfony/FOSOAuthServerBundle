@@ -26,11 +26,11 @@ interface OAuth2AuthCodeManagerInterface
     function findAuthCodeBy(array $criteria);
 
     /**
-     * @param $code
+     * @param $token
      *
      * @return OAuth2AuthCodeInterface
      */
-    function findAuthCodeByCode($code);
+    function findAuthCodeByToken($token);
 
     /**
      * @param OAuth2AuthCodeInterface $authCode

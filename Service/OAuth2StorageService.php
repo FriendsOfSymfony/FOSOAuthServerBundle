@@ -129,7 +129,7 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2G
      */
     public function getAuthCode($code)
     {
-        return $this->authCodeManager->findAuthCodeByCode($code);
+        return $this->authCodeManager->findAuthCodeByToken($code);
     }
 
     /**
@@ -142,7 +142,7 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2G
         }
 
         $authCode = $this->authCodeManager->createAuthCode();
-        $authCode->setCode($code);
+        $authCode->setToken($code);
         $authCode->setClient($client);
         $authCode->setData($data);
         $authCode->setRedirectUri($redirect_uri);
