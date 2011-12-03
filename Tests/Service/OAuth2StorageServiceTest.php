@@ -10,6 +10,7 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
 {
     protected $clientManager;
     protected $accessTokenManager;
+    protected $authCodeManager;
     protected $userProvider;
     protected $encoderFactory;
     protected $storage;
@@ -18,10 +19,11 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->clientManager = $this->getMock('Alb\OAuth2ServerBundle\Model\OAuth2ClientManagerInterface');
         $this->accessTokenManager = $this->getMock('Alb\OAuth2ServerBundle\Model\OAuth2AccessTokenManagerInterface');
+        $this->authCodeManager = $this->getMock('Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManagerInterface');
         $this->userProvider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $this->encoderFactory = $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface');
 
-        $this->storage = new OAuth2StorageService($this->clientManager, $this->accessTokenManager, $this->userProvider, $this->encoderFactory);
+        $this->storage = new OAuth2StorageService($this->clientManager, $this->accessTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
     }
 
     public function testGetClientReturnsClientWithGivenId()
