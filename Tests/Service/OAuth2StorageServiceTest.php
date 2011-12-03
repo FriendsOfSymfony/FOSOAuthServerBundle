@@ -5,6 +5,7 @@ namespace Alb\OAuth2ServiceBundle\Tests\Service;
 use Alb\OAuth2ServerBundle\Model\OAuth2Client;
 use Alb\OAuth2ServerBundle\Service\OAuth2StorageService;
 use Alb\OAuth2ServerBundle\Model\OAuth2AccessToken;
+use Alb\OAuth2ServerBundle\Model\OAuth2AuthCode;
 
 class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -230,6 +231,66 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
+
+    public function testCreateAuthCodeThrowsOnInvalidClientClass()
+    {
+        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+
+        $this->setExpectedException('InvalidArgumentException');
+        $this->storage->createAuthCode('foo', $client, 42, 'http://www.example.com/', 1, 'foo bar');
+    }
+
+    public function testCreateAuthCode()
+    {
+        $savedCode = null;
+
+        $this->authCodeManager->expects($this->once())
+            ->method('createAuthCode')
+            ->with()
+            ->will($this->returnValue(new OAuth2AuthCode));
+        $this->authCodeManager->expects($this->once())
+            ->method('updateAuthCode')
+            ->will($this->returnCallback(function($code) use (&$savedCode) {
+                $savedCode = $code;
+            }));
+
+        $client = new OAuth2Client;
+
+        $code = $this->storage->createAuthCode('foo', $client, 42, 'http://www.example.com/', 1, 'foo bar');
+
+        $this->assertEquals($code, $savedCode);
+
+        $this->assertSame('foo', $code->getToken());
+        $this->assertSame($client, $code->getClient());
+        $this->assertSame(42, $code->getData());
+        $this->assertSame(1, $code->getExpiresAt());
+        $this->assertSame('foo bar', $code->getScope());
+    }
+
+    public function testGetAuthCodeReturnsAuthCodeWithGivenId()
+    {
+        $code = new OAuth2AuthCode;
+
+        $this->authCodeManager->expects($this->once())
+            ->method('findAuthCodeByToken')
+            ->with('123_abc')
+            ->will($this->returnValue($code));
+
+        $this->assertSame($code, $this->storage->getAuthCode('123_abc'));
+    }
+
+    public function testGetAuthCodeReturnsNullIfNotExists()
+    {
+        $code = new OAuth2AuthCode;
+
+        $this->authCodeManager->expects($this->once())
+            ->method('findAuthCodeByToken')
+            ->with('123_abc')
+            ->will($this->returnValue(null));
+
+        $this->assertNull($this->storage->getAuthCode('123_abc'));
+    }
+
 
 }
 
