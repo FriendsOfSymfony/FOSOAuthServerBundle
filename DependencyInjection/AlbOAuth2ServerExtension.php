@@ -42,7 +42,7 @@ class AlbOAuth2ServerExtension extends Extension
         if (isset($config['user_provider_service'])) {
             $container
                 ->getDefinition('alb.oauth2.server.server_service.storage.default')
-                ->replaceArgument(2, new Reference($config['user_provider_service']))
+                ->replaceArgument(3, new Reference($config['user_provider_service']))
                 ;
         }
 
