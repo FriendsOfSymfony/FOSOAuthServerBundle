@@ -39,5 +39,11 @@ class OAuth2ClientManager extends BaseOAuth2ClientManager
             $this->em->flush();
         }
     }
+
+    public function deleteClient(OAuth2ClientInterface $client)
+    {
+        $this->em->remove($client);
+        $this->em->flush();
+    }
 }
 
