@@ -14,6 +14,8 @@ interface OAuth2TokenManagerInterface
 
     function findTokenByToken($token);
 
-    function updateToken(OAuth2TokenInterface $client, $andFlush = true);
+    function updateToken(OAuth2TokenInterface $token, $andFlush = true);
+
+    function deleteToken(OAuth2TokenInterface $token);
 }
 

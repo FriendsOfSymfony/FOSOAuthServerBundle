@@ -37,4 +37,9 @@ interface OAuth2AuthCodeManagerInterface
      * @param bool $andFlush
      */
     function updateAuthCode(OAuth2AuthCodeInterface $authCode, $andFlush = true);
+
+    /**
+     * @param OAuth2AuthCodeInterface $authCode
+     */
+    function deleteAuthCode(OAuth2AuthCodeInterface $authCode);
 }
