@@ -29,6 +29,11 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('oauth2_client_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('oauth2_access_token_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('oauth2_auth_code_class')->isRequired()->cannotBeEmpty()->end()
+                ->arrayNode('oauth2_options')
+                    ->useAttributeAsKey('key')
+                    ->treatNullLike(array())
+                    ->prototype('scalar')->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

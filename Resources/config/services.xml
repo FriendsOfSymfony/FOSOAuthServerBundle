@@ -37,6 +37,7 @@
 
         <service id="alb.oauth2.server.server_service" class="%alb.oauth2.server.server_service.class%">
             <argument type="service" id="alb.oauth2.server.server_service.storage"></argument>
+            <argument>%alb.oauth2.server.server_service.options%</argument>
         </service>
 
         <!-- Authentification -->
