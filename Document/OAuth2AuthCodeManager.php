@@ -50,5 +50,10 @@ class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager
         }
     }
 
+    function deleteAuthCode(OAuth2AuthCodeInterface $authCode)
+    {
+        $this->dm->remove($authCode);
+        $this->dm->flush();
+    }
 }
 

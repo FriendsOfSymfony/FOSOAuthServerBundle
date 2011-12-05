@@ -15,5 +15,7 @@ interface OAuth2ClientManagerInterface
     function findClientByPublicId($publicId);
 
     function updateClient(OAuth2ClientInterface $client, $andFlush = true);
+
+    function deleteClient(OAuth2ClientInterface $client);
 }
 

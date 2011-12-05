@@ -39,5 +39,11 @@ class OAuth2TokenManager extends BaseOAuth2TokenManager
             $this->em->flush();
         }
     }
+
+    public function deleteToken(OAuth2TokenInterface $token)
+    {
+        $this->em->remove($token);
+        $this->em->flush();
+    }
 }
 
