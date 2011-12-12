@@ -246,14 +246,6 @@ The URLs under `/api` will use OAuth2 to authenticate users.
 
 ### Step 6: Configure AlbOAuth2ServerBundle
 
-Import the security.yml configuration file in app/config/config.yml:
-
-``` yaml
-# app/config/config.yml
-imports:
-    - { resource: "@AlbOAuth2ServerBundle/Resources/config/security.yml" }
-```
-
 Import the routing.yml configuration file in app/config/routing.yml:
 
 ``` yaml
@@ -272,6 +264,17 @@ alb_o_auth2_server:
     oauth2_client_class:        Acme\ApiBundle\Entity\OAuth2Client
     oauth2_access_token_class:  Acme\ApiBundle\Entity\OAuth2AccessToken
     oauth2_auth_code_class:     Acme\ApiBundle\Entity\OAuth2AuthCode
+```
+
+#### Symfony 2.0.x only
+
+Import the security.yml configuration file in app/config/config.yml:
+
+``` yaml
+# app/config/config.yml
+imports:
+    # Symfony 2.0.x only
+    - { resource: "@AlbOAuth2ServerBundle/Resources/config/security.yml" }
 ```
 
 ## Usage
