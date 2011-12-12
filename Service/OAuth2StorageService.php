@@ -12,6 +12,7 @@ use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2GrantCode;
 use Alb\OAuth2ServerBundle\Model\OAuth2AccessTokenManagerInterface;
 use Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManagerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
 {
@@ -107,7 +108,11 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2G
             throw new \InvalidArgumentException;
         }
 
-        $user = $this->userProvider->loadUserByUsername($username);
+        try {
+            $user = $this->userProvider->loadUserByUsername($username);
+        } catch(AuthenticationException $e) {
+            return false;
+        }
 
         if (!$user) {
             return false;

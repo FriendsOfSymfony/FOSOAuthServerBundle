@@ -162,6 +162,15 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
         $this->storage->checkUserCredentials($client, 'Joe', 'baz');
     }
 
+    public function testCheckUserCredentialsCatchesAuthenticationExceptions()
+    {
+        $client = new OAuth2Client;
+
+        $result = $this->storage->checkUserCredentials($client, 'Joe', 'baz');
+
+        $this->assertFalse($result);
+    }
+
     public function testCheckUserCredentialsReturnsTrueOnValidCredentials()
     {
         $client = new OAuth2Client;
