@@ -1,7 +1,7 @@
 AlbOAuth2ServerBundle
 =====================
 
-Under development
+![Build Status](https://secure.travis-ci.org/arnaud-lb/AlbOAuth2ServerBundle.png)
 
 ## Installation
 
