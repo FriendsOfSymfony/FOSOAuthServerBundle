@@ -1,6 +1,6 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
 abstract class OAuth2AuthCodeManager implements OAuth2AuthCodeManagerInterface
 {

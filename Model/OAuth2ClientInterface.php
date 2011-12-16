@@ -1,6 +1,6 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
 use OAuth2\Model\IOAuth2Client;
 

@@ -1,17 +1,24 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Security\Authentification\Token;
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FOS\OAuthServerBundle\Security\Authentification\Token;
 
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 /**
- * OAuth2Token class.
+ * OAuthToken class.
  *
- * @package     AlbOAuth2ServerBundle
- * @subpackage  Security
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuth2Token extends AbstractToken
+class OAuthToken extends AbstractToken
 {
     /**
      * @var string

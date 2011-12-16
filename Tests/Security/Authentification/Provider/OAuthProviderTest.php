@@ -1,10 +1,10 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Tests\Security\Authentification\Provider;
+namespace FOS\OAuthServerBundle\Tests\Security\Authentification\Provider;
 
-use Alb\OAuth2ServerBundle\Security\Authentification\Provider\OAuth2Provider;
-use Alb\OAuth2ServerBundle\Security\Authentification\Token\OAuth2Token;
-use Alb\OAuth2ServerBundle\Model\OAuth2AccessToken;
+use FOS\OAuthServerBundle\Security\Authentification\Provider\OAuth2Provider;
+use FOS\OAuthServerBundle\Security\Authentification\Token\OAuth2Token;
+use FOS\OAuthServerBundle\Model\OAuthAccessToken;
 
 class OAuth2ProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class OAuth2ProviderTest extends \PHPUnit_Framework_TestCase
         $token = new OAuth2Token;
         $token->setToken('x');
 
-        $accessToken = new OAuth2AccessToken;
+        $accessToken = new OAuthAccessToken();
         $accessToken->setData($this->user);
 
         $this->serverService->expects($this->once())
@@ -44,7 +44,7 @@ class OAuth2ProviderTest extends \PHPUnit_Framework_TestCase
         $token = new OAuth2Token;
         $token->setToken('x');
 
-        $accessToken = new OAuth2AccessToken;
+        $accessToken = new OAuthAccessToken();
         $accessToken->setData(null);
 
         $this->serverService->expects($this->once())

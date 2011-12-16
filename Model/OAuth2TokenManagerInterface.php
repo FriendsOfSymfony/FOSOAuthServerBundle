@@ -1,8 +1,8 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2TokenInterface;
+use FOS\OAuthServerBundle\Model\OAuth2TokenInterface;
 
 interface OAuth2TokenManagerInterface
 {

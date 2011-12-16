@@ -1,9 +1,9 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Document;
+namespace FOS\OAuthServerBundle\Document;
 
-use Alb\OAuth2ServerBundle\Document\OAuth2TokenManager;
-use Alb\OAuth2ServerBundle\Model\OAuth2AccessTokenManagerInterface;
+use FOS\OAuthServerBundle\Document\OAuth2TokenManager;
+use FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface;
 
 class OAuth2AccessTokenManager extends OAuth2TokenManager implements OAuth2AccessTokenManagerInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Util;
+namespace FOS\OAuthServerBundle\Util;
 
 class Random
 {

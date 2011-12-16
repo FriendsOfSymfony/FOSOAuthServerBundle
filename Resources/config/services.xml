@@ -5,66 +5,62 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="alb.oauth2.server.controller.server.class">Alb\OAuth2ServerBundle\Controller\ServerController</parameter>
+        <parameter key="fos.oauth_server.controller.server.class">FOS\OAuthServerBundle\Controller\ServerController</parameter>
 
-        <parameter key="alb.oauth2.server.server_service.class">OAuth2\OAuth2</parameter>
-        <parameter key="alb.oauth2.server.server_service.storage.class">Alb\OAuth2ServerBundle\Service\OAuth2StorageService</parameter>
+        <parameter key="fos.oauth_server.server_service.class">OAuth2\OAuth2</parameter>
+        <parameter key="fos.oauth_server.server_service.storage.class">FOS\OAuthServerBundle\Storage\OAuthStorage</parameter>
 
-        <parameter key="alb.oauth2.server.security.authentication.provider.class">Alb\OAuth2ServerBundle\Security\Authentification\Provider\OAuth2Provider</parameter>
-        <parameter key="alb.oauth2.server.security.authentication.listener.class">Alb\OAuth2ServerBundle\Security\Firewall\OAuth2Listener</parameter>
+        <parameter key="fos.oauth_server.security.authentication.provider.class">FOS\OAuthServerBundle\Security\Authentification\Provider\OAuthProvider</parameter>
+        <parameter key="fos.oauth_server.security.authentication.listener.class">FOS\OAuthServerBundle\Security\Firewall\OAuthListener</parameter>
 
-        <parameter key="alb.oauth2.server.security.entry_point.class">Alb\OAuth2ServerBundle\Security\EntryPoint\OAuth2EntryPoint</parameter>
+        <parameter key="fos.oauth_server.security.entry_point.class">FOS\OAuthServerBundle\Security\EntryPoint\OAuthEntryPoint</parameter>
     </parameters>
 
     <services>
-
-        <service id="alb.oauth2.server.controller.server" class="%alb.oauth2.server.controller.server.class%" scope="request">
+        <service id="fos.oauth_server.controller.server" class="%fos.oauth_server.controller.server.class%" scope="request">
             <argument type="service" id="request" />
-            <argument type="service" id="alb.oauth2.server.server_service" />
+            <argument type="service" id="fos.oauth_server.server_service" />
         </service>
 
-        <service id="alb.oauth2.server.server_service.storage.default"
-            class="%alb.oauth2.server.server_service.storage.class%" public="false">
-
-            <argument type="service" id="alb.oauth2.server.client.manager" />
-            <argument type="service" id="alb.oauth2.server.access.token.manager" />
-            <argument type="service" id="alb.oauth2.server.auth.code.manager" />
+        <service id="fos.oauth_server.server_service.storage.default"
+            class="%fos.oauth_server.server_service.storage.class%" public="false">
+            <argument type="service" id="fos.oauth_server.client.manager" />
+            <argument type="service" id="fos.oauth_server.access.token.manager" />
+            <argument type="service" id="fos.oauth_server.auth.code.manager" />
             <argument>null</argument>
             <argument type="service" id="security.encoder_factory"></argument> <!-- encoder  -->
         </service>
 
-        <service id="alb.oauth2.server.server_service.storage" alias="alb.oauth2.server.server_service.storage.default" />
+        <service id="fos.oauth_server.server_service.storage" alias="fos.oauth_server.server_service.storage.default" />
 
-        <service id="alb.oauth2.server.server_service" class="%alb.oauth2.server.server_service.class%">
-            <argument type="service" id="alb.oauth2.server.server_service.storage"></argument>
-            <argument>%alb.oauth2.server.server_service.options%</argument>
+        <service id="fos.oauth_server.server_service" class="%fos.oauth_server.server_service.class%">
+            <argument type="service" id="fos.oauth_server.server_service.storage"></argument>
+            <argument>%fos.oauth_server.server_service.options%</argument>
         </service>
 
         <!-- Authentification -->
-        <service id="alb.oauth2.server.security.authentication.provider"
-            class="%alb.oauth2.server.security.authentication.provider.class%" public="false">
+        <service id="fos.oauth_server.security.authentication.provider"
+            class="%fos.oauth_server.security.authentication.provider.class%" public="false">
             <argument /> <!-- user provider -->
-            <argument type="service" id="alb.oauth2.server.server_service" />
+            <argument type="service" id="fos.oauth_server.server_service" />
             <argument></argument> <!-- token provider -->
         </service>
-        <service id="alb.oauth2.server.security.authentication.listener"
-            class="%alb.oauth2.server.security.authentication.listener.class%" public="false">
+
+        <service id="fos.oauth_server.security.authentication.listener"
+            class="%fos.oauth_server.security.authentication.listener.class%" public="false">
             <argument type="service" id="security.context"/>
             <argument type="service" id="security.authentication.manager" />
-            <argument type="service" id="alb.oauth2.server.server_service" />
+            <argument type="service" id="fos.oauth_server.server_service" />
         </service>
-        <service id="alb.oauth2.server.security.entry_point"
-            class="%alb.oauth2.server.security.entry_point.class%" public="false">
 
-            <argument type="service" id="alb.oauth2.server.server_service" />
+        <service id="fos.oauth_server.security.entry_point"
+            class="%fos.oauth_server.security.entry_point.class%" public="false">
+            <argument type="service" id="fos.oauth_server.server_service" />
         </service>
 
         <!-- Model -->
-
-        <service id="alb.oauth2.server.client.manager" alias="alb.oauth2.server.client.manager.default" />
-        <service id="alb.oauth2.server.access.token.manager" alias="alb.oauth2.server.access.token.manager.default" />
-        <service id="alb.oauth2.server.auth.code.manager" alias="alb.oauth2.server.auth.code.manager.default" />
-
+        <service id="fos.oauth_server.client.manager" alias="fos.oauth_server.client.manager.default" />
+        <service id="fos.oauth_server.access.token.manager" alias="fos.oauth_server.access.token.manager.default" />
+        <service id="fos.oauth_server.auth.code.manager" alias="fos.oauth_server.auth.code.manager.default" />
     </services>
-
 </container>

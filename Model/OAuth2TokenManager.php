@@ -1,6 +1,6 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
 use Doctrine\ORM\EntityManager;
 

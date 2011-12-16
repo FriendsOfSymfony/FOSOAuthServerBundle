@@ -1,33 +1,44 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Service;
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use OAuth2\IOAuth2Storage;
-use Alb\OAuth2ServerBundle\Model\OAuth2ClientManagerInterface;
-use OAuth2\Model\IOAuth2Client;
-use Alb\OAuth2ServerBundle\Model\OAuth2ClientInterface;
+namespace FOS\OAuthServerBundle\Storage;
+
+use FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\OAuth2AuthCodeManagerInterface;
+use FOS\OAuthServerBundle\Model\OAuth2ClientManagerInterface;
+use FOS\OAuthServerBundle\Model\OAuth2ClientInterface;
+
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use OAuth2\IOAuth2GrantUser;
-use OAuth2\IOAuth2GrantCode;
-use Alb\OAuth2ServerBundle\Model\OAuth2AccessTokenManagerInterface;
-use Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManagerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
+use OAuth2\IOAuth2Storage;
+use OAuth2\IOAuth2GrantUser;
+use OAuth2\IOAuth2GrantCode;
+use OAuth2\Model\IOAuth2Client;
+
+class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
 {
     /**
-     * @var \Alb\OAuth2ServerBundle\Model\OAuth2ClientManagerInterface
+     * @var \FOS\OAuthServerBundle\Model\OAuth2ClientManagerInterface
      */
     protected $clientManager;
 
     /**
-     * @var \Alb\OAuth2ServerBundle\Model\OAuth2AccessTokenManagerInterface
+     * @var \FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface
      */
     protected $accessTokenManager;
 
     /**
-     * @var \Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManagerInterface;
+     * @var \FOS\OAuthServerBundle\Model\OAuth2AuthCodeManagerInterface;
      */
     protected $authCodeManager;
 
@@ -42,13 +53,14 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2G
     protected $encoderFactory;
 
     /**
-     * @param \Alb\OAuth2ServerBundle\Model\OAuth2ClientManagerInterface $clientManager
-     * @param \Alb\OAuth2ServerBundle\Model\OAuth2AccessTokenManagerInterface $accessTokenManager
-     * @param \Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManagerInterface $authCodeManager
+     * @param \FOS\OAuthServerBundle\Model\OAuth2ClientManagerInterface $clientManager
+     * @param \FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface $accessTokenManager
+     * @param \FOS\OAuthServerBundle\Model\OAuth2AuthCodeManagerInterface $authCodeManager
      * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface $userProvider
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
-    public function __construct(OAuth2ClientManagerInterface $clientManager, OAuth2AccessTokenManagerInterface $accessTokenManager, OAuth2AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
+    public function __construct(OAuth2ClientManagerInterface $clientManager, OAuth2AccessTokenManagerInterface $accessTokenManager,
+        OAuth2AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
@@ -157,7 +169,4 @@ class OAuth2StorageService implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2G
 
         return $authCode;
     }
-
-
 }
-

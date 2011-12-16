@@ -1,9 +1,9 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Document;
+namespace FOS\OAuthServerBundle\Document;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManager as BaseOAuth2AuthCodeManager;
-use Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeInterface;
+use FOS\OAuthServerBundle\Model\OAuth2AuthCodeManager as BaseOAuth2AuthCodeManager;
+use FOS\OAuthServerBundle\Model\OAuth2AuthCodeInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager

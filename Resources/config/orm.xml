@@ -5,32 +5,29 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="alb.oauth2.server.model.client.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2ClientManager</parameter>
-        <parameter key="alb.oauth2.server.model.access.token.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2AccessTokenManager</parameter>
-        <parameter key="alb.oauth2.server.model.auth.code.manager.class">Alb\OAuth2ServerBundle\Entity\OAuth2AuthCodeManager</parameter>
+        <parameter key="fos.oauth_server.model.client.manager.class">FOS\OAuthServerBundle\Entity\OAuthClientManager</parameter>
+        <parameter key="fos.oauth_server.model.access.token.manager.class">FOS\OAuthServerBundle\Entity\OAuthAccessTokenManager</parameter>
+        <parameter key="fos.oauth_server.model.auth.code.manager.class">FOS\OAuthServerBundle\Entity\OAuthAuthCodeManager</parameter>
     </parameters>
 
     <services>
-
-        <service id="alb.oauth2.server.client.manager.default"
-            class="%alb.oauth2.server.model.client.manager.class%">
+        <service id="fos.oauth_server.client.manager.default"
+            class="%fos.oauth_server.model.client.manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%alb.oauth2.server.model.client.class%</argument>
+            <argument>%fos.oauth_server.model.client.class%</argument>
         </service>
 
-        <service id="alb.oauth2.server.access.token.manager.default"
-            class="%alb.oauth2.server.model.access.token.manager.class%">
+        <service id="fos.oauth_server.access.token.manager.default"
+            class="%fos.oauth_server.model.access.token.manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%alb.oauth2.server.model.access.token.class%</argument>
+            <argument>%fos.oauth_server.model.access.token.class%</argument>
         </service>
 
-        <service id="alb.oauth2.server.auth.code.manager.default"
-            class="%alb.oauth2.server.model.auth.code.manager.class%">
+        <service id="fos.oauth_server.auth.code.manager.default"
+            class="%fos.oauth_server.model.auth.code.manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%alb.oauth2.server.model.auth.code.class%</argument>
+            <argument>%fos.oauth_server.model.auth.code.class%</argument>
         </service>
-
     </services>
 
 </container>
-

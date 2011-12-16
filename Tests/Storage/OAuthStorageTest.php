@@ -1,30 +1,35 @@
 <?php
 
-namespace Alb\OAuth2ServiceBundle\Tests\Service;
+namespace FOS\OAuth2ServiceBundle\Tests\Service;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2Client;
-use Alb\OAuth2ServerBundle\Service\OAuth2StorageService;
-use Alb\OAuth2ServerBundle\Model\OAuth2AccessToken;
-use Alb\OAuth2ServerBundle\Model\OAuth2AuthCode;
+use FOS\OAuthServerBundle\Model\OAuth2AccessToken;
+use FOS\OAuthServerBundle\Model\OAuthAuthCode;
+use FOS\OAuthServerBundle\Model\OAuth2Client;
+use FOS\OAuthServerBundle\Service\OAuthStorage;
 
-class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
+class OAuthStorageTest extends \PHPUnit_Framework_TestCase
 {
     protected $clientManager;
+
     protected $accessTokenManager;
+
     protected $authCodeManager;
+
     protected $userProvider;
+
     protected $encoderFactory;
+
     protected $storage;
 
     public function setUp()
     {
-        $this->clientManager = $this->getMock('Alb\OAuth2ServerBundle\Model\OAuth2ClientManagerInterface');
-        $this->accessTokenManager = $this->getMock('Alb\OAuth2ServerBundle\Model\OAuth2AccessTokenManagerInterface');
-        $this->authCodeManager = $this->getMock('Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManagerInterface');
+        $this->clientManager = $this->getMock('FOS\OAuthServerBundle\Model\OAuth2ClientManagerInterface');
+        $this->accessTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface');
+        $this->authCodeManager = $this->getMock('FOS\OAuthServerBundle\Model\OAuth2AuthCodeManagerInterface');
         $this->userProvider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $this->encoderFactory = $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface');
 
-        $this->storage = new OAuth2StorageService($this->clientManager, $this->accessTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
+        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
     }
 
     public function testGetClientReturnsClientWithGivenId()
@@ -278,7 +283,7 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAuthCodeReturnsAuthCodeWithGivenId()
     {
-        $code = new OAuth2AuthCode;
+        $code = new OAuthAuthCode();
 
         $this->authCodeManager->expects($this->once())
             ->method('findAuthCodeByToken')
@@ -290,7 +295,7 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAuthCodeReturnsNullIfNotExists()
     {
-        $code = new OAuth2AuthCode;
+        $code = new OAuthAuthCode();
 
         $this->authCodeManager->expects($this->once())
             ->method('findAuthCodeByToken')
@@ -299,7 +304,4 @@ class OAuth2StorageServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->storage->getAuthCode('123_abc'));
     }
-
-
 }
-

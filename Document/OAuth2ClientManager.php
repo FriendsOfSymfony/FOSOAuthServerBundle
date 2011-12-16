@@ -1,10 +1,10 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Document;
+namespace FOS\OAuthServerBundle\Document;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2ClientManager as BaseOAuth2ClientManager;
+use FOS\OAuthServerBundle\Model\OAuth2ClientManager as BaseOAuth2ClientManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Alb\OAuth2ServerBundle\Model\OAuth2ClientInterface;
+use FOS\OAuthServerBundle\Model\OAuth2ClientInterface;
 
 class OAuth2ClientManager extends BaseOAuth2ClientManager
 {

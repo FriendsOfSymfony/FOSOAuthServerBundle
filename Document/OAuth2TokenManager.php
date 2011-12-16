@@ -1,10 +1,10 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Document;
+namespace FOS\OAuthServerBundle\Document;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2TokenManager as BaseOAuth2TokenManager;
+use FOS\OAuthServerBundle\Model\OAuth2TokenManager as BaseOAuth2TokenManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Alb\OAuth2ServerBundle\Model\OAuth2TokenInterface;
+use FOS\OAuthServerBundle\Model\OAuth2TokenInterface;
 
 class OAuth2TokenManager extends BaseOAuth2TokenManager
 {

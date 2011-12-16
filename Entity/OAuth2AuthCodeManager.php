@@ -1,10 +1,10 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Entity;
+namespace FOS\OAuthServerBundle\Entity;
 
-use Alb\OAuth2ServerBundle\Entity\OAuth2TokenManager;
-use Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeManager as BaseOAuth2AuthCodeManager;
-use Alb\OAuth2ServerBundle\Model\OAuth2AuthCodeInterface;
+use FOS\OAuthServerBundle\Entity\OAuth2TokenManager;
+use FOS\OAuthServerBundle\Model\OAuth2AuthCodeManager as BaseOAuth2AuthCodeManager;
+use FOS\OAuthServerBundle\Model\OAuth2AuthCodeInterface;
 use Doctrine\ORM\EntityManager;
 
 class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager

@@ -1,9 +1,9 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
 use OAuth2\OAuth2;
-use Alb\OAuth2ServerBundle\Util\Random;
+use FOS\OAuthServerBundle\Util\Random;
 
 class OAuth2Client implements OAuth2ClientInterface
 {

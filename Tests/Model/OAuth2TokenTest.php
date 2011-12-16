@@ -1,8 +1,8 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Tests\Model;
+namespace FOS\OAuthServerBundle\Tests\Model;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2Token;
+use FOS\OAuthServerBundle\Model\OAuth2Token;
 
 class OAuth2TokenTest extends \PHPUnit_Framework_TestCase
 {

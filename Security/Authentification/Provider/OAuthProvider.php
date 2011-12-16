@@ -1,6 +1,15 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Security\Authentification\Provider;
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FOS\OAuthServerBundle\Security\Authentification\Provider;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
@@ -8,19 +17,18 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-use Alb\OAuth2ServerBundle\Model\Provider\OAuth2TokenProviderInterface;
-use Alb\OAuth2ServerBundle\Security\Authentification\Token\OAuth2Token;
+use FOS\OAuthServerBundle\Model\Provider\OAuth2TokenProviderInterface;
+use FOS\OAuthServerBundle\Security\Authentification\Token\OAuth2Token;
+
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 
 /**
- * OAuth2Provider class.
+ * OAuthProvider class.
  *
- * @package     AlbOAuth2ServerBundle
- * @subpackage  Security
  * @author  Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuth2Provider implements AuthenticationProviderInterface
+class OAuthProvider implements AuthenticationProviderInterface
 {
     /**
      * @var \Symfony\Component\Security\Core\User\UserProviderInterface

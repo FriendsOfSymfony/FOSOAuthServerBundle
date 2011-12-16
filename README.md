@@ -1,23 +1,23 @@
-AlbOAuth2ServerBundle
-=====================
+FOSOAuthServerBundle
+====================
 
-![Build Status](https://secure.travis-ci.org/arnaud-lb/AlbOAuth2ServerBundle.png)
+![Build Status](https://secure.travis-ci.org/friendsOfSymfony/FOSOAuthServerBundle.png)
 
 ## Installation
 
 Installation is a quick 6 step process:
 
-1. Download AlbOAuth2ServerBundle
+1. Download FOSOAuthServerBundle
 2. Configure the Autoloader
 3. Enable the Bundle
 4. Create your User class
 5. Configure your application's security.yml
-6. Configure the AlbOAuth2ServerBundle
+6. Configure the FOSOAuthServerBundle
 
-### Step 1: Download AlbOAuth2ServerBundle and oauth2-php
+### Step 1: Download FOSOAuthServerBundle and oauth2-php
 
-Ultimately, the AlbOAuth2ServerBundle files should be downloaded to the
-`vendor/bundles/Alb/OAuth2ServerBundle` directory and the oauth2-php files to
+Ultimately, the FOSOAuthServerBundle files should be downloaded to the
+`vendor/bundles/FOS/OAuthServerBundle` directory and the `oauth2-php` files to
 the `vendor/oauth2-php` directory.
 
 This can be done in several ways, depending on your preference. The first
@@ -28,9 +28,9 @@ method is the standard Symfony2 method.
 Add the following lines in your `deps` file:
 
 ```
-[AlbOAuth2ServerBundle]
-    git=git://github.com/arnaud-lb/AlbOAuth2ServerBundle.git
-    target=bundles/Alb/OAuth2ServerBundle
+[FOSOAuthServerBundle]
+    git=git://github.com/friendsOfSymfony/FOSOAuthServerBundle.git
+    target=bundles/FOS/OAuthServerBundle
 [oauth2-php]
     git=git://github.com/arnaud-lb/oauth2-php.git
 ```
@@ -46,8 +46,8 @@ $ php bin/vendors install
 If you prefer instead to use git submodules, then run the following:
 
 ``` bash
-$ git submodule add git://github.com/arnaud-lb/AlbOAuth2ServerBundle.git vendor/bundles/Alb/OAuth2ServerBundle
-$ git submodule add git://github.com/arnaud-lb/oauth2-php.git vendor/oauth2-php
+$ git submodule add git://github.com/friendsOfSymfony/FOSOAuthServerBundle.git vendor/bundles/FOS/OAuthServerBundle
+$ git submodule add git://github.com/friendsOfSymfony/oauth2-php.git vendor/oauth2-php
 $ git submodule update --init
 ```
 
@@ -78,7 +78,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Alb\OAuth2ServerBundle\AlbOAuth2ServerBundle(),
+        new Alb\OAuth2ServerBundle\FOSOAuthServerBundle(),
     );
 }
 ```
@@ -221,11 +221,11 @@ class OAuth2AuthCode extends BaseOAuth2AuthCode
 
 ### Step 5: Configure your application's security.yml
 
-In order for Symfony's security component to use the AlbOAuth2ServerBundle, you must
+In order for Symfony's security component to use the FOSOAuthServerBundle, you must
 tell it to do so in the `security.yml` file. The `security.yml` file is where the
 basic configuration for the security for your application is contained.
 
-Below is a minimal example of the configuration necessary to use the AlbOAuth2ServerBundle
+Below is a minimal example of the configuration necessary to use the FOSOAuthServerBundle
 in your application:
 
 ``` yaml
@@ -244,22 +244,22 @@ security:
 
 The URLs under `/api` will use OAuth2 to authenticate users.
 
-### Step 6: Configure AlbOAuth2ServerBundle
+### Step 6: Configure FOSOAuthServerBundle
 
 Import the routing.yml configuration file in app/config/routing.yml:
 
 ``` yaml
 # app/config/routing.yml
 alb_oauth2:
-    resource: "@AlbOAuth2ServerBundle/Resources/config/routing.yml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing.yml"
 ```
 
-Add AlbOAuth2ServerBundle settings in app/config/config.yml:
+Add FOSOAuthServerBundle settings in app/config/config.yml:
 
 
 ``` yaml
 # app/config/config.yml
-alb_o_auth2_server:
+fos_o_auth_server:
     db_driver:  orm
     oauth2_client_class:        Acme\ApiBundle\Entity\OAuth2Client
     oauth2_access_token_class:  Acme\ApiBundle\Entity\OAuth2AccessToken
@@ -274,7 +274,7 @@ Import the security.yml configuration file in app/config/config.yml:
 # app/config/config.yml
 imports:
     # Symfony 2.0.x only
-    - { resource: "@AlbOAuth2ServerBundle/Resources/config/security.yml" }
+    - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" }
 ```
 
 ## Usage
@@ -282,7 +282,7 @@ imports:
 The `token` endpoint is at `/oauth/v2/token` by default (see Resources/config/routing.yml).
 
 An `authorize` endpoint can be implemented with the `finishClientAuthorization` method on
-the `alb.oauth2.server.server_service` service:
+the `fos.oauth_server.server_service` service:
 
 ``` php
 <?php
@@ -309,4 +309,3 @@ if ($form->isValid()) {
 - Arnaud Le Blanc
 - Inspirated by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
 - Installation doc adapted from [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle) doc.
-

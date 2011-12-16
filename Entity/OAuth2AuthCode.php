@@ -3,9 +3,9 @@
  *
  */
 
-namespace Alb\OAuth2ServerBundle\Entity;
+namespace FOS\OAuthServerBundle\Entity;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2AuthCode as BaseOAuth2AuthCode;
+use FOS\OAuthServerBundle\Model\OAuth2AuthCode as BaseOAuth2AuthCode;
 
 /**
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>

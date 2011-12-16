@@ -8,7 +8,7 @@
     </php>
 -->
     <testsuites>
-        <testsuite name="AlbOAuth2ServerBundle">
+        <testsuite name="FOSOAuthServerBundle">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>

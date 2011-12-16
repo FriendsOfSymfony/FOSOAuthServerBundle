@@ -1,10 +1,10 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
 use OAuth2\Model\IOAuth2Token;
-use Alb\OAuth2ServerBundle\Model\OAuth2ClientInterface;
-use Alb\OAuth2ServerBundle\Model\OAuth2TokenInterface;
+use FOS\OAuthServerBundle\Model\OAuth2ClientInterface;
+use FOS\OAuthServerBundle\Model\OAuth2TokenInterface;
 
 interface OAuth2TokenInterface extends IOAuth2Token
 {

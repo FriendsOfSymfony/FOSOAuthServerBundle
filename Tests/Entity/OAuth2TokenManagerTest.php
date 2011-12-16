@@ -1,9 +1,9 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Tests\Entity;
+namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use Alb\OAuth2ServerBundle\Entity\OAuth2TokenManager;
-use Alb\OAuth2ServerBundle\Entity\OAuth2AccessToken;
+use FOS\OAuthServerBundle\Entity\OAuth2TokenManager;
+use FOS\OAuthServerBundle\Entity\OAuth2AccessToken;
 
 class OAuth2TokenManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +13,7 @@ class OAuth2TokenManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->class = 'Alb\OAuth2ServerBundle\Entity\OAuth2AccessToken';
+        $this->class = 'FOS\OAuthServerBundle\Entity\OAuth2AccessToken';
         $this->repository = $this->getMock('Doctrine\ORM\EntityRepository', array(), array(), '', false);
         $this->em = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->em->expects($this->once())

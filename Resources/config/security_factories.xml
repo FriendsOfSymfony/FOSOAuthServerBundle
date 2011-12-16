@@ -3,12 +3,12 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="alb.oauth2.server.authentication.factory.class">Alb\OAuth2ServerBundle\DependencyInjection\Security\Factory\OAuth2Factory</parameter>
+        <parameter key="fos.oauth_server.authentication.factory.class">FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory</parameter>
     </parameters>
 
     <services>
-        <service id="security.authentication.factory.alb_oauth2_server"
-            class="%alb.oauth2.server.authentication.factory.class%" public="false">
+        <service id="security.authentication.factory.fos_oauth2_server"
+            class="%fos.oauth_server.authentication.factory.class%" public="false">
             <tag name="security.listener.factory" />
         </service>
     </services>

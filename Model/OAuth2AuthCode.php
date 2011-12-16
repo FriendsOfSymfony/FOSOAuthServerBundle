@@ -3,7 +3,7 @@
  *
  */
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
 /**
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>

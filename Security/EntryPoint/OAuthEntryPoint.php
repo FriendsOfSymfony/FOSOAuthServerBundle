@@ -1,15 +1,25 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Security\EntryPoint;
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FOS\OAuthServerBundle\Security\EntryPoint;
 
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 use OAuth2\OAuth2AuthenticateException;
 use OAuth2\OAuth2;
 
-class OAuth2EntryPoint implements AuthenticationEntryPointInterface
+class OAuthEntryPoint implements AuthenticationEntryPointInterface
 {
     protected $serverService;
 
@@ -27,8 +37,7 @@ class OAuth2EntryPoint implements AuthenticationEntryPointInterface
             , 'access_denied'
             , 'OAuth2 authentication required'
         );
-        
+
         return $exception->getHttpResponse();
     }
 }
-

@@ -1,8 +1,8 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\Model;
+namespace FOS\OAuthServerBundle\Model;
 
-use Alb\OAuth2ServerBundle\Model\OAuth2ClientInterface;
+use FOS\OAuthServerBundle\Model\OAuth2ClientInterface;
 
 interface OAuth2ClientManagerInterface
 {

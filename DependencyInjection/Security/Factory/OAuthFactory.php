@@ -1,6 +1,15 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\DependencyInjection\Security\Factory;
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FOS\OAuthServerBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -9,29 +18,27 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * OAuth2Factory class.
+ * OAuthFactory class.
  *
- * @package     AlbOAuth2ServerBundle
- * @subpackage  DependencyInjection
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuth2Factory implements SecurityFactoryInterface
+class OAuthFactory implements SecurityFactoryInterface
 {
     /**
      * {@inheritdoc}
      */
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
-        $providerId = 'security.authentication.provider.alb_oauth2_server.'.$id;
+        $providerId = 'security.authentication.provider.fos_oauth_server.'.$id;
         $container
-            ->setDefinition($providerId, new DefinitionDecorator('alb.oauth2.server.security.authentication.provider'))
+            ->setDefinition($providerId, new DefinitionDecorator('fos.oauth_server.security.authentication.provider'))
             ->replaceArgument(0, new Reference($userProvider))
             ;
 
-        $listenerId = 'security.authentication.listener.alb_oauth2_server.'.$id;
-        $listener   = $container->setDefinition($listenerId, new DefinitionDecorator('alb.oauth2.server.security.authentication.listener'));
+        $listenerId = 'security.authentication.listener.fos_oauth_server.'.$id;
+        $listener   = $container->setDefinition($listenerId, new DefinitionDecorator('fos.oauth_server.security.authentication.listener'));
 
-        return array($providerId, $listenerId, 'alb.oauth2.server.security.entry_point');
+        return array($providerId, $listenerId, 'fos.oauth_server.security.entry_point');
     }
 
     /**
@@ -47,7 +54,7 @@ class OAuth2Factory implements SecurityFactoryInterface
      */
     public function getKey()
     {
-        return 'alb_oauth2';
+        return 'fos_oauth';
     }
 
     /**
