@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Entity;
 
-use FOS\OAuthServerBundle\Model\OAuth2ClientManager as BaseOAuth2ClientManager;
-use Doctrine\ORM\EntityManager;
-use FOS\OAuthServerBundle\Model\OAuth2ClientInterface;
+se Doctrine\ORM\EntityManager;
+use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
+use FOS\OAuthServerBundle\Model\ClientInterface;
 
-class OAuth2ClientManager extends BaseOAuth2ClientManager
+class ClientManager extends BaseClientManager
 {
     protected $em;
 
@@ -31,19 +40,18 @@ class OAuth2ClientManager extends BaseOAuth2ClientManager
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateClient(OAuth2ClientInterface $client, $andFlush = true)
+    public function updateClient(ClientInterface $client, $andFlush = true)
     {
         $this->em->persist($client);
-        
+
         if ($andFlush) {
             $this->em->flush();
         }
     }
 
-    public function deleteClient(OAuth2ClientInterface $client)
+    public function deleteClient(ClientInterface $client)
     {
         $this->em->remove($client);
         $this->em->flush();
     }
 }
-

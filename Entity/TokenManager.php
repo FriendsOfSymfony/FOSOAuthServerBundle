@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Entity;
 
-use FOS\OAuthServerBundle\Model\OAuth2TokenManager as BaseOAuth2TokenManager;
 use Doctrine\ORM\EntityManager;
-use FOS\OAuthServerBundle\Model\OAuth2TokenInterface;
+use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
+use FOS\OAuthServerBundle\Model\TokenInterface;
 
-class OAuth2TokenManager extends BaseOAuth2TokenManager
+class TokenManager extends BaseTokenManager
 {
     protected $em;
 
@@ -31,7 +40,7 @@ class OAuth2TokenManager extends BaseOAuth2TokenManager
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateToken(OAuth2TokenInterface $token, $andFlush = true)
+    public function updateToken(TokenInterface $token, $andFlush = true)
     {
         $this->em->persist($token);
 
@@ -40,10 +49,9 @@ class OAuth2TokenManager extends BaseOAuth2TokenManager
         }
     }
 
-    public function deleteToken(OAuth2TokenInterface $token)
+    public function deleteToken(TokenInterface $token)
     {
         $this->em->remove($token);
         $this->em->flush();
     }
 }
-

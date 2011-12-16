@@ -4,11 +4,10 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="Alb\OAuth2ServerBundle\Entity\OAuth2AuthCode">
+    <mapped-superclass name="FOS\OAuthServerBundle\Entity\AuthCode">
         <field name="token" column="token" type="string" />
         <field name="redirectUri" column="redirect_uri" type="text" />
         <field name="expiresAt" column="expires_at" type="integer" nullable="true" />
         <field name="scope" column="scope" type="string" nullable="true" />
     </mapped-superclass>
-
 </doctrine-mapping>

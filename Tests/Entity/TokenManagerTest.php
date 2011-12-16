@@ -2,18 +2,20 @@
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use FOS\OAuthServerBundle\Entity\OAuth2TokenManager;
-use FOS\OAuthServerBundle\Entity\OAuth2AccessToken;
+use FOS\OAuthServerBundle\Entity\TokenManager;
+use FOS\OAuthServerBundle\Entity\AccessToken;
 
-class OAuth2TokenManagerTest extends \PHPUnit_Framework_TestCase
+class TokenManagerTest extends \PHPUnit_Framework_TestCase
 {
     protected $em;
+
     protected $repository;
+
     protected $class;
 
     public function setUp()
     {
-        $this->class = 'FOS\OAuthServerBundle\Entity\OAuth2AccessToken';
+        $this->class = 'FOS\OAuthServerBundle\Entity\AccessToken';
         $this->repository = $this->getMock('Doctrine\ORM\EntityRepository', array(), array(), '', false);
         $this->em = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->em->expects($this->once())
@@ -21,12 +23,12 @@ class OAuth2TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->class)
             ->will($this->returnValue($this->repository));
 
-        $this->manager = new OAuth2TokenManager($this->em, $this->class);
+        $this->manager = new TokenManager($this->em, $this->class);
     }
 
     public function testUpdateTokenPersistsAndFlushes()
     {
-        $token = new OAuth2AccessToken;
+        $token = new AccessToken;
 
         $this->em->expects($this->once())
             ->method('persist')
@@ -40,7 +42,7 @@ class OAuth2TokenManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateTokenPersistsAndDoesntFlush()
     {
-        $token = new OAuth2AccessToken;
+        $token = new AccessToken;
 
         $this->em->expects($this->once())
             ->method('persist')
@@ -50,6 +52,4 @@ class OAuth2TokenManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->manager->updateToken($token, false);
     }
-
 }
-

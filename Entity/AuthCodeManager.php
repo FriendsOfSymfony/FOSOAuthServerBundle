@@ -1,13 +1,23 @@
 <?php
 
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Entity;
 
-use FOS\OAuthServerBundle\Entity\OAuth2TokenManager;
-use FOS\OAuthServerBundle\Model\OAuth2AuthCodeManager as BaseOAuth2AuthCodeManager;
-use FOS\OAuthServerBundle\Model\OAuth2AuthCodeInterface;
 use Doctrine\ORM\EntityManager;
 
-class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager
+use FOS\OAuthServerBundle\Entity\TokenManager;
+use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+
+class AuthCodeManager extends BaseAuthCodeManager
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -52,25 +62,23 @@ class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager
     }
 
     /**
-     * @param OAuth2AuthCodeInterface $authCode
+     * @param OAuthAuthCodeInterface $authCode
      * @param bool $andFlush
      */
-    public function updateAuthCode(OAuth2AuthCodeInterface $authCode, $andFlush = true)
+    public function updateAuthCode(AuthCodeInterface $authCode, $andFlush = true)
     {
         $this->em->persist($authCode);
         if ($andFlush) {
             $this->em->flush();
         }
     }
-    
+
     /**
-     * @param OAuth2AuthCodeInterface $authCode
+     * @param OAuthAuthCodeInterface $authCode
      */
-    public function deleteAuthCode(OAuth2AuthCodeInterface $authCode)
+    public function deleteAuthCode(AuthCodeInterface $authCode)
     {
         $this->em->remove($authCode);
         $this->em->flush();
     }
-
 }
-
