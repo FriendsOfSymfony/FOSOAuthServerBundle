@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
-use FOS\OAuthServerBundle\Security\Authentification\Token\OAuth2Token;
+use FOS\OAuthServerBundle\Security\Authentification\Token\OAuthToken;
 
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
@@ -70,7 +70,7 @@ class OAuthListener implements ListenerInterface
             return;
         }
 
-        $token = new OAuth2Token();
+        $token = new OAuthToken();
         $token->setToken($oauthToken);
 
         try {
@@ -78,8 +78,8 @@ class OAuthListener implements ListenerInterface
 
             if ($returnValue instanceof TokenInterface) {
                 return $this->securityContext->setToken($returnValue);
-            } else if ($returnValue instanceof Response) {
-                return $event->setResponse($response);
+            } elseif ($returnValue instanceof Response) {
+                return $event->setResponse($returnValue);
             }
         } catch (AuthenticationException $e) {
             if (null !== $p = $e->getPrevious()) {
