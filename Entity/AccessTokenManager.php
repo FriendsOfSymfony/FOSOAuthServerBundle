@@ -13,6 +13,6 @@ namespace FOS\OAuthServerBundle\Entity;
 
 use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
 
-class OAuthAccessTokenManager extends TokenManager implements AccessTokenManagerInterface
+class AccessTokenManager extends TokenManager implements AccessTokenManagerInterface
 {
 }
