@@ -1,3 +1,4 @@
-Tests/autoload.php
-vendor/bundles/Alb/OAuth2ServerBundle
-vendor/
+/phpunit.xml
+/Tests/autoload.php
+/vendor/*
+!/vendor/vendors.php
