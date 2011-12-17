@@ -13,25 +13,21 @@ namespace FOS\OAuthServerBundle\Controller;
 
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-
 use Symfony\Component\HttpFoundation\Request;
 
 class ServerController
 {
-    protected $request;
-
     protected $serverService;
 
-    public function __construct(Request $request, OAuth2 $serverService)
+    public function __construct(OAuth2 $serverService)
     {
-        $this->request = $request;
         $this->serverService = $serverService;
     }
 
-    public function tokenAction()
+    public function tokenAction(Request $request)
     {
         try {
-            return $this->serverService->grantAccessToken($this->request);
+            return $this->serverService->grantAccessToken($request);
         } catch(OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }

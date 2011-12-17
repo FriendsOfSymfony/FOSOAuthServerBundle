@@ -17,8 +17,7 @@
     </parameters>
 
     <services>
-        <service id="fos.oauth_server.controller.server" class="%fos.oauth_server.controller.server.class%" scope="request">
-            <argument type="service" id="request" />
+        <service id="fos.oauth_server.controller.server" class="%fos.oauth_server.controller.server.class%">
             <argument type="service" id="fos.oauth_server.server_service" />
         </service>
 
