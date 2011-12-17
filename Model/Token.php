@@ -58,9 +58,9 @@ class Token implements TokenInterface
     {
         if ($this->expiresAt) {
             return time() > $this->expiresAt;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     public function setToken($token)

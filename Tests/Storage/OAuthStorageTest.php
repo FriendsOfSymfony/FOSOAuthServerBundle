@@ -304,8 +304,6 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAuthCodeReturnsNullIfNotExists()
     {
-        $code = new AuthCode();
-
         $this->authCodeManager->expects($this->once())
             ->method('findAuthCodeByToken')
             ->with('123_abc')

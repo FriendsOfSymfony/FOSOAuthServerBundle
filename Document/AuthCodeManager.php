@@ -33,7 +33,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * @return string
      */
-    function getClass()
+    public function getClass()
     {
         return $this->class;
     }
@@ -41,16 +41,16 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * @param array $criteria
      */
-    function findAuthCodeBy(array $criteria)
+    public function findAuthCodeBy(array $criteria)
     {
         return $this->repository->findOneBy($criteria);
     }
 
     /**
-     * @param AuthCodeInterface $authCode
+     * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
      * @param boolean $andFlush
      */
-    function updateAuthCode(AuthCodeInterface $authCode, $andFlush = true)
+    public function updateAuthCode(AuthCodeInterface $authCode, $andFlush = true)
     {
         $this->dm->persist($authCode);
 
@@ -59,7 +59,7 @@ class AuthCodeManager extends BaseAuthCodeManager
         }
     }
 
-    function deleteAuthCode(AuthCodeInterface $authCode)
+    public function deleteAuthCode(AuthCodeInterface $authCode)
     {
         $this->dm->remove($authCode);
         $this->dm->flush();

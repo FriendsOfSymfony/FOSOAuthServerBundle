@@ -28,13 +28,13 @@
             <argument type="service" id="fos.oauth_server.access.token.manager" />
             <argument type="service" id="fos.oauth_server.auth.code.manager" />
             <argument>null</argument>
-            <argument type="service" id="security.encoder_factory"></argument> <!-- encoder  -->
+            <argument type="service" id="security.encoder_factory" />
         </service>
 
         <service id="fos.oauth_server.server_service.storage" alias="fos.oauth_server.server_service.storage.default" />
 
         <service id="fos.oauth_server.server_service" class="%fos.oauth_server.server_service.class%">
-            <argument type="service" id="fos.oauth_server.server_service.storage"></argument>
+            <argument type="service" id="fos.oauth_server.server_service.storage" />
             <argument>%fos.oauth_server.server_service.options%</argument>
         </service>
 
@@ -43,7 +43,7 @@
             class="%fos.oauth_server.security.authentication.provider.class%" public="false">
             <argument /> <!-- user provider -->
             <argument type="service" id="fos.oauth_server.server_service" />
-            <argument></argument> <!-- token provider -->
+            <argument /> <!-- token provider -->
         </service>
 
         <service id="fos.oauth_server.security.authentication.listener"

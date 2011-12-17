@@ -60,8 +60,8 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @param OAuthAuthCodeInterface $authCode
-     * @param bool $andFlush
+     * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
+     * @param boolean $andFlush
      */
     public function updateAuthCode(AuthCodeInterface $authCode, $andFlush = true)
     {
@@ -72,7 +72,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @param OAuthAuthCodeInterface $authCode
+     * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
      */
     public function deleteAuthCode(AuthCodeInterface $authCode)
     {

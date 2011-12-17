@@ -18,5 +18,4 @@ use FOS\OAuthServerBundle\Model\AuthCode as BaseAuthCode;
  */
 class AuthCode extends BaseAuthCode
 {
-
 }

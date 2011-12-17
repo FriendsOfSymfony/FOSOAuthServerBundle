@@ -15,11 +15,9 @@ use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
-
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-
 use OAuth2\IOAuth2Storage;
 use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2GrantCode;
@@ -43,12 +41,12 @@ class OAuthStorage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
     protected $authCodeManager;
 
     /**
-     * @var null|\Symfony\Component\Security\Core\User\UserProviderInterface
+     * @var \Symfony\Component\Security\Core\User\UserProviderInterface
      */
     protected $userProvider;
 
     /**
-     * @var null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface
+     * @var \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface
      */
     protected $encoderFactory;
 
