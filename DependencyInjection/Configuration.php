@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('storage_service')->defaultValue('fos.oauth_server.server_service.storage.default')->cannotBeEmpty()->end()
+                ->scalarNode('storage_service')->defaultValue('fos_oauth_server.server_service.storage.default')->cannotBeEmpty()->end()
                 ->scalarNode('user_provider_service')->end()
                 ->scalarNode('oauth_client_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('oauth_access_token_class')->isRequired()->cannotBeEmpty()->end()

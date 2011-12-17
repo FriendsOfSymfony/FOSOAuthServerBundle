@@ -45,19 +45,19 @@ class FOSOAuthServerExtension extends Extension
 
         if ($config['storage_service']) {
             $container
-                ->setAlias('fos.oauth_server.server_service.storage', $config['storage_service']);
+                ->setAlias('fos_oauth_server.server_service.storage', $config['storage_service']);
         }
 
         if (isset($config['user_provider_service'])) {
             $container
-                ->getDefinition('fos.oauth_server.server_service.storage.default')
+                ->getDefinition('fos_oauth_server.server_service.storage.default')
                 ->replaceArgument(3, new Reference($config['user_provider_service']))
                 ;
         }
 
-        $container->setParameter('fos.oauth_server.model.client.class', $config['oauth2_client_class']);
-        $container->setParameter('fos.oauth_server.model.access.token.class', $config['oauth2_access_token_class']);
-        $container->setParameter('fos.oauth_server.model.auth.code.class', $config['oauth2_auth_code_class']);
-        $container->setParameter('fos.oauth_server.server_service.options', $config['oauth2_options']);
+        $container->setParameter('fos_oauth_server.model.client.class', $config['oauth2_client_class']);
+        $container->setParameter('fos_oauth_server.model.access.token.class', $config['oauth2_access_token_class']);
+        $container->setParameter('fos_oauth_server.model.auth.code.class', $config['oauth2_auth_code_class']);
+        $container->setParameter('fos_oauth_server.server_service.options', $config['oauth2_options']);
     }
 }
