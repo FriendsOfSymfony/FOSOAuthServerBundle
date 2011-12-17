@@ -1,6 +1,4 @@
-
-alb_oauth2_server_token:
+fos_oauth_server_token:
     pattern:    /oauth/v2/token
     defaults:
-        _controller: alb.oauth2.server.controller.server:tokenAction
-
+        _controller: fos_oauth_server.controller.server:tokenAction

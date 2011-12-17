@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="FOS\OAuthServerBundle\Entity\Client">
+        <field name="randomId" column="random_id" type="string" />
+        <field name="redirectUris" column="redirect_uris" type="array" />
+        <field name="secret" column="secret" type="string" />
+        <field name="allowedGrantTypes" column="allowed_grant_types" type="array" />
+    </mapped-superclass>
+</doctrine-mapping>

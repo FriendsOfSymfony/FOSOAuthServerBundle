@@ -1,3 +1,3 @@
 security:
     factories:
-        - "%kernel.root_dir%/../vendor/bundles/Alb/OAuth2ServerBundle/Resources/config/security_factories.xml"
+        - "%kernel.root_dir%/../vendor/bundles/FOS/OAuthServerBundle/Resources/config/security_factories.xml"
