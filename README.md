@@ -1,7 +1,7 @@
 FOSOAuthServerBundle
 ====================
 
-![Build Status](https://secure.travis-ci.org/friendsOfSymfony/FOSOAuthServerBundle.png)
+[![Build Status](https://secure.travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle.png)](http://travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle)
 
 ## Installation
 
@@ -10,7 +10,7 @@ Installation is a quick 6 step process:
 1. Download FOSOAuthServerBundle
 2. Configure the Autoloader
 3. Enable the Bundle
-4. Create your User class
+4. Create your model class
 5. Configure your application's security.yml
 6. Configure the FOSOAuthServerBundle
 
@@ -29,7 +29,7 @@ Add the following lines in your `deps` file:
 
 ```
 [FOSOAuthServerBundle]
-    git=git://github.com/friendsOfSymfony/FOSOAuthServerBundle.git
+    git=git://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git
     target=bundles/FOS/OAuthServerBundle
 [oauth2-php]
     git=git://github.com/arnaud-lb/oauth2-php.git
@@ -46,14 +46,14 @@ $ php bin/vendors install
 If you prefer instead to use git submodules, then run the following:
 
 ``` bash
-$ git submodule add git://github.com/friendsOfSymfony/FOSOAuthServerBundle.git vendor/bundles/FOS/OAuthServerBundle
-$ git submodule add git://github.com/friendsOfSymfony/oauth2-php.git vendor/oauth2-php
+$ git submodule add git://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git vendor/bundles/FOS/OAuthServerBundle
+$ git submodule add git://github.com/FriendsOfSymfony/oauth2-php.git vendor/oauth2-php
 $ git submodule update --init
 ```
 
 ### Step 2: Configure the Autoloader
 
-Add the `Alb` and `OAuth2` namespaces to your autoloader:
+Add the `FOS` and `OAuth2` namespaces to your autoloader:
 
 ``` php
 <?php
@@ -61,7 +61,7 @@ Add the `Alb` and `OAuth2` namespaces to your autoloader:
 
 $loader->registerNamespaces(array(
     // ...
-    'Alb'    => __DIR__.'/../vendor/bundles',
+    'FOS'    => __DIR__.'/../vendor/bundles',
     'OAuth2' => __DIR__.'/../vendor/oauth2-php/lib',
 ));
 ```
@@ -78,7 +78,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Alb\OAuth2ServerBundle\FOSOAuthServerBundle(),
+        new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
     );
 }
 ```
@@ -87,9 +87,9 @@ public function registerBundles()
 
 This bundle needs to persist some classes to a database:
 
-- `OAuth2Client` (OAuth2 consumers)
-- `OAuth2AccessToken`
-- `OAuth2AuthCode`
+- `Client` (OAuth2 consumers)
+- `AccessToken`
+- `AuthCode`
 
 Your first job, then, is to create these classes for your application.
 These classes can look and act however you want: add any
@@ -121,17 +121,17 @@ start:
 
 ``` php
 <?php
-// src/Acme/ApiBundle/Entity/OAuth2Client.php
+// src/Acme/ApiBundle/Entity/Client.php
 
 namespace Acme\ApiBundle\Entity;
 
-use Alb\OAuth2Server\Entity\OAuth2Client as BaseOAuth2Client;
+use FOS\OAuthServer\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  */
-class OAuth2Client extends BaseOAuth2Client
+class Client extends BaseClient
 {
     /**
      * @ORM\Id
@@ -151,17 +151,17 @@ class OAuth2Client extends BaseOAuth2Client
 
 ``` php
 <?php
-// src/Acme/ApiBundle/Entity/OAuth2AccessToken.php
+// src/Acme/ApiBundle/Entity/AccessToken.php
 
 namespace Acme\ApiBundle\Entity;
 
-use Alb\OAuth2Server\Entity\OAuth2AccessToken as BaseOAuth2AccessToken;
+use FOS\OAuthServer\Entity\AccessToken as BaseAccessToken;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  */
-class OAuth2AccessToken extends BaseOAuth2AccessToken
+class AccessToken extends BaseAccessToken
 {
     /**
      * @ORM\Id
@@ -171,7 +171,7 @@ class OAuth2AccessToken extends BaseOAuth2AccessToken
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OAuth2Client")
+     * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
      */
     protected $client;
@@ -186,17 +186,17 @@ class OAuth2AccessToken extends BaseOAuth2AccessToken
 
 ``` php
 <?php
-// src/Acme/ApiBundle/Entity/OAuth2AuthCode.php
+// src/Acme/ApiBundle/Entity/AuthCode.php
 
 namespace Acme\ApiBundle\Entity;
 
-use Alb\OAuth2Server\Entity\OAuth2AuthCode as BaseOAuth2AuthCode;
+use FOS\OAuthServer\Entity\AuthCode as BaseAuthCode;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  */
-class OAuth2AuthCode extends BaseOAuth2AuthCode
+class AuthCode extends BaseAuthCode
 {
     /**
      * @ORM\Id
@@ -206,7 +206,7 @@ class OAuth2AuthCode extends BaseOAuth2AuthCode
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OAuth2Client")
+     * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
      */
     protected $client;
@@ -234,7 +234,7 @@ security:
     firewalls:
         api:
             pattern:    ^/api
-            alb_oauth2: true
+            fos_oauth: true
             stateless:  true
 
     access_control:
@@ -250,20 +250,19 @@ Import the routing.yml configuration file in app/config/routing.yml:
 
 ``` yaml
 # app/config/routing.yml
-alb_oauth2:
+fos_oauth:
     resource: "@FOSOAuthServerBundle/Resources/config/routing.yml"
 ```
 
 Add FOSOAuthServerBundle settings in app/config/config.yml:
 
-
 ``` yaml
 # app/config/config.yml
 fos_o_auth_server:
     db_driver:  orm
-    oauth2_client_class:        Acme\ApiBundle\Entity\OAuth2Client
-    oauth2_access_token_class:  Acme\ApiBundle\Entity\OAuth2AccessToken
-    oauth2_auth_code_class:     Acme\ApiBundle\Entity\OAuth2AuthCode
+    oauth_client_class:        Acme\ApiBundle\Entity\Client
+    oauth_access_token_class:  Acme\ApiBundle\Entity\AccessToken
+    oauth_auth_code_class:     Acme\ApiBundle\Entity\AuthCode
 ```
 
 #### Symfony 2.0.x only
