@@ -55,10 +55,10 @@ class FOSOAuthServerExtension extends Extension
                 ;
         }
 
-        $container->setParameter('fos_oauth_server.model.client.class', $config['oauth2_client_class']);
-        $container->setParameter('fos_oauth_server.model.access.token.class', $config['oauth2_access_token_class']);
-        $container->setParameter('fos_oauth_server.model.auth.code.class', $config['oauth2_auth_code_class']);
-        $container->setParameter('fos_oauth_server.server_service.options', $config['oauth2_options']);
+        $container->setParameter('fos_oauth_server.model.client.class', $config['oauth_client_class']);
+        $container->setParameter('fos_oauth_server.model.access.token.class', $config['oauth_access_token_class']);
+        $container->setParameter('fos_oauth_server.model.auth.code.class', $config['oauth_auth_code_class']);
+        $container->setParameter('fos_oauth_server.server_service.options', $config['oauth_options']);
     }
 
     public function getAlias()
