@@ -258,7 +258,7 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 
 ``` yaml
 # app/config/config.yml
-fos_o_auth_server:
+fos_oauth_server:
     db_driver:  orm
     oauth_client_class:        Acme\ApiBundle\Entity\Client
     oauth_access_token_class:  Acme\ApiBundle\Entity\AccessToken

@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fos_o_auth_server');
+        $rootNode = $treeBuilder->root('fos_oauth_server');
 
         $rootNode
             ->children()

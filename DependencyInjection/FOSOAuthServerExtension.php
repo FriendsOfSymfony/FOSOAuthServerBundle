@@ -60,4 +60,9 @@ class FOSOAuthServerExtension extends Extension
         $container->setParameter('fos_oauth_server.model.auth.code.class', $config['oauth2_auth_code_class']);
         $container->setParameter('fos_oauth_server.server_service.options', $config['oauth2_options']);
     }
+
+    public function getAlias()
+    {
+        return 'fos_oauth_server';
+    }
 }
