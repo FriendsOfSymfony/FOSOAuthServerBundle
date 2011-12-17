@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="fos.oauth_server.model.client.manager.class">FOS\OAuthServerBundle\Document\OAuthClientManager</parameter>
-        <parameter key="fos.oauth_server.model.access.token.manager.class">FOS\OAuthServerBundle\Document\OAuthAccessTokenManager</parameter>
+        <parameter key="fos.oauth_server.model.client.manager.class">FOS\OAuthServerBundle\Document\ClientManager</parameter>
+        <parameter key="fos.oauth_server.model.access.token.manager.class">FOS\OAuthServerBundle\Document\AccessTokenManager</parameter>
     </parameters>
 
     <services>

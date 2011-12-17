@@ -2,7 +2,7 @@
 
 namespace FOS\OAuthServerBundle\Model;
 
-abstract class OAuth2AuthCodeManager implements OAuth2AuthCodeManagerInterface
+abstract class AuthCodeManager implements AuthCodeManagerInterface
 {
     public function createAuthCode()
     {

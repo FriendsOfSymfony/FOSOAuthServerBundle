@@ -5,7 +5,7 @@ namespace FOS\OAuthServerBundle\Model;
 use OAuth2\OAuth2;
 use FOS\OAuthServerBundle\Util\Random;
 
-class OAuth2Client implements OAuth2ClientInterface
+class Client implements ClientInterface
 {
     protected $id;
 

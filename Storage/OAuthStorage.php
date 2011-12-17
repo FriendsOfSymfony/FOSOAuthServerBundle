@@ -11,10 +11,10 @@
 
 namespace FOS\OAuthServerBundle\Storage;
 
-use FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface;
-use FOS\OAuthServerBundle\Model\OAuth2AuthCodeManagerInterface;
-use FOS\OAuthServerBundle\Model\OAuth2ClientManagerInterface;
-use FOS\OAuthServerBundle\Model\OAuth2ClientInterface;
+use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+use FOS\OAuthServerBundle\Model\ClientInterface;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -25,20 +25,20 @@ use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2Client;
 
-class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
+class OAuthStorage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
 {
     /**
-     * @var \FOS\OAuthServerBundle\Model\OAuth2ClientManagerInterface
+     * @var \FOS\OAuthServerBundle\Model\ClientManagerInterface
      */
     protected $clientManager;
 
     /**
-     * @var \FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface
+     * @var \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface
      */
     protected $accessTokenManager;
 
     /**
-     * @var \FOS\OAuthServerBundle\Model\OAuth2AuthCodeManagerInterface;
+     * @var \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
      */
     protected $authCodeManager;
 
@@ -53,14 +53,14 @@ class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCod
     protected $encoderFactory;
 
     /**
-     * @param \FOS\OAuthServerBundle\Model\OAuth2ClientManagerInterface $clientManager
-     * @param \FOS\OAuthServerBundle\Model\OAuth2AccessTokenManagerInterface $accessTokenManager
-     * @param \FOS\OAuthServerBundle\Model\OAuth2AuthCodeManagerInterface $authCodeManager
+     * @param \FOS\OAuthServerBundle\Model\ClientManagerInterface $clientManager
+     * @param \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface $accessTokenManager
+     * @param \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface $authCodeManager
      * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface $userProvider
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
-    public function __construct(OAuth2ClientManagerInterface $clientManager, OAuth2AccessTokenManagerInterface $accessTokenManager,
-        OAuth2AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
+    public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
+        AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
@@ -76,7 +76,7 @@ class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCod
 
     public function checkClientCredentials(IOAuth2Client $client, $client_secret = null)
     {
-        if (!$client instanceof OAuth2ClientInterface) {
+        if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException;
         }
 
@@ -90,7 +90,7 @@ class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCod
 
     public function createAccessToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
     {
-        if (!$client instanceof OAuth2ClientInterface) {
+        if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException;
         }
 
@@ -107,7 +107,7 @@ class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCod
 
     public function checkRestrictedGrantType(IOAuth2Client $client, $grant_type)
     {
-        if (!$client instanceof OAuth2ClientInterface) {
+        if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException;
         }
 
@@ -116,7 +116,7 @@ class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCod
 
     public function checkUserCredentials(IOAuth2Client $client, $username, $password)
     {
-        if (!$client instanceof OAuth2ClientInterface) {
+        if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException;
         }
 
@@ -154,7 +154,7 @@ class OAuth2Storage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCod
      */
     public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = NULL)
     {
-        if (!$client instanceof OAuth2ClientInterface) {
+        if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException;
         }
 

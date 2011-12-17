@@ -12,8 +12,6 @@
 namespace FOS\OAuthServerBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
-
-use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 

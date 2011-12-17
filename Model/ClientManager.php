@@ -2,7 +2,7 @@
 
 namespace FOS\OAuthServerBundle\Model;
 
-abstract class OAuth2ClientManager implements OAuth2ClientManagerInterface
+abstract class ClientManager implements ClientManagerInterface
 {
     public function createClient()
     {

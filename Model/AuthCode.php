@@ -8,7 +8,7 @@ namespace FOS\OAuthServerBundle\Model;
 /**
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  */
-class OAuth2AuthCode extends OAuth2Token implements OAuth2AuthCodeInterface
+class AuthCode extends Token implements AuthCodeInterface
 {
     protected $redirectUri;
 

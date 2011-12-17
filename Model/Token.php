@@ -2,7 +2,7 @@
 
 namespace FOS\OAuthServerBundle\Model;
 
-class OAuth2Token implements OAuth2TokenInterface
+class Token implements TokenInterface
 {
     protected $id;
 
@@ -84,7 +84,7 @@ class OAuth2Token implements OAuth2TokenInterface
         return $this->data;
     }
 
-    public function setClient(OAuth2ClientInterface $client)
+    public function setClient(ClientInterface $client)
     {
         $this->client = $client;
     }

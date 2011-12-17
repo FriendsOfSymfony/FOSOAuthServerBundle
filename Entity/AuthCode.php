@@ -11,8 +11,8 @@
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use FOS\OAuthServerBundle\Model\OAuthAuthCode as BaseOAuthAuthCode;
+use FOS\OAuthServerBundle\Model\AuthCode as BaseAuthCode;
 
-class OAuthAuthCode extends BaseOAuthAuthCode
+class AuthCode extends BaseAuthCode
 {
 }

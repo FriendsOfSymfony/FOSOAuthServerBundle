@@ -2,11 +2,11 @@
 
 namespace FOS\OAuthServerBundle\Document;
 
-use FOS\OAuthServerBundle\Model\OAuth2TokenManager as BaseOAuth2TokenManager;
+use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use FOS\OAuthServerBundle\Model\OAuth2TokenInterface;
+use FOS\OAuthServerBundle\Model\ClientInterface;
 
-class OAuth2TokenManager extends BaseOAuth2TokenManager
+class ClientManager extends BaseClientManager
 {
     protected $dm;
 
@@ -26,23 +26,23 @@ class OAuth2TokenManager extends BaseOAuth2TokenManager
         return $this->class;
     }
 
-    public function findTokenBy(array $criteria)
+    public function findClientBy(array $criteria)
     {
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateToken(OAuth2TokenInterface $token, $andFlush = true)
+    public function updateClient(ClientInterface $client, $andFlush = true)
     {
-        $this->dm->persist($token);
+        $this->dm->persist($client);
 
         if ($andFlush) {
             $this->dm->flush();
         }
     }
 
-    public function deleteToken(OAuth2TokenInterface $token)
+    public function deleteClient(ClientInterface $client)
     {
-        $this->dm->remove($token);
+        $this->dm->remove($client);
         $this->dm->flush();
     }
 }

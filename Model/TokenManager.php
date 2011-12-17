@@ -2,9 +2,7 @@
 
 namespace FOS\OAuthServerBundle\Model;
 
-use Doctrine\ORM\EntityManager;
-
-abstract class OAuth2TokenManager implements OAuth2TokenManagerInterface
+abstract class TokenManager implements TokenManagerInterface
 {
     public function createToken()
     {

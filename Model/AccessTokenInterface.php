@@ -13,6 +13,6 @@ namespace FOS\OAuthServerBundle\Model;
 
 use OAuth2\Model\IOAuth2AccessToken;
 
-interface OAuthAccessTokenInterface extends OAuthTokenInterface, IOAuth2AccessToken
+interface AccessTokenInterface extends TokenInterface, IOAuth2AccessToken
 {
 }

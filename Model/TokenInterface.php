@@ -3,10 +3,8 @@
 namespace FOS\OAuthServerBundle\Model;
 
 use OAuth2\Model\IOAuth2Token;
-use FOS\OAuthServerBundle\Model\OAuth2ClientInterface;
-use FOS\OAuthServerBundle\Model\OAuth2TokenInterface;
 
-interface OAuth2TokenInterface extends IOAuth2Token
+interface TokenInterface extends IOAuth2Token
 {
     function getId();
 
@@ -20,7 +18,7 @@ interface OAuth2TokenInterface extends IOAuth2Token
 
     function setData($data);
 
-    function setClient(OAuth2ClientInterface $client);
+    function setClient(ClientInterface $client);
 
     function getClient();
 }

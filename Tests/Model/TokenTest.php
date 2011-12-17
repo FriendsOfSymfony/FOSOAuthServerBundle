@@ -2,16 +2,16 @@
 
 namespace FOS\OAuthServerBundle\Tests\Model;
 
-use FOS\OAuthServerBundle\Model\OAuth2Token;
+use FOS\OAuthServerBundle\Model\Token;
 
-class OAuth2TokenTest extends \PHPUnit_Framework_TestCase
+class TokenTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getTestHasExpiredData
      */
     public function testHasExpired($expiresAt, $expect)
     {
-        $token = new OAuth2Token;
+        $token = new Token;
         $token->setExpiresAt($expiresAt);
 
         $this->assertSame($expect, $token->hasExpired());

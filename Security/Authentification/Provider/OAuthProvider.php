@@ -17,8 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-use FOS\OAuthServerBundle\Model\Provider\OAuth2TokenProviderInterface;
-use FOS\OAuthServerBundle\Security\Authentification\Token\OAuth2Token;
+use FOS\OAuthServerBundle\Security\Authentification\Token\OAuthToken;
 
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
@@ -83,6 +82,6 @@ class OAuthProvider implements AuthenticationProviderInterface
      */
     public function supports(TokenInterface $token)
     {
-        return ($token instanceof OAuth2Token);
+        return ($token instanceof OAuthToken);
     }
 }

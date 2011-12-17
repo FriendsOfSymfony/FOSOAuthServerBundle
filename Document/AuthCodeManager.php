@@ -2,11 +2,11 @@
 
 namespace FOS\OAuthServerBundle\Document;
 
-use FOS\OAuthServerBundle\Model\OAuth2AuthCodeManager as BaseOAuth2AuthCodeManager;
-use FOS\OAuthServerBundle\Model\OAuth2AuthCodeInterface;
+use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager
+class AuthCodeManager extends BaseAuthCodeManager
 {
     protected $dm;
 
@@ -34,14 +34,14 @@ class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager
      */
     function findAuthCodeBy(array $criteria)
     {
-        return $this->dm->findOneBy($criteria);
+        return $this->repository->findOneBy($criteria);
     }
 
     /**
-     * @param OAuth2AuthCodeInterface $authCode
-     * @param bool $andFlush
+     * @param AuthCodeInterface $authCode
+     * @param boolean $andFlush
      */
-    function updateAuthCode(OAuth2AuthCodeInterface $authCode, $andFlush = true)
+    function updateAuthCode(AuthCodeInterface $authCode, $andFlush = true)
     {
         $this->dm->persist($authCode);
 
@@ -50,7 +50,7 @@ class OAuth2AuthCodeManager extends BaseOAuth2AuthCodeManager
         }
     }
 
-    function deleteAuthCode(OAuth2AuthCodeInterface $authCode)
+    function deleteAuthCode(AuthCodeInterface $authCode)
     {
         $this->dm->remove($authCode);
         $this->dm->flush();

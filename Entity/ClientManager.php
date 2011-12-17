@@ -11,7 +11,7 @@
 
 namespace FOS\OAuthServerBundle\Entity;
 
-se Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager;
 use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 

@@ -11,7 +11,7 @@
 
 namespace FOS\OAuthServerBundle;
 
-use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuth2Factory;
+use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -24,7 +24,7 @@ class FOSOAuthServerBundle extends Bundle
 
         $extension = $container->getExtension('security');
         if (method_exists($extension, 'addSecurityListenerFactory')) {
-            $extension->addSecurityListenerFactory(new OAuth2Factory);
+            $extension->addSecurityListenerFactory(new OAuthFactory);
         }
     }
 }

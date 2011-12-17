@@ -4,7 +4,7 @@ namespace FOS\OAuthServerBundle\Model;
 
 use OAuth2\Model\IOAuth2Client;
 
-interface OAuth2ClientInterface extends IOAuth2Client
+interface ClientInterface extends IOAuth2Client
 {
     function getId();
 
