@@ -9,8 +9,10 @@
  * file that was distributed with this source code.
  */
 
-if (file_exists($file = __DIR__.'/autoload.php')) {
-    require_once $file;
-} elseif (file_exists($file = __DIR__.'/autoload.php.dist')) {
-    require_once $file;
+namespace FOS\OAuthServerBundle\Model;
+
+use OAuth2\Model\IOAuth2AccessToken;
+
+interface AccessTokenInterface extends TokenInterface, IOAuth2AccessToken
+{
 }

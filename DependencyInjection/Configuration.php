@@ -1,10 +1,19 @@
 <?php
 
-namespace Alb\OAuth2ServerBundle\DependencyInjection;
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
+namespace FOS\OAuthServerBundle\DependencyInjection;
+
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -19,17 +28,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('alb_o_auth2_server');
+        $rootNode = $treeBuilder->root('fos_oauth_server');
 
         $rootNode
             ->children()
                 ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('storage_service')->defaultValue('alb.oauth2.server.server_service.storage.default')->cannotBeEmpty()->end()
+                ->scalarNode('storage_service')->defaultValue('fos_oauth_server.server_service.storage.default')->cannotBeEmpty()->end()
                 ->scalarNode('user_provider_service')->end()
-                ->scalarNode('oauth2_client_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('oauth2_access_token_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('oauth2_auth_code_class')->isRequired()->cannotBeEmpty()->end()
-                ->arrayNode('oauth2_options')
+                ->scalarNode('oauth_client_class')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('oauth_access_token_class')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('oauth_auth_code_class')->isRequired()->cannotBeEmpty()->end()
+                ->arrayNode('oauth_options')
                     ->useAttributeAsKey('key')
                     ->treatNullLike(array())
                     ->prototype('scalar')->end()
