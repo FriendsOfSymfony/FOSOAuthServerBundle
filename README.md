@@ -302,6 +302,7 @@ if ($form->isValid()) {
 - Add model classes for OAuth2RefreshToken
 - Add methods for refresh_token authorization types in the default storage adapter
 - Add a default controler for the /authorize endpoint
+- Add MongoDB implementation (See [issue #7](/FriendsOfSymfony/FOSOAuthServerBundle/issues/7))
 
 ## Credits
 
