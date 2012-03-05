@@ -125,7 +125,7 @@ start:
 
 namespace Acme\ApiBundle\Entity;
 
-use FOS\OAuthServer\Entity\Client as BaseClient;
+use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -155,7 +155,7 @@ class Client extends BaseClient
 
 namespace Acme\ApiBundle\Entity;
 
-use FOS\OAuthServer\Entity\AccessToken as BaseAccessToken;
+use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -190,7 +190,7 @@ class AccessToken extends BaseAccessToken
 
 namespace Acme\ApiBundle\Entity;
 
-use FOS\OAuthServer\Entity\AuthCode as BaseAuthCode;
+use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
