@@ -12,18 +12,19 @@
 namespace FOS\OAuthServerBundle\Storage;
 
 use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use OAuth2\IOAuth2Storage;
+use OAuth2\IOAuth2RefreshTokens;
 use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2Client;
 
-class OAuthStorage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
+class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode
 {
     /**
      * @var \FOS\OAuthServerBundle\Model\ClientManagerInterface
@@ -34,6 +35,11 @@ class OAuthStorage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
      * @var \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface
      */
     protected $accessTokenManager;
+
+    /**
+     * @var \FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface
+     */
+    protected $refreshTokenManager;
 
     /**
      * @var \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
@@ -53,15 +59,17 @@ class OAuthStorage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
     /**
      * @param \FOS\OAuthServerBundle\Model\ClientManagerInterface $clientManager
      * @param \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface $accessTokenManager
+     * @param \FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface $refreshTokenManager
      * @param \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface $authCodeManager
      * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface $userProvider
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
-        AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
+                RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
+        $this->refreshTokenManager = $refreshTokenManager;
         $this->authCodeManager = $authCodeManager;
         $this->userProvider = $userProvider;
         $this->encoderFactory = $encoderFactory;
@@ -166,5 +174,45 @@ class OAuthStorage implements IOAuth2Storage, IOAuth2GrantUser, IOAuth2GrantCode
         $this->authCodeManager->updateAuthCode($authCode);
 
         return $authCode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRefreshToken($tokenString)
+    {
+        return $this->refreshTokenManager->findTokenByToken($tokenString);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createRefreshToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = NULL)
+    {
+        if (!$client instanceof ClientInterface) {
+            throw new \InvalidArgumentException;
+        }
+
+        $token = $this->refreshTokenManager->createToken();
+        $token->setToken($tokenString);
+        $token->setClient($client);
+        $token->setData($data);
+        $token->setExpiresAt($expires);
+        $token->setScope($scope);
+        $this->refreshTokenManager->updateToken($token);
+
+        return $token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unsetRefreshToken($tokenString)
+    {
+        $token = $this->refreshTokenManager->findTokenByToken($tokenString);
+
+        if (null !== $token) {
+            $this->refreshTokenManager->deleteToken($token);
+        }
     }
 }
