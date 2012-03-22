@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('user_provider_service')->end()
                 ->scalarNode('oauth_client_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('oauth_access_token_class')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('oauth_refresh_token_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('oauth_auth_code_class')->isRequired()->cannotBeEmpty()->end()
                 ->arrayNode('oauth_options')
                     ->useAttributeAsKey('key')
