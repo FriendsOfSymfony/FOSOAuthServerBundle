@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="fos_oauth_server.model.client.manager.class">FOS\OAuthServerBundle\Document\ClientManager</parameter>
         <parameter key="fos_oauth_server.model.access.token.manager.class">FOS\OAuthServerBundle\Document\AccessTokenManager</parameter>
+        <parameter key="fos_oauth_server.model.auth.code.manager.class">FOS\OAuthServerBundle\Document\AuthCodeManager</parameter>
     </parameters>
 
     <services>
@@ -18,6 +19,11 @@
         <service id="fos_oauth_server.access.token.manager.default" class="%fos_oauth_server.model.access.token.manager.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%fos_oauth_server.model.access.token.class%</argument>
+        </service>
+
+        <service id="fos_oauth_server.auth.code.manager.default" class="%fos_oauth_server.model.auth.code.manager.class%">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument>%fos_oauth_server.model.auth.code.class%</argument>
         </service>
     </services>
 </container>
