@@ -26,5 +26,7 @@ interface TokenManagerInterface
     function updateToken(TokenInterface $token);
 
     function deleteToken(TokenInterface $token);
+
+    function deleteExpired();
 }
 

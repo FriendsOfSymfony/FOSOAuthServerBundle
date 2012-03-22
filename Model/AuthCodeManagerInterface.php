@@ -47,4 +47,6 @@ interface AuthCodeManagerInterface
      * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
      */
     function deleteAuthCode(AuthCodeInterface $authCode);
+
+    function deleteExpired();
 }
