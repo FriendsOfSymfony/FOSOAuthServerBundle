@@ -24,6 +24,7 @@
         <service id="fos_oauth_server.server_service.storage.default" class="%fos_oauth_server.server_service.storage.class%" public="false">
             <argument type="service" id="fos_oauth_server.client.manager" />
             <argument type="service" id="fos_oauth_server.access.token.manager" />
+            <argument type="service" id="fos_oauth_server.refresh.token.manager" />
             <argument type="service" id="fos_oauth_server.auth.code.manager" />
             <argument>null</argument>
             <argument type="service" id="security.encoder_factory" />
@@ -57,6 +58,7 @@
         <!-- Model -->
         <service id="fos_oauth_server.client.manager" alias="fos_oauth_server.client.manager.default" />
         <service id="fos_oauth_server.access.token.manager" alias="fos_oauth_server.access.token.manager.default" />
+        <service id="fos_oauth_server.refresh.token.manager" alias="fos_oauth_server.refresh.token.manager.default" />
         <service id="fos_oauth_server.auth.code.manager" alias="fos_oauth_server.auth.code.manager.default" />
     </services>
 </container>

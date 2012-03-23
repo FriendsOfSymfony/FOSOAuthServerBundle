@@ -12,6 +12,7 @@
 namespace FOS\OAuth2ServiceBundle\Tests\Storage;
 
 use FOS\OAuthServerBundle\Model\AccessToken;
+use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Model\AuthCode;
 use FOS\OAuthServerBundle\Model\Client;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
@@ -21,6 +22,8 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
     protected $clientManager;
 
     protected $accessTokenManager;
+
+    protected $refreshTokenManager;
 
     protected $authCodeManager;
 
@@ -34,11 +37,12 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
     {
         $this->clientManager = $this->getMock('FOS\OAuthServerBundle\Model\ClientManagerInterface');
         $this->accessTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\AccessTokenManagerInterface');
+        $this->refreshTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface');
         $this->authCodeManager = $this->getMock('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface');
         $this->userProvider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $this->encoderFactory = $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface');
 
-        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
+        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
     }
 
     public function testGetClientReturnsClientWithGivenId()
@@ -138,6 +142,63 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $client = new Client;
 
         $token = $this->storage->createAccessToken('foo', $client, 42, 1, 'foo bar');
+
+        $this->assertEquals($token, $savedToken);
+
+        $this->assertSame('foo', $token->getToken());
+        $this->assertSame($client, $token->getClient());
+        $this->assertSame(42, $token->getData());
+        $this->assertSame(1, $token->getExpiresAt());
+        $this->assertSame('foo bar', $token->getScope());
+    }
+
+    public function testGetRefreshTokenReturnsRefreshTokenWithGivenId()
+    {
+        $token = new RefreshToken;
+
+        $this->refreshTokenManager->expects($this->once())
+            ->method('findTokenByToken')
+            ->with('123_abc')
+            ->will($this->returnValue($token));
+
+        $this->assertSame($token, $this->storage->getRefreshToken('123_abc'));
+    }
+
+    public function testGetRefreshTokenReturnsNullIfNotExists()
+    {
+        $this->refreshTokenManager->expects($this->once())
+            ->method('findTokenByToken')
+            ->with('123_abc')
+            ->will($this->returnValue(null));
+
+        $this->assertNull($this->storage->getRefreshToken('123_abc'));
+    }
+
+    public function testCreateRefreshTokenThrowsOnInvalidClientClass()
+    {
+        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+
+        $this->setExpectedException('InvalidArgumentException');
+        $this->storage->createRefreshToken('foo', $client, 42, 1, 'foo bar');
+    }
+
+    public function testCreateRefreshToken()
+    {
+        $savedToken = null;
+
+        $this->refreshTokenManager->expects($this->once())
+            ->method('createToken')
+            ->with()
+            ->will($this->returnValue(new RefreshToken));
+        $this->refreshTokenManager->expects($this->once())
+            ->method('updateToken')
+            ->will($this->returnCallback(function($token) use (&$savedToken) {
+                $savedToken = $token;
+            }));
+
+        $client = new Client;
+
+        $token = $this->storage->createRefreshToken('foo', $client, 42, 1, 'foo bar');
 
         $this->assertEquals($token, $savedToken);
 

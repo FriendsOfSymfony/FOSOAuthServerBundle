@@ -89,6 +89,7 @@ This bundle needs to persist some classes to a database:
 
 - `Client` (OAuth2 consumers)
 - `AccessToken`
+- `RefreshToken`
 - `AuthCode`
 
 Your first job, then, is to create these classes for your application.
@@ -148,7 +149,6 @@ class Client extends BaseClient
 }
 ```
 
-
 ``` php
 <?php
 // src/Acme/ApiBundle/Entity/AccessToken.php
@@ -176,11 +176,36 @@ class AccessToken extends BaseAccessToken
      */
     protected $client;
 
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
+}
+```
+
+``` php
+<?php
+// src/Acme/ApiBundle/Entity/AccessToken.php
+
+namespace Acme\ApiBundle\Entity;
+
+use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ */
+class RefreshToken extends BaseRefreshToken
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $client;
+
 }
 ```
 
@@ -211,11 +236,6 @@ class AuthCode extends BaseAuthCode
      */
     protected $client;
 
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
 }
 ```
 
@@ -262,6 +282,7 @@ fos_oauth_server:
     db_driver:  orm
     oauth_client_class:        Acme\ApiBundle\Entity\Client
     oauth_access_token_class:  Acme\ApiBundle\Entity\AccessToken
+    oauth_refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
     oauth_auth_code_class:     Acme\ApiBundle\Entity\AuthCode
 ```
 
@@ -299,8 +320,6 @@ if ($form->isValid()) {
 ## TODO
 
 - More tests
-- Add model classes for OAuth2RefreshToken
-- Add methods for refresh_token authorization types in the default storage adapter
 - Add a default controler for the /authorize endpoint
 
 ## Credits

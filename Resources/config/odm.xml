@@ -25,5 +25,10 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument>%fos_oauth_server.model.auth.code.class%</argument>
         </service>
+
+        <service id="fos_oauth_server.refresh.token.manager.default" class="%fos_oauth_server.model.refresh.token.manager.class%">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument>%fos_oauth_server.model.refresh.token.class%</argument>
+        </service>
     </services>
 </container>
