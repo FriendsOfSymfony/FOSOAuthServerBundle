@@ -54,4 +54,18 @@ class TokenManager extends BaseTokenManager
         $this->dm->remove($token);
         $this->dm->flush();
     }
+
+    /**
+     * @return boolean
+     */
+    public function deleteExpired()
+    {
+        return $this
+            ->repository
+            ->createQueryBuilder()
+            ->findAndRemove()
+            ->field('expiresAt')->lt(time())
+            ->getQuery()
+            ->execute();
+    }
 }
