@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="fos_oauth_server.security.authentication.provider" class="FOS\OAuthServerBundle\Security\Authentification\Provider\OAuthProvider" public="false">
+            <argument /> <!-- user provider -->
+            <argument type="service" id="fos_oauth_server.server" />
+            <argument /> <!-- token provider -->
+        </service>
+
+        <service id="fos_oauth_server.security.authentication.listener" class="FOS\OAuthServerBundle\Security\Firewall\OAuthListener" public="false">
+            <argument type="service" id="security.context"/>
+            <argument type="service" id="security.authentication.manager" />
+            <argument type="service" id="fos_oauth_server.server" />
+        </service>
+
+        <service id="fos_oauth_server.security.entry_point" class="FOS\OAuthServerBundle\Security\EntryPoint\OAuthEntryPoint" public="false">
+            <argument type="service" id="fos_oauth_server.server" />
+        </service>
+    </services>
+</container>

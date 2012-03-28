@@ -1,0 +1,14 @@
+
+<form action="{{ path('fos_oauth_server_authorize') }}" method="POST" class="fos_oauth_server_authorize" {{ form_enctype(form) }}>
+
+    <input type="submit" name="accepted" value="{{ 'authorize.accept'|trans({}, 'FOSOAuthServerBundle') }}" />
+    <input type="submit" name="rejected" value="{{ 'authorize.reject'|trans({}, 'FOSOAuthServerBundle') }}" />
+
+    {{ form_widget(form.client_id) }}
+    {{ form_widget(form.response_type) }}
+    {{ form_widget(form.redirect_uri) }}
+    {{ form_widget(form.state) }}
+    {{ form_widget(form.scope) }}
+    {{ form_rest(form) }}
+
+</form>
