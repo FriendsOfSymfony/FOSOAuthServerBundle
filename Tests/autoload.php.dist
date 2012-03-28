@@ -20,9 +20,11 @@ $loader->registerNamespaces(array(
     'OAuth2'                 => $vendorDir.'/oauth2-php/lib',
     'Doctrine\\Common'       => $vendorDir.'/doctrine-common/lib',
     'Doctrine\\DBAL'         => $vendorDir.'/doctrine-dbal/lib',
-    'Doctrine\\ORM'          => $vendorDir.'/doctrine/lib',
     'Doctrine\\ODM\\MongoDB' => $vendorDir.'/doctrine-mongodb-odm/lib',
     'Doctrine\\MongoDB'      => $vendorDir.'/doctrine-mongodb/lib',
+    'Doctrine\\ODM\\CouchDB' => $vendorDir.'/doctrine-couchdb/lib',
+    'Doctrine\\CouchDB'      => $vendorDir.'/doctrine-couchdb/lib',
+    'Doctrine'               => $vendorDir.'/doctrine/lib',
 ));
 $loader->register();
 
