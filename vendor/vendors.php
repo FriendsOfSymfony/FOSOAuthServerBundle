@@ -18,13 +18,13 @@ if (isset($argv[1])) {
 
 $vendorDir = __DIR__;
 $deps = array(
-    array('symfony', 'http://github.com/symfony/symfony.git', isset($_SERVER['SYMFONY_VERSION']) ? $_SERVER['SYMFONY_VERSION'] : 'origin/master'),
-    array('doctrine-common', 'http://github.com/doctrine/common.git', 'origin/master'),
-    array('doctrine-dbal', 'http://github.com/doctrine/dbal.git', 'origin/master'),
-    array('doctrine', 'http://github.com/doctrine/doctrine2.git', 'origin/master'),
-    array('doctrine-mongodb-odm', 'http://github.com/doctrine/mongodb-odm.git', 'origin/master'),
-    array('doctrine-mongodb', 'http://github.com/doctrine/mongodb.git', 'origin/master'),
-    array('oauth2-php', 'https://github.com/arnaud-lb/oauth2-php', 'origin/master'),
+    array('symfony', 'git://github.com/symfony/symfony.git', isset($_SERVER['SYMFONY_VERSION']) ? $_SERVER['SYMFONY_VERSION'] : 'origin/master'),
+    array('doctrine-common', 'git://github.com/doctrine/common.git', 'origin/master'),
+    array('doctrine-dbal', 'git://github.com/doctrine/dbal.git', 'origin/master'),
+    array('doctrine', 'git://github.com/doctrine/doctrine2.git', 'origin/master'),
+    array('doctrine-mongodb-odm', 'git://github.com/doctrine/mongodb-odm.git', 'origin/master'),
+    array('doctrine-mongodb', 'git://git.com/doctrine/mongodb.git', 'origin/master'),
+    array('oauth2-php', 'git://github.com/arnaud-lb/oauth2-php', 'origin/master'),
 );
 
 foreach ($deps as $dep) {
