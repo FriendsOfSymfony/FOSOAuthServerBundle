@@ -187,14 +187,14 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function createRefreshToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = NULL)
+    public function createRefreshToken($refresh_token, IOAuth2Client $client, $data, $expires, $scope = NULL)
     {
         if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException;
         }
 
         $token = $this->refreshTokenManager->createToken();
-        $token->setToken($tokenString);
+        $token->setToken($refresh_token);
         $token->setClient($client);
         $token->setData($data);
         $token->setExpiresAt($expires);
