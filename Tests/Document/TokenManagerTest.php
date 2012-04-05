@@ -11,9 +11,15 @@
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
+use FOS\OAuthServerBundle\Document\TokenManager;
+use FOS\OAuthServerBundle\Document\AccessToken;
+
 class TokenManagerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $tokenManager;
+    protected $class;
+    protected $dm;
+    protected $repository;
+    protected $manager;
 
     public function setUp()
     {
@@ -21,19 +27,55 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 
-        $this->tokenManager = $this->getManagerMock();
+        $this->class = 'FOS\OAuthServerBundle\Document\AccessToken';
+        $this->repository = $this->getMock('Doctrine\ODM\MongoDB\DocumentRepository', array(), array(), '', false);
+        $this->dm = $this->getMock('Doctrine\ODM\MongoDB\DocumentManager', array(), array(), '', false);
+        $this->dm->expects($this->once())
+            ->method('getRepository')
+            ->with($this->class)
+            ->will($this->returnValue($this->repository));
+
+        $this->manager = new TokenManager($this->dm, $this->class);
     }
 
-    protected function tearDown()
+    public function testFindTokenByToken()
     {
-        unset($this->tokenManager);
-    }
-
-    protected function getManagerMock()
-    {
-        return $this->getMockBuilder('FOS\OAuthServerBundle\Document\TokenManager')
+        $manager = $this->getMockBuilder('FOS\OAuthServerBundle\Document\TokenManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('findTokenBy', 'updateToken', 'deleteToken', 'deleteExpired'))
+            ->setMethods(array('findTokenBy'))
             ->getMock();
+
+        $manager->expects($this->once())
+            ->method('findTokenBy')
+            ->with($this->equalTo(array('token' => '1234')));
+
+        $manager->findTokenByToken('1234');
+    }
+
+    public function testUpdateTokenPersistsAndFlushes()
+    {
+        $token = new AccessToken();
+
+        $this->dm->expects($this->once())
+            ->method('persist')
+            ->with($token);
+        $this->dm->expects($this->once())
+            ->method('flush')
+            ->with();
+
+        $this->manager->updateToken($token);
+    }
+
+    public function testUpdateTokenPersistsAndDoesntFlush()
+    {
+        $token = new AccessToken();
+
+        $this->dm->expects($this->once())
+            ->method('persist')
+            ->with($token);
+        $this->dm->expects($this->never())
+            ->method('flush');
+
+        $this->manager->updateToken($token, false);
     }
 }
