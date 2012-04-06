@@ -64,4 +64,18 @@ class AuthCodeManager extends BaseAuthCodeManager
         $this->dm->remove($authCode);
         $this->dm->flush();
     }
+
+    /**
+     * @return boolean
+     */
+    public function deleteExpired()
+    {
+        return $this
+            ->repository
+            ->createQueryBuilder()
+            ->findAndRemove()
+            ->field('expiresAt')->lt(time())
+            ->getQuery()
+            ->execute();
+    }
 }
