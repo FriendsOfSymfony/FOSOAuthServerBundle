@@ -32,7 +32,7 @@ Add the following lines in your `deps` file:
     git=git://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git
     target=bundles/FOS/OAuthServerBundle
 [oauth2-php]
-    git=git://github.com/arnaud-lb/oauth2-php.git
+    git=git://github.com/FriendsOfSymfony/oauth2-php.git
 ```
 
 Now, run the vendors script to download the bundle:
