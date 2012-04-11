@@ -5,24 +5,24 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="fos_oauth_server.client.manager.default" class="FOS\OAuthServerBundle\Entity\ClientManager">
+        <service id="fos_oauth_server.client_manager.default" class="FOS\OAuthServerBundle\Entity\ClientManager">
             <argument type="service" id="fos_oauth_server.entity_manager" />
             <argument>%fos_oauth_server.model.client.class%</argument>
         </service>
 
-        <service id="fos_oauth_server.access.token.manager.default" class="FOS\OAuthServerBundle\Entity\AccessTokenManager">
+        <service id="fos_oauth_server.access_token_manager.default" class="FOS\OAuthServerBundle\Entity\AccessTokenManager">
             <argument type="service" id="fos_oauth_server.entity_manager" />
-            <argument>%fos_oauth_server.model.access.token.class%</argument>
+            <argument>%fos_oauth_server.model.access_token.class%</argument>
         </service>
 
-        <service id="fos_oauth_server.refresh.token.manager.default" class="FOS\OAuthServerBundle\Entity\RefreshTokenManager">
+        <service id="fos_oauth_server.refresh_token_manager.default" class="FOS\OAuthServerBundle\Entity\RefreshTokenManager">
             <argument type="service" id="fos_oauth_server.entity_manager" />
-            <argument>%fos_oauth_server.model.refresh.token.class%</argument>
+            <argument>%fos_oauth_server.model.refresh_token.class%</argument>
         </service>
 
-        <service id="fos_oauth_server.auth.code.manager.default" class="FOS\OAuthServerBundle\Entity\AuthCodeManager">
+        <service id="fos_oauth_server.auth_code_manager.default" class="FOS\OAuthServerBundle\Entity\AuthCodeManager">
             <argument type="service" id="fos_oauth_server.entity_manager" />
-            <argument>%fos_oauth_server.model.auth.code.class%</argument>
+            <argument>%fos_oauth_server.model.auth_code.class%</argument>
         </service>
 
         <service id="fos_oauth_server.entity_manager" factory-service="doctrine" factory-method="getEntityManager" class="Doctrine\ORM\EntityManager" public="false">
