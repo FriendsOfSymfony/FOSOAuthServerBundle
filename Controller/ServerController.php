@@ -15,7 +15,7 @@ use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Request;
 
-class ServerController
+abstract class ServerController
 {
     protected $serverService;
 
@@ -32,5 +32,7 @@ class ServerController
             return $e->getHttpResponse();
         }
     }
+
+    public abstract function authorizeAction(Request $request);
 }
 
