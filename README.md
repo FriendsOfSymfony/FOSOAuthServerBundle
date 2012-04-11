@@ -271,7 +271,8 @@ Import the routing.yml configuration file in app/config/routing.yml:
 ``` yaml
 # app/config/routing.yml
 fos_oauth:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing.yml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 ```
 
 Add FOSOAuthServerBundle settings in app/config/config.yml:
@@ -280,10 +281,10 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 # app/config/config.yml
 fos_oauth_server:
     db_driver:  orm
-    oauth_client_class:        Acme\ApiBundle\Entity\Client
-    oauth_access_token_class:  Acme\ApiBundle\Entity\AccessToken
-    oauth_refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
-    oauth_auth_code_class:     Acme\ApiBundle\Entity\AuthCode
+    client_class:        Acme\ApiBundle\Entity\Client
+    access_token_class:  Acme\ApiBundle\Entity\AccessToken
+    refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
+    auth_code_class:     Acme\ApiBundle\Entity\AuthCode
 ```
 
 #### Symfony 2.0.x only
@@ -294,36 +295,22 @@ Import the security.yml configuration file in app/config/config.yml:
 # app/config/config.yml
 imports:
     # Symfony 2.0.x only
-    - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" }
+    - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" } // do not work with security.xml, so I kept old file
 ```
 
 ## Usage
 
-The `token` endpoint is at `/oauth/v2/token` by default (see Resources/config/routing.yml).
+The `token` endpoint is at `/oauth/v2/token` by default (see Resources/config/routing/token.xml).
 
-An `authorize` endpoint can be implemented with the `finishClientAuthorization` method on
-the `fos.oauth_server.server_service` service:
-
-``` php
-<?php
-
-if ($form->isValid()) {
-    try {
-        $response = $service->finishClientAuthorization(true, $currentUser, $request, $scope);
-        return $response;
-    } catch(\OAuth2\OAuth2ServerException $e) {
-        return $e->getHttpResponse();
-    }
-}
-```
+The `authorize` endpoint is at `/oauth/v2/auth` by default (see Resources/config/security.xml).
 
 ## TODO
 
 - More tests
-- Add a default controler for the /authorize endpoint
 
 ## Credits
 
 - Arnaud Le Blanc
+- Leek
 - Inspirated by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
 - Installation doc adapted from [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle) doc.
