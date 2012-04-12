@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuthServerBundle\Security\Authentification\Provider;
+namespace FOS\OAuthServerBundle\Security\Authentication\Provider;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use FOS\OAuthServerBundle\Security\Authentification\Token\OAuthToken;
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 
@@ -69,10 +69,10 @@ class OAuthProvider implements AuthenticationProviderInterface
                 return $token;
             }
         } catch (OAuth2ServerException $e) {
-            throw new AuthenticationException('OAuth2 authentification failed', null, 0, $e);
+            throw new AuthenticationException('OAuth2 authentication failed', null, 0, $e);
         }
 
-        throw new AuthenticationException('OAuth2 authentification failed');
+        throw new AuthenticationException('OAuth2 authentication failed');
     }
 
     /**

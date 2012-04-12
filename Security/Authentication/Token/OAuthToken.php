@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuthServerBundle\Security\Authentification\Token;
+namespace FOS\OAuthServerBundle\Security\Authentication\Token;
 
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
