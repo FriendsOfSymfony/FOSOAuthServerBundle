@@ -1,0 +1,3 @@
+security:
+    factories:
+        - "%kernel.root_dir%/../vendor/bundles/FOS/OAuthServerBundle/Resources/config/security_factories.xml"

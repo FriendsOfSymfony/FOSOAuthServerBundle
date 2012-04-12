@@ -295,14 +295,14 @@ Import the security.yml configuration file in app/config/config.yml:
 # app/config/config.yml
 imports:
     # Symfony 2.0.x only
-    - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" } // do not work with security.xml, so I kept old file
+    - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" }
 ```
 
 ## Usage
 
 The `token` endpoint is at `/oauth/v2/token` by default (see Resources/config/routing/token.xml).
 
-The `authorize` endpoint is at `/oauth/v2/auth` by default (see Resources/config/security.xml).
+The `authorize` endpoint is at `/oauth/v2/auth` by default (see Resources/config/routing/authorize.xml).
 
 ## TODO
 
