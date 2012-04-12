@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuthServerBundle\Tests\Security\Authentification\Provider;
+namespace FOS\OAuthServerBundle\Tests\Security\Authentication\Provider;
 
-use FOS\OAuthServerBundle\Security\Authentification\Provider\OAuthProvider;
-use FOS\OAuthServerBundle\Security\Authentification\Token\OAuthToken;
+use FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider;
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use FOS\OAuthServerBundle\Model\AccessToken;
 
 class OAuthProviderTest extends \PHPUnit_Framework_TestCase
