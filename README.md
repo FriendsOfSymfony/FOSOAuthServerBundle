@@ -14,6 +14,7 @@ Installation is a quick 6 step process:
 5. Configure your application's security.yml
 6. Configure the FOSOAuthServerBundle
 
+
 ### Step 1: Download FOSOAuthServerBundle and oauth2-php
 
 Ultimately, the FOSOAuthServerBundle files should be downloaded to the
@@ -32,7 +33,7 @@ Add the following lines in your `deps` file:
     git=git://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git
     target=bundles/FOS/OAuthServerBundle
 [oauth2-php]
-    git=git://github.com/arnaud-lb/oauth2-php.git
+    git=git://github.com/FriendsOfSymfony/oauth2-php.git
 ```
 
 Now, run the vendors script to download the bundle:
@@ -51,6 +52,7 @@ $ git submodule add git://github.com/FriendsOfSymfony/oauth2-php.git vendor/oaut
 $ git submodule update --init
 ```
 
+
 ### Step 2: Configure the Autoloader
 
 Add the `FOS` and `OAuth2` namespaces to your autoloader:
@@ -65,6 +67,7 @@ $loader->registerNamespaces(array(
     'OAuth2' => __DIR__.'/../vendor/oauth2-php/lib',
 ));
 ```
+
 
 ### Step 3: Enable the bundle
 
@@ -82,6 +85,7 @@ public function registerBundles()
     );
 }
 ```
+
 
 ### Step 4: Create model classes
 
@@ -239,6 +243,38 @@ class AuthCode extends BaseAuthCode
 }
 ```
 
+**b) Propel classes**
+
+A `schema.xml` is provided with this bundle to generate Propel classes. You have to
+install the [TypehintableBehavior](https://github.com/willdurand/TypehintableBehavior) before
+to build your model.
+
+By using Git submodules:
+
+    $ git submodule add http://github.com/willdurand/TypehintableBehavior.git vendor/propel-behaviors/TypehintableBehavior
+
+By using the Symfony2 vendor management:
+
+```ini
+[TypehintableBehavior]
+    git=http://github.com/willdurand/TypehintableBehavior.git
+    target=/propel-behaviors/TypehintableBehavior
+```
+
+Then, register it:
+
+```ini
+# app/config/propel.ini
+propel.behavior.typehintable.class = vendor.propel-behaviors.TypehintableBehavior.src.TypehintableBehavior
+```
+
+You now can run the following command to create the model:
+
+    $ php app/console propel:model:build
+
+> To create SQL, run the command propel:build-sql and insert it or use migration commands if you have an existing schema in your database.
+
+
 ### Step 5: Configure your application's security.yml
 
 In order for Symfony's security component to use the FOSOAuthServerBundle, you must
@@ -252,17 +288,26 @@ in your application:
 # app/config/security.yml
 security:
     firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            # Add your favorite authentication process here
+
         api:
             pattern:    ^/api
-            fos_oauth: true
+            fos_oauth:  true
             stateless:  true
 
     access_control:
         # You can omit this if /api can be accessed both authenticated and anonymously
-        - { path: ^/api, roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
 ```
 
 The URLs under `/api` will use OAuth2 to authenticate users.
+
 
 ### Step 6: Configure FOSOAuthServerBundle
 
@@ -270,8 +315,10 @@ Import the routing.yml configuration file in app/config/routing.yml:
 
 ``` yaml
 # app/config/routing.yml
-fos_oauth_server:
+fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 ```
 
@@ -280,12 +327,25 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 ``` yaml
 # app/config/config.yml
 fos_oauth_server:
-    db_driver:  orm
+    db_driver:  orm     # Driver availables: orm, mongodb, or propel
     client_class:        Acme\ApiBundle\Entity\Client
     access_token_class:  Acme\ApiBundle\Entity\AccessToken
     refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
     auth_code_class:     Acme\ApiBundle\Entity\AuthCode
 ```
+
+With Propel for example, you can use the default classes:
+
+``` yaml
+# app/config/config.yml
+fos_oauth_server:
+    db_driver: propel
+    client_class:        FOS\OAuthServerBundle\Propel\Client
+    access_token_class:  FOS\OAuthServerBundle\Propel\AccessToken
+    refresh_token_class: FOS\OAuthServerBundle\Propel\RefreshToken
+    auth_code_class:     FOS\OAuthServerBundle\Propel\AuthCode
+```
+
 
 #### Symfony 2.0.x only
 
@@ -298,19 +358,23 @@ imports:
     - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" }
 ```
 
+
 ## Usage
 
 The `token` endpoint is at `/oauth/v2/token` by default (see Resources/config/routing/token.xml).
 
 The `authorize` endpoint is at `/oauth/v2/auth` by default (see Resources/config/routing/authorize.xml).
 
+
 ## TODO
 
 - More tests
+
 
 ## Credits
 
 - Arnaud Le Blanc
 - Leek
+- William Durand
 - Inspirated by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
 - Installation doc adapted from [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle) doc.
