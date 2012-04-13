@@ -42,7 +42,8 @@ class AuthCodeManager extends BaseAuthCodeManager
         $queryClass = $this->class . 'Query';
 
         return $queryClass::create()
-            ->findOneBy($criteria);
+            ->filterByToken($criteria['token'])
+            ->findOne();
     }
 
     /**
@@ -50,7 +51,7 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     public function updateAuthCode(AuthCodeInterface $authCode)
     {
-        $AuthCode->save();
+        $authCode->save();
     }
 
     /**
@@ -58,7 +59,7 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     public function deleteAuthCode(AuthCodeInterface $authCode)
     {
-        $AuthCode->delete();
+        $authCode->delete();
     }
 
     function deleteExpired()

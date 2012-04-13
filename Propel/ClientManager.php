@@ -33,7 +33,9 @@ class ClientManager extends BaseClientManager
         $queryClass = $this->class . 'Query';
 
         return $queryClass::create()
-            ->findOneBy($criteria);
+            ->filterById($criteria['id'])
+            ->filterByRandomId($criteria['randomId'])
+            ->findOne();
     }
 
     public function updateClient(ClientInterface $client)

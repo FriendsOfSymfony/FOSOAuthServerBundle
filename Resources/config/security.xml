@@ -8,7 +8,6 @@
         <service id="fos_oauth_server.security.authentication.provider" class="FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider" public="false">
             <argument /> <!-- user provider -->
             <argument type="service" id="fos_oauth_server.server" />
-            <argument /> <!-- token provider -->
         </service>
 
         <service id="fos_oauth_server.security.authentication.listener" class="FOS\OAuthServerBundle\Security\Firewall\OAuthListener" public="false">

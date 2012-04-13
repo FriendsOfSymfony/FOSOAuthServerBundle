@@ -2,7 +2,9 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-class RefreshToken extends Token
+use FOS\OAuthServerBundle\Model\TokenInterface;
+
+class RefreshToken extends Token implements TokenInterface
 {
     /**
      * Constructs a new RefreshToken class, setting the class_key column to TokenPeer::CLASSKEY_3.

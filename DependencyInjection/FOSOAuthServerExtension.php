@@ -72,12 +72,6 @@ class FOSOAuthServerExtension extends Extension
         if (!empty($config['authorize'])) {
             $this->loadAuthorize($config['authorize'], $container, $loader);
         }
-
-        //        $container->setParameter('fos_oauth_server.model.client.class', $config['oauth_client_class']);
-        //        $container->setParameter('fos_oauth_server.model.access.token.class', $config['oauth_access_token_class']);
-        //        $container->setParameter('fos_oauth_server.model.refresh.token.class', $config['oauth_refresh_token_class']);
-        //        $container->setParameter('fos_oauth_server.model.auth.code.class', $config['oauth_auth_code_class']);
-        //        $container->setParameter('fos_oauth_server.server_service.options', $config['oauth_options']);
     }
 
     private function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)

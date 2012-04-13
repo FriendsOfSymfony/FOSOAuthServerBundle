@@ -25,12 +25,12 @@ abstract class ClientManager implements ClientManagerInterface
             return null;
         }
 
-        $id = substr($publicId, 0, $pos);
+        $id       = substr($publicId, 0, $pos);
         $randomId = substr($publicId, $pos+1);
 
         return $this->findClientBy(array(
-            'id' => $id,
-            'randomId' => $randomId,
+            'id'        => $id,
+            'randomId'  => $randomId,
         ));
     }
 }

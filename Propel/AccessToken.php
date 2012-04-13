@@ -2,7 +2,9 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-class AccessToken extends Token
+use FOS\OAuthServerBundle\Model\TokenInterface;
+
+class AccessToken extends Token implements TokenInterface
 {
     /**
 	 * Constructs a new AccessToken class, setting the class_key column to TokenPeer::CLASSKEY_2.

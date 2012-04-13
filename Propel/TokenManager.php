@@ -33,7 +33,8 @@ class TokenManager extends BaseTokenManager
         $queryClass = $this->class . 'Query';
 
         return $queryClass::create()
-            ->findOneBy($criteria);
+            ->filterByToken($criteria['token'])
+            ->findOne();
     }
 
     public function updateToken(TokenInterface $token)
