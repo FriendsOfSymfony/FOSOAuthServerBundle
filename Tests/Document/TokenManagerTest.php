@@ -65,17 +65,4 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->manager->updateToken($token);
     }
-
-    public function testUpdateTokenPersistsAndDoesntFlush()
-    {
-        $token = new AccessToken();
-
-        $this->dm->expects($this->once())
-            ->method('persist')
-            ->with($token);
-        $this->dm->expects($this->never())
-            ->method('flush');
-
-        $this->manager->updateToken($token, false);
-    }
 }
