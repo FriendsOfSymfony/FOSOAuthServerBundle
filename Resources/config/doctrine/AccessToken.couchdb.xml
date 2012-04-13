@@ -6,5 +6,5 @@
         <field name="expiresAt" fieldName="expiresAt" type="int" nullable="true" />
         <field name="scope" fieldName="scope" type="string" nullable="true" />
     </mapped-superclass>
-    
+
 </doctrine-mapping>

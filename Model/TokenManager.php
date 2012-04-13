@@ -16,6 +16,7 @@ abstract class TokenManager implements TokenManagerInterface
     public function createToken()
     {
         $class = $this->getClass();
+
         return new $class;
     }
 

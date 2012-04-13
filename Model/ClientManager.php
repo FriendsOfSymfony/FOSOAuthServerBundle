@@ -16,6 +16,7 @@ abstract class ClientManager implements ClientManagerInterface
     public function createClient()
     {
         $class = $this->getClass();
+
         return new $class;
     }
 

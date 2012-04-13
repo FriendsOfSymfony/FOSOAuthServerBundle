@@ -50,6 +50,7 @@ class AuthorizeFormHandler
             $this->form->bindRequest($this->request);
             if ($this->form->isValid()) {
                 $this->onSuccess();
+
                 return true;
             }
         }

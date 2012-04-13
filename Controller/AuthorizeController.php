@@ -46,6 +46,7 @@ class AuthorizeController extends ContainerAware
         if ($process) {
             try {
                 $response = $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, null);
+
                 return $response;
             } catch (OAuth2ServerException $e) {
                 return $e->getHttpResponse();
