@@ -50,7 +50,8 @@ class TokenManager extends BaseTokenManager
     function deleteExpired()
     {
         $queryClass = $this->class . 'Query';
-        $queryClass::create()
+
+        return $queryClass::create()
             ->filterByExpiresAt(time(), \Criteria::LESS_THAN)
             ->delete();
     }
