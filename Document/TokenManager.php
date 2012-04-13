@@ -40,13 +40,10 @@ class TokenManager extends BaseTokenManager
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateToken(TokenInterface $token, $andFlush = true)
+    public function updateToken(TokenInterface $token)
     {
         $this->dm->persist($token);
-
-        if ($andFlush) {
-            $this->dm->flush();
-        }
+        $this->dm->flush();
     }
 
     public function deleteToken(TokenInterface $token)

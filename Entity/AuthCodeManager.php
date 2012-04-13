@@ -61,14 +61,11 @@ class AuthCodeManager extends BaseAuthCodeManager
 
     /**
      * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
-     * @param boolean $andFlush
      */
-    public function updateAuthCode(AuthCodeInterface $authCode, $andFlush = true)
+    public function updateAuthCode(AuthCodeInterface $authCode)
     {
         $this->em->persist($authCode);
-        if ($andFlush) {
-            $this->em->flush();
-        }
+        $this->em->flush();
     }
 
     /**

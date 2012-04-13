@@ -40,13 +40,10 @@ class ClientManager extends BaseClientManager
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateClient(ClientInterface $client, $andFlush = true)
+    public function updateClient(ClientInterface $client)
     {
         $this->dm->persist($client);
-
-        if ($andFlush) {
-            $this->dm->flush();
-        }
+        $this->dm->flush();
     }
 
     public function deleteClient(ClientInterface $client)
