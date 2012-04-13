@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" namespace="FOS\OAuthServerBundle\Propel" defaultIdMethod="native">
+    <table name="client" phpName="Client" description="">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="random_id" type="varchar" required="true" />
+        <column name="redirect_uris" type="array" required="true" />
+        <column name="secret" type="varchar" required="true" />
+        <column name="allowed_grant_types" type="array" required="true" />
+    </table>
+
+    <table name="token" phpName="Token" abstract="true" description="">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="token" type="varchar" required="true" />
+        <column name="expires_at" type="integer" required="false" />
+        <column name="scope" type="varchar" required="false" />
+
+        <column name="class_key" type="INTEGER" inheritance="single">
+            <inheritance key="1" class="Token" />
+            <inheritance key="2" class="AccessToken" extends="Token" />
+            <inheritance key="3" class="RefreshToken" extends="Token" />
+        </column>
+    </table>
+
+    <table name="auth_code" phpName="AuthCode" description="">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="token" type="varchar" required="true" />
+        <column name="redirect_uri" type="varchar" required="true" />
+        <column name="expires_at" type="integer" required="false" />
+        <column name="scope" type="varchar" required="false" />
+    </table>
+</database>

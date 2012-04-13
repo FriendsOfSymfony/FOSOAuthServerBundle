@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="fos_oauth_server.client_manager.default" class="FOS\OAuthServerBundle\Propel\ClientManager">
+            <argument>%fos_oauth_server.model.client.class%</argument>
+        </service>
+
+        <service id="fos_oauth_server.access_token_manager.default" class="FOS\OAuthServerBundle\Propel\AccessTokenManager">
+            <argument>%fos_oauth_server.model.access_token.class%</argument>
+        </service>
+
+        <service id="fos_oauth_server.refresh_token_manager.default" class="FOS\OAuthServerBundle\Propel\RefreshTokenManager">
+            <argument>%fos_oauth_server.model.refresh_token.class%</argument>
+        </service>
+
+        <service id="fos_oauth_server.auth_code_manager.default" class="FOS\OAuthServerBundle\Propel\AuthCodeManager">
+            <argument>%fos_oauth_server.model.auth_code.class%</argument>
+        </service>
+    </services>
+
+</container>

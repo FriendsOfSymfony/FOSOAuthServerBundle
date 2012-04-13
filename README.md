@@ -270,7 +270,7 @@ Import the routing.yml configuration file in app/config/routing.yml:
 
 ``` yaml
 # app/config/routing.yml
-fos_oauth:
+fos_oauth_server:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 ```

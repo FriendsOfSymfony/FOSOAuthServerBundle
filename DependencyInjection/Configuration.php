@@ -30,7 +30,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('fos_oauth_server');
 
-        $supportedDrivers = array('orm', 'mongodb');
+        $supportedDrivers = array('orm', 'mongodb', 'propel');
 
         $rootNode
             ->children()

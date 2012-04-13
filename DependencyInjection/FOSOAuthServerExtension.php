@@ -41,17 +41,12 @@ class FOSOAuthServerExtension extends Extension
         }
 
         $container->setAlias('fos_oauth_server.storage', $config['service']['storage']);
-//        $container->setAlias('fos_oauth_server.user_provider', $config['service']['user_provider']);
         $container->setAlias('fos_oauth_server.client_manager', $config['service']['client_manager']);
         $container->setAlias('fos_oauth_server.access_token_manager', $config['service']['access_token_manager']);
         $container->setAlias('fos_oauth_server.refresh_token_manager', $config['service']['refresh_token_manager']);
         $container->setAlias('fos_oauth_server.auth_code_manager', $config['service']['auth_code_manager']);
 
         $container->setParameter('fos_oauth_server.server.options', $config['service']['options']);
-
-//        if (isset($config['user_provider_service'])) {
-//            $container->getDefinition('fos_oauth_server.server_service.storage.default')->replaceArgument(4, new Reference($config['user_provider_service']));
-//        }
 
         $this->remapParametersNamespaces($config, $container, array(
             '' => array(
@@ -78,11 +73,11 @@ class FOSOAuthServerExtension extends Extension
             $this->loadAuthorize($config['authorize'], $container, $loader);
         }
 
-//        $container->setParameter('fos_oauth_server.model.client.class', $config['oauth_client_class']);
-//        $container->setParameter('fos_oauth_server.model.access.token.class', $config['oauth_access_token_class']);
-//        $container->setParameter('fos_oauth_server.model.refresh.token.class', $config['oauth_refresh_token_class']);
-//        $container->setParameter('fos_oauth_server.model.auth.code.class', $config['oauth_auth_code_class']);
-//        $container->setParameter('fos_oauth_server.server_service.options', $config['oauth_options']);
+        //        $container->setParameter('fos_oauth_server.model.client.class', $config['oauth_client_class']);
+        //        $container->setParameter('fos_oauth_server.model.access.token.class', $config['oauth_access_token_class']);
+        //        $container->setParameter('fos_oauth_server.model.refresh.token.class', $config['oauth_refresh_token_class']);
+        //        $container->setParameter('fos_oauth_server.model.auth.code.class', $config['oauth_auth_code_class']);
+        //        $container->setParameter('fos_oauth_server.server_service.options', $config['oauth_options']);
     }
 
     private function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)
@@ -117,6 +112,7 @@ class FOSOAuthServerExtension extends Extension
             } else {
                 $namespaceConfig = $config;
             }
+
             if (is_array($map)) {
                 $this->remapParameters($namespaceConfig, $container, $map);
             } else {
