@@ -25,14 +25,14 @@ class CleanCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('fos:oauth:clean')
+            ->setName('fos:oauth-server:clean')
             ->setDescription('Clean expired tokens')
             ->setHelp(<<<EOT
-The <info>fos:oauth:clean</info> command will remove expired oauth2 tokens
+The <info>%command.name%</info> command will remove expired oauth2 tokens
 
-  <info>php app/console fos:oauth:clean</info>
+  <info>php %command.full_name%</info>
 EOT
-            );
+        );
     }
 
     /**
@@ -41,9 +41,9 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $services = array(
-            'fos_oauth_server.access.token.manager'     => 'Access token',
-            'fos_oauth_server.refresh.token.manager'    => 'Refresh token',
-            'fos_oauth_server.auth.code.manager'        => 'Auth code',
+            'fos_oauth_server.access_token_manager'     => 'Access token',
+            'fos_oauth_server.refresh_token_manager'    => 'Refresh token',
+            'fos_oauth_server.auth_code_manager'        => 'Auth code',
         );
 
         foreach ($services as $service => $name) {
@@ -55,5 +55,4 @@ EOT
             }
         }
     }
-
 }
