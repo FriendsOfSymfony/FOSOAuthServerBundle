@@ -22,7 +22,8 @@
     },
     "suggest": {
         "symfony/doctrine-bundle": "*",
-        "symfony/mongodb-odm-bundle": "*"
+        "symfony/mongodb-odm-bundle": "*",
+        "willdurand/propel-typehintable-behavior": "*"
     },
     "autoload": {
         "psr-0": { "FOS\\OAuthServerBundle": "" }
