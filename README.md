@@ -246,9 +246,8 @@ class AuthCode extends BaseAuthCode
 
 **b) Propel classes**
 
-A `schema.xml` is provided with this bundle to generate Propel classes. You have to
-install the [TypehintableBehavior](https://github.com/willdurand/TypehintableBehavior) before
-to build your model.
+A `schema.xml` is provided with this bundle to generate Propel classes.
+You have to install the [TypehintableBehavior](https://github.com/willdurand/TypehintableBehavior) before to build your model.
 
 By using Git submodules:
 
@@ -273,7 +272,7 @@ You now can run the following command to create the model:
 
     $ php app/console propel:model:build
 
-> To create SQL, run the command propel:build-sql and insert it or use migration commands if you have an existing schema in your database.
+> To create SQL, run the command propel:sql:build and insert it or use migration commands if you have an existing schema in your database.
 
 
 ### Step 5: Configure your application's security.yml
@@ -328,7 +327,7 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 ``` yaml
 # app/config/config.yml
 fos_oauth_server:
-    db_driver:  orm     # Driver availables: orm, mongodb, or propel
+    db_driver: orm       # Driver availables: orm, mongodb, or propel
     client_class:        Acme\ApiBundle\Entity\Client
     access_token_class:  Acme\ApiBundle\Entity\AccessToken
     refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
