@@ -65,7 +65,8 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
-                RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
+        RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
+        UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
@@ -132,16 +133,14 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
             return false;
         }
 
-        if (!$user) {
-            return false;
-        }
+        if (null !== $user) {
+            $encoder = $this->encoderFactory->getEncoder($user);
 
-        $encoder = $this->encoderFactory->getEncoder($user);
-
-        if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
-            return array(
-                'data' => $user,
-            );
+            if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
+                return array(
+                    'data' => $user,
+                );
+            }
         }
 
         return false;

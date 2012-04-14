@@ -30,22 +30,34 @@ class ClientManager extends BaseClientManager
         $this->class = $class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findClientBy(array $criteria)
     {
         return $this->repository->findOneBy($criteria);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function updateClient(ClientInterface $client)
     {
         $this->dm->persist($client);
         $this->dm->flush();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteClient(ClientInterface $client)
     {
         $this->dm->remove($client);
