@@ -28,9 +28,9 @@ class FOSOAuthServerBundle extends Bundle
     {
         parent::build($container);
 
-        $extension = $container->getExtension('security');
-        if (version_compare(Kernel::VERSION, '2.1.0-DEV', '>=')) {
-            $extension->addSecurityListenerFactory(new OAuthFactory);
+        if (version_compare(Kernel::VERSION, '2.1', '>=')) {
+            $extension = $container->getExtension('security');
+            $extension->addSecurityListenerFactory(new OAuthFactory());
         }
     }
 }
