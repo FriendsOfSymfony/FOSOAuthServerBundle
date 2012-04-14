@@ -31,7 +31,7 @@ class AuthorizeFormType extends AbstractType
     /**
      * @return array
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         return array(
             'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize'
