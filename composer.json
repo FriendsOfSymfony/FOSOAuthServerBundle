@@ -23,6 +23,7 @@
     "suggest": {
         "symfony/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
+        "propel/propel1": "*",
         "willdurand/propel-typehintable-behavior": "*"
     },
     "autoload": {
