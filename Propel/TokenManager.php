@@ -16,18 +16,30 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
 
 class TokenManager extends BaseTokenManager
 {
+    /**
+     * @var string
+     */
     protected $class;
 
+    /**
+     * @param string $class A class name.
+     */
     public function __construct($class)
     {
         $this->class = $class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findTokenBy(array $criteria)
     {
         $queryClass = $this->class . 'Query';
@@ -37,17 +49,26 @@ class TokenManager extends BaseTokenManager
             ->findOne();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function updateToken(TokenInterface $token)
     {
         $token->save();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteToken(TokenInterface $token)
     {
-        $token->remove();
+        $token->delete();
     }
 
-    function deleteExpired()
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteExpired()
     {
         $queryClass = $this->class . 'Query';
 

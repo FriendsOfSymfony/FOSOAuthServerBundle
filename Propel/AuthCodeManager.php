@@ -16,6 +16,9 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 
 class AuthCodeManager extends BaseAuthCodeManager
 {
+    /**
+     * @var string
+     */
     protected $class;
 
     /**
@@ -27,7 +30,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getClass()
     {
@@ -35,7 +38,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @param array $criteria
+     * {@inheritdoc}
      */
     public function findAuthCodeBy(array $criteria)
     {
@@ -47,7 +50,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
+     * {@inheritdoc}
      */
     public function updateAuthCode(AuthCodeInterface $authCode)
     {
@@ -55,14 +58,17 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
+     * {@inheritdoc}
      */
     public function deleteAuthCode(AuthCodeInterface $authCode)
     {
         $authCode->delete();
     }
 
-    function deleteExpired()
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteExpired()
     {
         $queryClass = $this->class . 'Query';
 

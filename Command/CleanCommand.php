@@ -20,7 +20,7 @@ use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 class CleanCommand extends ContainerAwareCommand
 {
     /**
-     * @see Command
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -28,7 +28,7 @@ class CleanCommand extends ContainerAwareCommand
             ->setName('fos:oauth-server:clean')
             ->setDescription('Clean expired tokens')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> command will remove expired oauth2 tokens
+The <info>%command.name%</info> command will remove expired OAuth2 tokens.
 
   <info>php %command.full_name%</info>
 EOT
@@ -36,7 +36,7 @@ EOT
     }
 
     /**
-     * @see Command
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -49,9 +49,9 @@ EOT
         foreach ($services as $service => $name) {
             /** @var $instance TokenManagerInterface */
             $instance = $this->getContainer()->get($service);
-            if ($instance instanceof TokenManagerInterface or $instance instanceof AuthCodeManagerInterface) {
+            if ($instance instanceof TokenManagerInterface || $instance instanceof AuthCodeManagerInterface) {
                 $result = $instance->deleteExpired();
-                $output->writeln(sprintf('Removed %d items from %s storage.', $result, $name));
+                $output->writeln(sprintf('Removed <info>%d</info> items from <comment>%s</comment> storage.', $result, $name));
             }
         }
     }
