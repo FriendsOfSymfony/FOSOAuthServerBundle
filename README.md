@@ -32,6 +32,7 @@ Add the following lines in your `deps` file:
 [FOSOAuthServerBundle]
     git=git://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git
     target=bundles/FOS/OAuthServerBundle
+    version=1.1.0
 [oauth2-php]
     git=git://github.com/FriendsOfSymfony/oauth2-php.git
 ```
