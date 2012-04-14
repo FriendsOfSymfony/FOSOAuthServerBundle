@@ -189,7 +189,7 @@ class AccessToken extends BaseAccessToken
 
 ``` php
 <?php
-// src/Acme/ApiBundle/Entity/AccessToken.php
+// src/Acme/ApiBundle/Entity/RefreshToken.php
 
 namespace Acme\ApiBundle\Entity;
 
