@@ -25,16 +25,13 @@ class FOSOAuthServerExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor = new Processor();
+        $processor     = new Processor();
         $configuration = new Configuration($container->get('kernel.debug'));
 
         $config = $processor->processConfiguration($configuration, $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
-        if ('custom' !== $config['db_driver']) {
-            $loader->load(sprintf('%s.xml', $config['db_driver']));
-        }
+        $loader->load(sprintf('%s.xml', $config['db_driver']));
 
         foreach (array('oauth', 'security') as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
@@ -50,22 +47,26 @@ class FOSOAuthServerExtension extends Extension
 
         $this->remapParametersNamespaces($config, $container, array(
             '' => array(
-                'model_manager_name' => 'fos_oauth_server.model_manager_name',
-                'client_class' => 'fos_oauth_server.model.client.class',
-                'access_token_class' => 'fos_oauth_server.model.access_token.class',
-                'refresh_token_class' => 'fos_oauth_server.model.refresh_token.class',
-                'auth_code_class' => 'fos_oauth_server.model.auth_code.class',
+                'model_manager_name'    => 'fos_oauth_server.model_manager_name',
+                'client_class'          => 'fos_oauth_server.model.client.class',
+                'access_token_class'    => 'fos_oauth_server.model.access_token.class',
+                'refresh_token_class'   => 'fos_oauth_server.model.refresh_token.class',
+                'auth_code_class'       => 'fos_oauth_server.model.auth_code.class',
             ),
             'template' => 'fos_oauth_server.template.%s',
         ));
 
         // Handle the MongoDB document manager name in a specific way as it does not have a registry to make it easy
-        // TODO: change it if https://github.com/symfony/DoctrineMongoDBBundle/pull/31 is merged
+        // TODO: change it when bumping the requirement to Symfony 2.1
         if ('mongodb' === $config['db_driver']) {
             if (null === $config['model_manager_name']) {
                 $container->setAlias('fos_oauth_server.document_manager', new Alias('doctrine.odm.mongodb.document_manager', false));
             } else {
-                $container->setAlias('fos_oauth_server.document_manager', new Alias(sprintf('doctrine.odm.%s_mongodb.document_manager', $config['model_manager_name']), false));
+                $container->setAlias('fos_oauth_server.document_manager', new Alias(
+                    sprintf('doctrine.odm.%s_mongodb.document_manager',
+                    $config['model_manager_name']),
+                    false
+                ));
             }
         }
 
@@ -74,16 +75,12 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
-    private function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
     {
-        $loader->load('authorize.xml');
-
-        $container->setAlias('fos_oauth_server.authorize.form.handler', $config['form']['handler']);
-        unset($config['form']['handler']);
-
-        $this->remapParametersNamespaces($config, $container, array(
-            'form' => 'fos_oauth_server.authorize.form.%s',
-        ));
+        return 'fos_oauth_server';
     }
 
     protected function remapParameters(array $config, ContainerBuilder $container, array $map)
@@ -117,8 +114,15 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
-    public function getAlias()
+    protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        return 'fos_oauth_server';
+        $loader->load('authorize.xml');
+
+        $container->setAlias('fos_oauth_server.authorize.form.handler', $config['form']['handler']);
+        unset($config['form']['handler']);
+
+        $this->remapParametersNamespaces($config, $container, array(
+            'form' => 'fos_oauth_server.authorize.form.%s',
+        ));
     }
 }

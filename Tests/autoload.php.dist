@@ -24,7 +24,7 @@ $loader->registerNamespaces(array(
     'Doctrine\\MongoDB'      => $vendorDir.'/doctrine-mongodb/lib',
     'Doctrine\\ODM\\CouchDB' => $vendorDir.'/doctrine-couchdb/lib',
     'Doctrine\\CouchDB'      => $vendorDir.'/doctrine-couchdb/lib',
-    'Doctrine'               => $vendorDir.'/doctrine/lib',
+    'Doctrine\\ORM'          => $vendorDir.'/doctrine/lib',
 ));
 $loader->register();
 

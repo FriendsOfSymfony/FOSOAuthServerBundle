@@ -373,8 +373,6 @@ The `authorize` endpoint is at `/oauth/v2/auth` by default (see Resources/config
 
 ## Credits
 
-- Arnaud Le Blanc
-- Leek
-- William Durand
+- Arnaud Le Blanc, and [all contributors](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/contributors)
 - Inspirated by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
 - Installation doc adapted from [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle) doc.

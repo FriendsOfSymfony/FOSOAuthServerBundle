@@ -23,12 +23,11 @@ class Client extends BaseClient implements ClientInterface
     {
         parent::__construct();
 
-        $this->redirectUris = array();
-        $this->allowedGrantTypes = array(
+        $this->setAllowedGrantTypes(array(
             OAuth2::GRANT_TYPE_AUTH_CODE,
-        );
-        $this->randomId = Random::generateToken();
-        $this->secret   = Random::generateToken();
+        ));
+        $this->setRandomId(Random::generateToken());
+        $this->setSecret(Random::generateToken());
     }
 
     /**
@@ -36,7 +35,7 @@ class Client extends BaseClient implements ClientInterface
      */
     public function checkSecret($secret)
     {
-        return $this->secret === NULL || $secret === $this->secret;
+        return (null === $this->secret || $secret === $this->secret);
     }
 
     /**
@@ -44,6 +43,6 @@ class Client extends BaseClient implements ClientInterface
      */
     public function getPublicId()
     {
-        return "{$this->getId()}_{$this->getRandomId()}";
+        return sprintf('%s_%s', $this->getId(), $this->getRandomId());
     }
 }
