@@ -65,7 +65,8 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
-                RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager, UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
+        RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
+        UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
@@ -83,7 +84,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function checkClientCredentials(IOAuth2Client $client, $client_secret = null)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException;
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         return $client->checkSecret($client_secret);
@@ -97,7 +98,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function createAccessToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException;
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         $token = $this->accessTokenManager->createToken();
@@ -114,7 +115,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function checkRestrictedGrantType(IOAuth2Client $client, $grant_type)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException;
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         return in_array($grant_type, $client->getAllowedGrantTypes(), true);
@@ -123,7 +124,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function checkUserCredentials(IOAuth2Client $client, $username, $password)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException;
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         try {
@@ -132,16 +133,14 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
             return false;
         }
 
-        if (!$user) {
-            return false;
-        }
+        if (null !== $user) {
+            $encoder = $this->encoderFactory->getEncoder($user);
 
-        $encoder = $this->encoderFactory->getEncoder($user);
-
-        if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
-            return array(
-                'data' => $user,
-            );
+            if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
+                return array(
+                    'data' => $user,
+                );
+            }
         }
 
         return false;
@@ -161,7 +160,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = NULL)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException;
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         $authCode = $this->authCodeManager->createAuthCode();
@@ -190,7 +189,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function createRefreshToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = NULL)
     {
         if (!$client instanceof ClientInterface) {
-            throw new \InvalidArgumentException;
+            throw new \InvalidArgumentException('Client has to implement the ClientInterface');
         }
 
         $token = $this->refreshTokenManager->createToken();

@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit bootstrap="./Tests/bootstrap.php" color="true">
-<!--
-    <php>
-        <server name="SYMFONY" value="../../../symfony/src" />
-        <server name="KERNEL_DIR" value="../../../../app" />
-    </php>
--->
+<phpunit bootstrap="Tests/bootstrap.php" colors="true">
     <testsuites>
-        <testsuite name="FOSOAuthServerBundle">
+        <testsuite name="FOSOAuthServerBundle Test Suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>

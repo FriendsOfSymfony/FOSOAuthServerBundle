@@ -16,6 +16,7 @@ abstract class AuthCodeManager implements AuthCodeManagerInterface
     public function createAuthCode()
     {
         $class = $this->getClass();
+
         return new $class;
     }
 

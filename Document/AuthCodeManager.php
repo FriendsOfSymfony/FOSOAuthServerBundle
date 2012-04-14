@@ -11,9 +11,9 @@
 
 namespace FOS\OAuthServerBundle\Document;
 
-use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
-use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
 class AuthCodeManager extends BaseAuthCodeManager
 {
@@ -31,7 +31,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getClass()
     {
@@ -39,7 +39,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @param array $criteria
+     * {@inheritdoc}
      */
     public function findAuthCodeBy(array $criteria)
     {
@@ -47,21 +47,34 @@ class AuthCodeManager extends BaseAuthCodeManager
     }
 
     /**
-     * @param \FOS\OAuthServerBundle\Model\AuthCodeInterface $authCode
-     * @param boolean $andFlush
+     * {@inheritdoc}
      */
-    public function updateAuthCode(AuthCodeInterface $authCode, $andFlush = true)
+    public function updateAuthCode(AuthCodeInterface $authCode)
     {
         $this->dm->persist($authCode);
-
-        if ($andFlush) {
-            $this->dm->flush();
-        }
+        $this->dm->flush();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteAuthCode(AuthCodeInterface $authCode)
     {
         $this->dm->remove($authCode);
         $this->dm->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteExpired()
+    {
+        return $this
+            ->repository
+            ->createQueryBuilder()
+            ->findAndRemove()
+            ->field('expiresAt')->lt(time())
+            ->getQuery()
+            ->execute();
     }
 }

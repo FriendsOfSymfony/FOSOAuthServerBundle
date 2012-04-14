@@ -21,7 +21,7 @@ interface ClientManagerInterface
 
     function findClientByPublicId($publicId);
 
-    function updateClient(ClientInterface $client, $andFlush = true);
+    function updateClient(ClientInterface $client);
 
     function deleteClient(ClientInterface $client);
 }

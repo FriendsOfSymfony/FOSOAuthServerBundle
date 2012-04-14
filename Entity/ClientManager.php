@@ -12,15 +12,24 @@
 namespace FOS\OAuthServerBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
-use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 
 class ClientManager extends BaseClientManager
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     protected $em;
 
+    /**
+     * @var \Doctrine\ORM\EntityRepository
+     */
     protected $repository;
 
+    /**
+     * @var string
+     */
     protected $class;
 
     public function __construct(EntityManager $em, $class)
@@ -30,25 +39,34 @@ class ClientManager extends BaseClientManager
         $this->class = $class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findClientBy(array $criteria)
     {
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateClient(ClientInterface $client, $andFlush = true)
+    /**
+     * {@inheritdoc}
+     */
+    public function updateClient(ClientInterface $client)
     {
         $this->em->persist($client);
-
-        if ($andFlush) {
-            $this->em->flush();
-        }
+        $this->em->flush();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteClient(ClientInterface $client)
     {
         $this->em->remove($client);

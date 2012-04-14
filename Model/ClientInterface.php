@@ -29,6 +29,8 @@ interface ClientInterface extends IOAuth2Client
 
     function setRedirectUris(array $redirectUris);
 
+    function getRedirectUris();
+
     function setAllowedGrantTypes(array $grantTypes);
 
     function getAllowedGrantTypes();

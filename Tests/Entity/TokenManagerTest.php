@@ -39,7 +39,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateTokenPersistsAndFlushes()
     {
-        $token = new AccessToken;
+        $token = new AccessToken();
 
         $this->em->expects($this->once())
             ->method('persist')
@@ -49,18 +49,5 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->with();
 
         $this->manager->updateToken($token);
-    }
-
-    public function testUpdateTokenPersistsAndDoesntFlush()
-    {
-        $token = new AccessToken;
-
-        $this->em->expects($this->once())
-            ->method('persist')
-            ->with($token);
-        $this->em->expects($this->never())
-            ->method('flush');
-
-        $this->manager->updateToken($token, false);
     }
 }
