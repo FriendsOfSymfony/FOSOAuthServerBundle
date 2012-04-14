@@ -11,9 +11,9 @@
 
 namespace FOS\OAuthServerBundle\Document;
 
-use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 
 class TokenManager extends BaseTokenManager
 {
@@ -30,28 +30,52 @@ class TokenManager extends BaseTokenManager
         $this->class = $class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
     public function findTokenBy(array $criteria)
     {
         return $this->repository->findOneBy($criteria);
     }
 
-    public function updateToken(TokenInterface $token, $andFlush = true)
+    /**
+     * {@inheritdoc}
+     */
+    public function updateToken(TokenInterface $token)
     {
         $this->dm->persist($token);
-
-        if ($andFlush) {
-            $this->dm->flush();
-        }
+        $this->dm->flush();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteToken(TokenInterface $token)
     {
         $this->dm->remove($token);
         $this->dm->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteExpired()
+    {
+        return $this
+            ->repository
+            ->createQueryBuilder()
+            ->findAndRemove()
+            ->field('expiresAt')->lt(time())
+            ->getQuery()
+            ->execute();
     }
 }

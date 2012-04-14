@@ -2,3 +2,5 @@
 /Tests/autoload.php
 /vendor/*
 !/vendor/vendors.php
+Propel/om/
+Propel/map/

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="fos_oauth_server.authorize.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%fos_oauth_server.authorize.form.type%</argument>
+            <argument>%fos_oauth_server.authorize.form.name%</argument>
+            <argument />
+            <argument type="collection">
+                <argument key="validation_groups">%fos_oauth_server.authorize.form.validation_groups%</argument>
+            </argument>
+        </service>
+
+        <service id="fos_oauth_server.authorize.form.type" class="FOS\OAuthServerBundle\Form\Type\AuthorizeFormType">
+            <tag name="form.type" alias="fos_oauth_server_authorize" />
+        </service>
+
+        <service id="fos_oauth_server.authorize.form.handler.default" class="FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler" scope="request">
+            <argument type="service" id="fos_oauth_server.authorize.form" />
+            <argument type="service" id="request" />
+        </service>
+    </services>
+
+</container>
