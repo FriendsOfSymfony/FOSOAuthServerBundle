@@ -4,7 +4,10 @@ FOSOAuthServerBundle
 [![Build Status](https://secure.travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle.png)](http://travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle)
 
 **Important:** This bundle is developed in sync with [symfony's repository](https://github.com/symfony/symfony).
-For Symfony 2.0.x, you need to use the 1.1.0 release of the bundle (or lower).
+
+For Symfony 2.0.x, you need to use the 1.1.0 release of the bundle (or lower), and to read
+[this documentation](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/f5fefc08f9ee489a15bcb2ffb75996936ce43e01/README.md).
+
 
 ## Installation
 
@@ -249,9 +252,8 @@ class AuthCode extends BaseAuthCode
 
 **b) Propel classes**
 
-A `schema.xml` is provided with this bundle to generate Propel classes. You have to
-install the [TypehintableBehavior](https://github.com/willdurand/TypehintableBehavior) before
-to build your model.
+A `schema.xml` is provided with this bundle to generate Propel classes.
+You have to install the [TypehintableBehavior](https://github.com/willdurand/TypehintableBehavior) before to build your model.
 
 By using Git submodules:
 
@@ -276,7 +278,7 @@ You now can run the following command to create the model:
 
     $ php app/console propel:model:build
 
-> To create SQL, run the command propel:build-sql and insert it or use migration commands if you have an existing schema in your database.
+> To create SQL, run the command propel:sql:build and insert it or use migration commands if you have an existing schema in your database.
 
 
 ### Step 5: Configure your application's security.yml
@@ -331,7 +333,7 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 ``` yaml
 # app/config/config.yml
 fos_oauth_server:
-    db_driver:  orm     # Driver availables: orm, mongodb, or propel
+    db_driver: orm       # Driver availables: orm, mongodb, or propel
     client_class:        Acme\ApiBundle\Entity\Client
     access_token_class:  Acme\ApiBundle\Entity\AccessToken
     refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
@@ -348,18 +350,6 @@ fos_oauth_server:
     access_token_class:  FOS\OAuthServerBundle\Propel\AccessToken
     refresh_token_class: FOS\OAuthServerBundle\Propel\RefreshToken
     auth_code_class:     FOS\OAuthServerBundle\Propel\AuthCode
-```
-
-
-#### Symfony 2.0.x only
-
-Import the security.yml configuration file in app/config/config.yml:
-
-``` yaml
-# app/config/config.yml
-imports:
-    # Symfony 2.0.x only
-    - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" }
 ```
 
 
