@@ -348,14 +348,11 @@ fos_oauth_server:
 ```
 
 
-#### Symfony 2.0.x only
-
-Import the security.yml configuration file in app/config/config.yml:
+Last step, import the security.yml configuration file in app/config/config.yml:
 
 ``` yaml
 # app/config/config.yml
 imports:
-    # Symfony 2.0.x only
     - { resource: "@FOSOAuthServerBundle/Resources/config/security.yml" }
 ```
 
