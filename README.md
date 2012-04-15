@@ -5,8 +5,8 @@ FOSOAuthServerBundle
 
 **Important:** This bundle is developed in sync with [symfony's repository](https://github.com/symfony/symfony).
 
-For Symfony 2.0.x, you need to use the 1.1.0 release of the bundle (or lower), and to read
-[this documentation](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/f5fefc08f9ee489a15bcb2ffb75996936ce43e01/README.md).
+For Symfony 2.0.x, you need to use the 1.1.1 release of the bundle (or lower), and to read
+[this documentation](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/1.1.1/README.md).
 
 
 ## Installation
