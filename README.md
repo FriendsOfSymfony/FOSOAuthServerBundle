@@ -257,21 +257,21 @@ You have to install the [TypehintableBehavior](https://github.com/willdurand/Typ
 
 By using Git submodules:
 
-    $ git submodule add http://github.com/willdurand/TypehintableBehavior.git vendor/propel-behaviors/TypehintableBehavior
+    $ git submodule add http://github.com/willdurand/TypehintableBehavior.git vendor/willdurand/propel-typehintable-behavior
 
 By using the Symfony2 vendor management:
 
 ```ini
 [TypehintableBehavior]
     git=http://github.com/willdurand/TypehintableBehavior.git
-    target=/propel-behaviors/TypehintableBehavior
+    target=/willdurand/propel-typehintable-behavior
 ```
 
 Then, register it:
 
 ```ini
 # app/config/propel.ini
-propel.behavior.typehintable.class = vendor.propel-behaviors.TypehintableBehavior.src.TypehintableBehavior
+propel.behavior.typehintable.class = vendor.willdurand.propel-typehintable-behavior.src.TypehintableBehavior
 ```
 
 You now can run the following command to create the model:
