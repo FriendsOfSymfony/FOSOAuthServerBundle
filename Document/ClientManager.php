@@ -11,16 +11,24 @@
 
 namespace FOS\OAuthServerBundle\Document;
 
-use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
 class ClientManager extends BaseClientManager
 {
+    /**
+     * @var \Doctrine\ODM\MongoDB\DocumentManager
+     */
     protected $dm;
 
+    /**
+     */
     protected $repository;
 
+    /**
+     * @var string
+     */
     protected $class;
 
     public function __construct(DocumentManager $dm, $class)
