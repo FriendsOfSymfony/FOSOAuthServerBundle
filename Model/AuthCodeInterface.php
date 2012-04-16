@@ -18,4 +18,13 @@ use OAuth2\Model\IOAuth2AuthCode;
  */
 interface AuthCodeInterface extends TokenInterface, IOAuth2AuthCode
 {
+    /**
+     * @param string $redirectUri
+     */
+    function setRedirectUri($redirectUri);
+
+    /**
+     * @return string
+     */
+    function getRedirectUri();
 }

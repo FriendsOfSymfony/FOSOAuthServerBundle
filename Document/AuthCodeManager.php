@@ -17,10 +17,18 @@ use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
 class AuthCodeManager extends BaseAuthCodeManager
 {
+    /**
+     * @var \Doctrine\ODM\MongoDB\DocumentManager
+     */
     protected $dm;
 
+    /**
+     */
     protected $repository;
 
+    /**
+     * @var string
+     */
     protected $class;
 
     public function __construct(DocumentManager $dm, $class)
