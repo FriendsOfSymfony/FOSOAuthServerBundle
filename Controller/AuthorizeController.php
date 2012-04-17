@@ -33,29 +33,35 @@ class AuthorizeController extends ContainerAware
     public function authorizeAction(Request $request)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
+
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        /* @var $server \OAuth2\OAuth2 */
         $server = $this->container->get('fos_oauth_server.server');
-        $form = $this->container->get('fos_oauth_server.authorize.form');
+        $form   = $this->container->get('fos_oauth_server.authorize.form');
         $formHandler = $this->container->get('fos_oauth_server.authorize.form.handler');
 
-        $process = $formHandler->process();
-        if ($process) {
+        if ($process = $formHandler->process()) {
             try {
-                $response = $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, null);
-
-                return $response;
+                return $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, null);
             } catch (OAuth2ServerException $e) {
                 return $e->getHttpResponse();
             }
         }
 
+        $client = $this->container
+            ->get('fos_oauth_server.client_manager')
+            ->findClientByPublicId(
+                $this->container->get('request')->query->get('client_id')
+            );
+
         return $this->container->get('templating')->renderResponse(
             'FOSOAuthServerBundle:Authorize:authorize.html.' . $this->container->getParameter('fos_oauth_server.template.engine'),
-            array('form' => $form->createView())
+            array(
+                'form'      => $form->createView(),
+                'client'    => $client,
+            )
         );
     }
 
