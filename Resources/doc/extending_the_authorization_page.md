@@ -10,7 +10,7 @@ The first step is to copy the [`authorize_content.html.twig`](https://github.com
 
 You're almost done, now you just have to customize it. By default a _client_ in the FOSOAuthServerBundle
 doesn't have any _name_ or _title_ because it depends on your application, and what you really need.
-But most of the time, you will give a name to each of your clients, this part is described in the [extending the model]() section.
+But most of the time, you will give a name to each of your clients, this part is described in the [extending the model](extending_the_model.md) section.
 
 Now, assuming your clients have a nice _name_, it's a pretty nice idea to expose it to your
 users. That way, they will know which consumer asks for their data. If you take a look at the `AuthorizeController`,

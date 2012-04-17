@@ -363,6 +363,13 @@ The `token` endpoint is at `/oauth/v2/token` by default (see Resources/config/ro
 The `authorize` endpoint is at `/oauth/v2/auth` by default (see Resources/config/routing/authorize.xml).
 
 
+## Advanced documentation
+
+[Extending the Authorization page](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/master/Resources/doc/extending_the_authorization_page.md)
+
+[Extending the Model](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/master/Resources/doc/extending_the_model.md)
+
+
 ## TODO
 
 - More tests
