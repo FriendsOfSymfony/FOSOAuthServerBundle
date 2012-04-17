@@ -25,4 +25,4 @@ whole database (which means loosing data), or rely on the migration commmands:
 
 > **Note:** when you generate a diff with Propel, don't forget to review the generated SQL statements before to execute them (migrate).
 
-[Back to index](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/master/README.md)
+[Back to index](index.md)
