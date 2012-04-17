@@ -44,6 +44,10 @@ class AuthorizeController extends ContainerAware
         $formHandler = $this->container->get('fos_oauth_server.authorize.form.handler');
 
         if ($process = $formHandler->process()) {
+            if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
+                $this->container->get('session')->invalidate();
+            }
+
             try {
                 return $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, null);
             } catch (OAuth2ServerException $e) {
