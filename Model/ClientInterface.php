@@ -16,11 +16,6 @@ use OAuth2\Model\IOAuth2Client;
 interface ClientInterface extends IOAuth2Client
 {
     /**
-     * @return string
-     */
-    function getPublicId();
-
-    /**
      * @param string $random
      */
     function setRandomId($random);
@@ -50,11 +45,6 @@ interface ClientInterface extends IOAuth2Client
      * @param array $redirectUris
      */
     function setRedirectUris(array $redirectUris);
-
-    /**
-     * @return array
-     */
-    function getRedirectUris();
 
     /**
      * @param array $grantTypes
