@@ -32,4 +32,4 @@ you will see a `client` variable which is passed to the templating engine. That 
 </form>
 ```
 
-[Back to index](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/master/README.md)
+[Back to index](index.md)
