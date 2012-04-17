@@ -11,14 +11,15 @@
 
 namespace FOS\OAuthServerBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use OAuth2\OAuth2RedirectException;
+use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Controller handling basic authorization
@@ -34,7 +35,7 @@ class AuthorizeController extends ContainerAware
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
@@ -55,6 +56,10 @@ class AuthorizeController extends ContainerAware
             ->findClientByPublicId(
                 $this->container->get('request')->query->get('client_id')
             );
+
+        if (null === $client) {
+            throw new NotFoundHttpException('No client found.');
+        }
 
         return $this->container->get('templating')->renderResponse(
             'FOSOAuthServerBundle:Authorize:authorize.html.' . $this->container->getParameter('fos_oauth_server.template.engine'),
