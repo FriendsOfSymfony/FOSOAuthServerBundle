@@ -26,24 +26,9 @@ interface TokenInterface extends IOAuth2Token
     function getExpiresAt();
 
     /**
-     * @return Boolean
-     */
-    function hasExpired();
-
-    /**
-     * @return int
-     */
-    function getExpiresIn();
-
-    /**
      * @param string $token
      */
     function setToken($token);
-
-    /**
-     * @return string
-     */
-    function getToken();
 
     /**
      * @param string $scope
@@ -51,27 +36,12 @@ interface TokenInterface extends IOAuth2Token
     function setScope($scope);
 
     /**
-     * @return string
-     */
-    function getScope();
-
-    /**
      * @param mixed $data
      */
     function setData($data);
 
     /**
-     * @return mixed
-     */
-    function getData();
-
-    /**
      * @param ClientInterface $client
      */
     function setClient(ClientInterface $client);
-
-    /**
-     * @return ClientInterface
-     */
-    function getClient();
 }
