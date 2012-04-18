@@ -347,6 +347,8 @@ The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/confi
 
 [A Note About Security](a_note_about_security.md)
 
+[Configuration Reference](configuration_reference.md)
+
 [Dealing With Scopes](dealing_with_scopes.md)
 
 [Extending the Authorization page](extending_the_authorization_page.md)
