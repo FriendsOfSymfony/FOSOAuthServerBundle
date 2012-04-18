@@ -11,6 +11,8 @@
 
 namespace FOS\OAuthServerBundle\Controller;
 
+use FOS\OAuthServerBundle\Event\OAuthEvent;
+use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use OAuth2\OAuth2RedirectException;
@@ -43,35 +45,36 @@ class AuthorizeController extends ContainerAware
         $form   = $this->container->get('fos_oauth_server.authorize.form');
         $formHandler = $this->container->get('fos_oauth_server.authorize.form.handler');
 
-        if ($process = $formHandler->process()) {
-            if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
-                $this->container->get('session')->invalidate();
-            }
-
-            try {
-                return $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, null);
-            } catch (OAuth2ServerException $e) {
-                return $e->getHttpResponse();
-            }
-        }
-
-        $client = $this->container
-            ->get('fos_oauth_server.client_manager')
-            ->findClientByPublicId(
-                $this->container->get('request')->query->get('client_id')
-            );
-
-        if (null === $client) {
-            throw new NotFoundHttpException('No client found.');
+        if (true === $formHandler->process()) {
+            return $this->processSuccess($user, $formHandler);
         }
 
         return $this->container->get('templating')->renderResponse(
             'FOSOAuthServerBundle:Authorize:authorize.html.' . $this->container->getParameter('fos_oauth_server.template.engine'),
             array(
                 'form'      => $form->createView(),
-                'client'    => $client,
+                'client'    => $this->getClient(),
             )
         );
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param AuthorizeFormHandler $formHandler
+     *
+     * @return Response
+     */
+    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler)
+    {
+        if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
+            $this->container->get('session')->invalidate();
+        }
+
+        try {
+            return $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, $formHandler->getScope());
+        } catch (OAuth2ServerException $e) {
+            return $e->getHttpResponse();
+        }
     }
 
     /**
@@ -83,5 +86,23 @@ class AuthorizeController extends ContainerAware
     protected function getRedirectionUrl(UserInterface $user)
     {
         return $this->container->get('router')->generate('fos_oauth_server_profile_show');
+    }
+
+    /**
+     * @return ClientInterface
+     */
+    protected function getClient()
+    {
+        $client = $this->container
+            ->get('fos_oauth_server.client_manager')
+            ->findClientByPublicId(
+                $this->container->get('request')->query->get('client_id')
+            );
+
+        if (null === $client) {
+            throw new NotFoundHttpException('Client not found.');
+        }
+
+        return $client;
     }
 }
