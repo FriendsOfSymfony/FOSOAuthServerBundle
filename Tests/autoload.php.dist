@@ -39,3 +39,5 @@ spl_autoload_register(function($class) {
         return true;
     }
 });
+
+require_once $vendorDir . '/propel/runtime/lib/Propel.php';
