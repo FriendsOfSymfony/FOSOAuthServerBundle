@@ -54,9 +54,20 @@ class OAuthEventListener
 }
 ```
 
-The `$user` variabl has a method `isAuthorizedClient()` which contains your logic to determine whether
+The `$user` variable has a method `isAuthorizedClient()` which contains your logic to determine whether
 the given client (`ClientInterface`) is allowed by the user, or not. This `$user` is part of your
 own model layer, and loaded using the `username` property (see `getUser()`).
+
+### Registring the listener
+
+``` yaml
+services:
+    oauth_event_listener:
+        class:  Acme\DemoBundle\EventListener\OAuthEventListener
+        tags:
+            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }
+```
 
 
 ### Next?
