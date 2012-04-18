@@ -11,12 +11,12 @@
 
 namespace FOS\OAuthServerBundle\Security\Authentication\Provider;
 
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 
@@ -56,15 +56,24 @@ class OAuthProvider implements AuthenticationProviderInterface
         }
 
         try {
-            $accessToken = $this->serverService->verifyAccessToken($token->getToken());
-            if ($accessToken) {
-                $data = $accessToken->getData();
+            if ($accessToken = $this->serverService->verifyAccessToken($token->getToken())) {
+                $roles = array();
 
-                if (null !== $data) {
-                    $token->setUser($data);
+                foreach ($token->getRoles() as $role) {
+                    $roles[] = $role->getRole();
                 }
 
+                foreach (explode(' ', $accessToken->getScope()) as $role) {
+                    $roles[] = 'ROLE_' . strtoupper($role);
+                }
+
+                $token = new OAuthToken($roles);
                 $token->setAuthenticated(true);
+                $token->setToken($accessToken->getToken());
+
+                if (null !== $data = $accessToken->getData()) {
+                    $token->setUser($data);
+                }
 
                 return $token;
             }
