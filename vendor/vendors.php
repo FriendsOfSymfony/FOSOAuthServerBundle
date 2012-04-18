@@ -26,6 +26,7 @@ $deps = array(
     array('doctrine-mongodb-odm', 'git://github.com/doctrine/mongodb-odm.git', 'origin/master'),
     array('doctrine-mongodb', 'git://github.com/doctrine/mongodb.git', 'origin/master'),
     array('doctrine-couchdb', 'git://github.com/doctrine/couchdb-odm.git', 'origin/master'),
+    array('propel', 'git://github.com/propelorm/Propel.git', 'origin/master'),
 );
 
 foreach ($deps as $dep) {
