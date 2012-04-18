@@ -11,6 +11,9 @@
 
 namespace FOS\OAuthServerBundle\Security\Firewall;
 
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
+use OAuth2\OAuth2;
+use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -18,9 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
-use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
-use OAuth2\OAuth2;
-use OAuth2\OAuth2ServerException;
 
 /**
  * OAuthListener class.
@@ -45,7 +45,7 @@ class OAuthListener implements ListenerInterface
     protected $serverService;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext    The security context.
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext The security context.
      * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authenticationManager The authentication manager.
      * @param \OAuth2\OAuth2 $serverService
      */
@@ -61,11 +61,7 @@ class OAuthListener implements ListenerInterface
      */
     public function handle(GetResponseEvent $event)
     {
-        $request = $event->getRequest();
-
-        $oauthToken = $this->serverService->getBearerToken($request, true);
-
-        if (null === $oauthToken) {
+        if (null === $oauthToken = $this->serverService->getBearerToken($event->getRequest(), true)) {
             return;
         }
 
@@ -77,7 +73,7 @@ class OAuthListener implements ListenerInterface
 
             if ($returnValue instanceof TokenInterface) {
                 return $this->securityContext->setToken($returnValue);
-            } elseif ($returnValue instanceof Response) {
+            } else if ($returnValue instanceof Response) {
                 return $event->setResponse($returnValue);
             }
         } catch (AuthenticationException $e) {
