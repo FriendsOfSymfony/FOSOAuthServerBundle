@@ -343,10 +343,12 @@ The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/confi
 
 ## Next steps
 
+[A Note About Security](a_note_about_security.md)
+
+[Dealing With Scopes](dealing_with_scopes.md)
+
 [Extending the Authorization page](extending_the_authorization_page.md)
 
 [Extending the Model](extending_the_model.md)
-
-[A Note About Security](a_note_about_security.md)
 
 [The OAuthEvent class](the_oauth_event_class.md)
