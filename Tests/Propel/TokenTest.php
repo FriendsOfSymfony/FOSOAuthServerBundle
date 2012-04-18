@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuthServerBundle\Tests\Model;
+namespace FOS\OAuthServerBundle\Tests\Propel;
 
-use FOS\OAuthServerBundle\Model\Token;
+use FOS\OAuthServerBundle\Propel\Token;
 use FOS\OAuthServerBundle\Tests\TestCase;
 
 class TokenTest extends TestCase
@@ -21,7 +21,7 @@ class TokenTest extends TestCase
      */
     public function testHasExpired($expiresAt, $expect)
     {
-        $token = new Token();
+        $token = new ConcreteToken();
         $token->setExpiresAt($expiresAt);
 
         $this->assertSame($expect, $token->hasExpired());
@@ -35,4 +35,9 @@ class TokenTest extends TestCase
             array(null, false),
         );
     }
+}
+
+// The Token class is abstract (concrete inheritance)
+class ConcreteToken extends Token
+{
 }
