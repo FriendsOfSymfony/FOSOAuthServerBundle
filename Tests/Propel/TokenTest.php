@@ -12,9 +12,8 @@
 namespace FOS\OAuthServerBundle\Tests\Propel;
 
 use FOS\OAuthServerBundle\Propel\Token;
-use FOS\OAuthServerBundle\Tests\TestCase;
 
-class TokenTest extends TestCase
+class TokenTest extends PropelTestCase
 {
     /**
      * @dataProvider getTestHasExpiredData

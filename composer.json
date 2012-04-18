@@ -20,11 +20,17 @@
         "symfony/framework-bundle": "2.1.*",
         "symfony/security-bundle": "2.1.*"
     },
+    "require-dev": {
+        "symfony/symfony": "dev-master",
+        "doctrine/orm": "dev-master",
+        "doctrine/mongodb-odm": "dev-master",
+        "willdurand/propel-typehintable-behavior": "dev-master"
+    },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
-        "propel/propel-bundle": "*",
-        "willdurand/propel-typehintable-behavior": "*"
+        "propel/propel-bundle": "If you want to user Propel with Symfony2, then you will have to install the PropelBundle",
+        "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces"
     },
     "autoload": {
         "psr-0": { "FOS\\OAuthServerBundle": "" }
