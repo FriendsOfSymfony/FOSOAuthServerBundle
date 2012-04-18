@@ -51,7 +51,9 @@ class AuthorizeController extends ContainerAware
         );
 
         if ($event->isAuthorizedClient()) {
-            return $server->finishClientAuthorization(true, $user, null, null);
+            $scope = $this->container->get('request')->query->get('scope', null);
+
+            return $server->finishClientAuthorization(true, $user, null, $scope);
         }
 
         if (true === $formHandler->process()) {
@@ -85,7 +87,7 @@ class AuthorizeController extends ContainerAware
         );
 
         try {
-            return $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, null);
+            return $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, $formHandler->getScope());
         } catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
