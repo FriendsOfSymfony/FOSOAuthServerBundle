@@ -31,6 +31,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AuthorizeController extends ContainerAware
 {
     /**
+     * @var \FOS\OAuthServerBundle\Model\ClientInterface
+     */
+    private $client;
+
+    /**
      * Authorize
      */
     public function authorizeAction(Request $request)
@@ -41,8 +46,7 @@ class AuthorizeController extends ContainerAware
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        $server = $this->container->get('fos_oauth_server.server');
-        $form   = $this->container->get('fos_oauth_server.authorize.form');
+        $form = $this->container->get('fos_oauth_server.authorize.form');
         $formHandler = $this->container->get('fos_oauth_server.authorize.form.handler');
 
         $event = $this->container->get('event_dispatcher')->dispatch(
@@ -51,9 +55,11 @@ class AuthorizeController extends ContainerAware
         );
 
         if ($event->isAuthorizedClient()) {
-            $scope = $this->container->get('request')->query->get('scope', null);
+            $scope = $this->container->get('request')->get('scope', null);
 
-            return $server->finishClientAuthorization(true, $user, null, $scope);
+            return $this->container
+                ->get('fos_oauth_server.server')
+                ->finishClientAuthorization(true, $user, null, $scope);
         }
 
         if (true === $formHandler->process()) {
@@ -81,13 +87,15 @@ class AuthorizeController extends ContainerAware
             $this->container->get('session')->invalidate();
         }
 
-        $this->container->get('dispatcher')->dispatch(
+        $this->container->get('event_dispatcher')->dispatch(
             OAuthEvent::POST_AUTHORIZATION_PROCESS,
             new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
         );
 
         try {
-            return $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, $formHandler->getScope());
+            return $this->container
+                ->get('fos_oauth_server.server')
+                ->finishClientAuthorization($formHandler->isAccepted(), $user, null, $formHandler->getScope());
         } catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
@@ -109,16 +117,24 @@ class AuthorizeController extends ContainerAware
      */
     protected function getClient()
     {
-        $client = $this->container
-            ->get('fos_oauth_server.client_manager')
-            ->findClientByPublicId(
-                $this->container->get('request')->query->get('client_id')
-            );
+        if (null === $this->client) {
+            if (null === $clientId = $this->container->get('request')->get('client_id')) {
+                $form = $this->container->get('fos_oauth_server.authorize.form');
+                $clientId = $this->container->get('request')
+                    ->get(sprintf('%s[client_id]', $form->getName()), null, true);
+            }
 
-        if (null === $client) {
-            throw new NotFoundHttpException('Client not found.');
+            $client = $this->container
+                ->get('fos_oauth_server.client_manager')
+                ->findClientByPublicId($clientId);
+
+            if (null === $client) {
+                throw new NotFoundHttpException('Client not found.');
+            }
+
+            $this->client = $client;
         }
 
-        return $client;
+        return $this->client;
     }
 }
