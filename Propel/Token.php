@@ -60,4 +60,12 @@ abstract class Token extends BaseToken implements TokenInterface
 
         return false;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClientId()
+    {
+        return $this->getClient()->getPublicId();
+    }
 }

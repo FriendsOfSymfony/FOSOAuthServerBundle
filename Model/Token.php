@@ -48,9 +48,12 @@ class Token implements TokenInterface
         return $this->id;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getClientId()
     {
-        return $this->client->getPublicId();
+        return $this->getClient()->getPublicId();
     }
 
     /**
