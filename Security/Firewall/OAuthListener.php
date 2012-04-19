@@ -73,7 +73,9 @@ class OAuthListener implements ListenerInterface
 
             if ($returnValue instanceof TokenInterface) {
                 return $this->securityContext->setToken($returnValue);
-            } else if ($returnValue instanceof Response) {
+            }
+
+            if ($returnValue instanceof Response) {
                 return $event->setResponse($returnValue);
             }
         } catch (AuthenticationException $e) {
