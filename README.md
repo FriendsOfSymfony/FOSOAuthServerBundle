@@ -3,6 +3,7 @@ FOSOAuthServerBundle
 
 [![Build Status](https://secure.travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle.png)](http://travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle)
 
+
 ## Documentation
 
 The bulk of the documentation is stored in the `Resources/doc/index.md` file in this bundle:
