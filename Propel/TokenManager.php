@@ -42,6 +42,10 @@ class TokenManager extends BaseTokenManager
      */
     public function findTokenBy(array $criteria)
     {
+        if (!isset($criteria['token'])) {
+            return null;
+        }
+
         $queryClass = $this->class . 'Query';
 
         return $queryClass::create()

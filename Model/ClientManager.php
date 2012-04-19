@@ -33,7 +33,7 @@ abstract class ClientManager implements ClientManagerInterface
         }
 
         $id       = substr($publicId, 0, $pos);
-        $randomId = substr($publicId, $pos+1);
+        $randomId = substr($publicId, $pos + 1);
 
         return $this->findClientBy(array(
             'id'        => $id,
