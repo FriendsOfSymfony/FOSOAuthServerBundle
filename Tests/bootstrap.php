@@ -36,5 +36,5 @@ if (class_exists('TypehintableBehavior')) {
     $builder->getConfig()->setBuildProperty('behavior.typehintable.class', $class->getFileName());
     $builder->setSchema(file_get_contents(__DIR__ . '/../Resources/config/propel/schema.xml'));
     $builder->setClassTargets(array('tablemap', 'peer', 'object', 'query', 'peerstub'));
-    $builder->buildClasses();
+    $builder->build();
 }

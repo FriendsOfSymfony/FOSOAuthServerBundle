@@ -11,16 +11,16 @@
 
 namespace FOS\OAuthServerBundle\Tests\Propel;
 
-use FOS\OAuthServerBundle\Propel\Token as AbstractToken;
+use FOS\OAuthServerBundle\Propel\AuthCode;
 
-class TokenTest extends PropelTestCase
+class AuthCodeTest extends PropelTestCase
 {
     /**
      * @dataProvider getTestHasExpiredData
      */
     public function testHasExpired($expiresAt, $expect)
     {
-        $token = new Token();
+        $token = new AuthCode();
         $token->setExpiresAt($expiresAt);
 
         $this->assertSame($expect, $token->hasExpired());
@@ -37,21 +37,16 @@ class TokenTest extends PropelTestCase
 
     public function testExpiresIn()
     {
-        $token = new Token();
+        $token = new AuthCode();
 
         $this->assertEquals(PHP_INT_MAX, $token->getExpiresIn());
     }
 
     public function testExpiresInWithExpiresAt()
     {
-        $token = new Token();
+        $token = new AuthCode();
         $token->setExpiresAt(time() + 60);
 
         $this->assertEquals(60, $token->getExpiresIn());
     }
-}
-
-// The Token class is abstract (concrete inheritance)
-class Token extends AbstractToken
-{
 }
