@@ -23,6 +23,7 @@ class TokenManager extends BaseTokenManager
     protected $dm;
 
     /**
+     * @var \Doctrine\ODM\MongoDB\DocumentRepository
      */
     protected $repository;
 
