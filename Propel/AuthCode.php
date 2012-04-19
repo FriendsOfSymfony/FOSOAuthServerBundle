@@ -60,4 +60,12 @@ class AuthCode extends BaseAuthCode implements AuthCodeInterface
 
         return false;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClientId()
+    {
+        return $this->getClient()->getPublicId();
+    }
 }
