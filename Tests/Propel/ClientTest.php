@@ -12,10 +12,9 @@
 namespace FOS\OAuthServerBundle\Tests\Propel;
 
 use FOS\OAuthServerBundle\Propel\Client;
-use FOS\OAuthServerBundle\Tests\TestCase;
 use OAuth2\OAuth2;
 
-class ClientTest extends TestCase
+class ClientTest extends PropelTestCase
 {
     public function testConstructor()
     {
