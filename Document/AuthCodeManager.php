@@ -23,6 +23,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     protected $dm;
 
     /**
+     * @var \Doctrine\ODM\MongoDB\DocumentRepository
      */
     protected $repository;
 

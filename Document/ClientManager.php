@@ -23,6 +23,7 @@ class ClientManager extends BaseClientManager
     protected $dm;
 
     /**
+     * @var \Doctrine\ODM\MongoDB\DocumentRepository
      */
     protected $repository;
 
