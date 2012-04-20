@@ -91,10 +91,10 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
 
         return $client->checkSecret($client_secret);
     }
-    
+
     public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret)
     {
-        return $this->checkClientCredentials($client, $client_secret);   
+        return $this->checkClientCredentials($client, $client_secret);
     }
 
     public function getAccessToken($token)
