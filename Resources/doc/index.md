@@ -27,7 +27,7 @@ Installation is a quick 5 steps process:
 ### Step 1: Install FOSOAuthServerBundle
 
 The preferred way to install this bundle is to rely on [Composer](http://getcomposer.org).
-Just add it to your `composer.json`:
+Just check on [Packagist](http://packagist.org/packages/friendsofsymfony/oauth-server-bundle) the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
 
 ``` js
 {
@@ -37,7 +37,6 @@ Just add it to your `composer.json`:
     }
 }
 ```
-
 
 ### Step 2: Enable the bundle
 
