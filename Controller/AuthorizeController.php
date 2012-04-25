@@ -11,14 +11,17 @@
 
 namespace FOS\OAuthServerBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use FOS\OAuthServerBundle\Event\OAuthEvent;
+use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use OAuth2\OAuth2RedirectException;
+use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Controller handling basic authorization
@@ -28,35 +31,74 @@ use OAuth2\OAuth2RedirectException;
 class AuthorizeController extends ContainerAware
 {
     /**
+     * @var \FOS\OAuthServerBundle\Model\ClientInterface
+     */
+    private $client;
+
+    /**
      * Authorize
      */
     public function authorizeAction(Request $request)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
+
+        if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        /* @var $server \OAuth2\OAuth2 */
-        $server = $this->container->get('fos_oauth_server.server');
         $form = $this->container->get('fos_oauth_server.authorize.form');
         $formHandler = $this->container->get('fos_oauth_server.authorize.form.handler');
 
-        $process = $formHandler->process();
-        if ($process) {
-            try {
-                $response = $server->finishClientAuthorization($formHandler->isAccepted(), $user, null, null);
+        $event = $this->container->get('event_dispatcher')->dispatch(
+            OAuthEvent::PRE_AUTHORIZATION_PROCESS,
+            new OAuthEvent($user, $this->getClient())
+        );
 
-                return $response;
-            } catch (OAuth2ServerException $e) {
-                return $e->getHttpResponse();
-            }
+        if ($event->isAuthorizedClient()) {
+            $scope = $this->container->get('request')->get('scope', null);
+
+            return $this->container
+                ->get('fos_oauth_server.server')
+                ->finishClientAuthorization(true, $user, null, $scope);
+        }
+
+        if (true === $formHandler->process()) {
+            return $this->processSuccess($user, $formHandler);
         }
 
         return $this->container->get('templating')->renderResponse(
             'FOSOAuthServerBundle:Authorize:authorize.html.' . $this->container->getParameter('fos_oauth_server.template.engine'),
-            array('form' => $form->createView())
+            array(
+                'form'      => $form->createView(),
+                'client'    => $this->getClient(),
+            )
         );
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param AuthorizeFormHandler $formHandler
+     *
+     * @return Response
+     */
+    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler)
+    {
+        if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
+            $this->container->get('session')->invalidate();
+        }
+
+        $this->container->get('event_dispatcher')->dispatch(
+            OAuthEvent::POST_AUTHORIZATION_PROCESS,
+            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
+        );
+
+        try {
+            return $this->container
+                ->get('fos_oauth_server.server')
+                ->finishClientAuthorization($formHandler->isAccepted(), $user, null, $formHandler->getScope());
+        } catch (OAuth2ServerException $e) {
+            return $e->getHttpResponse();
+        }
     }
 
     /**
@@ -68,5 +110,31 @@ class AuthorizeController extends ContainerAware
     protected function getRedirectionUrl(UserInterface $user)
     {
         return $this->container->get('router')->generate('fos_oauth_server_profile_show');
+    }
+
+    /**
+     * @return ClientInterface
+     */
+    protected function getClient()
+    {
+        if (null === $this->client) {
+            if (null === $clientId = $this->container->get('request')->get('client_id')) {
+                $form = $this->container->get('fos_oauth_server.authorize.form');
+                $clientId = $this->container->get('request')
+                    ->get(sprintf('%s[client_id]', $form->getName()), null, true);
+            }
+
+            $client = $this->container
+                ->get('fos_oauth_server.client_manager')
+                ->findClientByPublicId($clientId);
+
+            if (null === $client) {
+                throw new NotFoundHttpException('Client not found.');
+            }
+
+            $this->client = $client;
+        }
+
+        return $this->client;
     }
 }

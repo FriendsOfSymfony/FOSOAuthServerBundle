@@ -15,19 +15,33 @@ use OAuth2\Model\IOAuth2Token;
 
 interface TokenInterface extends IOAuth2Token
 {
-    function getId();
-
+    /**
+     * @param int $timestamp
+     */
     function setExpiresAt($timestamp);
 
+    /**
+     * @return int
+     */
     function getExpiresAt();
 
+    /**
+     * @param string $token
+     */
     function setToken($token);
 
+    /**
+     * @param string $scope
+     */
     function setScope($scope);
 
+    /**
+     * @param mixed $data
+     */
     function setData($data);
 
+    /**
+     * @param ClientInterface $client
+     */
     function setClient(ClientInterface $client);
-
-    function getClient();
 }

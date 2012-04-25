@@ -22,9 +22,11 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use OAuth2\IOAuth2RefreshTokens;
 use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2GrantCode;
+use OAuth2\IOAuth2GrantImplicit;
+use OAuth2\IOAuth2GrantClient;
 use OAuth2\Model\IOAuth2Client;
 
-class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode
+class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode, IOAuth2GrantImplicit, IOAuth2GrantClient
 {
     /**
      * @var \FOS\OAuthServerBundle\Model\ClientManagerInterface
@@ -88,6 +90,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         }
 
         return $client->checkSecret($client_secret);
+    }
+
+    public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret)
+    {
+        return $this->checkClientCredentials($client, $client_secret);
     }
 
     public function getAccessToken($token)

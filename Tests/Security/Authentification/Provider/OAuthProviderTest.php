@@ -32,7 +32,7 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticateReturnsTokenIfValid()
     {
-        $token = new OAuthToken;
+        $token = new OAuthToken();
         $token->setToken('x');
 
         $accessToken = new AccessToken();
@@ -45,13 +45,15 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->provider->authenticate($token);
 
-        $this->assertSame($token, $result);
         $this->assertSame($this->user, $result->getUser());
+        $this->assertEquals($token->getToken(), $result->getToken());
+        $this->assertTrue($result->isAuthenticated());
+        $this->assertCount(0, $result->getRoles());
     }
 
     public function testAuthenticateReturnsTokenIfValidEvenIfNullData()
     {
-        $token = new OAuthToken;
+        $token = new OAuthToken();
         $token->setToken('x');
 
         $accessToken = new AccessToken();
@@ -64,8 +66,78 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->provider->authenticate($token);
 
-        $this->assertSame($token, $result);
         $this->assertNull($result->getUser());
+        $this->assertTrue($result->isAuthenticated());
+        $this->assertCount(0, $result->getRoles());
+    }
+
+    public function testAuthenticateTransformsScopesAsRoles()
+    {
+        $token = new OAuthToken();
+        $token->setToken('x');
+
+        $accessToken = new AccessToken();
+        $accessToken->setScope('foo bar');
+
+        $this->serverService->expects($this->once())
+            ->method('verifyAccessToken')
+            ->with('x')
+            ->will($this->returnValue($accessToken));
+
+        $result = $this->provider->authenticate($token);
+
+        $this->assertNull($result->getUser());
+        $this->assertTrue($result->isAuthenticated());
+
+        $roles = $result->getRoles();
+        $this->assertCount(2, $roles);
+        $this->assertInstanceOf('Symfony\Component\Security\Core\Role\Role', $roles[0]);
+        $this->assertEquals('ROLE_FOO', $roles[0]->getRole());
+        $this->assertInstanceOf('Symfony\Component\Security\Core\Role\Role', $roles[1]);
+        $this->assertEquals('ROLE_BAR', $roles[1]->getRole());
+    }
+
+    public function testAuthenticateWithNullScope()
+    {
+        $token = new OAuthToken();
+        $token->setToken('x');
+
+        $accessToken = new AccessToken();
+        $accessToken->setScope(null);
+
+        $this->serverService->expects($this->once())
+            ->method('verifyAccessToken')
+            ->with('x')
+            ->will($this->returnValue($accessToken));
+
+        $result = $this->provider->authenticate($token);
+
+        $this->assertNull($result->getUser());
+        $this->assertTrue($result->isAuthenticated());
+
+        $roles = $result->getRoles();
+        $this->assertCount(0, $roles);
+    }
+
+    public function testAuthenticateWithEmptyScope()
+    {
+        $token = new OAuthToken();
+        $token->setToken('x');
+
+        $accessToken = new AccessToken();
+        $accessToken->setScope('');
+
+        $this->serverService->expects($this->once())
+            ->method('verifyAccessToken')
+            ->with('x')
+            ->will($this->returnValue($accessToken));
+
+        $result = $this->provider->authenticate($token);
+
+        $this->assertNull($result->getUser());
+        $this->assertTrue($result->isAuthenticated());
+
+        $roles = $result->getRoles();
+        $this->assertCount(0, $roles);
     }
 }
-

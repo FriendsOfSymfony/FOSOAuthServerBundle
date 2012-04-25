@@ -9,16 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuthServerBundle\Tests\Model;
+namespace FOS\OAuthServerBundle\Tests\Propel;
 
-use FOS\OAuthServerBundle\Model\Token;
-use FOS\OAuthServerBundle\Tests\TestCase;
+use FOS\OAuthServerBundle\Propel\Token as AbstractToken;
 
-/**
- * If you update the following class, please don't forget
- * to update: FOS\OAuthServerBundle\Tests\Propel\TokenTest
- */
-class TokenTest extends TestCase
+class TokenTest extends PropelTestCase
 {
     /**
      * @dataProvider getTestHasExpiredData
@@ -54,4 +49,9 @@ class TokenTest extends TestCase
 
         $this->assertEquals(60, $token->getExpiresIn());
     }
+}
+
+// The Token class is abstract (concrete inheritance)
+class Token extends AbstractToken
+{
 }
