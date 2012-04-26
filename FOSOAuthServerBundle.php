@@ -12,25 +12,12 @@
 namespace FOS\OAuthServerBundle;
 
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
-use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\HttpKernel\Kernel;
 
 class FOSOAuthServerBundle extends Bundle
 {
     public function __construct()
     {
         $this->extension = new FOSOAuthServerExtension();
-    }
-
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-
-        if (version_compare(Kernel::VERSION, '2.1', '>=')) {
-            $extension = $container->getExtension('security');
-            $extension->addSecurityListenerFactory(new OAuthFactory());
-        }
     }
 }

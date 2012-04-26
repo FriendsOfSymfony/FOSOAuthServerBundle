@@ -27,7 +27,7 @@ Installation is a quick 5 steps process:
 ### Step 1: Install FOSOAuthServerBundle
 
 The preferred way to install this bundle is to rely on [Composer](http://getcomposer.org).
-Just check on [Packagist](http://packagist.org/packages/friendsofsymfony/oauth-server-bundle) the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
+Just check on [Packagist](http://packagist.org/packages/friendsofsymfony/oauth-server-bundle) the version you want to install (in the following example, we used "1.1.*") and add it to your `composer.json`:
 
 ``` js
 {
@@ -353,5 +353,3 @@ The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/confi
 [Extending the Authorization page](extending_the_authorization_page.md)
 
 [Extending the Model](extending_the_model.md)
-
-[The OAuthEvent class](the_oauth_event_class.md)
