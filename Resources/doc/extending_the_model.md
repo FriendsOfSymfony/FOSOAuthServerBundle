@@ -15,7 +15,7 @@ to the `app/Resources/FOSOAuthServerBundle/config/propel/` directory of your app
 
 Then, tweak it to fit your needs. When you are done, just rebuild your model classes as usual:
 
-    $ php app/console propel:model:build
+    $ php app/console propel:build-model
 
 To update the dabase, you can rely on the `propel:sql:build` command if you want to rebuild your
 whole database (which means loosing data), or rely on the migration commmands:
