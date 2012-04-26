@@ -21,9 +21,8 @@
         "symfony/security-bundle": "2.0.*"
     },
     "require-dev": {
-        "symfony/symfony": "2.0.*",
-        "doctrine/orm": "2.2.*",
-        "doctrine/mongodb-odm": "2.2.*",
+        "doctrine/orm": "dev-master",
+        "doctrine/mongodb-odm": "dev-master",
         "willdurand/propel-typehintable-behavior": "dev-master"
     },
     "suggest": {
