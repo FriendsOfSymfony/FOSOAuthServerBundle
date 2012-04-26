@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__ . '/../vendor/.composer/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // require Propel
 if (file_exists($file = __DIR__ . '/../vendor/propel/propel1/generator/lib/util/PropelQuickBuilder.php')) {
