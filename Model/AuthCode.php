@@ -16,13 +16,22 @@ namespace FOS\OAuthServerBundle\Model;
  */
 class AuthCode extends Token implements AuthCodeInterface
 {
+    /**
+     * @var string
+     */
     protected $redirectUri;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setRedirectUri($redirectUri)
     {
         $this->redirectUri = $redirectUri;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRedirectUri()
     {
         return $this->redirectUri;

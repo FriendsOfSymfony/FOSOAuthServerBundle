@@ -16,6 +16,9 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 
 class ClientManager extends BaseClientManager
 {
+    /**
+     * @var string
+     */
     protected $class;
 
     public function __construct($class)
@@ -23,13 +26,23 @@ class ClientManager extends BaseClientManager
         $this->class = $class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findClientBy(array $criteria)
     {
+        if (!isset($criteria['id']) || !isset($criteria['randomId'])) {
+            return null;
+        }
+
         $queryClass = $this->class . 'Query';
 
         return $queryClass::create()
@@ -38,11 +51,17 @@ class ClientManager extends BaseClientManager
             ->findOne();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function updateClient(ClientInterface $client)
     {
         $client->save();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteClient(ClientInterface $client)
     {
         $client->delete();

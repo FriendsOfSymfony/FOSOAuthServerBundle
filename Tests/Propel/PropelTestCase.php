@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuthServerBundle;
+namespace FOS\OAuthServerBundle\Tests\Propel;
 
-use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use FOS\OAuthServerBundle\Tests\TestCase;
 
-class FOSOAuthServerBundle extends Bundle
+class PropelTestCase extends TestCase
 {
-    public function __construct()
+    public function setUp()
     {
-        $this->extension = new FOSOAuthServerExtension();
+        if (!class_exists('\Propel')) {
+            $this->markTestSkipped('Propel is not installed.');
+        }
     }
 }
