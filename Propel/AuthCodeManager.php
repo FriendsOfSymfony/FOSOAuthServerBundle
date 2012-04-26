@@ -42,6 +42,10 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     public function findAuthCodeBy(array $criteria)
     {
+        if (!isset($criteria['token'])) {
+            return null;
+        }
+
         $queryClass = $this->class . 'Query';
 
         return $queryClass::create()

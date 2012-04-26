@@ -17,10 +17,19 @@ use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 
 class TokenManager extends BaseTokenManager
 {
+    /**
+     * @var \Doctrine\ODM\MongoDB\DocumentManager
+     */
     protected $dm;
 
+    /**
+     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     */
     protected $repository;
 
+    /**
+     * @var string
+     */
     protected $class;
 
     public function __construct(DocumentManager $dm, $class)

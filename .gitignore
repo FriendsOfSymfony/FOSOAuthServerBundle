@@ -1,6 +1,6 @@
-/phpunit.xml
-/Tests/autoload.php
-/vendor/*
-!/vendor/vendors.php
+phpunit.xml
+Tests/autoload.php
+vendor/
 Propel/om/
 Propel/map/
+composer.lock

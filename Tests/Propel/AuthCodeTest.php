@@ -9,23 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuthServerBundle\Tests\Model;
+namespace FOS\OAuthServerBundle\Tests\Propel;
 
-use FOS\OAuthServerBundle\Model\Token;
-use FOS\OAuthServerBundle\Tests\TestCase;
+use FOS\OAuthServerBundle\Propel\AuthCode;
 
-/**
- * If you update the following class, please don't forget
- * to update: FOS\OAuthServerBundle\Tests\Propel\TokenTest
- */
-class TokenTest extends TestCase
+class AuthCodeTest extends PropelTestCase
 {
     /**
      * @dataProvider getTestHasExpiredData
      */
     public function testHasExpired($expiresAt, $expect)
     {
-        $token = new Token();
+        $token = new AuthCode();
         $token->setExpiresAt($expiresAt);
 
         $this->assertSame($expect, $token->hasExpired());
@@ -42,14 +37,14 @@ class TokenTest extends TestCase
 
     public function testExpiresIn()
     {
-        $token = new Token();
+        $token = new AuthCode();
 
         $this->assertEquals(PHP_INT_MAX, $token->getExpiresIn());
     }
 
     public function testExpiresInWithExpiresAt()
     {
-        $token = new Token();
+        $token = new AuthCode();
         $token->setExpiresAt(time() + 60);
 
         $this->assertEquals(60, $token->getExpiresIn());
