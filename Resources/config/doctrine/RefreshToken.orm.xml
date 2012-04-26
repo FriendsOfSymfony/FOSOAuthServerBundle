@@ -8,5 +8,6 @@
         <field name="token" column="token" type="string" />
         <field name="expiresAt" column="expires_at" type="integer" nullable="true" />
         <field name="scope" column="scope" type="string" nullable="true" />
+        <field name="data" column="data" type="object" nullable="true" />
     </mapped-superclass>
 </doctrine-mapping>
