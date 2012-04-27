@@ -111,7 +111,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $token = $this->accessTokenManager->createToken();
         $token->setToken($tokenString);
         $token->setClient($client);
-        $token->setData($data);
+        $token->setUser($data);
         $token->setExpiresAt($expires);
         $token->setScope($scope);
         $this->accessTokenManager->updateToken($token);
@@ -173,7 +173,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $authCode = $this->authCodeManager->createAuthCode();
         $authCode->setToken($code);
         $authCode->setClient($client);
-        $authCode->setData($data);
+        $authCode->setUser($data);
         $authCode->setRedirectUri($redirect_uri);
         $authCode->setExpiresAt($expires);
         $authCode->setScope($scope);
@@ -202,7 +202,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $token = $this->refreshTokenManager->createToken();
         $token->setToken($tokenString);
         $token->setClient($client);
-        $token->setData($data);
+        $token->setUser($data);
         $token->setExpiresAt($expires);
         $token->setScope($scope);
         $this->refreshTokenManager->updateToken($token);
