@@ -150,6 +150,10 @@ class AccessToken extends BaseAccessToken
      */
     protected $client;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
+     */
+    protected $user;
 }
 ```
 
@@ -180,6 +184,10 @@ class RefreshToken extends BaseRefreshToken
      */
     protected $client;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
+     */
+    protected $user;
 }
 ```
 
@@ -210,6 +218,10 @@ class AuthCode extends BaseAuthCode
      */
     protected $client;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
+     */
+    protected $user;
 }
 ```
 

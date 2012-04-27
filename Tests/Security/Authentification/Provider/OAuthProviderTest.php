@@ -36,7 +36,7 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
         $token->setToken('x');
 
         $accessToken = new AccessToken();
-        $accessToken->setData($this->user);
+        $accessToken->setUser($this->user);
 
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
@@ -57,7 +57,6 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
         $token->setToken('x');
 
         $accessToken = new AccessToken();
-        $accessToken->setData(null);
 
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
