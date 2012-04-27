@@ -12,6 +12,7 @@
 namespace FOS\OAuthServerBundle\Model;
 
 use OAuth2\Model\IOAuth2Token;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 interface TokenInterface extends IOAuth2Token
 {
@@ -36,9 +37,14 @@ interface TokenInterface extends IOAuth2Token
     function setScope($scope);
 
     /**
-     * @param mixed $data
+     * @param UserInterface $user
      */
-    function setData($data);
+    function setUser(UserInterface $user);
+
+    /**
+     * @return UserInterface
+     */
+    function getUser();
 
     /**
      * @param ClientInterface $client
