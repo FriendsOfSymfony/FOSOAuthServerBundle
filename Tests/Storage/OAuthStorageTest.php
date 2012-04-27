@@ -16,6 +16,7 @@ use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Model\AuthCode;
 use FOS\OAuthServerBundle\Model\Client;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class OAuthStorageTest extends \PHPUnit_Framework_TestCase
 {
@@ -122,7 +123,7 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $client = $this->getMock('OAuth2\Model\IOAuth2Client');
 
         $this->setExpectedException('InvalidArgumentException');
-        $this->storage->createAccessToken('foo', $client, 42, 1, 'foo bar');
+        $this->storage->createAccessToken('foo', $client, new User(42), 1, 'foo bar');
     }
 
     public function testCreateAccessToken()
@@ -139,22 +140,24 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
                 $savedToken = $token;
             }));
 
-        $client = new Client;
+        $client = new Client();
+        $user   = new User(42);
 
-        $token = $this->storage->createAccessToken('foo', $client, 42, 1, 'foo bar');
+        $token = $this->storage->createAccessToken('foo', $client, $user, 1, 'foo bar');
 
         $this->assertEquals($token, $savedToken);
 
         $this->assertSame('foo', $token->getToken());
         $this->assertSame($client, $token->getClient());
-        $this->assertSame(42, $token->getData());
+        $this->assertSame($user, $token->getData());
+        $this->assertSame($user, $token->getUser());
         $this->assertSame(1, $token->getExpiresAt());
         $this->assertSame('foo bar', $token->getScope());
     }
 
     public function testGetRefreshTokenReturnsRefreshTokenWithGivenId()
     {
-        $token = new RefreshToken;
+        $token = new RefreshToken();
 
         $this->refreshTokenManager->expects($this->once())
             ->method('findTokenByToken')
@@ -196,15 +199,17 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
                 $savedToken = $token;
             }));
 
-        $client = new Client;
+        $client = new Client();
+        $user   = new User(42);
 
-        $token = $this->storage->createRefreshToken('foo', $client, 42, 1, 'foo bar');
+        $token = $this->storage->createRefreshToken('foo', $client, $user, 1, 'foo bar');
 
         $this->assertEquals($token, $savedToken);
 
         $this->assertSame('foo', $token->getToken());
         $this->assertSame($client, $token->getClient());
-        $this->assertSame(42, $token->getData());
+        $this->assertSame($user, $token->getData());
+        $this->assertSame($user, $token->getUser());
         $this->assertSame(1, $token->getExpiresAt());
         $this->assertSame('foo bar', $token->getScope());
     }
@@ -338,15 +343,17 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
                 $savedCode = $code;
             }));
 
-        $client = new Client;
+        $client = new Client();
+        $user   = new User(42);
 
-        $code = $this->storage->createAuthCode('foo', $client, 42, 'http://www.example.com/', 1, 'foo bar');
+        $code = $this->storage->createAuthCode('foo', $client, $user, 'http://www.example.com/', 1, 'foo bar');
 
         $this->assertEquals($code, $savedCode);
 
         $this->assertSame('foo', $code->getToken());
         $this->assertSame($client, $code->getClient());
-        $this->assertSame(42, $code->getData());
+        $this->assertSame($user, $code->getData());
+        $this->assertSame($user, $code->getUser());
         $this->assertSame(1, $code->getExpiresAt());
         $this->assertSame('foo bar', $code->getScope());
     }
@@ -371,5 +378,40 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         $this->assertNull($this->storage->getAuthCode('123_abc'));
+    }
+}
+
+class User implements UserInterface
+{
+    private $username;
+
+    public function __construct($username)
+    {
+        $this->username = $username;
+    }
+
+    public function getRoles()
+    {
+    }
+
+    public function getPassword()
+    {
+    }
+
+    public function getSalt()
+    {
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function equals(UserInterface $user)
+    {
     }
 }

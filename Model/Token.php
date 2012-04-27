@@ -11,6 +11,8 @@
 
 namespace FOS\OAuthServerBundle\Model;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 class Token implements TokenInterface
 {
     /**
@@ -39,9 +41,9 @@ class Token implements TokenInterface
     protected $scope;
 
     /**
-     * @var mixed
+     * @var UserInterface
      */
-    protected $data;
+    protected $user;
 
     public function getId()
     {
@@ -131,9 +133,17 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function setData($data)
+    public function setUser(UserInterface $user)
     {
-        $this->data = $data;
+        $this->user = $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
@@ -141,7 +151,7 @@ class Token implements TokenInterface
      */
     public function getData()
     {
-        return $this->data;
+        return $this->getUser();
     }
 
     /**
