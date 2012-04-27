@@ -76,8 +76,8 @@ class OAuthProvider implements AuthenticationProviderInterface
                 $token->setAuthenticated(true);
                 $token->setToken($tokenString);
 
-                if (null !== $data = $accessToken->getData()) {
-                    $token->setUser($data);
+                if (null !== $user = $accessToken->getUser()) {
+                    $token->setUser($user);
                 }
 
                 return $token;
