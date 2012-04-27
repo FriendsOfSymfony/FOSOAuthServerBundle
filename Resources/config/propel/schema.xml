@@ -19,6 +19,7 @@
         <column name="expires_at" type="integer" required="false" />
         <column name="scope" type="varchar" required="false" />
         <column name="client_id" type="integer" required="true" />
+        <column name="user" type="object" required="false" />
 
         <column name="class_key" type="INTEGER" inheritance="single">
             <inheritance key="1" class="Token" />
@@ -32,6 +33,7 @@
 
         <behavior name="typehintable">
             <parameter name="client" value="\FOS\OAuthServerBundle\Model\ClientInterface" />
+            <parameter name="user" value="\Symfony\Component\Security\Core\User\UserInterface" />
         </behavior>
     </table>
 
@@ -42,6 +44,7 @@
         <column name="expires_at" type="integer" required="false" />
         <column name="scope" type="varchar" required="false" />
         <column name="client_id" type="integer" required="true" />
+        <column name="user" type="object" required="false" />
 
         <foreign-key foreignTable="client" onDelete="cascade">
             <reference local="client_id" foreign="id" />
@@ -49,6 +52,7 @@
 
         <behavior name="typehintable">
             <parameter name="client" value="\FOS\OAuthServerBundle\Model\ClientInterface" />
+            <parameter name="user" value="\Symfony\Component\Security\Core\User\UserInterface" />
         </behavior>
     </table>
 </database>

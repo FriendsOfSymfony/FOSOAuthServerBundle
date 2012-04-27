@@ -17,24 +17,11 @@ use FOS\OAuthServerBundle\Propel\om\BaseAuthCode;
 class AuthCode extends BaseAuthCode implements AuthCodeInterface
 {
     /**
-     * @var mixed
-     */
-    protected $data;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getData()
     {
-        return $this->data;
+        return $this->getUser();
     }
 
     /**
