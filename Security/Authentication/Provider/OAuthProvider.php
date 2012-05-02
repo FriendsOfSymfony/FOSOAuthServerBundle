@@ -59,12 +59,8 @@ class OAuthProvider implements AuthenticationProviderInterface
             $tokenString = $token->getToken();
 
             if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
-                $roles = array();
+                $roles = $accessToken->getUser()->getRoles();
                 $scope = $accessToken->getScope();
-
-                foreach ($token->getRoles() as $role) {
-                    $roles[] = $role->getRole();
-                }
 
                 if (!empty($scope)) {
                     foreach (explode(' ', $scope) as $role) {
