@@ -35,6 +35,10 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
         $token = new OAuthToken();
         $token->setToken('x');
 
+        $this->user->expects($this->once())
+            ->method('getRoles')
+            ->will($this->returnValue(array('ROLE_USER')));
+
         $accessToken = new AccessToken();
         $accessToken->setUser($this->user);
 
@@ -48,7 +52,10 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->user, $result->getUser());
         $this->assertEquals($token->getToken(), $result->getToken());
         $this->assertTrue($result->isAuthenticated());
-        $this->assertCount(0, $result->getRoles());
+        $this->assertCount(1, $result->getRoles());
+
+        $roles = $result->getRoles();
+        $this->assertEquals('ROLE_USER', $roles[0]->getRole());
     }
 
     public function testAuthenticateReturnsTokenIfValidEvenIfNullData()
