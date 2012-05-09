@@ -155,6 +155,28 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo bar', $token->getScope());
     }
 
+    public function testCreateAccessTokenWithoutUser()
+    {
+        $savedToken = null;
+
+        $this->accessTokenManager->expects($this->once())
+            ->method('createToken')
+            ->with()
+            ->will($this->returnValue(new AccessToken));
+        $this->accessTokenManager->expects($this->once())
+            ->method('updateToken')
+            ->will($this->returnCallback(function($token) use (&$savedToken) {
+            $savedToken = $token;
+        }));
+
+        $client = new Client();
+        $user   = null;
+
+        $token = $this->storage->createAccessToken('foo', $client, $user, 1, 'foo bar');
+
+        $this->assertEquals($token, $savedToken);
+    }
+
     public function testGetRefreshTokenReturnsRefreshTokenWithGivenId()
     {
         $token = new RefreshToken();
@@ -212,6 +234,28 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($user, $token->getUser());
         $this->assertSame(1, $token->getExpiresAt());
         $this->assertSame('foo bar', $token->getScope());
+    }
+
+    public function testCreateRefreshTokenWithoutUser()
+    {
+        $savedToken = null;
+
+        $this->refreshTokenManager->expects($this->once())
+            ->method('createToken')
+            ->with()
+            ->will($this->returnValue(new RefreshToken));
+        $this->refreshTokenManager->expects($this->once())
+            ->method('updateToken')
+            ->will($this->returnCallback(function($token) use (&$savedToken) {
+            $savedToken = $token;
+        }));
+
+        $client = new Client();
+        $user   = null;
+
+        $token = $this->storage->createRefreshToken('foo', $client, $user, 1, 'foo bar');
+
+        $this->assertEquals($token, $savedToken);
     }
 
     public function testCheckRestrictedGrantTypeThrowsOnInvalidClientClass()
