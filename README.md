@@ -282,8 +282,7 @@ You now can run the following command to create the model:
 
 
 **c) Doctrine ODM classes**
-
-''' php
+``` php
 <?php
 
 // src/Acme/ApiBundle/Document/Client.php
@@ -297,9 +296,9 @@ class Client extends BaseClient
     protected $id;
 
 }
-'''
+```
 
-''' xml
+``` xml
 <!-- src/Acme/ApiBundle/Resources/config/doctrine/Client.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
@@ -312,9 +311,9 @@ class Client extends BaseClient
     </document>
     
 </doctrine-mongo-mapping>
-''' 
+``` 
 
-''' php
+``` php
 <?php
 
 // src/Acme/ApiBundle/Document/AuthCode.php
@@ -341,9 +340,9 @@ class AuthCode extends BaseAuthCode
     
 }
 
-'''
+```
 
-''' xml
+``` xml
 <!-- src/Acme/ApiBundle/Resources/config/doctrine/AuthCode.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
@@ -357,9 +356,9 @@ class AuthCode extends BaseAuthCode
     </document>
     
 </doctrine-mongo-mapping>
-''' 
+``` 
 
-''' php
+``` php
 <?php
 
 // src/Acme/ApiBundle/Document/AccessToken.php
@@ -385,9 +384,9 @@ class AccessToken extends BaseAccessToken
     }
     
 }
-'''
+```
 
-''' xml
+``` xml
 <!-- src/Acme/ApiBundle/Resources/config/doctrine/AccessToken.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
@@ -401,9 +400,9 @@ class AccessToken extends BaseAccessToken
     </document>
     
 </doctrine-mongo-mapping>
-''' 
+``` 
 
-''' php
+``` php
 <?php
 
 // src/Acme/ApiBundle/Document/RefreshToken.php
@@ -429,9 +428,9 @@ class RefreshToken extends BaseRefreshToken
     }
     
 }
-'''
+```
 
-''' xml
+``` xml
 <!-- src/Acme/ApiBundle/Resources/config/doctrine/RefreshToken.mongodb.xml -->
 
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
@@ -445,7 +444,7 @@ class RefreshToken extends BaseRefreshToken
     </document>
     
 </doctrine-mongo-mapping>
-''' 
+``` 
 
 ### Step 5: Configure your application's security.yml
 
