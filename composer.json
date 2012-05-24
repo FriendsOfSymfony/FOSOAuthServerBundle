@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "symfony/symfony": "dev-master",
-        "doctrine/orm": "dev-master",
+        "doctrine/orm": "2.*",
         "doctrine/mongodb-odm": "dev-master",
         "willdurand/propel-typehintable-behavior": "dev-master"
     },
