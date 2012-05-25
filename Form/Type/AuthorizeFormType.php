@@ -11,7 +11,7 @@
 
 namespace FOS\OAuthServerBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\Form\AbstractType;
  */
 class AuthorizeFormType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('client_id', 'hidden');
         $builder->add('response_type', 'hidden');
