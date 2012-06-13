@@ -508,6 +508,17 @@ fos_oauth_server:
     auth_code_class:     FOS\OAuthServerBundle\Propel\AuthCode
 ```
 
+If you're authenticating users, don't forget to set the user provider.
+Here's an example using the FOSUserBundle user provider:
+
+``` yaml
+# app/config/config.yml
+fos_oauth_server:
+    ...
+
+    service:
+        user_provider: fos_user.user_manager
+```
 
 ## Usage
 
