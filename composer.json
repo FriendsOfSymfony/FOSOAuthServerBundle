@@ -21,7 +21,6 @@
         "symfony/security-bundle": "2.1.*"
     },
     "require-dev": {
-        "symfony/symfony": "dev-master",
         "doctrine/orm": "2.*",
         "doctrine/mongodb-odm": "dev-master",
         "willdurand/propel-typehintable-behavior": "dev-master"
@@ -35,5 +34,6 @@
     "autoload": {
         "psr-0": { "FOS\\OAuthServerBundle": "" }
     },
-    "target-dir": "FOS/OAuthServerBundle"
+    "target-dir": "FOS/OAuthServerBundle",
+    "minimum-stability": "dev"
 }
