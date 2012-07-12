@@ -12,6 +12,7 @@
 namespace FOS\OAuthServerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -72,6 +73,11 @@ class FOSOAuthServerExtension extends Extension
 
         if (!empty($config['authorize'])) {
             $this->loadAuthorize($config['authorize'], $container, $loader);
+        }
+
+        if (null !== $userProvider = $config['service']['user_provider']) {
+            $container->getDefinition($config['service']['storage'])
+                ->replaceArgument(4, new Reference($userProvider));
         }
     }
 
