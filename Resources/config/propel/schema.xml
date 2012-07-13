@@ -32,8 +32,8 @@
         </foreign-key>
 
         <behavior name="typehintable">
-            <parameter name="client" value="\FOS\OAuthServerBundle\Model\ClientInterface" />
-            <parameter name="user" value="\Symfony\Component\Security\Core\User\UserInterface" />
+            <parameter name="client" value="FOS\OAuthServerBundle\Model\ClientInterface" />
+            <parameter name="user" value="Symfony\Component\Security\Core\User\UserInterface" nullable="true" />
         </behavior>
     </table>
 
@@ -51,8 +51,8 @@
         </foreign-key>
 
         <behavior name="typehintable">
-            <parameter name="client" value="\FOS\OAuthServerBundle\Model\ClientInterface" />
-            <parameter name="user" value="\Symfony\Component\Security\Core\User\UserInterface" />
+            <parameter name="client" value="FOS\OAuthServerBundle\Model\ClientInterface" />
+            <parameter name="user" value="Symfony\Component\Security\Core\User\UserInterface" nullable="true" />
         </behavior>
     </table>
 </database>
