@@ -21,19 +21,24 @@ class Client extends BaseClient implements ClientInterface
     public function __construct()
     {
         parent::__construct();
-
-        $this->setAllowedGrantTypes(array(
-            OAuth2::GRANT_TYPE_AUTH_CODE,
-        ));
         $this->setRandomId(Random::generateToken());
         $this->setSecret(Random::generateToken());
     }
+
+    public function hydrate($row, $startcol = 0, $rehydrate = false)
+    {
+        parent::hydrate($row, $startcol, $rehydrate);
+
+        $this->setAllowedGrantTypes($this->getAllowedGrantTypes() + array(OAuth2::GRANT_TYPE_AUTH_CODE));
+    }
+
 
     /**
      * {@inheritdoc}
      */
     public function checkSecret($secret)
     {
+
         return (null === $this->secret || $secret === $this->secret);
     }
 
