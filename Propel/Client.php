@@ -18,6 +18,12 @@ use OAuth2\OAuth2;
 
 class Client extends BaseClient implements ClientInterface
 {
+    public function preInsert(\PropelPDO $con = null)
+    {
+        $this->setRandomId(Random::generateToken());
+        $this->setSecret(Random::generateToken());
+    }
+
     public function __construct()
     {
         parent::__construct();
@@ -25,8 +31,6 @@ class Client extends BaseClient implements ClientInterface
         $this->setAllowedGrantTypes(array(
             OAuth2::GRANT_TYPE_AUTH_CODE,
         ));
-        $this->setRandomId(Random::generateToken());
-        $this->setSecret(Random::generateToken());
     }
 
     /**
