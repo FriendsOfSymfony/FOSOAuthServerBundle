@@ -13,6 +13,7 @@ namespace FOS\OAuthServerBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -29,13 +30,13 @@ class AuthorizeFormType extends AbstractType
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize'
-        );
+        ));
     }
 
     /**
