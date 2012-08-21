@@ -14,7 +14,7 @@
             <argument type="service" id="fos_oauth_server.access_token_manager" />
             <argument type="service" id="fos_oauth_server.refresh_token_manager" />
             <argument type="service" id="fos_oauth_server.auth_code_manager" />
-            <argument>null</argument>
+            <argument type="service" id="fos_oauth_server.user_provider" />
             <argument type="service" id="security.encoder_factory" />
         </service>
 
