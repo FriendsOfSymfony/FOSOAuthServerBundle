@@ -28,7 +28,7 @@
     "suggest": {
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
-        "propel/propel-bundle": "If you want to user Propel with Symfony2, then you will have to install the PropelBundle",
+        "propel/propel-bundle": "If you want to use Propel with Symfony2, then you will have to install the PropelBundle",
         "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces"
     },
     "autoload": {
