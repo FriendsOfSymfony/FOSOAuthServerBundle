@@ -23,7 +23,10 @@
     "require-dev": {
         "doctrine/orm": "2.*",
         "doctrine/mongodb-odm": "dev-master",
-        "willdurand/propel-typehintable-behavior": "dev-master"
+        "willdurand/propel-typehintable-behavior": "dev-master",
+        "symfony/class-loader": "2.1.*",
+        "symfony/security-bundle": "2.1.*",
+        "doctrine/doctrine-bundle": "1.0.*"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",

@@ -1,0 +1,30 @@
+imports:
+    - { resource: config.yml }
+
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        path: %kernel.cache_dir%/data.sqlite
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    TestBundle: ~
+
+fos_oauth_server:
+    db_driver: orm
+    service:
+        user_provider: security.user.provider.concrete.main
+
+    client_class:        FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\Client
+    access_token_class:  FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\AccessToken
+    refresh_token_class: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\RefreshToken
+    auth_code_class:     FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\AuthCode
+
+security:
+    encoders:
+        FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\User: plaintext
+
+    providers:
+        main:
+            entity: { class: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\User, property: id }
