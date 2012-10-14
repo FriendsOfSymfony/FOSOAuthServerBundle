@@ -1,0 +1,25 @@
+framework:
+    secret: test
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+
+fos_oauth_server:
+
+security:
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            security: false
+
+        secured:
+            pattern:    ^/
+            fos_oauth:  true
+            stateless:  true

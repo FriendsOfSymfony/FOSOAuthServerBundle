@@ -19,14 +19,18 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use OAuth2\OAuth2;
+use OAuth2\OAuth2ServerException;
 use OAuth2\IOAuth2RefreshTokens;
 use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\IOAuth2GrantImplicit;
 use OAuth2\IOAuth2GrantClient;
+use OAuth2\IOAuth2GrantExtension;
 use OAuth2\Model\IOAuth2Client;
 
-class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode, IOAuth2GrantImplicit, IOAuth2GrantClient
+class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode, IOAuth2GrantImplicit,
+    IOAuth2GrantClient, IOAuth2GrantExtension, GrantExtensionDispatcherInterface
 {
     /**
      * @var \FOS\OAuthServerBundle\Model\ClientManagerInterface
@@ -59,6 +63,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     protected $encoderFactory;
 
     /**
+     * @var array [uri] => GrantExtensionInterface
+     */
+    protected $grantExtensions;
+
+    /**
      * @param \FOS\OAuthServerBundle\Model\ClientManagerInterface $clientManager
      * @param \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface $accessTokenManager
      * @param \FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface $refreshTokenManager
@@ -76,6 +85,16 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $this->authCodeManager = $authCodeManager;
         $this->userProvider = $userProvider;
         $this->encoderFactory = $encoderFactory;
+
+        $this->grantExtensions = array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setGrantExtension($uri, GrantExtensionInterface $grantExtension)
+    {
+        $this->grantExtensions[$uri] = $grantExtension;
     }
 
     public function getClient($clientId)
@@ -228,5 +247,19 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         if (null !== $token) {
             $this->refreshTokenManager->deleteToken($token);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders)
+    {
+        if (!isset($this->grantExtensions[$uri])) {
+            throw new OAuth2ServerException(OAuth2::HTTP_BAD_REQUEST, OAuth2::ERROR_UNSUPPORTED_GRANT_TYPE);
+        }
+
+        $grantExtension = $this->grantExtensions[$uri];
+
+        return $grantExtension->checkGrantExtension($client, $inputData, $authHeaders);
     }
 }

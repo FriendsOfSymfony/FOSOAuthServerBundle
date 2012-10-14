@@ -17,17 +17,7 @@ if (file_exists($file = __DIR__ . '/../vendor/propel/propel1/generator/lib/util/
     require_once $file;
 }
 
-spl_autoload_register(function($class) {
-    if (0 === strpos($class, 'FOS\\OAuthServerBundle\\')) {
-        $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';
-        if (!stream_resolve_include_path($path)) {
-            return false;
-        }
-        require_once $path;
-
-        return true;
-    }
-});
+\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
 
 // Generate Propel base classes on the fly
 if (class_exists('TypehintableBehavior')) {

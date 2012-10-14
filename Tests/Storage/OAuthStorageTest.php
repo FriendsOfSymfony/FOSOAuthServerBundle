@@ -423,6 +423,44 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->storage->getAuthCode('123_abc'));
     }
+
+    public function testValidGrantExtension()
+    {
+        $grantExtension = $this->getMock('FOS\OAuthServerBundle\Storage\GrantExtensionInterface');
+        $grantExtension
+            ->expects($this->once())
+            ->method('checkGrantExtension')
+            ->will($this->returnValue(true))
+        ;
+        $this->storage->setGrantExtension('https://friendsofsymfony.com/grants/foo', $grantExtension);
+
+        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $this->assertTrue($this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/foo', array(), array()));
+    }
+
+    /**
+     * @expectedException \OAuth2\OAuth2ServerException
+     */
+    public function testInvalidGrantExtension()
+    {
+        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/bar', array(), array());
+    }
+
+    public function testDoubleSetGrantExtension()
+    {
+        $grantExtension = $this->getMock('FOS\OAuthServerBundle\Storage\GrantExtensionInterface');
+        $grantExtension2 = $this->getMock('FOS\OAuthServerBundle\Storage\GrantExtensionInterface');
+        $this->storage->setGrantExtension($uri = 'https://friendsofsymfony.com/grants/foo', $grantExtension);
+        $this->storage->setGrantExtension($uri, $grantExtension2);
+
+        $storageClass = new \ReflectionClass(get_class($this->storage));
+        $grantExtensionsProperty = $storageClass->getProperty('grantExtensions');
+        $grantExtensionsProperty->setAccessible(true);
+        $grantExtensions = $grantExtensionsProperty->getValue($this->storage);
+
+        $this->assertEquals($grantExtension2, $grantExtensions[$uri]);
+    }
 }
 
 class User implements UserInterface
