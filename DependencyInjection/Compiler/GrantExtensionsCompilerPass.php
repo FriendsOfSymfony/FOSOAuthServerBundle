@@ -15,7 +15,14 @@ class GrantExtensionsCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $storageDefinition = $container->findDefinition('fos_oauth_server.storage');
-        $storageClass = new \ReflectionClass($storageDefinition->getClass());
+
+        // if the fos_oauth_server.storage is overloaded ->getClass() return the given class from services.xml like %class_name%
+        if(strpos($storageDefinition->getClass(), '%') === false)
+            $storageClass = new \ReflectionClass($storageDefinition->getClass());
+        else
+            // get the class via param before replace % character
+            $storageClass = new \ReflectionClass($container->getParameter(str_replace ('%', '', $storageDefinition->getClass ())));
+
         if (!$storageClass->implementsInterface('FOS\OAuthServerBundle\Storage\GrantExtensionDispatcherInterface')) {
             return;
         }
