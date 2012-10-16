@@ -15,7 +15,8 @@ class GrantExtensionsCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $storageDefinition = $container->findDefinition('fos_oauth_server.storage');
-        $storageClass = new \ReflectionClass($storageDefinition->getClass());
+        $className = $container->getParameterBag()->resolveValue($storageDefinition->getClass());
+        $storageClass = new \ReflectionClass($className);
         if (!$storageClass->implementsInterface('FOS\OAuthServerBundle\Storage\GrantExtensionDispatcherInterface')) {
             return;
         }
