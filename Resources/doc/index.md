@@ -231,6 +231,9 @@ class AuthCode extends BaseAuthCode
 }
 ```
 
+__Note__: If you don't have `auto_mapping` activated in your doctrine configuration you need to add 
+`FOSOAuthServerBundle` to your mappings in `config.yml`.
+
 #### Propel
 
 A `schema.xml` is provided with this bundle to generate Propel classes.
