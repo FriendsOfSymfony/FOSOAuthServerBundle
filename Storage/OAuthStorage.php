@@ -171,8 +171,8 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
                     || !$user->isAccountNonLocked()
                     || !$user->isCredentialsNonExpired()
                     || !$user->isEnabled())
-                return false;
-			}
+                	return false;
+		}
             
             $encoder = $this->encoderFactory->getEncoder($user);
 
