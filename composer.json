@@ -4,6 +4,7 @@
     "description": "Symfony2 OAuth Server Bundle",
     "keywords": ["oauth", "oauth2", "server"],
     "homepage": "http://friendsofsymfony.github.com",
+    "license": "MIT",
     "authors": [
         {
           "name": "Arnaud Le Blanc",
@@ -21,12 +22,12 @@
         "symfony/security-bundle": ">=2.1,<2.3-dev"
     },
     "require-dev": {
-        "doctrine/orm": "2.*",
-        "doctrine/mongodb-odm": "dev-master",
-        "willdurand/propel-typehintable-behavior": "dev-master",
-        "symfony/class-loader": "2.1.*",
-        "symfony/security-bundle": "2.1.*",
-        "doctrine/doctrine-bundle": "1.0.*"
+        "symfony/class-loader": ">=2.1,<2.3-dev",
+        "symfony/yaml": ">=2.1,<2.3-dev",
+        "willdurand/propel-typehintable-behavior": "1.0.*",
+        "doctrine/mongodb-odm": "*",
+        "doctrine/doctrine-bundle": "*",
+        "doctrine/orm": ">=2.2,<2.5-dev"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
