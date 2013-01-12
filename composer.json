@@ -17,8 +17,8 @@
     "require": {
         "php": ">=5.3.3",
         "friendsofsymfony/oauth2-php": "1.0.*",
-        "symfony/framework-bundle": "2.1.*",
-        "symfony/security-bundle": "2.1.*"
+        "symfony/framework-bundle": ">=2.1,<2.3-dev",
+        "symfony/security-bundle": ">=2.1,<2.3-dev"
     },
     "require-dev": {
         "doctrine/orm": "2.*",
