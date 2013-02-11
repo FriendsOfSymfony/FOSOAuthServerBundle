@@ -16,9 +16,13 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\User\UserChecker;
+
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
+use OAuth2\OAuth2AuthenticateException;
 
 /**
  * OAuthProvider class.
@@ -35,15 +39,20 @@ class OAuthProvider implements AuthenticationProviderInterface
      * @var \OAuth2\OAuth2
      */
     protected $serverService;
+    /**
+     * @var \Symfony\Component\Security\Core\User\UserChecker
+     */
+    protected $userChecker;
 
     /**
      * @param \Symfony\Component\Security\Core\User\UserProviderInterface $userProvider      The user provider.
      * @param \OAuth2\OAuth2 $serverService The OAuth2 server service.
      */
-    public function __construct(UserProviderInterface $userProvider, OAuth2 $serverService)
+    public function __construct(UserProviderInterface $userProvider, OAuth2 $serverService, UserChecker $userChecker)
     {
         $this->userProvider  = $userProvider;
         $this->serverService = $serverService;
+        $this->userChecker = $userChecker;
     }
 
     /**
@@ -61,6 +70,16 @@ class OAuthProvider implements AuthenticationProviderInterface
             if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
                 $scope = $accessToken->getScope();
                 $user  = $accessToken->getUser();
+
+                try {
+                    $this->userChecker->checkPostAuth($user);
+                } catch (AccountStatusException $e) {
+                    throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                    OAuth2::TOKEN_TYPE_BEARER,
+                    $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
+                    'access_denied',
+                    $e->getMessage());
+                }
 
                 $roles = (null !== $user) ? $user->getRoles() : array();
 
