@@ -21,13 +21,15 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
     protected $userProvider;
     protected $provider;
     protected $serverService;
+    protected $userChecker;
 
     public function setUp()
     {
         $this->user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
         $this->userProvider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $this->serverService = $this->getMock('OAuth2\OAuth2', array('verifyAccessToken'), array(), '', false);
-        $this->provider = new OAuthProvider($this->userProvider, $this->serverService);
+        $this->userChecker = $this->getMock('Symfony\Component\Security\Core\User\UserCheckerInterface');
+        $this->provider = new OAuthProvider($this->userProvider, $this->serverService, $this->userChecker);
     }
 
     public function testAuthenticateReturnsTokenIfValid()
