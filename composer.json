@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "friendsofsymfony/oauth2-php": "1.0.*",
+        "friendsofsymfony/oauth2-php": "~1.0.4",
         "symfony/framework-bundle": ">=2.1,<2.3-dev",
         "symfony/security-bundle": ">=2.1,<2.3-dev"
     },
