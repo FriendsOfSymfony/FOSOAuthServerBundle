@@ -25,7 +25,7 @@
             <argument>%fos_oauth_server.model.auth_code.class%</argument>
         </service>
 
-        <service id="fos_oauth_server.entity_manager" factory-service="doctrine" factory-method="getEntityManager" class="Doctrine\ORM\EntityManager" public="false">
+        <service id="fos_oauth_server.entity_manager" factory-service="doctrine" factory-method="getManager" class="Doctrine\ORM\EntityManager" public="false">
             <argument>%fos_oauth_server.model_manager_name%</argument>
         </service>
     </services>
