@@ -523,6 +523,29 @@ fos_oauth_server:
         user_provider: fos_user.user_manager
 ```
 
+## Creating A Client
+
+Before you can generate tokens, you need to create a Client using the ClientManager.
+
+``` php
+$clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+$client = $clientManager->createClient();
+$client->setRedirectUris(array('http://www.example.com'));
+$client->setAllowedGrantTypes(array('token', 'authorization_code'));
+$clientManager->updateClient($client);
+```
+
+Once you have created a client, you need to pass its `publicId` to the authorize endpoint. You also need 
+to specify a redirect uri as sell as a response type. 
+
+```php
+return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
+    'client_id'     => $client->getPublicId(),
+    'redirect_uri'  => 'http://www.example.com',
+    'response_type' => 'code'
+)));
+```
+
 ## Usage
 
 The `token` endpoint is at `/oauth/v2/token` by default (see `Resources/config/routing/token.xml`).
