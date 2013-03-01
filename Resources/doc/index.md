@@ -536,7 +536,7 @@ $clientManager->updateClient($client);
 ```
 
 Once you have created a client, you need to pass its `publicId` to the authorize endpoint. You also need 
-to specify a redirect uri as sell as a response type. 
+to specify a redirect uri as well as a response type. 
 
 ```php
 return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
