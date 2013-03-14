@@ -6,8 +6,8 @@
 
     <mapped-superclass name="FOS\OAuthServerBundle\Document\Client">
         <field name="randomId" fieldName="randomId" type="string" />
-        <field name="redirectUris" fieldName="redirectUris" type="hash" />
+        <field name="redirectUris" fieldName="redirectUris" type="collection" />
         <field name="secret" fieldName="secret" type="string" />
-        <field name="allowedGrantTypes" fieldName="allowedGrantTypes" type="hash" />
+        <field name="allowedGrantTypes" fieldName="allowedGrantTypes" type="collection" />
     </mapped-superclass>
 </doctrine-mongo-mapping>
