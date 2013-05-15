@@ -16,6 +16,7 @@ use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -134,6 +135,9 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $token->setScope($scope);
 
         if (null !== $data) {
+            if (!$data instanceof UserInterface) {
+                $data = $this->userProvider->loadUserByUsername($data);
+            }
             $token->setUser($data);
         }
 
@@ -229,6 +233,9 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $token->setScope($scope);
 
         if (null !== $data) {
+            if (!$data instanceof UserInterface) {
+                $data = $this->userProvider->loadUserByUsername($data);
+            }
             $token->setUser($data);
         }
 

@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
@@ -61,6 +62,10 @@ class OAuthProvider implements AuthenticationProviderInterface
             if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
                 $scope = $accessToken->getScope();
                 $user  = $accessToken->getUser();
+
+                if (!$user instanceof UserInterface) {
+                    $user = $this->userProvider->loadUserByUsername($user);
+                }
 
                 $roles = (null !== $user) ? $user->getRoles() : array();
 
