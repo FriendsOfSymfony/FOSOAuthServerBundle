@@ -34,6 +34,21 @@ All available configuration options are listed below with their default values.
                 # Example
                 # supported_scopes: string
 
+                # Changing tokens and authcode lifetime
+                #access_token_lifetime: 3600
+                #refresh_token_lifetime: 1209600
+                #auth_code_lifetime: 30
+                
+                # Token type to respond with. Currently only "Bearer" supported.
+                #token_type: string
+
+                #realm:
+
+                # Enforce redirect_uri on input for both authorize and token steps.
+                #enforce_redirect: true or false
+
+                # Enforce state to be passed in authorization (see RFC 6749, section 10.12)
+                #enforce_state: true or false
         template:
             engine:                 twig
 
