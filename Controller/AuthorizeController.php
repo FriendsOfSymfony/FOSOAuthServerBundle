@@ -64,11 +64,11 @@ class AuthorizeController extends ContainerAware
 
             return $this->container
                 ->get('fos_oauth_server.server')
-                ->finishClientAuthorization(true, $user, null, $scope);
+                ->finishClientAuthorization(true, $user, $request, $scope);
         }
 
         if (true === $formHandler->process()) {
-            return $this->processSuccess($user, $formHandler);
+            return $this->processSuccess($user, $formHandler, $request);
         }
 
         return $this->container->get('templating')->renderResponse(
@@ -86,7 +86,7 @@ class AuthorizeController extends ContainerAware
      *
      * @return Response
      */
-    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler)
+    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
     {
         if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
             $this->container->get('security.context')->setToken(null);
@@ -101,7 +101,7 @@ class AuthorizeController extends ContainerAware
         try {
             return $this->container
                 ->get('fos_oauth_server.server')
-                ->finishClientAuthorization($formHandler->isAccepted(), $user, null, $formHandler->getScope());
+                ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope());
         } catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
