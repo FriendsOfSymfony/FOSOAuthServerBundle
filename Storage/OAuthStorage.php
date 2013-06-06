@@ -17,6 +17,7 @@ use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use OAuth2\OAuth2;
@@ -63,6 +64,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     protected $encoderFactory;
 
     /**
+     * @var \Symfony\Component\Security\Core\User\UserCheckerInterface
+     */
+    protected $userChecker;
+
+    /**
      * @var array [uri] => GrantExtensionInterface
      */
     protected $grantExtensions;
@@ -74,10 +80,12 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
      * @param \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface $authCodeManager
      * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface $userProvider
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
+     * @param \Symfony\Component\Security\Core\User\UserCheckerInterface $userChecker
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
         RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
-        UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
+        UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null,
+        UserCheckerInterface $userChecker)
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
@@ -85,6 +93,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $this->authCodeManager = $authCodeManager;
         $this->userProvider = $userProvider;
         $this->encoderFactory = $encoderFactory;
+        $this->userChecker = $userChecker;
 
         $this->grantExtensions = array();
     }
@@ -159,6 +168,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
 
         try {
             $user = $this->userProvider->loadUserByUsername($username);
+            $this->userChecker->checkPostAuth($user);
         } catch(AuthenticationException $e) {
             return false;
         }
