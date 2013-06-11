@@ -97,7 +97,10 @@ class AuthorizeController extends ContainerAware
             OAuthEvent::POST_AUTHORIZATION_PROCESS,
             new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
         );
-
+        
+        if (!$request->query->all() && $request->request->has('fos_oauth_server_authorize_form'))
+            $request->query->add($request->get('fos_oauth_server_authorize_form'));
+        
         try {
             return $this->container
                 ->get('fos_oauth_server.server')
