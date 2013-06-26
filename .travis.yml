@@ -3,10 +3,14 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
+
+env:
+  - MONGO_VERSION=1.3.7
 
 before_script:
-  - pecl -q install mongo && echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - pecl -q install -f mongo-${MONGO_VERSION} && echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - curl -s http://getcomposer.org/installer | php
-  - php composer.phar --dev install
+  - php composer.phar install --dev --prefer-dist --no-interaction
 
 phpunit: phpunit --coverage-text
