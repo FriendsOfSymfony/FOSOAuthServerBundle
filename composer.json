@@ -18,15 +18,15 @@
     "require": {
         "php": ">=5.3.3",
         "friendsofsymfony/oauth2-php": "~1.0.4",
-        "symfony/framework-bundle": ">=2.1,<2.4-dev",
-        "symfony/security-bundle": ">=2.1,<2.4-dev"
+        "symfony/framework-bundle": "~2.1",
+        "symfony/security-bundle": "~2.1"
     },
     "require-dev": {
-        "symfony/class-loader": ">=2.1,<2.4-dev",
-        "symfony/yaml": ">=2.1,<2.4-dev",
+        "symfony/class-loader": "~2.1",
+        "symfony/yaml": "~2.1",
         "willdurand/propel-typehintable-behavior": "1.0.*",
-        "doctrine/mongodb-odm": "*",
-        "doctrine/doctrine-bundle": "*",
+        "doctrine/mongodb-odm": "1.0.*@dev",
+        "doctrine/doctrine-bundle": "~1.0",
         "doctrine/orm": ">=2.2,<2.5-dev"
     },
     "suggest": {
@@ -38,6 +38,5 @@
     "autoload": {
         "psr-0": { "FOS\\OAuthServerBundle": "" }
     },
-    "target-dir": "FOS/OAuthServerBundle",
-    "minimum-stability": "dev"
+    "target-dir": "FOS/OAuthServerBundle"
 }
