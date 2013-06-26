@@ -22,4 +22,9 @@ interface AuthCodeInterface extends TokenInterface, IOAuth2AuthCode
      * @param string $redirectUri
      */
     function setRedirectUri($redirectUri);
+
+    /**
+     * @param boolean $used
+     */
+    function setUsed($used);
 }
