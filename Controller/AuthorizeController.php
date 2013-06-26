@@ -98,6 +98,11 @@ class AuthorizeController extends ContainerAware
             new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
         );
 
+        $formName = $this->container->get('fos_oauth_server.authorize.form')->getName();
+        if (!$request->query->all() && $request->request->has($formName)) {
+            $request->query->add($request->request->get($formName));
+        }
+
         try {
             return $this->container
                 ->get('fos_oauth_server.server')
