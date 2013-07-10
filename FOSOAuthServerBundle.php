@@ -35,7 +35,6 @@ class FOSOAuthServerBundle extends Bundle
             $extension->addSecurityListenerFactory(new OAuthFactory());
         }
 
-        $container->addCompilerPass(new InjectUserProviderCompilerPass());
         $container->addCompilerPass(new GrantExtensionsCompilerPass());
     }
 }
