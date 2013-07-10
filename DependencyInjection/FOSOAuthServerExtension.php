@@ -75,10 +75,7 @@ class FOSOAuthServerExtension extends Extension
             $this->loadAuthorize($config['authorize'], $container, $loader);
         }
 
-        if (null !== $userProvider = $config['service']['user_provider']) {
-            $container->getDefinition($config['service']['storage'])
-                ->replaceArgument(4, new Reference($userProvider));
-        }
+        $container->setParameter('fos_oauth_server.user_provider.service', $config['service']['user_provider']);    
     }
 
     /**
