@@ -43,7 +43,9 @@ class FOSOAuthServerExtension extends Extension
         $container->setAlias('fos_oauth_server.access_token_manager', $config['service']['access_token_manager']);
         $container->setAlias('fos_oauth_server.refresh_token_manager', $config['service']['refresh_token_manager']);
         $container->setAlias('fos_oauth_server.auth_code_manager', $config['service']['auth_code_manager']);
-        $container->setAlias('fos_oauth_server.custom_user_provider', new Alias($config['service']['user_provider'], false));
+		if (null !== $config['service']['user_provider']) {
+			$container->setAlias('fos_oauth_server.custom_user_provider', new Alias($config['service']['user_provider'], false));
+		}
 
         $container->setParameter('fos_oauth_server.server.options', $config['service']['options']);
 
