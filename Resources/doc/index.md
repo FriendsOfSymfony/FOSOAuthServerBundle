@@ -525,14 +525,10 @@ fos_oauth_server:
 
 ## Creating A Client
 
-Before you can generate tokens, you need to create a Client using the ClientManager.
+Before you can generate tokens, you need to create a Client using the CreateClientCommand.
 
-``` php
-$clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
-$client = $clientManager->createClient();
-$client->setRedirectUris(array('http://www.example.com'));
-$client->setAllowedGrantTypes(array('token', 'authorization_code'));
-$clientManager->updateClient($client);
+``` bash
+$ app/console fos:oauth-server:create-client --redirect-uri="http://www.example.com" --grant-type="authorization_code" --grant-type="refresh_token" my-client
 ```
 
 Once you have created a client, you need to pass its `publicId` to the authorize endpoint. You also need 
