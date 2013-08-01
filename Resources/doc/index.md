@@ -140,6 +140,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"token"})})
  */
 class AccessToken extends BaseAccessToken
 {
@@ -174,6 +175,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"token"})})
  */
 class RefreshToken extends BaseRefreshToken
 {
@@ -208,6 +210,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"token"})})
  */
 class AuthCode extends BaseAuthCode
 {
