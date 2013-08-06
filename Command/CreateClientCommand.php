@@ -1,8 +1,4 @@
 <?php
-/**
- * @author Burak Seydioglu
- * @link http://blog.logicexception.com/2012/04/securing-syfmony2-rest-service-wiith.html
- */
 
 namespace FOS\OAuthServerBundle\Command;
 
@@ -12,6 +8,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @author Burak Seydioglu
+ * @link http://blog.logicexception.com/2012/04/securing-syfmony2-rest-service-wiith.html
+ */
 class CreateClientCommand extends ContainerAwareCommand
 {
     protected function configure()
