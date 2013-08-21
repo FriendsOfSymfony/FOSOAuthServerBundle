@@ -50,7 +50,7 @@ class BingoGrantExtension implements GrantExtensionInterface
             // Both numbers were guessed, we grant an access_token linked
             // to a user
             return array(
-                'data' => $userManager->findRandomUser();
+                'data' => $userManager->findRandomUser()
             );
         }
 
