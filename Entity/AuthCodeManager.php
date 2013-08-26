@@ -36,7 +36,7 @@ class AuthCodeManager extends BaseAuthCodeManager
      * @param \Doctrine\ORM\EntityManager $em
      * @param string $class
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManagerInterface $em, $class)
     {
         $this->em = $em;
         $this->repository = $em->getRepository($class);
