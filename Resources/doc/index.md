@@ -465,10 +465,8 @@ security:
             pattern:    ^/api
             fos_oauth:  true
             stateless:  true
-
-    access_control:
-        # You can omit this if /api can be accessed both authenticated and anonymously
-        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
+            # Add it if you want /api to be accessed both authenticated and anonymously
+            # anonymous: true
 ```
 
 The URLs under `/api` will use OAuth2 to authenticate users.
