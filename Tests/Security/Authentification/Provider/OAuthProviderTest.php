@@ -14,6 +14,7 @@ namespace FOS\OAuthServerBundle\Tests\Security\Authentication\Provider;
 use FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use FOS\OAuthServerBundle\Model\AccessToken;
+use FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\Client;
 
 class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -147,5 +148,26 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 
         $roles = $result->getRoles();
         $this->assertCount(0, $roles);
+    }
+
+    public function testAuthenticateReturnsTokenClient()
+    {
+        $token = new OAuthToken();
+        $token->setToken('x');
+
+        $client = new Client();
+
+        $accessToken = new AccessToken();
+        $accessToken->setClient($client);
+
+        $this->serverService->expects($this->once())
+            ->method('verifyAccessToken')
+            ->with('x')
+            ->will($this->returnValue($accessToken));
+
+        $result = $this->provider->authenticate($token);
+
+        $this->assertInstanceOf('FOS\OAuthServerBundle\Model\ClientInterface', $result->getAttribute('client'));
+        $this->assertSame($client, $result->getAttribute('client'));
     }
 }
