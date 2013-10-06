@@ -465,14 +465,60 @@ security:
             pattern:    ^/api
             fos_oauth:  true
             stateless:  true
+            anonymous:  false # can be omitted as its default value
 
     access_control:
-        # You can omit this if /api can be accessed both authenticated and anonymously
         - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
 ```
 
 The URLs under `/api` will use OAuth2 to authenticate users.
 
+#### Anonymous access
+
+Sometimes you need to allow your api to be accessed without authorization. In order to do that lets adjust
+above-mentioned example configuration.
+
+``` yaml
+# app/config/security.yml
+security:
+    firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            # Add your favorite authentication process here
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  true # note that anonymous access is now enabled
+
+    # also note absence of "access_control" section
+```
+
+From now on all of your api resources can be accessed without authorization. But what if one or more of them should be
+secured anyway or/and require presence of authenticated user? It's easy! You can do that manually by adding few lines of
+code at the beginning of all of your secured actions like in the example below:
+
+``` php
+// [...]
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+class YourApiController extends Controller
+{
+    public function getSecureResourceAction()
+    {
+        # this is it
+        if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedException();
+        }
+
+        // [...]
+    }
+```
 
 ### Step 5: Configure FOSOAuthServerBundle
 
