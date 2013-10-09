@@ -22,6 +22,11 @@ class AuthCode extends Token implements AuthCodeInterface
     protected $redirectUri;
 
     /**
+     * @var boolean
+     */
+    protected $used;
+
+    /**
      * {@inheritdoc}
      */
     public function setRedirectUri($redirectUri)
@@ -35,5 +40,21 @@ class AuthCode extends Token implements AuthCodeInterface
     public function getRedirectUri()
     {
         return $this->redirectUri;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUsed($used)
+    {
+        $this->used = $used;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isUsed()
+    {
+        return $this->used;
     }
 }
