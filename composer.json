@@ -38,5 +38,6 @@
     "autoload": {
         "psr-0": { "FOS\\OAuthServerBundle": "" }
     },
-    "target-dir": "FOS/OAuthServerBundle"
+    "target-dir": "FOS/OAuthServerBundle",
+    "minimum-stability": "dev"
 }
