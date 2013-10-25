@@ -262,4 +262,13 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
 
         return $grantExtension->checkGrantExtension($client, $inputData, $authHeaders);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function markAuthCodeAsUsed($code)
+    {
+        $authCode = $this->authCodeManager->findAuthCodeByToken($code);
+        $this->authCodeManager->deleteAuthCode($authCode);
+    }    
 }
