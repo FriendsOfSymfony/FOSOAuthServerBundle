@@ -269,6 +269,8 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function markAuthCodeAsUsed($code)
     {
         $authCode = $this->authCodeManager->findAuthCodeByToken($code);
-        $this->authCodeManager->deleteAuthCode($authCode);
+        if(null !== $authCode) {
+            $this->authCodeManager->deleteAuthCode($authCode);
+        }
     }    
 }
