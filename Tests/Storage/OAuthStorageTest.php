@@ -461,6 +461,40 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($grantExtension2, $grantExtensions[$uri]);
     }
+
+    public function testMarkAuthCodeAsUsedIfAuthCodeFound()
+    {
+        $authCode = $this->getMock('FOS\OAuthServerBundle\Model\AuthCodeInterface');
+
+        $this->authCodeManager->expects($this->atLeastOnce())
+            ->method('findAuthCodeByToken')
+            ->with('123_abc')
+            ->will($this->returnValue($authCode))
+        ;
+
+        $this->authCodeManager->expects($this->atLeastOnce())
+            ->method('deleteAuthCode')
+            ->with($authCode)
+            ->will($this->returnValue(null))
+        ;
+
+        $this->storage->markAuthCodeAsUsed('123_abc');
+    }
+
+    public function testMarkAuthCodeAsUsedIfAuthCodeNotFound()
+    {
+        $this->authCodeManager->expects($this->atLeastOnce())
+            ->method('findAuthCodeByToken')
+            ->with('123_abc')
+            ->will($this->returnValue(null))
+        ;
+
+        $this->authCodeManager->expects($this->never())
+            ->method('deleteAuthCode')
+        ;
+
+        $this->storage->markAuthCodeAsUsed('123_abc');
+    }
 }
 
 class User implements UserInterface
