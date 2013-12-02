@@ -21,6 +21,7 @@
             <argument type="service" id="security.context"/>
             <argument type="service" id="security.authentication.manager" />
             <argument type="service" id="fos_oauth_server.server" />
+            <argument type="service" id="event_dispatcher" on-invalid="ignore" />
         </service>
 
         <service id="fos_oauth_server.security.entry_point" class="%fos_oauth_server.security.entry_point.class%" public="false">

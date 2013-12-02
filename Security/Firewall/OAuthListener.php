@@ -15,6 +15,7 @@ use FOS\OAuthServerBundle\Event\OAuthLoginEvent;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -46,15 +47,22 @@ class OAuthListener implements ListenerInterface
     protected $serverService;
 
     /**
+     * @var EventDispatcherInterface $eventDispatcher
+     */
+    protected $eventDispatcher;
+
+
+    /**
      * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext The security context.
      * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authenticationManager The authentication manager.
      * @param \OAuth2\OAuth2 $serverService
      */
-    public function __construct(SecurityContextInterface $securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
+    public function __construct(SecurityContextInterface $securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService, EventDispatcherInterface $eventDispatcher = null)
     {
         $this->securityContext = $securityContext;
         $this->authenticationManager = $authenticationManager;
         $this->serverService = $serverService;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -75,8 +83,10 @@ class OAuthListener implements ListenerInterface
             if ($returnValue instanceof TokenInterface) {
 
                 // dispatch login event
-                $loginEvent = new OAuthLoginEvent($returnValue);
-                $event->getDispatcher()->dispatch(OAuthLoginEvent::LOGIN, $loginEvent);
+                if ($this->eventDispatcher) {
+                    $loginEvent = new OAuthLoginEvent($returnValue);
+                    $this->eventDispatcher->dispatch(OAuthLoginEvent::LOGIN, $loginEvent);
+                }
 
                 return $this->securityContext->setToken($returnValue);
             }
