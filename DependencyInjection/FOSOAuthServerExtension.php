@@ -27,7 +27,7 @@ class FOSOAuthServerExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor     = new Processor();
-        $configuration = new Configuration($container->get('kernel.debug'));
+        $configuration = new Configuration();
 
         $config = $processor->processConfiguration($configuration, $configs);
 
