@@ -358,7 +358,7 @@ class AuthCode extends BaseAuthCode
     <document name="Acme\ApiBundle\Document\AuthCode" db="acme" collection="oauthAuthCode" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-        <reference-one target-document="Your\Own\Entity\User" field="user" />
+        <reference-one target-document="Your\Own\Document\User" field="user" />
     </document>
     
 </doctrine-mongo-mapping>
@@ -414,7 +414,7 @@ class AccessToken extends BaseAccessToken
     <document name="Acme\ApiBundle\Document\AccessToken" db="acme" collection="oauthAccessToken" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-        <reference-one target-document="Your\Own\Entity\User" field="user" />
+        <reference-one target-document="Your\Own\Document\User" field="user" />
     </document>
     
 </doctrine-mongo-mapping>
@@ -470,7 +470,7 @@ class RefreshToken extends BaseRefreshToken
     <document name="Acme\ApiBundle\Document\RefreshToken" db="acme" collection="oauthRefreshToken" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-        <reference-one target-document="Your\Own\Entity\User" field="user" />
+        <reference-one target-document="Your\Own\Document\User" field="user" />
     </document>
     
 </doctrine-mongo-mapping>
