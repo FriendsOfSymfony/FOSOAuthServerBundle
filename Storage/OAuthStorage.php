@@ -85,7 +85,6 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $this->authCodeManager = $authCodeManager;
         $this->userProvider = $userProvider;
         $this->encoderFactory = $encoderFactory;
-
         $this->grantExtensions = array();
     }
 

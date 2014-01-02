@@ -14,6 +14,7 @@ namespace FOS\OAuthServerBundle;
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\GrantExtensionsCompilerPass;
+use FOS\OAuthServerBundle\DependencyInjection\Compiler\InjectUserProviderCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
