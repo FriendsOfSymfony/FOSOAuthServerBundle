@@ -89,7 +89,7 @@ and place your classes in it.
 
 **Warning:**
 
-> If you override the __construct() method in your classs, be sure
+> If you override the __construct() method in your classes, be sure
 > to call parent::__construct(), as the base class depends on
 > this to initialize some fields.
 
