@@ -35,7 +35,7 @@ interface TokenManagerInterface
      * @param array $criteria
      * @return TokenInterface|null
      */
-    function findTokenBy(array $criteria);
+    function findTokenBy(array $criteria, array $orderBy = null);
 
     /**
      * Retrieve a token (object) by its token string.
@@ -44,6 +44,14 @@ interface TokenManagerInterface
      * @return TokenInterface|null
      */
     function findTokenByToken($token);
+
+    /**
+     * Retrieve a last token (object) by its client.
+     *
+     * @param string $token  A client.
+     * @return TokenInterface|null
+     */
+    function findLastTokenByClient($client);
 
     /**
      * Save or update a given token.

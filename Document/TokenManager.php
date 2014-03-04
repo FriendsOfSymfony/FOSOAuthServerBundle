@@ -51,9 +51,9 @@ class TokenManager extends BaseTokenManager
     /**
      * {@inheritdoc}
      */
-    public function findTokenBy(array $criteria)
+    public function findTokenBy(array $criteria, array $orderBy = null)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->repository->findBy($criteria, $orderBy, 1);
     }
 
     /**

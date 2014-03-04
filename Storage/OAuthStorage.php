@@ -272,5 +272,14 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         if(null !== $authCode) {
             $this->authCodeManager->deleteAuthCode($authCode);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAccessTokenByClient(IOAuth2Client $client)
+    {
+
+        return $this->accessTokenManager->findTokenByClient($client);
     }    
 }
