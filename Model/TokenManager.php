@@ -36,6 +36,6 @@ abstract class TokenManager implements TokenManagerInterface
      */
     public function findTokenByClient($client)
     {
-        return $this->findTokenBy(array('client' => $client), array('expiresAt' => 'DESC'));
+        return $this->findTokenBy(array('client' => $client), array('expiresAt' => 'desc'));
     }
 }
