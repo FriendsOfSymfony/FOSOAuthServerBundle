@@ -125,7 +125,7 @@ class OAuth2 extends BaseOAuth2
   {
       $currentToken = $this->storage->getAccessTokenByClient($client);
       
-      if (true === $currentToken->hasExpired()) {
+      if (null === $currentToken || true === $currentToken->hasExpired()) {
         return false;
       }
 
