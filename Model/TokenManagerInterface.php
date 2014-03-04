@@ -51,7 +51,7 @@ interface TokenManagerInterface
      * @param string $token  A client.
      * @return TokenInterface|null
      */
-    function findLastTokenByClient($client);
+    function findTokenByClient($client);
 
     /**
      * Save or update a given token.
