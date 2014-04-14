@@ -40,7 +40,7 @@ class TokenManager extends BaseTokenManager
     /**
      * {@inheritdoc}
      */
-    public function findTokenBy(array $criteria)
+    public function findTokenBy(array $criteria, array $orderBy = null)
     {
         if (!isset($criteria['token'])) {
             return null;
@@ -48,9 +48,16 @@ class TokenManager extends BaseTokenManager
 
         $queryClass = $this->class . 'Query';
 
-        return $queryClass::create()
-            ->filterByToken($criteria['token'])
-            ->findOne();
+        $query = $queryClass::create()
+            ->filterByToken($criteria['token']);
+
+        if (null !== $orderBy) {
+            foreach ($orderBy as $columnName => $order) {
+                $query->orderBy($columnName, $order);
+            }
+        }
+
+        return $query->findOne();
     }
 
     /**
