@@ -11,19 +11,19 @@
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
 class AuthCodeManager extends BaseAuthCodeManager
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $em;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository
      */
     protected $repository;
 
@@ -33,10 +33,10 @@ class AuthCodeManager extends BaseAuthCodeManager
     protected $class;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $em
+     * @param ObjectManager $em
      * @param string $class
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(ObjectManager $em, $class)
     {
         $this->em = $em;
         $this->repository = $em->getRepository($class);

@@ -11,19 +11,19 @@
 
 namespace FOS\OAuthServerBundle\Document;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
 class AuthCodeManager extends BaseAuthCodeManager
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $dm;
 
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ODM\MongoDB\DocumentRepository
      */
     protected $repository;
 
@@ -32,7 +32,11 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     protected $class;
 
-    public function __construct(DocumentManager $dm, $class)
+    /**
+     * @param ObjectManager $dm
+     * @param string $class
+     */
+    public function __construct(ObjectManager $dm, $class)
     {
         $this->dm = $dm;
         $this->repository = $dm->getRepository($class);
