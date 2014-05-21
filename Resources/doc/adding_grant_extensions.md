@@ -2,7 +2,7 @@ Adding Grant Extensions
 =======================
 
 OAuth2 allows to use [grant extensions](http://tools.ietf.org/html/draft-ietf-oauth-v2-22#section-4.5).
-It let you define your own new *grant_types*, when legacy grant_types do not cover your requirements.
+It lets you define your own new *grant_types*, when legacy grant_types do not cover your requirements.
 
 Like classic grants, the grant extensions still requires valid client credentials, and the grant extension has to be added on the `allowedGrantTypes` property of the client.
 
