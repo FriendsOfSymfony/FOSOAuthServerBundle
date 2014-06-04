@@ -40,7 +40,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     {
         $this->em = $em;
         $this->repository = $em->getRepository($class);
-        $this->class = $class;
+        $this->class = $this->repository->getClassName();
     }
 
     /**

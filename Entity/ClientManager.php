@@ -36,7 +36,7 @@ class ClientManager extends BaseClientManager
     {
         $this->em = $em;
         $this->repository = $em->getRepository($class);
-        $this->class = $class;
+        $this->class = $this->repository->getClassName();
     }
 
     /**
