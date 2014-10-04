@@ -16,6 +16,7 @@
             <argument type="service" id="fos_oauth_server.auth_code_manager" />
             <argument type="service" id="fos_oauth_server.user_provider" on-invalid="null" />
             <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="security.user_checker" />
         </service>
 
         <service id="fos_oauth_server.server" class="%fos_oauth_server.server.class%">
