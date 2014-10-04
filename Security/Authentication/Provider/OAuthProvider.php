@@ -47,6 +47,7 @@ class OAuthProvider implements AuthenticationProviderInterface
     /**
      * @param \Symfony\Component\Security\Core\User\UserProviderInterface $userProvider      The user provider.
      * @param \OAuth2\OAuth2 $serverService The OAuth2 server service.
+     * @param \Symfony\Component\Security\Core\User\UserCheckerInterface $userChecker The Symfony User Checker for Pre and Post auth checks
      */
     public function __construct(UserProviderInterface $userProvider, OAuth2 $serverService, UserCheckerInterface $userChecker)
     {
@@ -70,6 +71,22 @@ class OAuthProvider implements AuthenticationProviderInterface
             if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
                 $scope = $accessToken->getScope();
                 $user  = $accessToken->getUser();
+
+                if (null !== $user) {
+
+                    try {
+                        $this->userChecker->checkPreAuth($user);
+                    } catch (AccountStatusException $e) {
+                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                            OAuth2::TOKEN_TYPE_BEARER,
+                            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
+                            'access_denied',
+                            $e->getMessage()
+                        );
+                    }
+
+                    $token->setUser($user);
+                }
 
                 $roles = (null !== $user) ? $user->getRoles() : array();
 
