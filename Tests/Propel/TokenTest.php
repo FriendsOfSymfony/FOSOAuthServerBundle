@@ -26,7 +26,7 @@ class TokenTest extends PropelTestCase
         $this->assertSame($expect, $token->hasExpired());
     }
 
-    static public function getTestHasExpiredData()
+    public static function getTestHasExpiredData()
     {
         return array(
             array(time() + 60, false),

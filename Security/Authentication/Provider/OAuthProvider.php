@@ -12,7 +12,6 @@
 namespace FOS\OAuthServerBundle\Security\Authentication\Provider;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -45,9 +44,9 @@ class OAuthProvider implements AuthenticationProviderInterface
     protected $userChecker;
 
     /**
-     * @param \Symfony\Component\Security\Core\User\UserProviderInterface $userProvider      The user provider.
-     * @param \OAuth2\OAuth2 $serverService The OAuth2 server service.
-     * @param \Symfony\Component\Security\Core\User\UserCheckerInterface $userChecker The Symfony User Checker for Pre and Post auth checks
+     * @param \Symfony\Component\Security\Core\User\UserProviderInterface $userProvider  The user provider.
+     * @param \OAuth2\OAuth2                                              $serverService The OAuth2 server service.
+     * @param \Symfony\Component\Security\Core\User\UserCheckerInterface  $userChecker   The Symfony User Checker for Pre and Post auth checks
      */
     public function __construct(UserProviderInterface $userProvider, OAuth2 $serverService, UserCheckerInterface $userChecker)
     {
@@ -123,7 +122,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                 // Symfony 2.1
                 throw new AuthenticationException('OAuth2 authentication failed', null, 0, $e);
             }
-            
+
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
         }
 

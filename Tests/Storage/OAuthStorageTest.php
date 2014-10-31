@@ -136,7 +136,7 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new AccessToken));
         $this->accessTokenManager->expects($this->once())
             ->method('updateToken')
-            ->will($this->returnCallback(function($token) use (&$savedToken) {
+            ->will($this->returnCallback(function ($token) use (&$savedToken) {
                 $savedToken = $token;
             }));
 
@@ -165,7 +165,7 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new AccessToken));
         $this->accessTokenManager->expects($this->once())
             ->method('updateToken')
-            ->will($this->returnCallback(function($token) use (&$savedToken) {
+            ->will($this->returnCallback(function ($token) use (&$savedToken) {
             $savedToken = $token;
         }));
 
@@ -217,7 +217,7 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new RefreshToken));
         $this->refreshTokenManager->expects($this->once())
             ->method('updateToken')
-            ->will($this->returnCallback(function($token) use (&$savedToken) {
+            ->will($this->returnCallback(function ($token) use (&$savedToken) {
                 $savedToken = $token;
             }));
 
@@ -246,7 +246,7 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new RefreshToken));
         $this->refreshTokenManager->expects($this->once())
             ->method('updateToken')
-            ->will($this->returnCallback(function($token) use (&$savedToken) {
+            ->will($this->returnCallback(function ($token) use (&$savedToken) {
             $savedToken = $token;
         }));
 
@@ -383,7 +383,7 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new AuthCode));
         $this->authCodeManager->expects($this->once())
             ->method('updateAuthCode')
-            ->will($this->returnCallback(function($code) use (&$savedCode) {
+            ->will($this->returnCallback(function ($code) use (&$savedCode) {
                 $savedCode = $code;
             }));
 

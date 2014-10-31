@@ -76,7 +76,7 @@ class TokenManager extends BaseTokenManager
     /**
      * {@inheritdoc}
      */
-    function deleteExpired()
+    public function deleteExpired()
     {
         $qb = $this->repository->createQueryBuilder('t');
         $qb

@@ -47,7 +47,6 @@ class TokenManager extends BaseTokenManager
         return $this->class;
     }
 
-
     /**
      * {@inheritdoc}
      */

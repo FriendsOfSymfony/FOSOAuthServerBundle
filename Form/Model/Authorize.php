@@ -47,7 +47,7 @@ class Authorize
     public $scope;
 
     /**
-     * @param bool $accepted
+     * @param bool  $accepted
      * @param array $query
      */
     public function __construct($accepted, array $query = array())

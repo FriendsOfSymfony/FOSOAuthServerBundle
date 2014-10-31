@@ -68,11 +68,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     protected $grantExtensions;
 
     /**
-     * @param \FOS\OAuthServerBundle\Model\ClientManagerInterface $clientManager
-     * @param \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface $accessTokenManager
-     * @param \FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface $refreshTokenManager
-     * @param \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface $authCodeManager
-     * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface $userProvider
+     * @param \FOS\OAuthServerBundle\Model\ClientManagerInterface                   $clientManager
+     * @param \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface              $accessTokenManager
+     * @param \FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface             $refreshTokenManager
+     * @param \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface                 $authCodeManager
+     * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface      $userProvider
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
@@ -159,7 +159,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
 
         try {
             $user = $this->userProvider->loadUserByUsername($username);
-        } catch(AuthenticationException $e) {
+        } catch (AuthenticationException $e) {
             return false;
         }
 
@@ -262,15 +262,15 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
 
         return $grantExtension->checkGrantExtension($client, $inputData, $authHeaders);
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function markAuthCodeAsUsed($code)
     {
         $authCode = $this->authCodeManager->findAuthCodeByToken($code);
-        if(null !== $authCode) {
+        if (null !== $authCode) {
             $this->authCodeManager->deleteAuthCode($authCode);
         }
-    }    
+    }
 }

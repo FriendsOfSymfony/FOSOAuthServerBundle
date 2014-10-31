@@ -13,7 +13,7 @@ namespace FOS\OAuthServerBundle\Util;
 
 class Random
 {
-    static public function generateToken()
+    public static function generateToken()
     {
         $bytes = false;
         if (function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win')) {

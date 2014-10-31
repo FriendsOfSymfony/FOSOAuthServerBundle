@@ -13,7 +13,6 @@ namespace FOS\OAuthServerBundle\Security\Firewall;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
-use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -45,9 +44,9 @@ class OAuthListener implements ListenerInterface
     protected $serverService;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext The security context.
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface                      $securityContext       The security context.
      * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authenticationManager The authentication manager.
-     * @param \OAuth2\OAuth2 $serverService
+     * @param \OAuth2\OAuth2                                                                 $serverService
      */
     public function __construct(SecurityContextInterface $securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
@@ -57,7 +56,7 @@ class OAuthListener implements ListenerInterface
     }
 
     /**
-     * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event   The event.
+     * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event The event.
      */
     public function handle(GetResponseEvent $event)
     {

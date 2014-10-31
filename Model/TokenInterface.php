@@ -19,35 +19,35 @@ interface TokenInterface extends IOAuth2Token
     /**
      * @param int $timestamp
      */
-    function setExpiresAt($timestamp);
+    public function setExpiresAt($timestamp);
 
     /**
      * @return int
      */
-    function getExpiresAt();
+    public function getExpiresAt();
 
     /**
      * @param string $token
      */
-    function setToken($token);
+    public function setToken($token);
 
     /**
      * @param string $scope
      */
-    function setScope($scope);
+    public function setScope($scope);
 
     /**
      * @param UserInterface $user
      */
-    function setUser(UserInterface $user);
+    public function setUser(UserInterface $user);
 
     /**
      * @return UserInterface
      */
-    function getUser();
+    public function getUser();
 
     /**
      * @param ClientInterface $client
      */
-    function setClient(ClientInterface $client);
+    public function setClient(ClientInterface $client);
 }

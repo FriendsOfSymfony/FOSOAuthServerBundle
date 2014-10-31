@@ -15,10 +15,8 @@ use FOS\OAuthServerBundle\Event\OAuthEvent;
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use OAuth2\OAuth2RedirectException;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -81,7 +79,7 @@ class AuthorizeController extends ContainerAware
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface        $user
      * @param AuthorizeFormHandler $formHandler
      *
      * @return Response
@@ -115,7 +113,7 @@ class AuthorizeController extends ContainerAware
     /**
      * Generate the redirection url when the authorize is completed
      *
-     * @param \FOS\OAuthServerBundle\Model\UserInterface $user
+     * @param  \FOS\OAuthServerBundle\Model\UserInterface $user
      * @return string
      */
     protected function getRedirectionUrl(UserInterface $user)

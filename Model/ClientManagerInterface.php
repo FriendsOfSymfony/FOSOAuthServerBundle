@@ -16,30 +16,30 @@ interface ClientManagerInterface
     /**
      * @return ClientInterface
      */
-    function createClient();
+    public function createClient();
 
     /**
      * @return string
      */
-    function getClass();
+    public function getClass();
 
     /**
      * @return ClientInterface
      */
-    function findClientBy(array $criteria);
+    public function findClientBy(array $criteria);
 
     /**
      * @return ClientInterface
      */
-    function findClientByPublicId($publicId);
+    public function findClientByPublicId($publicId);
 
     /**
      * @param ClientInterface
      */
-    function updateClient(ClientInterface $client);
+    public function updateClient(ClientInterface $client);
 
     /**
      * @param ClientInterface
      */
-    function deleteClient(ClientInterface $client);
+    public function deleteClient(ClientInterface $client);
 }

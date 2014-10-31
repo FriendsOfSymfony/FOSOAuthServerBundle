@@ -18,41 +18,41 @@ interface ClientInterface extends IOAuth2Client
     /**
      * @param string $random
      */
-    function setRandomId($random);
+    public function setRandomId($random);
 
     /**
      * @return string
      */
-    function getRandomId();
+    public function getRandomId();
 
     /**
      * @param string $secret
      */
-    function setSecret($secret);
+    public function setSecret($secret);
 
     /**
      * @param $secret
      * @return Boolean
      */
-    function checkSecret($secret);
+    public function checkSecret($secret);
 
     /**
      * @return string
      */
-    function getSecret();
+    public function getSecret();
 
     /**
      * @param array $redirectUris
      */
-    function setRedirectUris(array $redirectUris);
+    public function setRedirectUris(array $redirectUris);
 
     /**
      * @param array $grantTypes
      */
-    function setAllowedGrantTypes(array $grantTypes);
+    public function setAllowedGrantTypes(array $grantTypes);
 
     /**
      * @return array
      */
-    function getAllowedGrantTypes();
+    public function getAllowedGrantTypes();
 }

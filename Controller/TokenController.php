@@ -31,7 +31,7 @@ class TokenController
     }
 
     /**
-     * @param Request $request
+     * @param  Request $request
      * @return type
      */
     public function tokenAction(Request $request)

@@ -34,7 +34,7 @@ class AuthCodeManager extends BaseAuthCodeManager
 
     /**
      * @param \Doctrine\ORM\EntityManager $em
-     * @param string $class
+     * @param string                      $class
      */
     public function __construct(EntityManager $em, $class)
     {
@@ -80,7 +80,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    function deleteExpired()
+    public function deleteExpired()
     {
         $qb = $this->repository->createQueryBuilder('a');
         $qb

@@ -9,7 +9,7 @@
         <parameter key="fos_oauth_server.security.authentication.listener.class">FOS\OAuthServerBundle\Security\Firewall\OAuthListener</parameter>
         <parameter key="fos_oauth_server.security.entry_point.class">FOS\OAuthServerBundle\Security\EntryPoint\OAuthEntryPoint</parameter>
     </parameters>
-    
+
     <services>
         <service id="fos_oauth_server.security.authentication.provider" class="%fos_oauth_server.security.authentication.provider.class%" public="false">
             <argument /> <!-- user provider -->
