@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProvid
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 
@@ -71,22 +72,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                 $scope = $accessToken->getScope();
                 $user  = $accessToken->getUser();
 
-                if (null !== $user) {
-
-                    try {
-                        $this->userChecker->checkPreAuth($user);
-                    } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
-                            OAuth2::TOKEN_TYPE_BEARER,
-                            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                            'access_denied',
-                            $e->getMessage()
-                        );
-                    }
-
-                    $token->setUser($user);
-                }
-
+                $this->checkUserAuthentication($token, $user);
                 $roles = (null !== $user) ? $user->getRoles() : array();
 
                 if (!empty($scope)) {
@@ -98,22 +84,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                 $token = new OAuthToken($roles);
                 $token->setAuthenticated(true);
                 $token->setToken($tokenString);
-
-                if (null !== $user) {
-
-                    try {
-                        $this->userChecker->checkPostAuth($user);
-                    } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
-                            OAuth2::TOKEN_TYPE_BEARER,
-                            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                            'access_denied',
-                            $e->getMessage()
-                        );
-                    }
-
-                    $token->setUser($user);
-                }
+                $this->checkUserAuthentication($token, $user);
 
                 return $token;
             }
@@ -135,5 +106,44 @@ class OAuthProvider implements AuthenticationProviderInterface
     public function supports(TokenInterface $token)
     {
         return $token instanceof OAuthToken;
+    }
+
+    /**
+     * Handles AccountStatusException. Default behaviour is to deny access.
+     *
+     * @param AccountStatusException $exception
+     *
+     * @throws OAuth2AuthenticateException
+     */
+    protected function handleAccountStatusException(AccountStatusException $exception)
+    {
+        throw new OAuth2AuthenticateException(
+            OAuth2::HTTP_UNAUTHORIZED,
+            OAuth2::TOKEN_TYPE_BEARER,
+            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
+            'access_denied',
+            $exception->getMessage()
+        );
+    }
+
+    /**
+     * Check authentication of found user.
+     *
+     * @param TokenInterface     $token  The token created.
+     * @param UserInterface|null $user   The user.
+     *
+     * @throws OAuth2AuthenticateException
+     */
+    protected function checkUserAuthentication(TokenInterface $token, UserInterface $user = null)
+    {
+        if (null !== $user) {
+            $method = $token->isAuthenticated() ? 'checkPostAuth' : 'checkPreAuth';
+            try {
+                $this->userChecker->{$method}($user);
+            } catch (AccountStatusException $exception) {
+                $this->handleAccountStatusException($exception);
+            }
+            $token->setUser($user);
+        }
     }
 }
