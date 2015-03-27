@@ -12,7 +12,7 @@
 namespace FOS\OAuthServerBundle\Propel;
 
 use FOS\OAuthServerBundle\Model\TokenInterface;
-use FOS\OAuthServerBundle\Propel\om\BaseToken;
+use FOS\OAuthServerBundle\Propel\Base\Token as BaseToken;
 
 abstract class Token extends BaseToken implements TokenInterface
 {

@@ -12,15 +12,16 @@
 namespace FOS\OAuthServerBundle\Propel;
 
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use FOS\OAuthServerBundle\Propel\Map\TokenTableMap;
 
 class RefreshToken extends Token implements TokenInterface
 {
     /**
-     * Constructs a new RefreshToken class, setting the class_key column to TokenPeer::CLASSKEY_3.
+     * Constructs a new RefreshToken class, setting the class_key column to TokenTableMap::CLASSKEY_3.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->setClassKey(TokenPeer::CLASSKEY_3);
+        $this->setClassKey(TokenTableMap::CLASSKEY_3);
     }
 }

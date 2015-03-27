@@ -12,15 +12,16 @@
 namespace FOS\OAuthServerBundle\Propel;
 
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use FOS\OAuthServerBundle\Propel\Map\TokenTableMap;
 
 class AccessToken extends Token implements TokenInterface
 {
     /**
-     * Constructs a new AccessToken class, setting the class_key column to TokenPeer::CLASSKEY_2.
+     * Constructs a new AccessToken class, setting the class_key column to TokenTableMap::CLASSKEY_2.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->setClassKey(TokenPeer::CLASSKEY_2);
+        $this->setClassKey(TokenTableMap::CLASSKEY_2);
     }
 }

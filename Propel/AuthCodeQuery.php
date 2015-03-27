@@ -11,7 +11,7 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-use FOS\OAuthServerBundle\Propel\om\BaseAuthCodeQuery;
+use FOS\OAuthServerBundle\Propel\Base\AuthCodeQuery as BaseAuthCodeQuery;
 
 class AuthCodeQuery extends BaseAuthCodeQuery
 {

@@ -3,14 +3,9 @@
     <table name="client" phpName="Client" description="">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="random_id" type="varchar" required="true" />
-        <column name="redirect_uris" type="array" required="true" />
+        <column name="redirect_uris" type="array" required="true" typeHint="array" />
         <column name="secret" type="varchar" required="true" />
-        <column name="allowed_grant_types" type="array" required="true" />
-
-        <behavior name="typehintable">
-            <parameter name="redirect_uris" value="array" />
-            <parameter name="allowed_grant_types" value="array" />
-        </behavior>
+        <column name="allowed_grant_types" type="array" required="true" typeHint="array" />
     </table>
 
     <table name="token" phpName="Token" abstract="true" description="">
@@ -19,7 +14,7 @@
         <column name="expires_at" type="integer" required="false" />
         <column name="scope" type="varchar" required="false" />
         <column name="client_id" type="integer" required="true" />
-        <column name="user" type="object" required="false" />
+        <column name="user" type="object" required="false" typeHint="Symfony\Component\Security\Core\User\UserInterface" />
 
         <column name="class_key" type="INTEGER" inheritance="single">
             <inheritance key="1" class="Token" />
@@ -27,14 +22,9 @@
             <inheritance key="3" class="RefreshToken" extends="Token" />
         </column>
 
-        <foreign-key foreignTable="client" onDelete="cascade">
+        <foreign-key foreignTable="client" onDelete="cascade" interface="FOS\OAuthServerBundle\Model\ClientInterface">
             <reference local="client_id" foreign="id" />
         </foreign-key>
-
-        <behavior name="typehintable">
-            <parameter name="client" value="\FOS\OAuthServerBundle\Model\ClientInterface" />
-            <parameter name="user" value="\Symfony\Component\Security\Core\User\UserInterface" />
-        </behavior>
     </table>
 
     <table name="auth_code" phpName="AuthCode" description="">
@@ -44,15 +34,10 @@
         <column name="expires_at" type="integer" required="false" />
         <column name="scope" type="varchar" required="false" />
         <column name="client_id" type="integer" required="true" />
-        <column name="user" type="object" required="false" />
+        <column name="user" type="object" required="false" typeHint="Symfony\Component\Security\Core\User\UserInterface" />
 
-        <foreign-key foreignTable="client" onDelete="cascade">
+        <foreign-key foreignTable="client" onDelete="cascade" interface="FOS\OAuthServerBundle\Model\ClientInterface">
             <reference local="client_id" foreign="id" />
         </foreign-key>
-
-        <behavior name="typehintable">
-            <parameter name="client" value="\FOS\OAuthServerBundle\Model\ClientInterface" />
-            <parameter name="user" value="\Symfony\Component\Security\Core\User\UserInterface" />
-        </behavior>
     </table>
 </database>
