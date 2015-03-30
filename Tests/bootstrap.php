@@ -19,8 +19,7 @@ if (file_exists($file = __DIR__ . '/../vendor/propel/propel/src/Propel/Generator
 \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
 
 // Generate Propel base classes on the fly
-$builder = new \QuickBuilder();
+$builder = new \Propel\Generator\Util\QuickBuilder();
 $builder->setSchema(file_get_contents(__DIR__ . '/../Resources/config/propel/schema.xml'));
-$builder->setClassTargets(array('tablemap', 'object', 'query'));
-$builder->build();
+$builder->build(null, null, null, null, array('tablemap', 'object', 'query'));
 
