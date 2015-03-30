@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
         "friendsofsymfony/oauth2-php": "~1.1.0",
         "symfony/framework-bundle": "~2.1",
         "symfony/security-bundle": "~2.1"
@@ -24,7 +24,7 @@
     "require-dev": {
         "symfony/class-loader": "~2.1",
         "symfony/yaml": "~2.1",
-        "propel/propel": "~2.0@dev",
+        "propel/propel": "2.0.x-dev",
         "doctrine/mongodb-odm": "1.0.*@dev",
         "doctrine/doctrine-bundle": "~1.0",
         "doctrine/orm": ">=2.2,<2.5-dev"
