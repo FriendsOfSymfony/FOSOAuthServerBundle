@@ -1,6 +1,6 @@
 phpunit.xml
 Tests/autoload.php
 vendor/
-Propel/om/
-Propel/map/
+Propel/Base/
+Propel/Map/
 composer.lock
