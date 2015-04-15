@@ -12,6 +12,7 @@
 namespace FOS\OAuthServerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -74,8 +75,30 @@ class FOSOAuthServerExtension extends Extension
             }
         }
 
+        // Entity manager factory definition
+        // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
+        if ('orm' === $config['db_driver']) {
+            $ormEntityManagerDefinition = $container->getDefinition('fos_oauth_server.entity_manager');
+            if (method_exists($ormEntityManagerDefinition, 'setFactory')) {
+                $ormEntityManagerDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
+            } else {
+                $ormEntityManagerDefinition->setFactoryService('doctrine');
+                $ormEntityManagerDefinition->setFactoryMethod('getManager');
+            }
+        }
+
         if (!empty($config['authorize'])) {
             $this->loadAuthorize($config['authorize'], $container, $loader);
+        }
+
+        // Authorize form factory definition
+        // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
+        $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
+        if (method_exists($authorizeFormDefinition, 'setFactory')) {
+            $authorizeFormDefinition->setFactory(array(new Reference('form.factory'), 'createNamed'));
+        } else {
+            $authorizeFormDefinition->setFactoryService('form.factory');
+            $authorizeFormDefinition->setFactoryMethod('createNamed');
         }
     }
 
