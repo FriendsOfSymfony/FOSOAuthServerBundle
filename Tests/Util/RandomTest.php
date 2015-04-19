@@ -28,7 +28,7 @@ class OAuthRandomTest extends \PHPUnit_Framework_TestCase
     {
         $randomTest = new Random();
         $hash = $this->callPrivateMethod($randomTest, 'generateHash', array('test'));
-        $this->assertSame($hash, hex2bin('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'));
+        $this->assertSame($hash, pack("H*" , '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'));
     }
 
     public function testGenerateUniqueIdYeildsNoneNullResult()
