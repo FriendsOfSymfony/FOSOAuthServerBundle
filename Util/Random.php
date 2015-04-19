@@ -13,22 +13,22 @@ namespace FOS\OAuthServerBundle\Util;
 
 class Random
 {
-    private function getUniqId()
+    private static function getUniqId()
     {
         return uniqid(mt_rand(), true);
     }
 
-    private function generateHash($uniqId)
+    private static function generateHash($uniqId)
     {
         return hash('sha256', $uniqId, true);
     }
 
-    private function openSSLAvailable()
+    private static function openSSLAvailable()
     {
         return function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win');
     }
 
-    private function generatePseudoRandomBytes()
+    private static function generatePseudoRandomBytes()
     {
         $bytes = openssl_random_pseudo_bytes(32, $strong);
 
@@ -39,7 +39,7 @@ class Random
         return $bytes;
     }
 
-    private function pseudoRandomBytesToBase($bytes)
+    private static function pseudoRandomBytesToBase($bytes)
     {
         return base_convert(bin2hex($bytes), 16, 36);
     }
