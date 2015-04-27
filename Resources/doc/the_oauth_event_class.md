@@ -8,7 +8,7 @@ users to always accept a client.
 
 Thanks to the [Event Dispatcher](http://symfony.com/doc/current/components/event_dispatcher.html),
 you can listen before, and after the authorization form process. So, you can save the user's choice,
-and even by pass the authorization pass. Let's an example.
+and even bypass the authorization process. Let's look at an example.
 
 Assuming we have a _Many to Many_ relation between clients, and users. An `OAuthEvent` contains
 a `ClientInterface` instance, a `UserInterface` instance (coming from the [Security Component](http://symfony.com/doc/current/book/security.html)),
