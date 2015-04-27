@@ -19,6 +19,7 @@
         "php": ">=5.3.3",
         "friendsofsymfony/oauth2-php": "~1.1.0",
         "symfony/framework-bundle": "~2.2",
+        "symfony/dependency-injection": "~2.1",
         "symfony/security-bundle": "~2.1"
     },
     "require-dev": {

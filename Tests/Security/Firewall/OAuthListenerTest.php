@@ -20,7 +20,7 @@ class OAuthListenerTest extends TestCase
 
     protected $authManager;
 
-    protected $securityContext;
+    protected $tokenStorage;
 
     protected $event;
 
@@ -34,8 +34,13 @@ class OAuthListenerTest extends TestCase
         $this->authManager = $this
             ->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
 
-        $this->securityContext = $this
-            ->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
+            $this->tokenStorage = $this
+                ->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        } else {
+            $this->tokenStorage = $this
+                ->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        }
 
         $this->event = $this
             ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
@@ -45,7 +50,7 @@ class OAuthListenerTest extends TestCase
 
     public function testHandle()
     {
-        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
@@ -57,7 +62,7 @@ class OAuthListenerTest extends TestCase
             ->method('authenticate')
             ->will($this->returnArgument(0));
 
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->once())
             ->method('setToken')
             ->will($this->returnArgument(0));
@@ -70,7 +75,7 @@ class OAuthListenerTest extends TestCase
 
     public function testHandleResponse()
     {
-        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
@@ -84,7 +89,7 @@ class OAuthListenerTest extends TestCase
             ->method('authenticate')
             ->will($this->returnValue($response));
 
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->never())
             ->method('setToken');
 
