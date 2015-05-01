@@ -24,7 +24,7 @@
     "require-dev": {
         "symfony/class-loader": "~2.1",
         "symfony/yaml": "~2.1",
-        "willdurand/propel-typehintable-behavior": "1.0.*",
+        "willdurand/propel-typehintable-behavior": "~1.0,>1.0.4",
         "doctrine/mongodb-odm": "1.0.*@dev",
         "doctrine/doctrine-bundle": "~1.0",
         "doctrine/orm": ">=2.2,<2.5-dev"

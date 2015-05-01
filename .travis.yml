@@ -5,9 +5,42 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - hhvm
+  - nightly
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.3
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 5.6
+      env: SYMFONY_VERSION=2.3.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.5.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.6.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.7.*@dev
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.*@dev
+    - php: 5.6
+      env: SYMFONY_VERSION="3.0.x-dev as 2.6"
+  allow_failures:
+    - php: hhvm
+    - php: nightly
+    - env: SYMFONY_VERSION=2.7.*@dev
+    - env: SYMFONY_VERSION=2.8.*@dev
+    - env: SYMFONY_VERSION="3.0.x-dev as 2.6"
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
 
 before_script:
   - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-  - composer install --dev --prefer-dist --no-interaction
+  - composer selfupdate
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 phpunit: phpunit --coverage-text
