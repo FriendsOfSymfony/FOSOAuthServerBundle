@@ -316,11 +316,13 @@ namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\AuthCode as BaseAuthCode;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AuthCode extends BaseAuthCode 
 {
     protected $id;
     protected $client;
+    protected $user;
     
     public function getClient()
     {
@@ -331,7 +333,16 @@ class AuthCode extends BaseAuthCode
     {
         $this->client = $client;
     }
-    
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+    }    
 }
 
 ```
@@ -347,6 +358,7 @@ class AuthCode extends BaseAuthCode
     <document name="Acme\ApiBundle\Document\AuthCode" db="acme" collection="oauthAuthCode" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
+        <reference-one target-document="Your\Own\Document\User" field="user" />
     </document>
     
 </doctrine-mongo-mapping>
@@ -361,11 +373,13 @@ namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\AccessToken as BaseAccessToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AccessToken extends BaseAccessToken 
 {
     protected $id;
     protected $client;
+    protected $user;
     
     public function getClient()
     {
@@ -377,6 +391,15 @@ class AccessToken extends BaseAccessToken
         $this->client = $client;
     }
     
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+    }
 }
 ```
 
@@ -391,6 +414,7 @@ class AccessToken extends BaseAccessToken
     <document name="Acme\ApiBundle\Document\AccessToken" db="acme" collection="oauthAccessToken" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
+        <reference-one target-document="Your\Own\Document\User" field="user" />
     </document>
     
 </doctrine-mongo-mapping>
@@ -405,11 +429,13 @@ namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\RefreshToken as BaseRefreshToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class RefreshToken extends BaseRefreshToken 
 {
     protected $id;
     protected $client;
+    protected $user;
     
     public function getClient()
     {
@@ -421,6 +447,15 @@ class RefreshToken extends BaseRefreshToken
         $this->client = $client;
     }
     
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+    }
 }
 ```
 
@@ -435,6 +470,7 @@ class RefreshToken extends BaseRefreshToken
     <document name="Acme\ApiBundle\Document\RefreshToken" db="acme" collection="oauthRefreshToken" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
+        <reference-one target-document="Your\Own\Document\User" field="user" />
     </document>
     
 </doctrine-mongo-mapping>
