@@ -58,6 +58,8 @@ class AuthorizeController extends ContainerAware
         );
 
         if ($event->isAuthorizedClient()) {
+            $this->invalidateSession();
+
             $scope = $this->container->get('request')->get('scope', null);
 
             return $this->container
@@ -86,10 +88,7 @@ class AuthorizeController extends ContainerAware
      */
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
     {
-        if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
-            $this->container->get('security.context')->setToken(null);
-            $this->container->get('session')->invalidate();
-        }
+        $this->invalidateSession();
 
         $this->container->get('event_dispatcher')->dispatch(
             OAuthEvent::POST_AUTHORIZATION_PROCESS,
@@ -145,5 +144,16 @@ class AuthorizeController extends ContainerAware
         }
 
         return $this->client;
+    }
+
+    /**
+     * @return void
+     */
+    protected function invalidateSession()
+    {
+        if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
+            $this->container->get('security.context')->setToken(null);
+            $this->container->get('session')->invalidate();
+        }
     }
 }
