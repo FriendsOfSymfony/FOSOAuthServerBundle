@@ -24,6 +24,10 @@
             <argument type="service" id="fos_oauth_server.document_manager" />
             <argument>%fos_oauth_server.model.refresh_token.class%</argument>
         </service>
+
+        <service id="fos_oauth_server.document_manager" class="Doctrine\ODM\DocumentManager" public="false">
+            <argument>%fos_oauth_server.model_manager_name%</argument>
+        </service>
     </services>
 
 </container>
