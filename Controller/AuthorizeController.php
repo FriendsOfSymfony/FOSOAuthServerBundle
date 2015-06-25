@@ -54,11 +54,11 @@ class AuthorizeController extends ContainerAware
 
         $event = $this->container->get('event_dispatcher')->dispatch(
             OAuthEvent::PRE_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient())
+            new OAuthEvent($user, $this->getClient($request))
         );
 
         if ($event->isAuthorizedClient()) {
-            $scope = $this->container->get('request')->get('scope', null);
+            $scope = $request->get('scope', null);
 
             return $this->container
                 ->get('fos_oauth_server.server')
@@ -73,7 +73,7 @@ class AuthorizeController extends ContainerAware
             'FOSOAuthServerBundle:Authorize:authorize.html.' . $this->container->getParameter('fos_oauth_server.template.engine'),
             array(
                 'form'      => $form->createView(),
-                'client'    => $this->getClient(),
+                'client'    => $this->getClient($request),
             )
         );
     }
@@ -93,7 +93,7 @@ class AuthorizeController extends ContainerAware
 
         $this->container->get('event_dispatcher')->dispatch(
             OAuthEvent::POST_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
+            new OAuthEvent($user, $this->getClient($request), $formHandler->isAccepted())
         );
 
         $formName = $this->container->get('fos_oauth_server.authorize.form')->getName();
@@ -124,12 +124,12 @@ class AuthorizeController extends ContainerAware
     /**
      * @return ClientInterface
      */
-    protected function getClient()
+    protected function getClient(Request $request)
     {
         if (null === $this->client) {
-            if (null === $clientId = $this->container->get('request')->get('client_id')) {
+            if (null === $clientId = $request->get('client_id')) {
                 $form = $this->container->get('fos_oauth_server.authorize.form');
-                $clientId = $this->container->get('request')
+                $clientId = $request
                     ->get(sprintf('%s[client_id]', $form->getName()), null, true);
             }
 
