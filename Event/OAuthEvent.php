@@ -37,14 +37,14 @@ class OAuthEvent extends Event
     private $isAuthorizedClient;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $scopes;
 
     /**
      * @param UserInterface $user
      */
-    public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false, $scopes = '')
+    public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false, $scopes = null)
     {
         $this->user = $user;
         $this->client = $client;
@@ -85,7 +85,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getScopes()
     {
