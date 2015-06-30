@@ -11,7 +11,7 @@
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 
@@ -32,7 +32,7 @@ class ClientManager extends BaseClientManager
      */
     protected $class;
 
-    public function __construct(EntityManager $em, $class)
+    public function __construct(ObjectManager $em, $class)
     {
         $this->em = $em;
         $this->repository = $em->getRepository($class);
