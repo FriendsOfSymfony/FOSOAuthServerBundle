@@ -16,6 +16,11 @@ use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\Exception\AccountExpiredException;
+use Symfony\Component\Security\Core\Exception\CredentialsExpiredException;
+use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Security\Core\Exception\LockedException;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -161,6 +166,24 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
             $user = $this->userProvider->loadUserByUsername($username);
         } catch (AuthenticationException $e) {
             return false;
+        }
+
+        if ($user instanceof AdvancedUserInterface) {
+            if (!$user->isAccountNonLocked()) {
+                throw new LockedException('Account is blocked');
+            }
+
+            if (!$user->isAccountNonExpired()) {
+                throw new AccountExpiredException('Account is expired');
+            }
+
+            if (!$user->isCredentialsNonExpired()) {
+                throw new CredentialsExpiredException('Credentials is expired');
+            }
+
+            if (!$user->isEnabled()) {
+                throw new DisabledException('Account is disabled');
+            }
         }
 
         if (null !== $user) {
