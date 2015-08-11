@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="fos_oauth_server.server.class">OAuth2\OAuth2</parameter>
+        <parameter key="fos_oauth_server.controller.token.class">FOS\OAuthServerBundle\Controller\TokenController1</parameter>
     </parameters>
 
     <services>
@@ -23,7 +24,7 @@
             <argument>%fos_oauth_server.server.options%</argument>
         </service>
 
-        <service id="fos_oauth_server.controller.token" class="FOS\OAuthServerBundle\Controller\TokenController">
+        <service id="fos_oauth_server.controller.token" class="%fos_oauth_server.controller.token.class%">
             <argument type="service" id="fos_oauth_server.server" />
         </service>
     </services>
