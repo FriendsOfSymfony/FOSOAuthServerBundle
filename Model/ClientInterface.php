@@ -55,4 +55,14 @@ interface ClientInterface extends IOAuth2Client
      * @return array
      */
     public function getAllowedGrantTypes();
+
+    /**
+     * @param $value
+     */
+    public function setAuthorizeAutomatically($value);
+
+    /**
+     * @return boolean
+     */
+    public function getAuthorizeAutomatically();
 }
