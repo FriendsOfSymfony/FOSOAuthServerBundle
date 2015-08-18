@@ -57,7 +57,7 @@ class AuthorizeController extends ContainerAware
             new OAuthEvent($user, $this->getClient())
         );
 
-        if ($event->isAuthorizedClient()) {
+        if ($this->getClient()->getAuthorizeAutomatically() || $event->isAuthorizedClient()) {
             $scope = $this->container->get('request')->get('scope', null);
 
             return $this->container

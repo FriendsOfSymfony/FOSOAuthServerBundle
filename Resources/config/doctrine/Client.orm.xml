@@ -9,5 +9,11 @@
         <field name="redirectUris" column="redirect_uris" type="array" />
         <field name="secret" column="secret" type="string" />
         <field name="allowedGrantTypes" column="allowed_grant_types" type="array" />
+        <field name="authorizeAutomatically" column="authorize_automatically" type="boolean">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
     </mapped-superclass>
 </doctrine-mapping>
+

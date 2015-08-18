@@ -41,6 +41,11 @@ class Client implements ClientInterface
      */
     protected $allowedGrantTypes;
 
+    /**
+     * @var boolean
+     */
+    protected $authorizeAutomatically = false;
+
     public function __construct()
     {
         $this->allowedGrantTypes = array(
@@ -134,5 +139,21 @@ class Client implements ClientInterface
     public function getAllowedGrantTypes()
     {
         return $this->allowedGrantTypes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAuthorizeAutomatically($value)
+    {
+        $this->authorizeAutomatically = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthorizeAutomatically()
+    {
+        return $this->authorizeAutomatically;
     }
 }
