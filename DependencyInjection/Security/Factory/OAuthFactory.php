@@ -36,7 +36,13 @@ class OAuthFactory implements SecurityFactoryInterface
             ;
 
         $listenerId = 'security.authentication.listener.fos_oauth_server.'.$id;
-        $container->setDefinition($listenerId, new DefinitionDecorator('fos_oauth_server.security.authentication.listener'));
+        // Set the SecurityContext for Symfony <2.6
+        $tokenStorageReference = interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
+            ? new Reference('security.token_storage') : new Reference('security.context');
+        $container
+            ->setDefinition($listenerId, new DefinitionDecorator('fos_oauth_server.security.authentication.listener'))
+            ->replaceArgument(0, $tokenStorageReference)
+        ;
 
         return array($providerId, $listenerId, 'fos_oauth_server.security.entry_point');
     }
