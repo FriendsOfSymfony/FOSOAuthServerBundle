@@ -74,6 +74,7 @@ class AuthorizeController extends ContainerAware
             array(
                 'form'      => $form->createView(),
                 'client'    => $this->getClient(),
+                'scopes'    => (!empty($form->getData()->scope)) ? explode(' ', $form->getData()->scope) : array(),
             )
         );
     }
