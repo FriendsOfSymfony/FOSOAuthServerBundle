@@ -557,6 +557,29 @@ fos_oauth_server:
     auth_code_class:     FOS\OAuthServerBundle\Propel\AuthCode
 ```
 
+The path to request the access_token or refresh_token needs to authenticate the user, there are
+two strategies available:
+
+* PLAIN:
+ 
+ This is the default option, to keep BC with oldest versions. This option requires to send the username
+  and plain password of the user.
+ 
+* HASH:
+
+ This option is the recommended one. This option requires to send the username and the hashed password of
+ the user.
+ 
+How to configure it:
+
+``` yaml
+# app/config/config.yml
+fos_oauth_server:
+    ...
+
+    token_path_auth: hash # Optional. Available options are plain, hash 
+```
+
 If you're authenticating users, don't forget to set the user provider.
 Here's an example using the FOSUserBundle user provider:
 
