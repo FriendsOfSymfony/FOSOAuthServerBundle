@@ -20,7 +20,7 @@ class OAuthListenerTest extends TestCase
 
     protected $authManager;
 
-    protected $tokenStorage;
+    protected $securityContext;
 
     protected $event;
 
@@ -35,10 +35,10 @@ class OAuthListenerTest extends TestCase
             ->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
 
         if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
-            $this->tokenStorage = $this
+            $this->securityContext = $this
                 ->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
         } else {
-            $this->tokenStorage = $this
+            $this->securityContext = $this
                 ->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         }
 
@@ -50,7 +50,7 @@ class OAuthListenerTest extends TestCase
 
     public function testHandle()
     {
-        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
@@ -62,7 +62,7 @@ class OAuthListenerTest extends TestCase
             ->method('authenticate')
             ->will($this->returnArgument(0));
 
-        $this->tokenStorage
+        $this->securityContext
             ->expects($this->once())
             ->method('setToken')
             ->will($this->returnArgument(0));
@@ -75,7 +75,7 @@ class OAuthListenerTest extends TestCase
 
     public function testHandleResponse()
     {
-        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
@@ -89,7 +89,7 @@ class OAuthListenerTest extends TestCase
             ->method('authenticate')
             ->will($this->returnValue($response));
 
-        $this->tokenStorage
+        $this->securityContext
             ->expects($this->never())
             ->method('setToken');
 

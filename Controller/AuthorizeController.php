@@ -65,7 +65,7 @@ class AuthorizeController extends ContainerAware
                 ->finishClientAuthorization(true, $user, $request, $scope);
         }
 
-        if (true === $formHandler->process($request)) {
+        if (true === $formHandler->process()) {
             return $this->processSuccess($user, $formHandler, $request);
         }
 
