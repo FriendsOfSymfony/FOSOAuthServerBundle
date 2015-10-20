@@ -34,8 +34,13 @@ class OAuthListenerTest extends TestCase
         $this->authManager = $this
             ->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
 
-        $this->securityContext = $this
-            ->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
+            $this->securityContext = $this
+                ->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        } else {
+            $this->securityContext = $this
+                ->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        }
 
         $this->event = $this
             ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
@@ -96,6 +101,12 @@ class OAuthListenerTest extends TestCase
         $ret = $listener->handle($this->event);
 
         $this->assertEquals($response, $ret);
+    }
+
+    public function testWrongTypeForOAuthListener()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $listener = new OAuthListener($this->event, $this->authManager, $this->serverService);
     }
 
 }

@@ -58,7 +58,7 @@ class AuthorizeController extends ContainerAware
         );
 
         if ($event->isAuthorizedClient()) {
-            $scope = $this->container->get('request')->get('scope', null);
+            $scope = $request->get('scope', null);
 
             return $this->container
                 ->get('fos_oauth_server.server')
@@ -81,6 +81,7 @@ class AuthorizeController extends ContainerAware
     /**
      * @param UserInterface        $user
      * @param AuthorizeFormHandler $formHandler
+     * @param Request $request
      *
      * @return Response
      */
@@ -126,11 +127,11 @@ class AuthorizeController extends ContainerAware
      */
     protected function getClient()
     {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         if (null === $this->client) {
-            if (null === $clientId = $this->container->get('request')->get('client_id')) {
+            if (null === $clientId = $request->get('client_id')) {
                 $form = $this->container->get('fos_oauth_server.authorize.form');
-                $clientId = $this->container->get('request')
-                    ->get(sprintf('%s[client_id]', $form->getName()), null, true);
+                $clientId = $request->get(sprintf('%s[client_id]', $form->getName()), null, true);
             }
 
             $client = $this->container

@@ -14,6 +14,7 @@ namespace FOS\OAuthServerBundle\Form\Handler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -23,10 +24,15 @@ class AuthorizeFormHandler
     protected $request;
     protected $form;
 
-    public function __construct(FormInterface $form, Request $request)
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(FormInterface $form, RequestStack $requestStack)
     {
         $this->form = $form;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     public function isAccepted()
@@ -41,13 +47,15 @@ class AuthorizeFormHandler
 
     public function process()
     {
+        $this->request = $this->requestStack->getCurrentRequest();
+
         $this->form->setData(new Authorize(
             $this->request->request->has('accepted'),
             $this->request->query->all()
         ));
 
         if ('POST' === $this->request->getMethod()) {
-            $this->form->bind($this->request);
+            $this->form->submit($this->request);
             if ($this->form->isValid()) {
                 $this->onSuccess();
 
