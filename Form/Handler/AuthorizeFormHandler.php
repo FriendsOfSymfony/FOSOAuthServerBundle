@@ -24,10 +24,15 @@ class AuthorizeFormHandler
     protected $request;
     protected $form;
 
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
     public function __construct(FormInterface $form, RequestStack $requestStack)
     {
         $this->form = $form;
-        $this->request = $requestStack->getMasterRequest();
+        $this->requestStack = $requestStack;
     }
 
     public function isAccepted()
@@ -42,6 +47,8 @@ class AuthorizeFormHandler
 
     public function process()
     {
+        $this->request = $this->requestStack->getCurrentRequest();
+
         $this->form->setData(new Authorize(
             $this->request->request->has('accepted'),
             $this->request->query->all()

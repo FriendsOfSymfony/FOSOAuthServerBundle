@@ -103,4 +103,10 @@ class OAuthListenerTest extends TestCase
         $this->assertEquals($response, $ret);
     }
 
+    public function testWrongTypeForOAuthListener()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $listener = new OAuthListener($this->event, $this->authManager, $this->serverService);
+    }
+
 }

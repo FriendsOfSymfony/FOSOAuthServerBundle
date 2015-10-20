@@ -51,6 +51,9 @@ class OAuthListener implements ListenerInterface
      */
     public function __construct($securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
+        if (!$securityContext instanceof  TokenStorageInterface && !$securityContext instanceof SecurityContextInterface) {
+            throw new \InvalidArgumentException('Wrong type for OAuthListener, it has to implement TokenStorageInterface or SecurityContextInterface');
+        }
         $this->securityContext = $securityContext;
         $this->authenticationManager = $authenticationManager;
         $this->serverService = $serverService;
