@@ -23,10 +23,9 @@ class AuthorizeFormHandler
     protected $request;
     protected $form;
 
-    public function __construct(FormInterface $form, Request $request)
+    public function __construct(FormInterface $form)
     {
         $this->form = $form;
-        $this->request = $request;
     }
 
     public function isAccepted()
@@ -39,15 +38,15 @@ class AuthorizeFormHandler
         return !$this->form->getData()->accepted;
     }
 
-    public function process()
+    public function process(Request $request)
     {
         $this->form->setData(new Authorize(
-            $this->request->request->has('accepted'),
-            $this->request->query->all()
+            $request->request->has('accepted'),
+            $request->query->all()
         ));
 
-        if ('POST' === $this->request->getMethod()) {
-            $this->form->bind($this->request);
+        if ('POST' === $request->getMethod()) {
+            $this->form->submit($request);
             if ($this->form->isValid()) {
                 $this->onSuccess();
 
