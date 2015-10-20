@@ -79,7 +79,7 @@ class AuthorizeController extends ContainerAware
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface        $user
      * @param AuthorizeFormHandler $formHandler
      * @param Request $request
      *
@@ -127,7 +127,7 @@ class AuthorizeController extends ContainerAware
      */
     protected function getClient()
     {
-        $request = $this->container->get('request_stack')->getMasterRequest();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         if (null === $this->client) {
             if (null === $clientId = $request->get('client_id')) {
                 $form = $this->container->get('fos_oauth_server.authorize.form');
