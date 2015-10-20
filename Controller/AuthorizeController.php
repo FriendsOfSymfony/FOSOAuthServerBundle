@@ -54,7 +54,7 @@ class AuthorizeController extends ContainerAware
 
         $event = $this->container->get('event_dispatcher')->dispatch(
             OAuthEvent::PRE_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient($request))
+            new OAuthEvent($user, $this->getClient())
         );
 
         if ($event->isAuthorizedClient()) {
@@ -73,7 +73,7 @@ class AuthorizeController extends ContainerAware
             'FOSOAuthServerBundle:Authorize:authorize.html.' . $this->container->getParameter('fos_oauth_server.template.engine'),
             array(
                 'form'      => $form->createView(),
-                'client'    => $this->getClient($request),
+                'client'    => $this->getClient(),
             )
         );
     }
@@ -94,7 +94,7 @@ class AuthorizeController extends ContainerAware
 
         $this->container->get('event_dispatcher')->dispatch(
             OAuthEvent::POST_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient($request), $formHandler->isAccepted())
+            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
         );
 
         $formName = $this->container->get('fos_oauth_server.authorize.form')->getName();
@@ -125,8 +125,9 @@ class AuthorizeController extends ContainerAware
     /**
      * @return ClientInterface
      */
-    protected function getClient(Request $request)
+    protected function getClient()
     {
+        $request = $this->container->get('request_stack')->getMasterRequest();
         if (null === $this->client) {
             if (null === $clientId = $request->get('client_id')) {
                 $form = $this->container->get('fos_oauth_server.authorize.form');

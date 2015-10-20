@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterfac
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
 /**
@@ -29,9 +30,9 @@ use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 class OAuthListener implements ListenerInterface
 {
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface
      */
-    protected $tokenStorage;
+    protected $securityContext;
 
     /**
      * @var \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface
@@ -44,13 +45,13 @@ class OAuthListener implements ListenerInterface
     protected $serverService;
 
     /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface   $tokenStorage          The token storage.
+     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface   $tokenStorage          The token storage.
      * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface        $authenticationManager The authentication manager.
      * @param \OAuth2\OAuth2                                                                        $serverService
      */
-    public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
+    public function __construct($securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->securityContext = $securityContext;
         $this->authenticationManager = $authenticationManager;
         $this->serverService = $serverService;
     }
@@ -71,7 +72,7 @@ class OAuthListener implements ListenerInterface
             $returnValue = $this->authenticationManager->authenticate($token);
 
             if ($returnValue instanceof TokenInterface) {
-                return $this->tokenStorage->setToken($returnValue);
+                return $this->securityContext->setToken($returnValue);
             }
 
             if ($returnValue instanceof Response) {

@@ -34,8 +34,13 @@ class OAuthListenerTest extends TestCase
         $this->authManager = $this
             ->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
 
-        $this->tokenStorage = $this
-            ->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
+            $this->tokenStorage = $this
+                ->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        } else {
+            $this->tokenStorage = $this
+                ->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        }
 
         $this->event = $this
             ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
