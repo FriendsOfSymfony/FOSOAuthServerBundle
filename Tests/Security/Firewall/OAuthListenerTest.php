@@ -89,7 +89,7 @@ class OAuthListenerTest extends TestCase
             ->method('authenticate')
             ->will($this->returnValue($response));
 
-        $this->tokenStorage
+        $this->securityContext
             ->expects($this->never())
             ->method('setToken');
 
