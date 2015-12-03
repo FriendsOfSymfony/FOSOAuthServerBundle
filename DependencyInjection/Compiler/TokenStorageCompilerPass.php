@@ -13,6 +13,7 @@ namespace FOS\OAuthServerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Andras Ratz <ratz.andras86@gmail.com>
