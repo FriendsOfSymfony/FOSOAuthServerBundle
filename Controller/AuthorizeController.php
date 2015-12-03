@@ -15,7 +15,7 @@ use FOS\OAuthServerBundle\Event\OAuthEvent;
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -26,8 +26,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Chris Jones <leeked@gmail.com>
  */
-class AuthorizeController extends ContainerAware
+class AuthorizeController
 {
+    use ContainerAwareTrait;
+
     /**
      * @var \FOS\OAuthServerBundle\Model\ClientInterface
      */
