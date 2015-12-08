@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "friendsofsymfony/oauth2-php": "~1.1.0",
+        "friendsofsymfony/oauth2-php": "dev-master",
         "symfony/framework-bundle": "~2.2",
         "symfony/security-bundle": "~2.1"
     },
@@ -43,6 +43,11 @@
         "branch-alias": {
             "dev-master": "1.4-dev"
         }
-    }
-
+    },
+    "repositories":[
+        {
+            "type": "git",
+            "url": "https://github.com/FriendsOfSymfony/oauth2-php.git"
+        },
+    ]
 }
