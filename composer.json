@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "lutskanu/oauth2-php": "dev-master",
+        "lutskanu/oauth2-php": "~1.2",
         "symfony/framework-bundle": "~2.2",
         "symfony/security-bundle": "~2.1"
     },
@@ -41,14 +41,7 @@
     "target-dir": "FOS/OAuthServerBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.4-dev"
+            "dev-master": "1.5-dev"
         }
-    },
-    "minimum-stability": "dev",
-    "repositories":[
-        {
-            "type": "git",
-            "url": "https://github.com/lutskanu/oauth2-php.git"
-        }
-    ]
+    }
 }
