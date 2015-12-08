@@ -48,7 +48,7 @@
     "repositories":[
         {
             "type": "git",
-            "url": "https://github.com/FriendsOfSymfony/oauth2-php.git"
+            "url": "https://github.com/lutskanu/oauth2-php.git"
         }
     ]
 }
