@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "friendsofsymfony/oauth2-php": "dev-master",
+        "lutskanu/oauth2-php": "dev-master",
         "symfony/framework-bundle": "~2.2",
         "symfony/security-bundle": "~2.1"
     },
