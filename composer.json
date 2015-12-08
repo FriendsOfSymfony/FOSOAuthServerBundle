@@ -28,7 +28,7 @@
         "doctrine/orm": ">=2.2,<2.5-dev"
     },
     "suggest": {
-        "doctrine/doctrine-bundle": "*",
+        "doctrine/doctrine-bundle": "*"
     },
     "autoload": {
         "psr-0": { "FOS\\OAuthServerBundle": "" }
