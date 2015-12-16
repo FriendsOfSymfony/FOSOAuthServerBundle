@@ -13,10 +13,13 @@ namespace FOS\OAuthServerBundle\Controller;
 
 use FOS\OAuthServerBundle\Event\OAuthEvent;
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
-use OAuth2\OAuth2;
+use FOS\OAuthServerBundle\Model\ClientInterface;
 use OAuth2\OAuth2ServerException;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,14 +29,27 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Chris Jones <leeked@gmail.com>
  */
-class AuthorizeController
+class AuthorizeController implements ContainerAwareInterface
 {
-    use ContainerAwareTrait;
-
     /**
      * @var \FOS\OAuthServerBundle\Model\ClientInterface
      */
     private $client;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Authorize
@@ -129,8 +145,13 @@ class AuthorizeController
      */
     protected function getClient()
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
         if (null === $this->client) {
+            try {
+                $request = $this->container->get('request_stack')->getCurrentRequest();
+            } catch (ServiceNotFoundException $e) {
+                $request = $this->container->get('request');
+            }
+
             if (null === $clientId = $request->get('client_id')) {
                 $form = $this->container->get('fos_oauth_server.authorize.form');
                 $clientId = $request->get(sprintf('%s[client_id]', $form->getName()), null, true);
