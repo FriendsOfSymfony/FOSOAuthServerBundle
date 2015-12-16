@@ -20,7 +20,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class TokenStorageCompilerPass implements CompilerPassInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -35,5 +34,4 @@ class TokenStorageCompilerPass implements CompilerPassInterface
         }
         $definition->replaceArgument(0, $tokenStorageReference);
     }
-
 }
