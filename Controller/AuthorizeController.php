@@ -57,7 +57,9 @@ class AuthorizeController extends ContainerAware
             new OAuthEvent($user, $this->getClient())
         );
 
-        if ($event->isAuthorizedClient()) {
+        $showScopePage = $this->container->getParameter('fos_oauth_server.scope_page');
+
+        if ($event->isAuthorizedClient() || $showScopePage === false) {
             $scope = $this->container->get('request')->get('scope', null);
 
             return $this->container

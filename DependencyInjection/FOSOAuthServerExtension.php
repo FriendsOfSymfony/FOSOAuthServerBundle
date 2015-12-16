@@ -49,6 +49,7 @@ class FOSOAuthServerExtension extends Extension
         }
 
         $container->setParameter('fos_oauth_server.server.options', $config['service']['options']);
+        $container->setParameter('fos_oauth_server.scope_page', $config['service']['scope_page']);
 
         $this->remapParametersNamespaces($config, $container, array(
             '' => array(
