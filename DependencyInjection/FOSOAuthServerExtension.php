@@ -34,7 +34,7 @@ class FOSOAuthServerExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load(sprintf('%s.xml', $config['db_driver']));
 
-        foreach (array('oauth', 'security') as $basename) {
+        foreach (array('oauth', 'security', 'command') as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
