@@ -11,22 +11,40 @@
 
 namespace FOS\OAuthServerBundle\Form\Handler;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
  */
-class AuthorizeFormHandler
+class AuthorizeFormHandler implements ContainerAwareInterface
 {
-    protected $request;
+    /**
+     * @var FormInterface
+     */
     protected $form;
 
-    public function __construct(FormInterface $form, Request $request)
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
+    public function __construct(FormInterface $form)
     {
         $this->form = $form;
-        $this->request = $request;
     }
 
     public function isAccepted()
@@ -41,17 +59,25 @@ class AuthorizeFormHandler
 
     public function process()
     {
-        $this->form->setData(new Authorize(
-            $this->request->request->has('accepted'),
-            $this->request->query->all()
-        ));
+        try {
+            $request = $this->container->get('request_stack')->getCurrentRequest();
+        } catch (ServiceNotFoundException $e) {
+            $request = $this->container->get('request');
+        }
 
-        if ('POST' === $this->request->getMethod()) {
-            $this->form->bind($this->request);
-            if ($this->form->isValid()) {
-                $this->onSuccess();
+        if (null !== $request) {
+            $this->form->setData(new Authorize(
+                $request->request->has('accepted'),
+                $request->query->all()
+            ));
 
-                return true;
+            if ('POST' === $request->getMethod()) {
+                $this->form->handleRequest($request);
+                if ($this->form->isValid()) {
+                    $this->onSuccess();
+
+                    return true;
+                }
             }
         }
 
