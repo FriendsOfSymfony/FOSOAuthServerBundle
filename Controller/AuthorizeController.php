@@ -152,14 +152,17 @@ class AuthorizeController implements ContainerAwareInterface
                 $request = $this->container->get('request');
             }
 
-            if (null === $clientId = $request->get('client_id')) {
-                $form = $this->container->get('fos_oauth_server.authorize.form');
-                $clientId = $request->get(sprintf('%s[client_id]', $form->getName()), null, true);
-            }
+            $client = null;
+            if (null !== $request) {
+                if (null === $clientId = $request->get('client_id')) {
+                    $form = $this->container->get('fos_oauth_server.authorize.form');
+                    $clientId = $request->get(sprintf('%s[client_id]', $form->getName()), null, true);
+                }
 
-            $client = $this->container
-                ->get('fos_oauth_server.client_manager')
-                ->findClientByPublicId($clientId);
+                $client = $this->container
+                    ->get('fos_oauth_server.client_manager')
+                    ->findClientByPublicId($clientId);
+            }
 
             if (null === $client) {
                 throw new NotFoundHttpException('Client not found.');
