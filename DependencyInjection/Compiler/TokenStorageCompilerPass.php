@@ -27,11 +27,8 @@ class TokenStorageCompilerPass implements CompilerPassInterface
     {
         $definition = $container->getDefinition('fos_oauth_server.security.authentication.listener');
 
-        if ($container->hasDefinition('security.token_storage')) {
-            $tokenStorageReference = new Reference('security.token_storage');
-        } else {
-            $tokenStorageReference = new Reference('security.context');
+        if ($container->hasDefinition('security.token_storage') === false) {
+            $definition->replaceArgument(0, new Reference('security.context'));
         }
-        $definition->replaceArgument(0, $tokenStorageReference);
     }
 }
