@@ -65,17 +65,19 @@ class AuthorizeFormHandler implements ContainerAwareInterface
             $request = $this->container->get('request');
         }
 
-        $this->form->setData(new Authorize(
-            $request->request->has('accepted'),
-            $request->query->all()
-        ));
+        if (null !== $request) {
+            $this->form->setData(new Authorize(
+                $request->request->has('accepted'),
+                $request->query->all()
+            ));
 
-        if ('POST' === $request->getMethod()) {
-            $this->form->handleRequest($request);
-            if ($this->form->isValid()) {
-                $this->onSuccess();
+            if ('POST' === $request->getMethod()) {
+                $this->form->handleRequest($request);
+                if ($this->form->isValid()) {
+                    $this->onSuccess();
 
-                return true;
+                    return true;
+                }
             }
         }
 
