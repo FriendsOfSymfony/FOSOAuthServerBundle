@@ -599,7 +599,7 @@ https://www.example.com/oauth/v2/token?client_id=1_RandomId
 &grant_type=client_credentials
 ```
 
-It is important to note that the `publicId` that that you are providing as the client_id parameter, is a concatenation of the primary key for the client record, an underscore, and the random_id field from the client record.
+It is important to note that the `publicId` that you are providing as the client_id parameter, is a concatenation of the primary key for the client record, an underscore, and the random_id field from the client record.
 
 ## Usage
 
