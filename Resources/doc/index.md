@@ -566,7 +566,7 @@ fos_oauth_server:
     ...
 
     service:
-        user_provider: fos_user.user_manager
+        user_provider: fos_user.user_provider.username
 ```
 
 ## Creating A Client
