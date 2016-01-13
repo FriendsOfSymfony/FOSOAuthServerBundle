@@ -14,6 +14,7 @@ namespace FOS\OAuthServerBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
+use Symfony\Component\HttpFoundation\Response;
 
 class TokenController
 {
@@ -32,7 +33,7 @@ class TokenController
 
     /**
      * @param  Request $request
-     * @return type
+     * @return Response
      */
     public function tokenAction(Request $request)
     {
