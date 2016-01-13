@@ -30,24 +30,24 @@ use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 class OAuthListener implements ListenerInterface
 {
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface
+     * @var TokenStorageInterface|SecurityContextInterface
      */
     protected $securityContext;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface
+     * @var AuthenticationManagerInterface
      */
     protected $authenticationManager;
 
     /**
-     * @var \OAuth2\OAuth2
+     * @var OAuth2
      */
     protected $serverService;
 
     /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface   $tokenStorage          The token storage.
-     * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface        $authenticationManager The authentication manager.
-     * @param \OAuth2\OAuth2                                                                        $serverService
+     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage          The token storage.
+     * @param AuthenticationManagerInterface                 $authenticationManager The authentication manager.
+     * @param OAuth2                                         $serverService
      */
     public function __construct($securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
@@ -60,7 +60,7 @@ class OAuthListener implements ListenerInterface
     }
 
     /**
-     * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event The event.
+     * @param GetResponseEvent $event The event.
      */
     public function handle(GetResponseEvent $event)
     {

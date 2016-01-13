@@ -11,16 +11,17 @@
 
 namespace FOS\OAuthServerBundle\Form\Handler;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
  */
-class AuthorizeFormHandler implements ContainerAwareInterface
+class AuthorizeFormHandler
 {
     /**
      * @var FormInterface
@@ -33,6 +34,25 @@ class AuthorizeFormHandler implements ContainerAwareInterface
     protected $container;
 
     /**
+     * @var RequestStack|Request|null
+     */
+    private $requestStack;
+
+    /**
+     * @param FormInterface        $form
+     * @param Request|RequestStack $requestStack
+     */
+    public function __construct(FormInterface $form, $requestStack = null)
+    {
+        if(null !== $requestStack && !$requestStack instanceof RequestStack && !$requestStack instanceof Request) {
+            throw new \InvalidArgumentException(sprintf('Argument 2 of %s must be an instanceof RequestStack or Request', __CLASS__));
+        }
+
+        $this->form = $form;
+        $this->requestStack = $requestStack;
+    }
+
+    /**
      * Sets the container.
      *
      * @param ContainerInterface|null $container A ContainerInterface instance or null
@@ -40,11 +60,6 @@ class AuthorizeFormHandler implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-    }
-
-    public function __construct(FormInterface $form)
-    {
-        $this->form = $form;
     }
 
     public function isAccepted()
@@ -59,12 +74,7 @@ class AuthorizeFormHandler implements ContainerAwareInterface
 
     public function process()
     {
-        try {
-            $request = $this->container->get('request_stack')->getCurrentRequest();
-        } catch (ServiceNotFoundException $e) {
-            $request = $this->container->get('request');
-        }
-
+        $request = $this->getCurrentRequest();
         if (null !== $request) {
             $this->form->setData(new Authorize(
                 $request->request->has('accepted'),
@@ -89,6 +99,15 @@ class AuthorizeFormHandler implements ContainerAwareInterface
         return $this->form->getData()->scope;
     }
 
+    public function __get($name)
+    {
+        if ($name === 'request') {
+            @trigger_error(sprintf('%s::$request is deprecated since 1.4 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
+
+            return $this->getCurrentRequest();
+        }
+    }
+
     /**
      * Put form data in $_GET so that OAuth2 library will call Request::createFromGlobals()
      *
@@ -104,5 +123,18 @@ class AuthorizeFormHandler implements ContainerAwareInterface
             'state'         => $this->form->getData()->state,
             'scope'         => $this->form->getData()->scope,
         );
+    }
+
+    private function getCurrentRequest()
+    {
+        if (null !== $this->requestStack) {
+            if ($this->requestStack instanceof Request) {
+                return $this->requestStack;
+            } else {
+                return $this->requestStack->getCurrentRequest();
+            }
+        }
+
+        return $this->container->get('request');
     }
 }

@@ -12,6 +12,7 @@
 namespace FOS\OAuthServerBundle;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\TokenStorageCompilerPass;
+use FOS\OAuthServerBundle\DependencyInjection\Compiler\RequestStackCompilerPass;
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\GrantExtensionsCompilerPass;
@@ -37,5 +38,6 @@ class FOSOAuthServerBundle extends Bundle
 
         $container->addCompilerPass(new GrantExtensionsCompilerPass());
         $container->addCompilerPass(new TokenStorageCompilerPass());
+        $container->addCompilerPass(new RequestStackCompilerPass());
     }
 }

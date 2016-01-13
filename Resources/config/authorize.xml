@@ -20,6 +20,7 @@
 
         <service id="fos_oauth_server.authorize.form.handler.default" class="FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler">
             <argument type="service" id="fos_oauth_server.authorize.form" />
+            <argument type="service" id="request_stack" on-invalid="ignore" />
         </service>
     </services>
 

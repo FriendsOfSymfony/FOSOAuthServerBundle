@@ -56,7 +56,7 @@ class AuthorizeController implements ContainerAwareInterface
      */
     public function authorizeAction(Request $request)
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->getTokenStorage()->getToken()->getUser();
 
         if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -106,7 +106,7 @@ class AuthorizeController implements ContainerAwareInterface
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
     {
         if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
-            $this->container->get('security.context')->setToken(null);
+            $this->getTokenStorage()->setToken(null);
             $this->container->get('session')->invalidate();
         }
 
@@ -146,11 +146,7 @@ class AuthorizeController implements ContainerAwareInterface
     protected function getClient()
     {
         if (null === $this->client) {
-            try {
-                $request = $this->container->get('request_stack')->getCurrentRequest();
-            } catch (ServiceNotFoundException $e) {
-                $request = $this->container->get('request');
-            }
+            $request = $this->getCurrentRequest();
 
             $client = null;
             if (null !== $request) {
@@ -172,5 +168,27 @@ class AuthorizeController implements ContainerAwareInterface
         }
 
         return $this->client;
+    }
+
+    private function getCurrentRequest() {
+        if($this->container->has('request_stack')) {
+            $request = $this->container->get('request_stack')->getCurrentRequest();
+            if(null === $request) {
+                throw new \RuntimeException('No current request.');
+            }
+
+            return $request;
+        } else {
+            return $this->container->get('request');
+        }
+    }
+
+    private function getTokenStorage()
+    {
+        if($this->container->has('security.token_storage')) {
+            return $this->container->get('security.token_storage');
+        }
+
+        return $this->container->get('security.context');
     }
 }
