@@ -5,6 +5,7 @@ All available configuration options are listed below with their default values.
 
     fos_oauth_server:
         db_driver:                  ~ # Required. Available: mongodb, orm, propel
+        token_path_auth:            ~ # Optional. Available: plain, hash
         client_class:               ~ # Required
         access_token_class:         ~ # Required
         refresh_token_class:        ~ # Required

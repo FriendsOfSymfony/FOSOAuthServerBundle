@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('fos_oauth_server');
 
         $supportedDrivers = array('orm', 'mongodb', 'propel');
+        $supportedAuth = array('plain', 'hash');
 
         $rootNode
             ->children()
@@ -40,6 +41,14 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The driver %s is not supported. Please choose one of ' . json_encode($supportedDrivers))
                     ->end()
                     ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('token_path_auth')
+                    ->defaultValue('plain')
+                    ->validate()
+                        ->ifNotInArray($supportedAuth)
+                        ->thenInvalid('The auth %s is not supported. Please choose one of ' . json_encode($supportedAuth))
+                    ->end()
                     ->cannotBeEmpty()
                 ->end()
                 ->scalarNode('client_class')->isRequired()->cannotBeEmpty()->end()

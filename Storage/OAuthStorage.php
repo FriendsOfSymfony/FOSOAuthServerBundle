@@ -33,6 +33,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     IOAuth2GrantClient, IOAuth2GrantExtension, GrantExtensionDispatcherInterface
 {
     /**
+     * @var string
+     */
+    protected $tokenPathAuth;
+
+    /**
      * @var \FOS\OAuthServerBundle\Model\ClientManagerInterface
      */
     protected $clientManager;
@@ -75,10 +80,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
      * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface      $userProvider
      * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
-    public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
+    public function __construct($tokenPathAuth, ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
         RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
         UserProviderInterface $userProvider = null, EncoderFactoryInterface $encoderFactory = null)
     {
+        $this->tokenPathAuth = $tokenPathAuth;
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
         $this->refreshTokenManager = $refreshTokenManager;
@@ -164,12 +170,22 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         }
 
         if (null !== $user) {
-            $encoder = $this->encoderFactory->getEncoder($user);
+            $data = array(
+                'data' => $user,
+            );
 
-            if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
-                return array(
-                    'data' => $user,
-                );
+            if ($this->tokenPathAuth === 'plain') {
+                $encoder = $this->encoderFactory->getEncoder($user);
+
+                if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
+                    return $data;
+                }
+            } elseif ($this->tokenPathAuth === 'hash') {
+                if ($user->getPassword() === $password) {
+                    return $data;
+                }
+            } else {
+                throw new \InvalidArgumentException('Token Path Auth is not valid');
             }
         }
 
