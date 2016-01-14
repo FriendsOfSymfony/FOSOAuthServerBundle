@@ -581,8 +581,7 @@ $client->setAllowedGrantTypes(array('token', 'authorization_code'));
 $clientManager->updateClient($client);
 ```
 
-Once you have created a client, you need to pass its `publicId` to the authorize endpoint. You also need 
-to specify a redirect uri as well as a response type. 
+Once you have created a client, you may pass its `publicId` to the authorize endpoint. In this case, you will also need to specify a redirect uri as well as a response type. 
 
 ```php
 return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
@@ -591,6 +590,16 @@ return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
     'response_type' => 'code'
 )));
 ```
+
+To use your newly created client with the token endpoint, you can pass the `publicId`, `secret`, and the corresponding parameters based on your selected grant type.
+
+```ini
+https://www.example.com/oauth/v2/token?client_id=1_RandomId
+&client_secret=Secret
+&grant_type=client_credentials
+```
+
+It is important to note that the `publicId` that you are providing as the client_id parameter, is a concatenation of the primary key for the client record, an underscore, and the random_id field from the client record.
 
 ## Usage
 
