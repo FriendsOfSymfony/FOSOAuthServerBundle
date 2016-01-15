@@ -11,13 +11,31 @@
 
 namespace FOS\OAuthServerBundle\Controller;
 
+use FOS\OAuthServerBundle\Event\OAuthTokenEvent;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
-class TokenController
+class TokenController implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @var OAuth2
      */
@@ -31,15 +49,47 @@ class TokenController
         $this->server = $server;
     }
 
+    protected $storage = null;
+
+    /**
+     * @return \FOS\OAuthServerBundle\Storage\OAuthStorage
+     */
+    protected function getOAuthStorage()
+    {
+        if(null === $this->storage)
+        {
+            $reflection = new \ReflectionClass($this->server);
+            $storage = $reflection->getProperty('storage');
+            $storage->setAccessible(true);
+            $this->storage = $storage->getValue($this->server);
+        }
+
+        return $this->storage;
+    }
+
     /**
      * @param  Request $request
      * @return Response
      */
     public function tokenAction(Request $request)
     {
-        try {
-            return $this->server->grantAccessToken($request);
-        } catch (OAuth2ServerException $e) {
+        try
+        {
+            $response = $this->server->grantAccessToken($request);
+
+            $data = json_decode($response->getContent(), true);
+
+            $accessToken = $this->getOAuthStorage()->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
+            /* @var $accessToken \FOS\OAuthServerBundle\Entity\AccessToken */
+
+            $this->container->get('event_dispatcher')->dispatch(
+                OAuthTokenEvent::POST_ACCESS_TOKEN_GRANT,
+                new OAuthTokenEvent($accessToken)
+            );
+
+            return $response;
+        }
+        catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
     }
