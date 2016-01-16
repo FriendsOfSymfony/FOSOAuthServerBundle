@@ -49,24 +49,6 @@ class TokenController implements ContainerAwareInterface
         $this->server = $server;
     }
 
-    protected $storage = null;
-
-    /**
-     * @return \FOS\OAuthServerBundle\Storage\OAuthStorage
-     */
-    protected function getOAuthStorage()
-    {
-        if(null === $this->storage)
-        {
-            $reflection = new \ReflectionClass($this->server);
-            $storage = $reflection->getProperty('storage');
-            $storage->setAccessible(true);
-            $this->storage = $storage->getValue($this->server);
-        }
-
-        return $this->storage;
-    }
-
     /**
      * @param  Request $request
      * @return Response
@@ -79,7 +61,9 @@ class TokenController implements ContainerAwareInterface
 
             $data = json_decode($response->getContent(), true);
 
-            $accessToken = $this->getOAuthStorage()->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
+            $storage = $this->container->get('fos_oauth_server.storage');
+            /* @var $storage \FOS\OAuthServerBundle\Storage\OAuthStorage */
+            $accessToken = $storage->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
             /* @var $accessToken \FOS\OAuthServerBundle\Entity\AccessToken */
 
             $this->container->get('event_dispatcher')->dispatch(
