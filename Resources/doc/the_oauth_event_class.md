@@ -22,6 +22,7 @@ The following class shows a Propel implementation of a basic listener:
 namespace Acme\DemoBundle\EventListener;
 
 use FOS\OAuthServerBundle\Event\OAuthEvent;
+use FOS\OAuthServerBundle\Event\OAuthTokenEvent;
 
 class OAuthEventListener
 {
@@ -51,6 +52,13 @@ class OAuthEventListener
             ->filterByUsername($event->getUser()->getUsername())
             ->findOne();
     }
+
+    public function onPostAccessTokenGrant(OAuthTokenEvent $event)
+    {
+        $accessToken = $event->getAccessToken();
+        /* @var $accessToken \FOS\OAuthServerBundle\Model\AccessTokenInterface */
+        //...
+    }
 }
 ```
 
@@ -67,6 +75,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
             - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_access_token_grant, method: postAccessTokenGrant }
 ```
 
 
