@@ -27,17 +27,19 @@ class OAuthEvent extends Event
     private $user;
 
     /**
-     * @var \FOS\FOSOAuthServerBundle\Model\ClientInterface
+     * @var \FOS\OAuthServerBundle\Model\ClientInterface
      */
     private $client;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     private $isAuthorizedClient;
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface   $user
+     * @param ClientInterface $client
+     * @param bool            $isAuthorizedClient
      */
     public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false)
     {
@@ -55,7 +57,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @param Boolean $isAuthorizedClient
+     * @param bool $isAuthorizedClient
      */
     public function setAuthorizedClient($isAuthorizedClient)
     {
@@ -63,7 +65,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @return Boolean
+     * @return bool
      */
     public function isAuthorizedClient()
     {
