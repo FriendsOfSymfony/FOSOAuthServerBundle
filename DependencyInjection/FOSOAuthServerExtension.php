@@ -22,11 +22,11 @@ use Symfony\Component\Config\FileLocator;
 class FOSOAuthServerExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor     = new Processor();
+        $processor = new Processor();
         $configuration = new Configuration();
 
         $config = $processor->processConfiguration($configuration, $configs);
@@ -52,11 +52,11 @@ class FOSOAuthServerExtension extends Extension
 
         $this->remapParametersNamespaces($config, $container, array(
             '' => array(
-                'model_manager_name'    => 'fos_oauth_server.model_manager_name',
-                'client_class'          => 'fos_oauth_server.model.client.class',
-                'access_token_class'    => 'fos_oauth_server.model.access_token.class',
-                'refresh_token_class'   => 'fos_oauth_server.model.refresh_token.class',
-                'auth_code_class'       => 'fos_oauth_server.model.auth_code.class',
+                'model_manager_name'  => 'fos_oauth_server.model_manager_name',
+                'client_class'        => 'fos_oauth_server.model.client.class',
+                'access_token_class'  => 'fos_oauth_server.model.access_token.class',
+                'refresh_token_class' => 'fos_oauth_server.model.refresh_token.class',
+                'auth_code_class'     => 'fos_oauth_server.model.auth_code.class',
             ),
             'template' => 'fos_oauth_server.template.%s',
         ));

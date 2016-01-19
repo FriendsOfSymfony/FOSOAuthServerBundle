@@ -46,7 +46,7 @@ class AuthorizeFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize'
+            'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
         ));
     }
 

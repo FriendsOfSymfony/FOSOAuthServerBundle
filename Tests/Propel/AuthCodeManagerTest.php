@@ -69,7 +69,7 @@ class AuthCodeManagerTest extends PropelTestCase
     public function testFindAuthCode()
     {
         $authCode = $this->createAuthCode('12345');
-        $return   = $this->manager->findAuthCodeBy(array('token' => '12345'));
+        $return = $this->manager->findAuthCodeBy(array('token' => '12345'));
 
         $this->assertNotNull($return);
         $this->assertSame($authCode, $return);
@@ -78,7 +78,7 @@ class AuthCodeManagerTest extends PropelTestCase
     public function testFindAuthCodeByToken()
     {
         $authCode = $this->createAuthCode('12345');
-        $return   = $this->manager->findAuthCodeByToken('12345');
+        $return = $this->manager->findAuthCodeByToken('12345');
 
         $this->assertNotNull($return);
         $this->assertSame($authCode, $return);

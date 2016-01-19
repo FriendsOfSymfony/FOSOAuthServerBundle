@@ -33,32 +33,32 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     IOAuth2GrantClient, IOAuth2GrantExtension, GrantExtensionDispatcherInterface
 {
     /**
-     * @var \FOS\OAuthServerBundle\Model\ClientManagerInterface
+     * @var ClientManagerInterface
      */
     protected $clientManager;
 
     /**
-     * @var \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface
+     * @var AccessTokenManagerInterface
      */
     protected $accessTokenManager;
 
     /**
-     * @var \FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface
+     * @var RefreshTokenManagerInterface
      */
     protected $refreshTokenManager;
 
     /**
-     * @var \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
+     * @var AuthCodeManagerInterface;
      */
     protected $authCodeManager;
 
     /**
-     * @var \Symfony\Component\Security\Core\User\UserProviderInterface
+     * @var UserProviderInterface
      */
     protected $userProvider;
 
     /**
-     * @var \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface
+     * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
 
@@ -68,12 +68,12 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     protected $grantExtensions;
 
     /**
-     * @param \FOS\OAuthServerBundle\Model\ClientManagerInterface                   $clientManager
-     * @param \FOS\OAuthServerBundle\Model\AccessTokenManagerInterface              $accessTokenManager
-     * @param \FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface             $refreshTokenManager
-     * @param \FOS\OAuthServerBundle\Model\AuthCodeManagerInterface                 $authCodeManager
-     * @param null|\Symfony\Component\Security\Core\User\UserProviderInterface      $userProvider
-     * @param null|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
+     * @param ClientManagerInterface       $clientManager
+     * @param AccessTokenManagerInterface  $accessTokenManager
+     * @param RefreshTokenManagerInterface $refreshTokenManager
+     * @param AuthCodeManagerInterface     $authCodeManager
+     * @param null|UserProviderInterface   $userProvider
+     * @param null|EncoderFactoryInterface $encoderFactory
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
         RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
@@ -187,7 +187,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = NULL)
+    public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = null)
     {
         if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException('Client has to implement the ClientInterface');
@@ -216,7 +216,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function createRefreshToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = NULL)
+    public function createRefreshToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
     {
         if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException('Client has to implement the ClientInterface');

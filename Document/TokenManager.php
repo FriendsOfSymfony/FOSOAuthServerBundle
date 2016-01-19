@@ -12,18 +12,19 @@
 namespace FOS\OAuthServerBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 
 class TokenManager extends BaseTokenManager
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentManager
+     * @var DocumentManager
      */
     protected $dm;
 
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var DocumentRepository
      */
     protected $repository;
 
