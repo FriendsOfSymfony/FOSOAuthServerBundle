@@ -32,14 +32,14 @@ class OAuthEvent extends Event
     private $client;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     private $isAuthorizedClient;
 
     /**
      * @param UserInterface   $user
      * @param ClientInterface $client
-     * @param Boolean         $isAuthorizedClient
+     * @param bool            $isAuthorizedClient
      */
     public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false)
     {
@@ -57,7 +57,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @param Boolean $isAuthorizedClient
+     * @param bool $isAuthorizedClient
      */
     public function setAuthorizedClient($isAuthorizedClient)
     {
@@ -65,7 +65,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @return Boolean
+     * @return bool
      */
     public function isAuthorizedClient()
     {
