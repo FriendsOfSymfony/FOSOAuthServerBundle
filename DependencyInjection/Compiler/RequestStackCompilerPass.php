@@ -27,7 +27,7 @@ final class RequestStackCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if($container->has('request_stack')) {
+        if ($container->has('request_stack')) {
             return;
         }
 

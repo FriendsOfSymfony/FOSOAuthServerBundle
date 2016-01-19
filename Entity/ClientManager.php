@@ -12,18 +12,20 @@
 namespace FOS\OAuthServerBundle\Entity;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 
 class ClientManager extends BaseClientManager
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $em;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var EntityRepository
      */
     protected $repository;
 

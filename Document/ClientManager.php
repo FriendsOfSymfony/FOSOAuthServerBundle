@@ -12,18 +12,19 @@
 namespace FOS\OAuthServerBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
 class ClientManager extends BaseClientManager
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentManager
+     * @var DocumentManager
      */
     protected $dm;
 
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var DocumentRepository
      */
     protected $repository;
 
