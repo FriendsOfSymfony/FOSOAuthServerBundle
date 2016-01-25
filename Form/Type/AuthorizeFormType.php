@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -22,12 +23,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class AuthorizeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('client_id', 'hidden');
-        $builder->add('response_type', 'hidden');
-        $builder->add('redirect_uri', 'hidden');
-        $builder->add('state', 'hidden');
-        $builder->add('scope', 'hidden');
+    { 
+        $builder->add('client_id', HiddenType::class);
+        $builder->add('response_type', HiddenType::class);
+        $builder->add('redirect_uri', HiddenType::class);
+        $builder->add('state', HiddenType::class);
+        $builder->add('scope', HiddenType::class);
     }
 
     /**
