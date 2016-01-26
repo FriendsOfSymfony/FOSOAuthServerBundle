@@ -3,11 +3,13 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
+	<parameters>
+	  <parameter key='fos_oauth_server.authorize.form.class'>FOS\OAuthServerBundle\Form\Type\AuthorizeFormType</parameter> 
+	</parameters>
     <services>
         <service id="fos_oauth_server.authorize.form" class="Symfony\Component\Form\Form">
             <argument>%fos_oauth_server.authorize.form.name%</argument>
-            <argument>%fos_oauth_server.authorize.form.type%</argument>
+            <argument>%FOS\OAuthServerBundle\Form\Type\AuthorizeFormType%</argument>
             <argument>null</argument>
             <argument type="collection">
                 <argument key="validation_groups">%fos_oauth_server.authorize.form.validation_groups%</argument>

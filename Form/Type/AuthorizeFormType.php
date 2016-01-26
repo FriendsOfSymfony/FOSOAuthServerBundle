@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -24,11 +24,11 @@ class AuthorizeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     { 
-        $builder->add('client_id', HiddenType::class);
-        $builder->add('response_type', HiddenType::class);
-        $builder->add('redirect_uri', HiddenType::class);
-        $builder->add('state', HiddenType::class);
-        $builder->add('scope', HiddenType::class);
+        $builder->add('client_id', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
+        $builder->add('response_type', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
+        $builder->add('redirect_uri', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
+        $builder->add('state', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
+        $builder->add('scope', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
     }
 
     /**
