@@ -9,7 +9,7 @@
     <services>
         <service id="fos_oauth_server.authorize.form" class="Symfony\Component\Form\Form">
             <argument>%fos_oauth_server.authorize.form.name%</argument>
-            <argument>%FOS\OAuthServerBundle\Form\Type\AuthorizeFormType%</argument>
+            <argument>%fos_oauth_server.authorize.form.class%</argument>
             <argument>null</argument>
             <argument type="collection">
                 <argument key="validation_groups">%fos_oauth_server.authorize.form.validation_groups%</argument>
