@@ -21,7 +21,6 @@ final class LegacyFormHelper
     private static $map = array(
        
         'Symfony\Component\Form\Extension\Core\Type\HiddenType' => 'hidden',
-        'FOS\OAuthServerBundle\Form\Type\AuthorizeFormType' => 'fos_oauth_server_authorize',
     
     );
 
