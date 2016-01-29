@@ -19,7 +19,7 @@ you will see a `client` variable which is passed to the templating engine. That 
 ``` html+jinja
 <h2>The application "{{ client.name }}" would like to connect to your account</h2>
 
-<form action="{{ path('fos_oauth_server_authorize') }}" method="POST" class="fos_oauth_server_authorize" {{ form_enctype(form) }}>
+{{ form_start(form, {'method': 'POST', 'action': path('fos_oauth_server_authorize'), 'label_attr': {'class': 'fos_oauth_server_authorize'} }) }}
     <input class="btn" type="submit" name="rejected" value="{{ 'authorize.reject'|trans({}, 'FOSOAuthServerBundle') }}" />
     <input class="btn btn-primary" type="submit" name="accepted" value="{{ 'authorize.accept'|trans({}, 'FOSOAuthServerBundle') }}" />
 

@@ -43,10 +43,10 @@ class TokenManager extends BaseTokenManager
     public function findTokenBy(array $criteria)
     {
         if (!isset($criteria['token'])) {
-            return null;
+            return;
         }
 
-        $queryClass = $this->class . 'Query';
+        $queryClass = $this->class.'Query';
 
         return $queryClass::create()
             ->filterByToken($criteria['token'])
@@ -74,7 +74,7 @@ class TokenManager extends BaseTokenManager
      */
     public function deleteExpired()
     {
-        $queryClass = $this->class . 'Query';
+        $queryClass = $this->class.'Query';
 
         return $queryClass::create()
             ->filterByExpiresAt(time(), \Criteria::LESS_THAN)

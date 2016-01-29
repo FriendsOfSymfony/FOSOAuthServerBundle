@@ -20,7 +20,7 @@ abstract class TokenManager implements TokenManagerInterface
     {
         $class = $this->getClass();
 
-        return new $class;
+        return new $class();
     }
 
     /**

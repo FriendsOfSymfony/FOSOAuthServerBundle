@@ -16,7 +16,7 @@ use FOS\OAuthServerBundle\Tests\TestCase;
 
 /**
  * If you update the following class, please don't forget
- * to update: FOS\OAuthServerBundle\Tests\Propel\TokenTest
+ * to update: FOS\OAuthServerBundle\Tests\Propel\TokenTest.
  */
 class TokenTest extends TestCase
 {

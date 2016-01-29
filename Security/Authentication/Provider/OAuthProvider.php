@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
-
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use OAuth2\OAuth2AuthenticateException;
@@ -31,26 +30,26 @@ use OAuth2\OAuth2AuthenticateException;
 class OAuthProvider implements AuthenticationProviderInterface
 {
     /**
-     * @var \Symfony\Component\Security\Core\User\UserProviderInterface
+     * @var UserProviderInterface
      */
     protected $userProvider;
     /**
-     * @var \OAuth2\OAuth2
+     * @var OAuth2
      */
     protected $serverService;
     /**
-     * @var \Symfony\Component\Security\Core\User\UserChecker
+     * @var UserCheckerInterface
      */
     protected $userChecker;
 
     /**
-     * @param \Symfony\Component\Security\Core\User\UserProviderInterface $userProvider  The user provider.
-     * @param \OAuth2\OAuth2                                              $serverService The OAuth2 server service.
-     * @param \Symfony\Component\Security\Core\User\UserCheckerInterface  $userChecker   The Symfony User Checker for Pre and Post auth checks
+     * @param UserProviderInterface $userProvider  The user provider.
+     * @param OAuth2                $serverService The OAuth2 server service.
+     * @param UserCheckerInterface  $userChecker   The Symfony User Checker for Pre and Post auth checks
      */
     public function __construct(UserProviderInterface $userProvider, OAuth2 $serverService, UserCheckerInterface $userChecker)
     {
-        $this->userProvider  = $userProvider;
+        $this->userProvider = $userProvider;
         $this->serverService = $serverService;
         $this->userChecker = $userChecker;
     }
@@ -61,7 +60,7 @@ class OAuthProvider implements AuthenticationProviderInterface
     public function authenticate(TokenInterface $token)
     {
         if (!$this->supports($token)) {
-            return null;
+            return;
         }
 
         try {
@@ -69,10 +68,9 @@ class OAuthProvider implements AuthenticationProviderInterface
 
             if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
                 $scope = $accessToken->getScope();
-                $user  = $accessToken->getUser();
+                $user = $accessToken->getUser();
 
                 if (null !== $user) {
-
                     try {
                         $this->userChecker->checkPreAuth($user);
                     } catch (AccountStatusException $e) {
@@ -91,16 +89,17 @@ class OAuthProvider implements AuthenticationProviderInterface
 
                 if (!empty($scope)) {
                     foreach (explode(' ', $scope) as $role) {
-                        $roles[] = 'ROLE_' . strtoupper($role);
+                        $roles[] = 'ROLE_'.strtoupper($role);
                     }
                 }
+
+                $roles = array_unique($roles);
 
                 $token = new OAuthToken($roles);
                 $token->setAuthenticated(true);
                 $token->setToken($tokenString);
 
                 if (null !== $user) {
-
                     try {
                         $this->userChecker->checkPostAuth($user);
                     } catch (AccountStatusException $e) {

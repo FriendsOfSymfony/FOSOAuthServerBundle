@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -44,7 +53,7 @@ class User implements UserInterface
 
     public function getSalt()
     {
-        return null;
+        return;
     }
 
     public function getUsername()
@@ -54,6 +63,5 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
-
     }
 }

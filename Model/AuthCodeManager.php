@@ -20,7 +20,7 @@ abstract class AuthCodeManager implements AuthCodeManagerInterface
     {
         $class = $this->getClass();
 
-        return new $class;
+        return new $class();
     }
 
     /**
