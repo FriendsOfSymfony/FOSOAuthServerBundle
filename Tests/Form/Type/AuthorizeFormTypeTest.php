@@ -17,8 +17,6 @@ class AuthorizeFormTypeTest extends TypeTestCase
     
         $this->factory = Forms::createFormFactoryBuilder()
         ->addTypes($this->getTypes())
-        ->addExtensions($this->getExtensions())
-        ->addTypeExtensions($this->getTypeExtensions())
         ->getFormFactory();
     
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
@@ -55,8 +53,8 @@ class AuthorizeFormTypeTest extends TypeTestCase
     
     protected function getTypes()
     {
-        return array_merge(parent::getTypes(), array(
+        return  array(
             new AuthorizeFormType('FOS\OAuthServerBundle\Form\Model\Authorize'),
-        ));
+        );
     }
 }
