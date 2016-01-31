@@ -68,6 +68,7 @@ class AuthorizeController implements ContainerAwareInterface
 
         $form = $this->container->get('fos_oauth_server.authorize.form');
         $formHandler = $this->container->get('fos_oauth_server.authorize.form.handler');
+
         $event = $this->container->get('event_dispatcher')->dispatch(
             OAuthEvent::PRE_AUTHORIZATION_PROCESS,
             new OAuthEvent($user, $this->getClient())
