@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the FO package.
+ * This file is part of the FOSOAuthServerBundle package.
  *
  * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
  *
@@ -19,9 +19,7 @@ namespace FOS\OAuthServerBundle\Util;
 final class LegacyFormHelper
 {
     private static $map = array(
-       
         'Symfony\Component\Form\Extension\Core\Type\HiddenType' => 'hidden',
-    
     );
 
     public static function getType($class)

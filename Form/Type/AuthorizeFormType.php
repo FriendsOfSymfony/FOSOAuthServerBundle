@@ -23,7 +23,7 @@ use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 class AuthorizeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
-    { 
+    {
         $builder->add('client_id', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
         $builder->add('response_type', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
         $builder->add('redirect_uri', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
