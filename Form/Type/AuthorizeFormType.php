@@ -24,11 +24,13 @@ class AuthorizeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('client_id', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
-        $builder->add('response_type', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
-        $builder->add('redirect_uri', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
-        $builder->add('state', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
-        $builder->add('scope', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'));
+        $hiddenType = LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType');
+        
+        $builder->add('client_id', $hiddenType);
+        $builder->add('response_type', $hiddenType);
+        $builder->add('redirect_uri', $hiddenType);
+        $builder->add('state', $hiddenType);
+        $builder->add('scope', $hiddenType);
     }
 
     /**
@@ -54,8 +56,16 @@ class AuthorizeFormType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'fos_oauth_server_authorize';
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }

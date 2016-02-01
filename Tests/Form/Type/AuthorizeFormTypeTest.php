@@ -33,7 +33,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
             'scope'=>'testScope',
         );
         
-        $authorize = new Authorize($accepted,$formData);
+        $authorize = new Authorize($accepted, $formData);
      
         $form = $this->factory->create(LegacyFormHelper::getType('FOS\OAuthServerBundle\Form\Type\AuthorizeFormType'), $authorize);
     
@@ -54,7 +54,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
     protected function getTypes()
     {
         return  array(
-            new AuthorizeFormType('FOS\OAuthServerBundle\Form\Model\Authorize'),
+            new AuthorizeFormType(),
         );
     }
 }

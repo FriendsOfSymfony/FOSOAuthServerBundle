@@ -151,8 +151,8 @@ class FOSOAuthServerExtension extends Extension
        
         if (!LegacyFormHelper::isLegacy() && $config['form']['type'] === 'fos_oauth_server_authorize') {
             
-            $authorizeFormTypeDefinition= $container->getDefinition('fos_oauth_server.authorize.form.type');
-            $config['form']['type'] =$authorizeFormTypeDefinition->getClass();
+            $authorizeFormTypeDefinition = $container->getDefinition('fos_oauth_server.authorize.form.type');
+            $config['form']['type'] = $authorizeFormTypeDefinition->getClass();
             
         }
         
