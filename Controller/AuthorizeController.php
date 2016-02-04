@@ -152,7 +152,7 @@ class AuthorizeController implements ContainerAwareInterface
             if (null !== $request) {
                 if (null === $clientId = $request->get('client_id')) {
                     $form = $this->container->get('fos_oauth_server.authorize.form');
-                    $formData = $request->get($form->getName(), []);
+                    $formData = $request->get($form->getName(), array());
                     $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
                 }
 
