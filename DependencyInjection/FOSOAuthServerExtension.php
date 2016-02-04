@@ -148,14 +148,12 @@ class FOSOAuthServerExtension extends Extension
 
         $container->setAlias('fos_oauth_server.authorize.form.handler', $config['form']['handler']);
         unset($config['form']['handler']);
-       
+
         if (!LegacyFormHelper::isLegacy() && $config['form']['type'] === 'fos_oauth_server_authorize') {
-            
             $authorizeFormTypeDefinition = $container->getDefinition('fos_oauth_server.authorize.form.type');
             $config['form']['type'] = $authorizeFormTypeDefinition->getClass();
-            
         }
-        
+
         $this->remapParametersNamespaces($config, $container, array(
             'form' => 'fos_oauth_server.authorize.form.%s',
         ));

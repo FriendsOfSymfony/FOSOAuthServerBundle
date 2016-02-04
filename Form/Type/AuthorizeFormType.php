@@ -25,7 +25,7 @@ class AuthorizeFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $hiddenType = LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType');
-        
+
         $builder->add('client_id', $hiddenType);
         $builder->add('response_type', $hiddenType);
         $builder->add('redirect_uri', $hiddenType);
@@ -60,7 +60,7 @@ class AuthorizeFormType extends AbstractType
     {
         return 'fos_oauth_server_authorize';
     }
-    
+
     /**
      * @return string
      */
