@@ -75,7 +75,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
             - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }
-            - { name: kernel.event_listener, event: fos_oauth_server.post_access_token_grant, method: postAccessTokenGrant }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_access_token_grant, method: onPostAccessTokenGrant }
 ```
 
 
