@@ -514,6 +514,7 @@ class YourApiController extends Controller
         // [...]
     }
 ```
+Note : As pointed out in <a href="http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements">Symfony blog</a> , since Symfony 2.6 you should replace 'security.context' with 'security.authorization_checker'.
 
 ### Step 5: Configure FOSOAuthServerBundle
 
