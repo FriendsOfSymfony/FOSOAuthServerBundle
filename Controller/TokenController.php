@@ -12,32 +12,40 @@
 namespace FOS\OAuthServerBundle\Controller;
 
 use FOS\OAuthServerBundle\Event\OAuthTokenEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use OAuth2\OAuth2;
+use OAuth2\IOAuth2Storage;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
 class TokenController
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var OAuth2
      */
     protected $server;
 
     /**
-     * @param OAuth2 $server
-     * @param ContainerInterface $container
+     * @var IOAuth2Storage
      */
-    public function __construct(OAuth2 $server, ContainerInterface $container)
+    protected $storage;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
+     * @param OAuth2 $server
+     * @param IOAuth2Storage $storage
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function __construct(OAuth2 $server, IOAuth2Storage $storage, EventDispatcherInterface $dispatcher = null)
     {
         $this->server = $server;
-        $this->container = $container;
+        $this->storage= $storage;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -54,19 +62,14 @@ class TokenController
             return $e->getHttpResponse();
         }
 
-        $data = json_decode($response->getContent(), true);
-
-        $storage = $this->container->get('fos_oauth_server.storage');
-        /* @var $storage \FOS\OAuthServerBundle\Storage\OAuthStorage */
-        $accessToken = $storage->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
-        /* @var $accessToken \FOS\OAuthServerBundle\Entity\AccessToken */
-
-        if($this->container->has('event_dispatcher'))
+        if($this->dispatcher)
         {
-            $this->container->get('event_dispatcher')->dispatch(
-                OAuthTokenEvent::POST_ACCESS_TOKEN_GRANT,
-                new OAuthTokenEvent($accessToken)
-            );
+            $data = json_decode($response->getContent(), true);
+
+            $accessToken = $this->storage->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
+
+            $event = new OAuthTokenEvent($accessToken);
+            $this->dispatcher->dispatch(OAuthTokenEvent::POST_ACCESS_TOKEN_GRANT, $event);
         }
 
         return $response;
