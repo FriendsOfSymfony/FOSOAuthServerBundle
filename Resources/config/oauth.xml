@@ -26,7 +26,7 @@
         <service id="fos_oauth_server.controller.token" class="FOS\OAuthServerBundle\Controller\TokenController">
             <argument type="service" id="fos_oauth_server.server" />
             <argument type="service" id="fos_oauth_server.storage" />
-            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="event_dispatcher" on-invalid="null" />
         </service>
     </services>
 </container>
