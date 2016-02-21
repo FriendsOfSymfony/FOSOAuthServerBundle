@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doctrine-mapping>
 
-    <mapped-superclass name="FOS\OAuthServerBundle\Document\Client">
-        <field name="randomId" fieldName="randomId" type="string" />
+  <mapped-superclass name="FOS\OAuthServerBundle\CouchDocument\Client">
+        <field name="randomId" fieldName="randomId" type="string" index="true" />
         <field name="redirectUris" fieldName="redirectUris" type="mixed" />
         <field name="secret" fieldName="secret" type="string" />
         <field name="allowedGrantTypes" fieldName="allowedGrantTypes" type="mixed" />
