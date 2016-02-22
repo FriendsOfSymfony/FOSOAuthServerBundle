@@ -93,7 +93,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                     }
                 }
 
-                $roles = array_unique($roles);
+                $roles = array_unique($roles, SORT_REGULAR);
 
                 $token = new OAuthToken($roles);
                 $token->setAuthenticated(true);
