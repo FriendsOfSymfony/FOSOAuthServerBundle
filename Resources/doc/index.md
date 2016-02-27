@@ -533,7 +533,7 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 ``` yaml
 # app/config/config.yml
 fos_oauth_server:
-    db_driver: orm       # Driver availables: orm, mongodb, or propel
+    db_driver: orm       # Drivers available: orm, mongodb, or propel
     client_class:        Acme\ApiBundle\Entity\Client
     access_token_class:  Acme\ApiBundle\Entity\AccessToken
     refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
