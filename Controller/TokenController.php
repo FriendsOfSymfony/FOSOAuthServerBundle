@@ -27,26 +27,31 @@ class TokenController
     protected $server;
 
     /**
-     * @var IOAuth2Storage
-     */
-    protected $storage;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $dispatcher;
 
     /**
      * @param OAuth2 $server
-     * @param IOAuth2Storage $storage
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(OAuth2 $server, IOAuth2Storage $storage, EventDispatcherInterface $dispatcher = null)
+    public function __construct(OAuth2 $server, EventDispatcherInterface $dispatcher = null)
     {
         $this->server = $server;
-        $this->storage= $storage;
         $this->dispatcher = $dispatcher;
     }
+
+     /**
+      * @return IOAuth2Storage
+      */
+     protected function getStorage()
+     {
+         $reflection = new \ReflectionClass($this->server);
+         $storage = $reflection->getProperty('storage');
+         $storage->setAccessible(true);
+
+         return $storage->getValue($this->server);
+     }
 
     /**
      * @param  Request $request
@@ -66,7 +71,7 @@ class TokenController
         {
             $data = json_decode($response->getContent(), true);
 
-            $accessToken = $this->storage->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
+            $accessToken = $this->getStorage()->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
 
             $event = new OAuthTokenEvent($accessToken);
             $this->dispatcher->dispatch(OAuthTokenEvent::POST_ACCESS_TOKEN_GRANT, $event);
