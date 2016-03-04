@@ -15,7 +15,6 @@ use FOS\OAuthServerBundle\Event\OAuthTokenEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use OAuth2\OAuth2;
-use OAuth2\IOAuth2Storage;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,18 +40,6 @@ class TokenController
         $this->dispatcher = $dispatcher;
     }
 
-     /**
-      * @return IOAuth2Storage
-      */
-     protected function getStorage()
-     {
-         $reflection = new \ReflectionClass($this->server);
-         $storage = $reflection->getProperty('storage');
-         $storage->setAccessible(true);
-
-         return $storage->getValue($this->server);
-     }
-
     /**
      * @param  Request $request
      * @return Response
@@ -69,11 +56,7 @@ class TokenController
 
         if($this->dispatcher)
         {
-            $data = json_decode($response->getContent(), true);
-
-            $accessToken = $this->getStorage()->getAccessToken($data[OAuth2::TOKEN_PARAM_NAME]);
-
-            $event = new OAuthTokenEvent($accessToken);
+            $event = new OAuthTokenEvent(json_decode($response->getContent(), true));
             $this->dispatcher->dispatch(OAuthTokenEvent::POST_ACCESS_TOKEN_GRANT, $event);
         }
 

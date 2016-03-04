@@ -3,34 +3,29 @@
 namespace FOS\OAuthServerBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use FOS\OAuthServerBundle\Model\AccessTokenInterface;
 
-/**
- *
- * @author Konrad Rozner
- */
 class OAuthTokenEvent extends Event
 {
     const POST_ACCESS_TOKEN_GRANT = 'fos_oauth_server.post_access_token_grant';
 
     /**
-     * @var \FOS\OAuthServerBundle\Model\AccessTokenInterface
+     * @var array keys: ["access_token", "expires_in", "token_type", "scope"],
      */
-    private $accessToken;
+    private $accessTokenData;
 
     /**
-     * @param AccessTokenInterface $accessToken
+     * @param array $accessTokenData
      */
-    public function __construct(AccessTokenInterface $accessToken)
+    public function __construct(array $accessTokenData)
     {
-        $this->accessToken = $accessToken;
+        $this->accessTokenData = $accessTokenData;
     }
 
     /**
-     * @return AccessTokenInterface
+     * @return array
      */
-    public function getAccessToken()
+    public function getAccessTokenData()
     {
-        return $this->accessToken;
+        return $this->accessTokenData;
     }
 }

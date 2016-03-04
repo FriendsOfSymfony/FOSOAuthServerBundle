@@ -55,8 +55,7 @@ class OAuthEventListener
 
     public function onPostAccessTokenGrant(OAuthTokenEvent $event)
     {
-        $accessToken = $event->getAccessToken();
-        /* @var $accessToken \FOS\OAuthServerBundle\Model\AccessTokenInterface */
+        $accessToken = $event->getAccessTokenData()['access_token'];
         //...
     }
 }
