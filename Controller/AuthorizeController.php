@@ -17,7 +17,6 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,14 +24,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Controller handling basic authorization
+ * Controller handling basic authorization.
  *
  * @author Chris Jones <leeked@gmail.com>
  */
 class AuthorizeController implements ContainerAwareInterface
 {
     /**
-     * @var \FOS\OAuthServerBundle\Model\ClientInterface
+     * @var ClientInterface
      */
     private $client;
 
@@ -52,7 +51,7 @@ class AuthorizeController implements ContainerAwareInterface
     }
 
     /**
-     * Authorize
+     * Authorize.
      */
     public function authorizeAction(Request $request)
     {
@@ -88,10 +87,10 @@ class AuthorizeController implements ContainerAwareInterface
         }
 
         return $this->container->get('templating')->renderResponse(
-            'FOSOAuthServerBundle:Authorize:authorize.html.' . $this->container->getParameter('fos_oauth_server.template.engine'),
+            'FOSOAuthServerBundle:Authorize:authorize.html.'.$this->container->getParameter('fos_oauth_server.template.engine'),
             array(
-                'form'      => $form->createView(),
-                'client'    => $this->getClient(),
+                'form'   => $form->createView(),
+                'client' => $this->getClient(),
             )
         );
     }
@@ -99,7 +98,7 @@ class AuthorizeController implements ContainerAwareInterface
     /**
      * @param UserInterface        $user
      * @param AuthorizeFormHandler $formHandler
-     * @param Request $request
+     * @param Request              $request
      *
      * @return Response
      */
@@ -130,9 +129,10 @@ class AuthorizeController implements ContainerAwareInterface
     }
 
     /**
-     * Generate the redirection url when the authorize is completed
+     * Generate the redirection url when the authorize is completed.
      *
-     * @param  \FOS\OAuthServerBundle\Model\UserInterface $user
+     * @param UserInterface $user
+     *
      * @return string
      */
     protected function getRedirectionUrl(UserInterface $user)
@@ -141,7 +141,7 @@ class AuthorizeController implements ContainerAwareInterface
     }
 
     /**
-     * @return ClientInterface
+     * @return ClientInterface.
      */
     protected function getClient()
     {
@@ -152,7 +152,8 @@ class AuthorizeController implements ContainerAwareInterface
             if (null !== $request) {
                 if (null === $clientId = $request->get('client_id')) {
                     $form = $this->container->get('fos_oauth_server.authorize.form');
-                    $clientId = $request->get(sprintf('%s[client_id]', $form->getName()), null, true);
+                    $formData = $request->get($form->getName(), array());
+                    $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
                 }
 
                 $client = $this->container
@@ -170,10 +171,11 @@ class AuthorizeController implements ContainerAwareInterface
         return $this->client;
     }
 
-    private function getCurrentRequest() {
-        if($this->container->has('request_stack')) {
+    private function getCurrentRequest()
+    {
+        if ($this->container->has('request_stack')) {
             $request = $this->container->get('request_stack')->getCurrentRequest();
-            if(null === $request) {
+            if (null === $request) {
                 throw new \RuntimeException('No current request.');
             }
 
@@ -185,7 +187,7 @@ class AuthorizeController implements ContainerAwareInterface
 
     private function getTokenStorage()
     {
-        if($this->container->has('security.token_storage')) {
+        if ($this->container->has('security.token_storage')) {
             return $this->container->get('security.token_storage');
         }
 

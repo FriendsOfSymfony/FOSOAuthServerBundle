@@ -81,7 +81,7 @@ class TokenManagerTest extends PropelTestCase
 
     public function testFindToken()
     {
-        $token  = $this->createToken('12345');
+        $token = $this->createToken('12345');
         $return = $this->manager->findTokenBy(array('token' => '12345'));
 
         $this->assertNotNull($return);
@@ -90,7 +90,7 @@ class TokenManagerTest extends PropelTestCase
 
     public function testFindTokenByToken()
     {
-        $token  = $this->createToken('12345');
+        $token = $this->createToken('12345');
         $return = $this->manager->findTokenByToken('12345');
 
         $this->assertNotNull($return);

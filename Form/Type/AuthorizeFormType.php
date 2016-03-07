@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -23,11 +24,13 @@ class AuthorizeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('client_id', 'hidden');
-        $builder->add('response_type', 'hidden');
-        $builder->add('redirect_uri', 'hidden');
-        $builder->add('state', 'hidden');
-        $builder->add('scope', 'hidden');
+        $hiddenType = LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType');
+
+        $builder->add('client_id', $hiddenType);
+        $builder->add('response_type', $hiddenType);
+        $builder->add('redirect_uri', $hiddenType);
+        $builder->add('state', $hiddenType);
+        $builder->add('scope', $hiddenType);
     }
 
     /**
@@ -46,8 +49,16 @@ class AuthorizeFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize'
+            'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
         ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockPrefix()
+    {
+        return 'fos_oauth_server_authorize';
     }
 
     /**
@@ -55,6 +66,6 @@ class AuthorizeFormType extends AbstractType
      */
     public function getName()
     {
-        return 'fos_oauth_server_authorize';
+        return $this->getBlockPrefix();
     }
 }
