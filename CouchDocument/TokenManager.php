@@ -79,9 +79,7 @@ class TokenManager extends BaseTokenManager
      */
     public function deleteExpired()
     {
-        $result = $this
-            ->repository
-            ->createQueryBuilder()
+        $result = $this->dm->createQuery("symfony", "accesstoken")
             ->remove()
             ->field('expiresAt')->lt(time())
             ->getQuery(array('safe' => true))

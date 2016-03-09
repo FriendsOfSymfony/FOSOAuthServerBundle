@@ -2,7 +2,7 @@
 <doctrine-mapping>
 
     <mapped-superclass name="FOS\OAuthServerBundle\CouchDocument\RefreshToken">
-        <field name="token" fieldName="token" type="string" />
+        <field name="token" fieldName="token" type="string" index="true" />
         <field name="expiresAt" fieldName="expiresAt" type="integer" nullable="true" />
         <field name="scope" fieldName="scope" type="string" nullable="true" />
     </mapped-superclass>
