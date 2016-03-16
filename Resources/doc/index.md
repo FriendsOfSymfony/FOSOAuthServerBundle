@@ -359,20 +359,15 @@ namespace Acme\ApiBundle\Document;
 use FOS\OAuthServerBundle\Document\AccessToken as BaseAccessToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
+/**
+ * @method User getUser()
+ * @method Client getClient()
+ */
 class AccessToken extends BaseAccessToken
 {
     protected $id;
     protected $client;
-
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    protected $user;
 }
 ```
 
@@ -387,6 +382,7 @@ class AccessToken extends BaseAccessToken
     <document name="Acme\ApiBundle\Document\AccessToken" db="acme" collection="oauthAccessToken" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
+        <reference-one target-document="Acme\ApiBundle\Document\User" field="user" />
     </document>
 
 </doctrine-mongo-mapping>
@@ -402,20 +398,15 @@ namespace Acme\ApiBundle\Document;
 use FOS\OAuthServerBundle\Document\RefreshToken as BaseRefreshToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
+/**
+ * @method User getUser()
+ * @method Client getClient()
+ */
 class RefreshToken extends BaseRefreshToken
 {
     protected $id;
     protected $client;
-
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    protected $user;
 }
 ```
 
@@ -430,6 +421,7 @@ class RefreshToken extends BaseRefreshToken
     <document name="Acme\ApiBundle\Document\RefreshToken" db="acme" collection="oauthRefreshToken" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
+        <reference-one target-document="Acme\ApiBundle\Document\User" field="user" />
     </document>
 
 </doctrine-mongo-mapping>
