@@ -14,16 +14,17 @@ namespace FOS\OAuthServerBundle\Tests\Command;
 use FOS\OAuthServerBundle\Command\CleanCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\Container;
 
 class CleanCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \FOS\OAuthServerBundle\Command\CleanCommand
+     * @var CleanCommand
      */
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\DependencyInjection\ContainerInterface
+     * @var Container
      */
     private $container;
 
@@ -37,106 +38,54 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
         $application = new Application();
         $application->add($command);
 
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = new Container();
 
         $this->command = $application->find($command->getName());
         $this->command->setContainer($this->container);
     }
 
     /**
-     * Delete expired tokens for classes that implement the TokenManagerInterface.
+     * Delete expired tokens for provided classes.
+     *
+     * @dataProvider classProvider
+     *
+     * @param string $class A fully qualified class name.
      */
-    public function testItShouldRemoveExpiredTokensForTokenManagerInterfaces()
+    public function testItShouldRemoveExpiredToken($class)
     {
         $expiredAccessTokens = 5;
-        $accessTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\TokenManagerInterface');
+        $accessTokenManager = $this->getMock($class);
         $accessTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredAccessTokens));
 
-        $expiredRefreshTokens = 3;
-        $refreshTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\TokenManagerInterface');
+        $expiredRefreshTokens = 183;
+        $refreshTokenManager = $this->getMock($class);
         $refreshTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredRefreshTokens));
 
         $expiredAuthCodes = 0;
-        $authCodeManager = $this->getMock('FOS\OAuthServerBundle\Model\TokenManagerInterface');
+        $authCodeManager = $this->getMock($class);
         $authCodeManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredAuthCodes));
 
-        $containerMap = array(
-            'fos_oauth_server.access_token_manager' => $accessTokenManager,
-            'fos_oauth_server.refresh_token_manager' => $refreshTokenManager,
-            'fos_oauth_server.auth_code_manager' => $authCodeManager,
-        );
-
-        $this->container
-            ->expects($this->exactly(count($containerMap)))
-            ->method('get')
-            ->will($this->returnCallback(function ($argument) use ($containerMap) {
-                return $containerMap[$argument];
-            }));
+        $this->container->set('fos_oauth_server.access_token_manager', $accessTokenManager);
+        $this->container->set('fos_oauth_server.refresh_token_manager', $refreshTokenManager);
+        $this->container->set('fos_oauth_server.auth_code_manager', $authCodeManager);
 
         $tester = new CommandTester($this->command);
         $tester->execute(array('command' => $this->command->getName()));
+
         $display = $tester->getDisplay();
 
-        $this->assertRegExp(sprintf('\'Removed %d items from %s storage.\'', $expiredAccessTokens, 'Access token'), $display);
-        $this->assertRegExp(sprintf('\'Removed %d items from %s storage.\'', $expiredRefreshTokens, 'Refresh token'), $display);
-        $this->assertRegExp(sprintf('\'Removed %d items from %s storage.\'', $expiredAuthCodes, 'Auth code'), $display);
-    }
-
-    /**
-     * Delete expired tokens for classes that implement the AuthCodeManagerInterface.
-     */
-    public function testItShouldRemoveExpiredTokensForAuthCodeManagerInterfaces()
-    {
-        $expiredAccessTokens = 5;
-        $accessTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface');
-        $accessTokenManager
-            ->expects($this->once())
-            ->method('deleteExpired')
-            ->will($this->returnValue($expiredAccessTokens));
-
-        $expiredRefreshTokens = 3;
-        $refreshTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface');
-        $refreshTokenManager
-            ->expects($this->once())
-            ->method('deleteExpired')
-            ->will($this->returnValue($expiredRefreshTokens));
-
-        $expiredAuthCodes = 0;
-        $authCodeManager = $this->getMock('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface');
-        $authCodeManager
-            ->expects($this->once())
-            ->method('deleteExpired')
-            ->will($this->returnValue($expiredAuthCodes));
-
-        $containerMap = array(
-            'fos_oauth_server.access_token_manager' => $accessTokenManager,
-            'fos_oauth_server.refresh_token_manager' => $refreshTokenManager,
-            'fos_oauth_server.auth_code_manager' => $authCodeManager,
-        );
-
-        $this->container
-            ->expects($this->exactly(count($containerMap)))
-            ->method('get')
-            ->will($this->returnCallback(function ($argument) use ($containerMap) {
-                return $containerMap[$argument];
-            }));
-
-        $tester = new CommandTester($this->command);
-        $tester->execute(array('command' => $this->command->getName()));
-        $display = $tester->getDisplay();
-
-        $this->assertRegExp(sprintf('\'Removed %d items from %s storage.\'', $expiredAccessTokens, 'Access token'), $display);
-        $this->assertRegExp(sprintf('\'Removed %d items from %s storage.\'', $expiredRefreshTokens, 'Refresh token'), $display);
-        $this->assertRegExp(sprintf('\'Removed %d items from %s storage.\'', $expiredAuthCodes, 'Auth code'), $display);
+        $this->assertContains(sprintf('Removed %d items from %s storage.', $expiredAccessTokens, 'Access token'), $display);
+        $this->assertContains(sprintf('Removed %d items from %s storage.', $expiredRefreshTokens, 'Refresh token'), $display);
+        $this->assertContains(sprintf('Removed %d items from %s storage.', $expiredAuthCodes, 'Auth code'), $display);
     }
 
     /**
@@ -144,25 +93,30 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testItShouldNotRemoveExpiredTokensForOtherClasses()
     {
-        $containerMap = array(
-            'fos_oauth_server.access_token_manager' => new \stdClass(),
-            'fos_oauth_server.refresh_token_manager' => new \stdClass(),
-            'fos_oauth_server.auth_code_manager' => new \stdClass(),
-        );
-
-        $this->container
-            ->expects($this->exactly(count($containerMap)))
-            ->method('get')
-            ->will($this->returnCallback(function ($argument) use ($containerMap) {
-                return $containerMap[$argument];
-            }));
+        $this->container->set('fos_oauth_server.access_token_manager', new \stdClass());
+        $this->container->set('fos_oauth_server.refresh_token_manager', new \stdClass());
+        $this->container->set('fos_oauth_server.auth_code_manager', new \stdClass());
 
         $tester = new CommandTester($this->command);
         $tester->execute(array('command' => $this->command->getName()));
+
         $display = $tester->getDisplay();
 
         $this->assertNotRegExp(sprintf('\'Removed (\d)+ items from %s storage.\'', 'Access token'), $display);
         $this->assertNotRegExp(sprintf('\'Removed (\d)+ items from %s storage.\'', 'Refresh token'), $display);
         $this->assertNotRegExp(sprintf('\'Removed (\d)+ items from %s storage.\'', 'Auth code'), $display);
+    }
+
+    /**
+     * Provides the classes that should be accepted by the CleanCommand.
+     *
+     * @return array[]
+     */
+    public function classProvider()
+    {
+        return array(
+            array('FOS\OAuthServerBundle\Model\TokenManagerInterface'),
+            array('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface'),
+        );
     }
 }
