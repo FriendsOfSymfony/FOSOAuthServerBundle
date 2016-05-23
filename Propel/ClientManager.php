@@ -40,10 +40,10 @@ class ClientManager extends BaseClientManager
     public function findClientBy(array $criteria)
     {
         if (!isset($criteria['id']) || !isset($criteria['randomId'])) {
-            return null;
+            return;
         }
 
-        $queryClass = $this->class . 'Query';
+        $queryClass = $this->class.'Query';
 
         return $queryClass::create()
             ->filterById($criteria['id'])

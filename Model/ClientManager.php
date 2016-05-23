@@ -20,7 +20,7 @@ abstract class ClientManager implements ClientManagerInterface
     {
         $class = $this->getClass();
 
-        return new $class;
+        return new $class();
     }
 
     /**
@@ -29,15 +29,15 @@ abstract class ClientManager implements ClientManagerInterface
     public function findClientByPublicId($publicId)
     {
         if (false === $pos = strpos($publicId, '_')) {
-            return null;
+            return;
         }
 
-        $id       = substr($publicId, 0, $pos);
+        $id = substr($publicId, 0, $pos);
         $randomId = substr($publicId, $pos + 1);
 
         return $this->findClientBy(array(
-            'id'        => $id,
-            'randomId'  => $randomId,
+            'id'       => $id,
+            'randomId' => $randomId,
         ));
     }
 }
