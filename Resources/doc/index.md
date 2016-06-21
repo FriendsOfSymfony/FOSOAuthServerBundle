@@ -515,6 +515,8 @@ class YourApiController extends Controller
     }
 ```
 
+__Note__: Your favorite authentication process is one of the following: ```x509```, ```remote_user```, ```http_basic```, ```http_basic_ldap```, ```http_digest```, ```guard```, ```form_login```, ```form_login_ldap```. To get more information, visit the [security configuration reference page](http://symfony.com/doc/current/reference/configuration/security.html).
+
 ### Step 5: Configure FOSOAuthServerBundle
 
 Import the routing.yml configuration file in app/config/routing.yml:
