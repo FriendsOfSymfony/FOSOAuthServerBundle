@@ -536,7 +536,7 @@ security:
         oauth_authorize:
             pattern:    ^/oauth/v2/auth
             http_basic:
-		provider: in_memory
+                provider: in_memory
 
         api:
             pattern:    ^/api
