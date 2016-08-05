@@ -1,6 +1,11 @@
 <?php
 namespace FOS\OAuthServerBundle\Storage;
 
+/**
+ * Interface TrustableUserInterface
+ * Marks user to be able login without password check
+ * @package FOS\OAuthServerBundle\Storage
+ */
 interface TrustableUserInterface
 {
     /**
