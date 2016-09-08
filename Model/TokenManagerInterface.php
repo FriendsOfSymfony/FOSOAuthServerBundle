@@ -30,7 +30,8 @@ interface TokenManagerInterface
     /**
      * Retrieve a token using a set of criteria.
      *
-     * @param  array               $criteria
+     * @param array $criteria
+     *
      * @return TokenInterface|null
      */
     public function findTokenBy(array $criteria);
@@ -38,7 +39,8 @@ interface TokenManagerInterface
     /**
      * Retrieve a token (object) by its token string.
      *
-     * @param  string              $token A token.
+     * @param string $token A token.
+     *
      * @return TokenInterface|null
      */
     public function findTokenByToken($token);

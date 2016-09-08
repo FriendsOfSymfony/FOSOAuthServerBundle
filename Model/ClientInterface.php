@@ -32,7 +32,8 @@ interface ClientInterface extends IOAuth2Client
 
     /**
      * @param $secret
-     * @return Boolean
+     *
+     * @return bool
      */
     public function checkSecret($secret);
 
@@ -47,7 +48,7 @@ interface ClientInterface extends IOAuth2Client
     public function setRedirectUris(array $redirectUris);
 
     /**
-     * @param array $grantTypes
+     * @param array $grantTypes
      */
     public function setAllowedGrantTypes(array $grantTypes);
 

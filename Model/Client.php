@@ -37,15 +37,13 @@ class Client implements ClientInterface
     protected $redirectUris = array();
 
     /**
-     * @var array
+     * @var array
      */
-    protected $allowedGrantTypes;
+    protected $allowedGrantTypes = array();
 
     public function __construct()
     {
-        $this->allowedGrantTypes = array(
-            OAuth2::GRANT_TYPE_AUTH_CODE,
-        );
+        $this->allowedGrantTypes[] = OAuth2::GRANT_TYPE_AUTH_CODE;
 
         $this->setRandomId(Random::generateToken());
         $this->setSecret(Random::generateToken());
@@ -101,7 +99,7 @@ class Client implements ClientInterface
      */
     public function checkSecret($secret)
     {
-        return (null === $this->secret || $secret === $this->secret);
+        return null === $this->secret || $secret === $this->secret;
     }
 
     /**

@@ -34,7 +34,7 @@ class Client extends BaseClient implements ClientInterface
      */
     public function checkSecret($secret)
     {
-        return (null === $this->secret || $secret === $this->secret);
+        return null === $this->secret || $secret === $this->secret;
     }
 
     /**

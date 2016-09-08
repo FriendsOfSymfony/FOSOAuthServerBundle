@@ -17,27 +17,29 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class OAuthEvent extends Event
 {
-    const PRE_AUTHORIZATION_PROCESS  = 'fos_oauth_server.pre_authorization_process';
+    const PRE_AUTHORIZATION_PROCESS = 'fos_oauth_server.pre_authorization_process';
 
     const POST_AUTHORIZATION_PROCESS = 'fos_oauth_server.post_authorization_process';
 
     /**
-     * @var \Symfony\Component\Security\Core\User\UserInterface
+     * @var UserInterface
      */
     private $user;
 
     /**
-     * @var \FOS\FOSOAuthServerBundle\Model\ClientInterface
+     * @var ClientInterface
      */
     private $client;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     private $isAuthorizedClient;
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface   $user
+     * @param ClientInterface $client
+     * @param bool            $isAuthorizedClient
      */
     public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false)
     {
@@ -47,7 +49,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * return UserInterface
+     * @return UserInterface
      */
     public function getUser()
     {
@@ -55,7 +57,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @param Boolean $isAuthorizedClient
+     * @param bool $isAuthorizedClient
      */
     public function setAuthorizedClient($isAuthorizedClient)
     {
@@ -63,7 +65,7 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @return Boolean
+     * @return bool
      */
     public function isAuthorizedClient()
     {

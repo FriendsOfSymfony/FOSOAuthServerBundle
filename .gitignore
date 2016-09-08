@@ -4,3 +4,4 @@ vendor/
 Propel/Base/
 Propel/Map/
 composer.lock
+.php_cs.cache

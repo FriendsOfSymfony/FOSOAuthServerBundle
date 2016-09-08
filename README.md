@@ -3,11 +3,6 @@ FOSOAuthServerBundle
 
 [![Build Status](https://secure.travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle.png)](http://travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle)
 
-**Important:** This bundle is developed in sync with [symfony's repository](https://github.com/symfony/symfony).
-
-For Symfony 2.0.x, you need to use the 1.1.3 release of the bundle (or lower), and to read
-[this documentation](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/1.1.1/README.md).
-
 
 ## Documentation
 

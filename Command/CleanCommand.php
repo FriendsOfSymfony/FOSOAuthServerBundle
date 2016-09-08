@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -40,9 +41,9 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $services = array(
-            'fos_oauth_server.access_token_manager'     => 'Access token',
-            'fos_oauth_server.refresh_token_manager'    => 'Refresh token',
-            'fos_oauth_server.auth_code_manager'        => 'Auth code',
+            'fos_oauth_server.access_token_manager'  => 'Access token',
+            'fos_oauth_server.refresh_token_manager' => 'Refresh token',
+            'fos_oauth_server.auth_code_manager'     => 'Auth code',
         );
 
         foreach ($services as $service => $name) {

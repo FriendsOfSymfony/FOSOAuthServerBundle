@@ -12,20 +12,22 @@
 namespace FOS\OAuthServerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\Config\FileLocator;
+use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 
 class FOSOAuthServerExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor     = new Processor();
+        $processor = new Processor();
         $configuration = new Configuration();
 
         $config = $processor->processConfiguration($configuration, $configs);
@@ -51,11 +53,11 @@ class FOSOAuthServerExtension extends Extension
 
         $this->remapParametersNamespaces($config, $container, array(
             '' => array(
-                'model_manager_name'    => 'fos_oauth_server.model_manager_name',
-                'client_class'          => 'fos_oauth_server.model.client.class',
-                'access_token_class'    => 'fos_oauth_server.model.access_token.class',
-                'refresh_token_class'   => 'fos_oauth_server.model.refresh_token.class',
-                'auth_code_class'       => 'fos_oauth_server.model.auth_code.class',
+                'model_manager_name'  => 'fos_oauth_server.model_manager_name',
+                'client_class'        => 'fos_oauth_server.model.client.class',
+                'access_token_class'  => 'fos_oauth_server.model.access_token.class',
+                'refresh_token_class' => 'fos_oauth_server.model.refresh_token.class',
+                'auth_code_class'     => 'fos_oauth_server.model.auth_code.class',
             ),
             'template' => 'fos_oauth_server.template.%s',
         ));
@@ -74,8 +76,30 @@ class FOSOAuthServerExtension extends Extension
             }
         }
 
+        // Entity manager factory definition
+        // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
+        if ('orm' === $config['db_driver']) {
+            $ormEntityManagerDefinition = $container->getDefinition('fos_oauth_server.entity_manager');
+            if (method_exists($ormEntityManagerDefinition, 'setFactory')) {
+                $ormEntityManagerDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
+            } else {
+                $ormEntityManagerDefinition->setFactoryService('doctrine');
+                $ormEntityManagerDefinition->setFactoryMethod('getManager');
+            }
+        }
+
         if (!empty($config['authorize'])) {
             $this->loadAuthorize($config['authorize'], $container, $loader);
+        }
+
+        // Authorize form factory definition
+        // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
+        $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
+        if (method_exists($authorizeFormDefinition, 'setFactory')) {
+            $authorizeFormDefinition->setFactory(array(new Reference('form.factory'), 'createNamed'));
+        } else {
+            $authorizeFormDefinition->setFactoryService('form.factory');
+            $authorizeFormDefinition->setFactoryMethod('createNamed');
         }
     }
 
@@ -124,6 +148,11 @@ class FOSOAuthServerExtension extends Extension
 
         $container->setAlias('fos_oauth_server.authorize.form.handler', $config['form']['handler']);
         unset($config['form']['handler']);
+
+        if (!LegacyFormHelper::isLegacy() && $config['form']['type'] === 'fos_oauth_server_authorize') {
+            $authorizeFormTypeDefinition = $container->getDefinition('fos_oauth_server.authorize.form.type');
+            $config['form']['type'] = $authorizeFormTypeDefinition->getClass();
+        }
 
         $this->remapParametersNamespaces($config, $container, array(
             'form' => 'fos_oauth_server.authorize.form.%s',

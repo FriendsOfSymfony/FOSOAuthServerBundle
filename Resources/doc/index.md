@@ -231,7 +231,7 @@ class AuthCode extends BaseAuthCode
 }
 ```
 
-__Note__: If you don't have `auto_mapping` activated in your doctrine configuration you need to add 
+__Note__: If you don't have `auto_mapping` activated in your doctrine configuration you need to add
 `FOSOAuthServerBundle` to your mappings in `config.yml`.
 
 #### Propel
@@ -241,7 +241,7 @@ You have to install the [TypehintableBehavior](https://github.com/willdurand/Typ
 
 By using [Composer](http://getcomposer.org), you just have to add the following line in your `composer.json`:
 
-``` js
+``` json
 {
     "require": {
         "willdurand/propel-typehintable-behavior": "*"
@@ -285,10 +285,9 @@ namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\Client as BaseClient;
 
-class Client extends BaseClient 
+class Client extends BaseClient
 {
     protected $id;
-
 }
 ```
 
@@ -303,9 +302,9 @@ class Client extends BaseClient
     <document name="Acme\ApiBundle\Document\Client" db="acme" collection="oauthClient" customId="true">
         <field fieldName="id" id="true" strategy="AUTO" />
     </document>
-    
+
 </doctrine-mongo-mapping>
-``` 
+```
 
 ``` php
 <?php
@@ -317,11 +316,11 @@ namespace Acme\ApiBundle\Document;
 use FOS\OAuthServerBundle\Document\AuthCode as BaseAuthCode;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
-class AuthCode extends BaseAuthCode 
+class AuthCode extends BaseAuthCode
 {
     protected $id;
     protected $client;
-    
+
     public function getClient()
     {
         return $this->client;
@@ -331,9 +330,7 @@ class AuthCode extends BaseAuthCode
     {
         $this->client = $client;
     }
-    
 }
-
 ```
 
 ``` xml
@@ -348,9 +345,9 @@ class AuthCode extends BaseAuthCode
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
     </document>
-    
+
 </doctrine-mongo-mapping>
-``` 
+```
 
 ``` php
 <?php
@@ -362,11 +359,11 @@ namespace Acme\ApiBundle\Document;
 use FOS\OAuthServerBundle\Document\AccessToken as BaseAccessToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
-class AccessToken extends BaseAccessToken 
+class AccessToken extends BaseAccessToken
 {
     protected $id;
     protected $client;
-    
+
     public function getClient()
     {
         return $this->client;
@@ -376,7 +373,6 @@ class AccessToken extends BaseAccessToken
     {
         $this->client = $client;
     }
-    
 }
 ```
 
@@ -392,9 +388,9 @@ class AccessToken extends BaseAccessToken
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
     </document>
-    
+
 </doctrine-mongo-mapping>
-``` 
+```
 
 ``` php
 <?php
@@ -406,11 +402,11 @@ namespace Acme\ApiBundle\Document;
 use FOS\OAuthServerBundle\Document\RefreshToken as BaseRefreshToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
-class RefreshToken extends BaseRefreshToken 
+class RefreshToken extends BaseRefreshToken
 {
     protected $id;
     protected $client;
-    
+
     public function getClient()
     {
         return $this->client;
@@ -420,7 +416,6 @@ class RefreshToken extends BaseRefreshToken
     {
         $this->client = $client;
     }
-    
 }
 ```
 
@@ -436,9 +431,9 @@ class RefreshToken extends BaseRefreshToken
         <field fieldName="id" id="true" strategy="AUTO" />
         <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
     </document>
-    
+
 </doctrine-mongo-mapping>
-``` 
+```
 
 ### Step 4: Configure your application's security.yml
 
@@ -538,7 +533,7 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 ``` yaml
 # app/config/config.yml
 fos_oauth_server:
-    db_driver: orm       # Driver availables: orm, mongodb, or propel
+    db_driver: orm       # Drivers available: orm, mongodb, or propel
     client_class:        Acme\ApiBundle\Entity\Client
     access_token_class:  Acme\ApiBundle\Entity\AccessToken
     refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
@@ -566,7 +561,7 @@ fos_oauth_server:
     ...
 
     service:
-        user_provider: fos_user.user_manager
+        user_provider: fos_user.user_provider.username
 ```
 
 ## Creating A Client
@@ -581,8 +576,8 @@ $client->setAllowedGrantTypes(array('token', 'authorization_code'));
 $clientManager->updateClient($client);
 ```
 
-Once you have created a client, you need to pass its `publicId` to the authorize endpoint. You also need 
-to specify a redirect uri as well as a response type. 
+Once you have created a client, you need to pass its `publicId` to the authorize endpoint. You also need
+to specify a redirect uri as well as a response type.
 
 ```php
 return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
