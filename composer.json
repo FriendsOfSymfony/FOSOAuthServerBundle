@@ -43,7 +43,8 @@
         "symfony/console": "Needed to be able to use commands"
     },
     "autoload": {
-        "psr-4": { "FOS\\OAuthServerBundle\\": "" }
+        "psr-4": { "FOS\\OAuthServerBundle\\": "" },
+        "exclude-from-classmap": ["/Tests/"]
     },
     "extra": {
         "branch-alias": {
