@@ -569,7 +569,7 @@ fos_oauth_server:
 Before you can generate tokens, you need to create a Client using the ClientManager.
 
 ``` php
-$clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+$clientManager = $this->container->get('fos_oauth_server.client_manager.default');
 $client = $clientManager->createClient();
 $client->setRedirectUris(array('http://www.example.com'));
 $client->setAllowedGrantTypes(array('token', 'authorization_code'));
