@@ -13,22 +13,51 @@ namespace FOS\OAuthServerBundle\Util;
 
 class Random
 {
+    private static function getUniqId()
+    {
+        return uniqid(mt_rand(), true);
+    }
+
+    private static function generateHash($uniqId)
+    {
+        return hash('sha256', $uniqId, true);
+    }
+
+    private static function openSSLAvailable()
+    {
+        return function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win');
+    }
+
+    private static function generatePseudoRandomBytes()
+    {
+        $bytes = openssl_random_pseudo_bytes(32, $strong);
+
+        if (true !== $strong) {
+            $bytes = false;
+        }
+
+        return $bytes;
+    }
+
+    private static function pseudoRandomBytesToBase($bytes)
+    {
+        return base_convert(bin2hex($bytes), 16, 36);
+    }
+
     public static function generateToken()
     {
         $bytes = false;
-        if (function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win')) {
-            $bytes = openssl_random_pseudo_bytes(32, $strong);
 
-            if (true !== $strong) {
-                $bytes = false;
-            }
+        if (self::openSSLAvailable()) {
+            $bytes = self::generatePseudoRandomBytes();
         }
 
         // let's just hope we got a good seed
         if (false === $bytes) {
-            $bytes = hash('sha256', uniqid(mt_rand(), true), true);
+            $uniqId = self::getUniqId();
+            $bytes = self::generateHash($uniqId);
         }
 
-        return base_convert(bin2hex($bytes), 16, 36);
+        return self::pseudoRandomBytesToBase($bytes);
     }
 }
