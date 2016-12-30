@@ -13,15 +13,14 @@ namespace FOS\OAuthServerBundle\Util;
 
 class Random
 {
-    public static function generateToken()
+    /**
+     * @param bool $strong Whether to use a cryptographically strong algorithm to produce the pseudo-random bytes.
+     */
+    public static function generateToken($strong = false)
     {
         $bytes = false;
-        if (function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win')) {
+        if ($strong && function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win')) {
             $bytes = openssl_random_pseudo_bytes(32, $strong);
-
-            if (true !== $strong) {
-                $bytes = false;
-            }
         }
 
         // let's just hope we got a good seed
