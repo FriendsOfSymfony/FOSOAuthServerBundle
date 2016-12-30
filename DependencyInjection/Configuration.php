@@ -91,6 +91,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('storage')->defaultValue('fos_oauth_server.storage.default')->cannotBeEmpty()->end()
                             ->scalarNode('user_provider')->defaultNull()->end()
+                            ->scalarNode('authorize_template')->defaultValue('FOSOAuthServerBundle:Authorize:authorize.html.')->end()
                             ->scalarNode('client_manager')->defaultValue('fos_oauth_server.client_manager.default')->end()
                             ->scalarNode('access_token_manager')->defaultValue('fos_oauth_server.access_token_manager.default')->end()
                             ->scalarNode('refresh_token_manager')->defaultValue('fos_oauth_server.refresh_token_manager.default')->end()

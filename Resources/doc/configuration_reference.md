@@ -24,6 +24,7 @@ fos_oauth_server:
     service:
         storage:                fos_oauth_server.storage.default
         user_provider:          ~
+        authorize_template:     "FOSOAuthServerBundle:Authorize:authorize.html."
         client_manager:         fos_oauth_server.client_manager.default
         access_token_manager:   fos_oauth_server.access_token_manager.default
         refresh_token_manager:  fos_oauth_server.refresh_token_manager.default

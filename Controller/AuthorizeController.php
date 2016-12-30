@@ -87,7 +87,7 @@ class AuthorizeController implements ContainerAwareInterface
         }
 
         return $this->container->get('templating')->renderResponse(
-            'FOSOAuthServerBundle:Authorize:authorize.html.'.$this->container->getParameter('fos_oauth_server.template.engine'),
+            $this->container->getParameter('fos_oauth_server.authorize_template').$this->container->getParameter('fos_oauth_server.template.engine'),
             array(
                 'form'   => $form->createView(),
                 'client' => $this->getClient(),
