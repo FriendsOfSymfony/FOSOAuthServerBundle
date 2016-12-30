@@ -22,9 +22,5 @@
             <argument type="service" id="fos_oauth_server.storage" />
             <argument>%fos_oauth_server.server.options%</argument>
         </service>
-
-        <service id="fos_oauth_server.controller.token" class="FOS\OAuthServerBundle\Controller\TokenController">
-            <argument type="service" id="fos_oauth_server.server" />
-        </service>
     </services>
 </container>
