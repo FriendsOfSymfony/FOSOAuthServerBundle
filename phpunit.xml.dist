@@ -17,9 +17,8 @@
                 <file>./Propel/AccessTokenQuery.php</file>
                 <file>./Propel/RefreshToken.php</file>
                 <file>./Propel/RefreshTokenQuery.php</file>
-                <directory suffix="Peer.php">./Propel</directory>
-                <directory>./Propel/map</directory>
-                <directory>./Propel/om</directory>
+                <directory>./Propel/Map</directory>
+                <directory>./Propel/Base</directory>
             </exclude>
         </whitelist>
     </filter>

@@ -11,7 +11,7 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-use FOS\OAuthServerBundle\Propel\om\BaseClientQuery;
+use FOS\OAuthServerBundle\Propel\Base\ClientQuery as BaseClientQuery;
 
 class ClientQuery extends BaseClientQuery
 {
