@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use OAuth2\OAuth2AuthenticateException;
@@ -68,9 +69,10 @@ class OAuthProvider implements AuthenticationProviderInterface
 
             if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
                 $scope = $accessToken->getScope();
-                $user = $accessToken->getUser();
+                $user = $accessToken->getData();
+                $roles = array();
 
-                if (null !== $user) {
+                if ($user instanceof UserInterface) {
                     try {
                         $this->userChecker->checkPreAuth($user);
                     } catch (AccountStatusException $e) {
@@ -83,9 +85,8 @@ class OAuthProvider implements AuthenticationProviderInterface
                     }
 
                     $token->setUser($user);
+                    $roles = $user->getRoles();
                 }
-
-                $roles = (null !== $user) ? $user->getRoles() : array();
 
                 if (!empty($scope)) {
                     foreach (explode(' ', $scope) as $role) {
@@ -99,7 +100,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                 $token->setAuthenticated(true);
                 $token->setToken($tokenString);
 
-                if (null !== $user) {
+                if ($user instanceof UserInterface) {
                     try {
                         $this->userChecker->checkPostAuth($user);
                     } catch (AccountStatusException $e) {
