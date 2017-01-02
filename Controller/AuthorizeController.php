@@ -61,11 +61,6 @@ class AuthorizeController implements ContainerAwareInterface
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
-            $this->container->get('session')->invalidate(600);
-            $this->container->get('session')->set('_fos_oauth_server.ensure_logout', true);
-        }
-
         $form = $this->container->get('fos_oauth_server.authorize.form');
         $formHandler = $this->container->get('fos_oauth_server.authorize.form.handler');
 
@@ -84,6 +79,11 @@ class AuthorizeController implements ContainerAwareInterface
 
         if (true === $formHandler->process()) {
             return $this->processSuccess($user, $formHandler, $request);
+        }
+
+        if (true === $this->container->get('session')->get('_fos_oauth_server.ensure_logout')) {
+            $this->container->get('session')->invalidate(600);
+            $this->container->get('session')->set('_fos_oauth_server.ensure_logout', true);
         }
 
         return $this->container->get('templating')->renderResponse(
