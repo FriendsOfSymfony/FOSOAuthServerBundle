@@ -25,6 +25,9 @@
 
         <service id="fos_oauth_server.controller.token" class="FOS\OAuthServerBundle\Controller\TokenController">
             <argument type="service" id="fos_oauth_server.server" />
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
     </services>
 </container>
