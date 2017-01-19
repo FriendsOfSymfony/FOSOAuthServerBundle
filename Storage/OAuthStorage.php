@@ -17,6 +17,7 @@ use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use OAuth2\OAuth2;
@@ -164,6 +165,15 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         }
 
         if (null !== $user) {
+            
+            if($user instanceof AdvancedUserInterface) {
+                if(!$user->isAccountNonExpired() 
+                    || !$user->isAccountNonLocked()
+                    || !$user->isCredentialsNonExpired()
+                    || !$user->isEnabled())
+                	return false;
+		}
+            
             $encoder = $this->encoderFactory->getEncoder($user);
 
             if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
