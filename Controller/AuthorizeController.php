@@ -91,6 +91,7 @@ class AuthorizeController implements ContainerAwareInterface
             array(
                 'form'   => $form->createView(),
                 'client' => $this->getClient(),
+                'user'   => $user,
             )
         );
     }
