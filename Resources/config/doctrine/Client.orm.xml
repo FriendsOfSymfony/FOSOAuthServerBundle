@@ -6,8 +6,8 @@
 
     <mapped-superclass name="FOS\OAuthServerBundle\Entity\Client">
         <field name="randomId" column="random_id" type="string" />
-        <field name="redirectUris" column="redirect_uris" type="array" />
-        <field name="secret" column="secret" type="string" />
+        <field name="redirectUris" column="redirect_uri" type="array" />
+        <field name="secret" column="client_secret" type="string" />
         <field name="allowedGrantTypes" column="allowed_grant_types" type="array" />
     </mapped-superclass>
 </doctrine-mapping>
