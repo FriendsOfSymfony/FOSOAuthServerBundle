@@ -5,8 +5,7 @@
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <mapped-superclass name="FOS\OAuthServerBundle\Entity\AccessToken">
-        <field name="token" column="token" type="string" unique="true" />
-        <field name="expiresAt" column="expires_at" type="integer" nullable="true" />
+        <field name="expiresAt" column="expires" type="integer" nullable="true" />
         <field name="scope" column="scope" type="string" nullable="true" />
     </mapped-superclass>
 </doctrine-mapping>
