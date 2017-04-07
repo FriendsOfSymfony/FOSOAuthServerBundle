@@ -191,6 +191,6 @@ class AuthorizeController implements ContainerAwareInterface
             return $this->container->get('security.token_storage');
         }
 
-        return $this->container->get('security.context');
+        return $this->container->get('security.authorization_checker');
     }
 }
