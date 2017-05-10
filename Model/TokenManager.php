@@ -29,8 +29,6 @@ abstract class TokenManager implements TokenManagerInterface
     public function findTokenByToken($token)
     {
 	$result = $this->findTokenBy(array('token' => $token));	
-	var_dump($result);
-	die();
         return $this->findTokenBy(array('token' => $token));
     }
 }
