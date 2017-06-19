@@ -129,18 +129,6 @@ class AuthorizeController implements ContainerAwareInterface
     }
 
     /**
-     * Generate the redirection url when the authorize is completed.
-     *
-     * @param UserInterface $user
-     *
-     * @return string
-     */
-    protected function getRedirectionUrl(UserInterface $user)
-    {
-        return $this->container->get('router')->generate('fos_oauth_server_profile_show');
-    }
-
-    /**
      * @return ClientInterface.
      */
     protected function getClient()
