@@ -11,7 +11,7 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-use FOS\OAuthServerBundle\Propel\om\BaseClient;
+use FOS\OAuthServerBundle\Model\Client as BaseClient;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Util\Random;
 use OAuth2\OAuth2;
