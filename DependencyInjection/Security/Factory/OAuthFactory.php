@@ -35,6 +35,12 @@ class OAuthFactory implements SecurityFactoryInterface
             ->replaceArgument(0, new Reference($userProvider))
             ;
 
+        if (!empty($config['user_checker'])) {
+            $container
+                ->getDefinition($providerId)
+                ->replaceArgument(2, new Reference($config['user_checker']));
+        }
+
         $listenerId = 'security.authentication.listener.fos_oauth_server.'.$id;
         $container->setDefinition($listenerId, new DefinitionDecorator('fos_oauth_server.security.authentication.listener'));
 
@@ -62,5 +68,9 @@ class OAuthFactory implements SecurityFactoryInterface
      */
     public function addConfiguration(NodeDefinition $node)
     {
+        $node
+            ->children()
+            ->scalarNode('user_checker')
+        ->end();
     }
 }
