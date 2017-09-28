@@ -533,7 +533,7 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 ``` yaml
 # app/config/config.yml
 fos_oauth_server:
-    db_driver: orm       # Driver availables: orm, mongodb, or propel
+    db_driver: orm       # Drivers available: orm, mongodb, or propel
     client_class:        Acme\ApiBundle\Entity\Client
     access_token_class:  Acme\ApiBundle\Entity\AccessToken
     refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
@@ -569,7 +569,7 @@ fos_oauth_server:
 Before you can generate tokens, you need to create a Client using the ClientManager.
 
 ``` php
-$clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+$clientManager = $this->container->get('fos_oauth_server.client_manager.default');
 $client = $clientManager->createClient();
 $client->setRedirectUris(array('http://www.example.com'));
 $client->setAllowedGrantTypes(array('token', 'authorization_code'));
