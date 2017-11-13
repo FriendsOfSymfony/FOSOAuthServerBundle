@@ -284,26 +284,21 @@ You now can run the following command to create the model:
 namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\Client as BaseClient;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+/**
+ * @ODM\Document
+ */
 class Client extends BaseClient
 {
+
+    /**
+     * @ODM\Id
+     *
+     * @var string|null
+     */
     protected $id;
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/Client.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\Client" db="acme" collection="oauthClient" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ``` php
@@ -315,38 +310,34 @@ namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\AuthCode as BaseAuthCode;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+/**
+ * @ODM\Document
+ */
 class AuthCode extends BaseAuthCode
 {
+    /**
+     * @ODM\Id
+     *
+     * @var string|null
+     */
     protected $id;
+
+    /**
+     * @var ClientInterface|null
+     *
+     * @ODM\ReferenceOne(targetDocument=Client::class)
+     */
     protected $client;
 
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    /**
+     * @var Your\Own\Entity\User|null
+     *
+     * @ODM\ReferenceOne(targetDocument=Your\Own\Entity\User::class)
+     */
+    protected $user;
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/AuthCode.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\AuthCode" db="acme" collection="oauthAuthCode" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-        <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ``` php
@@ -358,38 +349,34 @@ namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\AccessToken as BaseAccessToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+/**
+ * @ODM\Document
+ */
 class AccessToken extends BaseAccessToken
 {
+    /**
+     * @ODM\Id
+     *
+     * @var string|null
+     */
     protected $id;
+
+    /**
+     * @var ClientInterface|null
+     *
+     * @ODM\ReferenceOne(targetDocument=Client::class)
+     */
     protected $client;
 
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    /**
+     * @var Your\Own\Entity\User|null
+     *
+     * @ODM\ReferenceOne(targetDocument=Your\Own\Entity\User::class)
+     */
+    protected $user;
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/AccessToken.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\AccessToken" db="acme" collection="oauthAccessToken" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-        <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ``` php
@@ -401,38 +388,34 @@ namespace Acme\ApiBundle\Document;
 
 use FOS\OAuthServerBundle\Document\RefreshToken as BaseRefreshToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+/**
+ * @ODM\Document
+ */
 class RefreshToken extends BaseRefreshToken
 {
+    /**
+     * @ODM\Id
+     *
+     * @var string|null
+     */
     protected $id;
+
+    /**
+     * @var ClientInterface|null
+     *
+     * @ODM\ReferenceOne(targetDocument=Client::class)
+     */
     protected $client;
 
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    /**
+     * @var Your\Own\Entity\User|null
+     *
+     * @ODM\ReferenceOne(targetDocument=Your\Own\Entity\User::class)
+     */
+    protected $user;
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/RefreshToken.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\RefreshToken" db="acme" collection="oauthRefreshToken" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-        <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ### Step 4: Configure your application's security.yml
