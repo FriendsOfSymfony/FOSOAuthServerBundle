@@ -20,7 +20,21 @@
 
         <service id="fos_oauth_server.authorize.form.handler.default" class="FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler">
             <argument type="service" id="fos_oauth_server.authorize.form" />
-            <argument type="service" id="request_stack" on-invalid="ignore" />
+            <argument type="service" id="request_stack" />
+        </service>
+
+        <service id="fos_oauth_server.controller.authorize" class="FOS\OAuthServerBundle\Controller\AuthorizeController">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="session" />
+            <argument type="service" id="fos_oauth_server.authorize.form" />
+            <argument type="service" id="fos_oauth_server.authorize.form.handler" />
+            <argument type="service" id="fos_oauth_server.server" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="router" />
+            <argument type="service" id="fos_oauth_server.client_manager" />
+            <argument type="service" id="event_dispatcher" />
+            <argument>%fos_oauth_server.template.engine%</argument>
         </service>
     </services>
 

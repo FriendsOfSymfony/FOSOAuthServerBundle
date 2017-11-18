@@ -3,7 +3,7 @@ Getting Started With FOSOAuthServerBundle
 
 ## Prerequisites
 
-This version of the bundle requires Symfony 2.1.
+This version of the bundle requires Symfony 2.8.
 If you are using Symfony 2.0.x, please use the 1.1.1 release of the bundle (or lower), and follow
 [this documentation](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/1.1.1/README.md).
 
