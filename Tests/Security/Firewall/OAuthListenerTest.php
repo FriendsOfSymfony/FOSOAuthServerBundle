@@ -26,16 +26,24 @@ class OAuthListenerTest extends TestCase
 
     public function setUp()
     {
-        $this->serverService = $this->createMock('OAuth2\OAuth2');
+        $this->serverService = $this->getMockBuilder('OAuth2\OAuth2')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->authManager = $this
-            ->createMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
+            ->getMockBuilder('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
             $this->securityContext = $this
-                ->createMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+                ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
+                ->disableOriginalConstructor()
+                ->getMock();
         } else {
-            $this->securityContext = $this->createMock('Symfony\Component\Security\Core\SecurityContextInterface');
+            $this->securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
+                ->disableOriginalConstructor()
+                ->getMock();
         }
 
         $this->event = $this
@@ -78,7 +86,9 @@ class OAuthListenerTest extends TestCase
             ->method('getBearerToken')
             ->will($this->returnValue('a-token'));
 
-        $response = $this->createMock('Symfony\Component\HttpFoundation\Response');
+        $response = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->authManager
             ->expects($this->once())

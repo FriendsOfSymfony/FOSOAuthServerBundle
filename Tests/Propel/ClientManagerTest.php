@@ -41,7 +41,9 @@ class ClientManagerTest extends PropelTestCase
 
     public function testUpdate()
     {
-        $client = $this->createMock('FOS\OAuthServerBundle\Propel\Client');
+        $client = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
         $client
             ->expects($this->once())
             ->method('save');
@@ -51,7 +53,9 @@ class ClientManagerTest extends PropelTestCase
 
     public function testDelete()
     {
-        $client = $this->createMock('FOS\OAuthServerBundle\Propel\Client');
+        $client = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
         $client
             ->expects($this->once())
             ->method('delete');

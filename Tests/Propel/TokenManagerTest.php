@@ -42,7 +42,9 @@ class TokenManagerTest extends PropelTestCase
 
     public function testUpdate()
     {
-        $token = $this->createMock('FOS\OAuthServerBundle\Propel\Token');
+        $token = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Token')
+            ->disableOriginalConstructor()
+            ->getMock();
         $token
             ->expects($this->once())
             ->method('save');
@@ -52,7 +54,9 @@ class TokenManagerTest extends PropelTestCase
 
     public function testDelete()
     {
-        $token = $this->createMock('FOS\OAuthServerBundle\Propel\Token');
+        $token = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Token')
+            ->disableOriginalConstructor()
+            ->getMock();
         $token
             ->expects($this->once())
             ->method('delete');

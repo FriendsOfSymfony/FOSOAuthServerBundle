@@ -27,8 +27,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->class = 'FOS\OAuthServerBundle\Entity\AccessToken';
-        $this->repository = $this->createMock('Doctrine\ORM\EntityRepository');
-        $this->em = $this->createMock('Doctrine\ORM\EntityManager');
+        $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->em->expects($this->once())
             ->method('getRepository')
             ->with($this->class)

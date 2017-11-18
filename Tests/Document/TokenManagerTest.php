@@ -28,8 +28,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->class = 'FOS\OAuthServerBundle\Document\AccessToken';
-        $this->repository = $this->createMock('Doctrine\ODM\MongoDB\DocumentRepository');
-        $this->dm = $this->createMock('Doctrine\ODM\MongoDB\DocumentManager');
+        $this->repository = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->dm = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->dm->expects($this->once())
             ->method('getRepository')
             ->with($this->class)
