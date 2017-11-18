@@ -23,7 +23,7 @@
             <argument type="service" id="request_stack" />
         </service>
 
-        <service id="fos_oauth_server.controller.authorize" class="FOS\OAuthServerBundle\Controller\AuthorizeController">
+        <service id="fos_oauth_server.controller.authorize" class="FOS\OAuthServerBundle\Controller\AuthorizeController" public="true">
             <argument type="service" id="request_stack" />
             <argument type="service" id="session" />
             <argument type="service" id="fos_oauth_server.authorize.form" />
