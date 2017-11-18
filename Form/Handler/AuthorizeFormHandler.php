@@ -51,16 +51,6 @@ class AuthorizeFormHandler
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * Sets the container.
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     public function isAccepted()
     {
         return $this->form->getData()->accepted;
@@ -133,7 +123,5 @@ class AuthorizeFormHandler
                 return $this->requestStack->getCurrentRequest();
             }
         }
-
-        return $this->container->get('request');
     }
 }
