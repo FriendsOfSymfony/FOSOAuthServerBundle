@@ -33,10 +33,10 @@
         "doctrine/mongodb-odm": "~1.0",
         "doctrine/doctrine-bundle": "~1.0",
         "doctrine/orm": "~2.2",
-        "ext-mongodb": "*",
         "phpunit/phpunit": "~4.8|~5.0"
     },
     "suggest": {
+        "ext-mongodb": "For php versions > 5.3 is it required to use ext-mondodb instead of deprecated ext-mongo",
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
         "propel/propel-bundle": "If you want to use Propel with Symfony2, then you will have to install the PropelBundle",
