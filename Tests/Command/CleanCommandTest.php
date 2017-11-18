@@ -54,21 +54,21 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
     public function testItShouldRemoveExpiredToken($class)
     {
         $expiredAccessTokens = 5;
-        $accessTokenManager = $this->getMock($class);
+        $accessTokenManager = $this->createMock($class);
         $accessTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredAccessTokens));
 
         $expiredRefreshTokens = 183;
-        $refreshTokenManager = $this->getMock($class);
+        $refreshTokenManager = $this->createMock($class);
         $refreshTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredRefreshTokens));
 
         $expiredAuthCodes = 0;
-        $authCodeManager = $this->getMock($class);
+        $authCodeManager = $this->createMock($class);
         $authCodeManager
             ->expects($this->once())
             ->method('deleteExpired')
