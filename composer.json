@@ -32,7 +32,9 @@
         "phing/phing": "~2.4",
         "doctrine/mongodb-odm": "~1.0",
         "doctrine/doctrine-bundle": "~1.0",
-        "doctrine/orm": "~2.2"
+        "doctrine/orm": "~2.2",
+        "ext-mongodb": "*",
+        "phpunit/phpunit": "~4.8|~5.0"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
@@ -41,6 +43,9 @@
         "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces",
         "symfony/form" : "Needed to be able to use the AuthorizeFormType",
         "symfony/console": "Needed to be able to use commands"
+    },
+    "provide": {
+        "ext-mongo": "^1.6.14"
     },
     "autoload": {
         "psr-4": { "FOS\\OAuthServerBundle\\": "" },
