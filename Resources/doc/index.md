@@ -566,6 +566,16 @@ fos_oauth_server:
 
 ## Creating A Client
 
+### Console Command
+
+The most convenient way to create a client is to use the console command.
+
+    $ php app/console fos:oauth-server:create-client --redirect-uri="..." --grant-type="..."
+    
+Note: you can use `--redirect-uri` and `--grant-type` multiple times to add additional values.
+
+### Programatically
+
 Before you can generate tokens, you need to create a Client using the ClientManager.
 
 ``` php
