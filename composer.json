@@ -44,9 +44,6 @@
         "symfony/form" : "Needed to be able to use the AuthorizeFormType",
         "symfony/console": "Needed to be able to use commands"
     },
-    "provide": {
-        "ext-mongo": "^1.6.14"
-    },
     "autoload": {
         "psr-4": { "FOS\\OAuthServerBundle\\": "" },
         "exclude-from-classmap": ["/Tests/"]
