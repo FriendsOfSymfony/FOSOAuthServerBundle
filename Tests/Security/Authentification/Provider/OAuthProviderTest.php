@@ -25,10 +25,19 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
-        $this->userProvider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
-        $this->serverService = $this->getMock('OAuth2\OAuth2', array('verifyAccessToken'), array(), '', false);
-        $this->userChecker = $this->getMock('Symfony\Component\Security\Core\User\UserCheckerInterface');
+        $this->user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->userProvider = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserProviderInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->serverService = $this->getMockBuilder('OAuth2\OAuth2')
+            ->disableOriginalConstructor()
+            ->setMethods(array('verifyAccessToken'))
+            ->getMock();
+        $this->userChecker = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserCheckerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->provider = new OAuthProvider($this->userProvider, $this->serverService, $this->userChecker);
     }
 
