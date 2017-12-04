@@ -40,8 +40,6 @@ before_script:
   - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then yes '' | pecl -q install -f mongo-stable; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then pecl install -f mongodb-stable; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then composer require "alcaeus/mongo-php-adapter=^1.0.0" --ignore-platform-reqs; fi
-#  - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-#  - echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer self-update
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
