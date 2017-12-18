@@ -31,12 +31,12 @@ class OAuthFactory implements SecurityFactoryInterface
     {
         $providerId = 'security.authentication.provider.fos_oauth_server.'.$id;
         $container
-            ->setDefinition($providerId, new DefinitionDecorator('fos_oauth_server.security.authentication.provider'))
+            ->setDefinition($providerId, new ChildDefinition('fos_oauth_server.security.authentication.provider'))
             ->replaceArgument(0, new Reference($userProvider))
             ;
 
         $listenerId = 'security.authentication.listener.fos_oauth_server.'.$id;
-        $container->setDefinition($listenerId, new DefinitionDecorator('fos_oauth_server.security.authentication.listener'));
+        $container->setDefinition($listenerId, new ChildDefinition('fos_oauth_server.security.authentication.listener'));
 
         return array($providerId, $listenerId, 'fos_oauth_server.security.entry_point');
     }
