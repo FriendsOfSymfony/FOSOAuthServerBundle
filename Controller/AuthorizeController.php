@@ -17,6 +17,8 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
@@ -35,12 +37,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Chris Jones <leeked@gmail.com>
  */
-class AuthorizeController
+class AuthorizeController implements ContainerAwareInterface
 {
     /**
      * @var ClientInterface
      */
     private $client;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * @var SessionInterface
@@ -96,6 +103,16 @@ class AuthorizeController
      * @var EventDispatcher
      */
     private $eventDispatcher;
+
+    /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
     /**
      * This controller had been made as a service due to support symfony 4 where all* services are private by default.
