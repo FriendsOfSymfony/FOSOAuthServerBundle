@@ -17,7 +17,6 @@ use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -33,16 +32,6 @@ class AuthorizeFormType extends AbstractType
         $builder->add('redirect_uri', $hiddenType);
         $builder->add('state', $hiddenType);
         $builder->add('scope', $hiddenType);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
     }
 
     /**
