@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -18,10 +20,18 @@ namespace FOS\OAuthServerBundle\Util;
  */
 final class LegacyFormHelper
 {
-    private static $map = array(
+    private static $map = [
         'Symfony\Component\Form\Extension\Core\Type\HiddenType' => 'hidden',
-        'FOS\OAuthServerBundle\Form\Type\AuthorizeFormType'     => 'fos_oauth_server_authorize',
-    );
+        'FOS\OAuthServerBundle\Form\Type\AuthorizeFormType' => 'fos_oauth_server_authorize',
+    ];
+
+    private function __construct()
+    {
+    }
+
+    private function __clone()
+    {
+    }
 
     public static function getType($class)
     {
@@ -39,13 +49,5 @@ final class LegacyFormHelper
     public static function isLegacy()
     {
         return !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-    }
-
-    private function __construct()
-    {
-    }
-
-    private function __clone()
-    {
     }
 }

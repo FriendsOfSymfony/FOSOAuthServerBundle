@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -28,6 +30,6 @@ abstract class AuthCodeManager implements AuthCodeManagerInterface
      */
     public function findAuthCodeByToken($token)
     {
-        return $this->findAuthCodeBy(array('token' => $token));
+        return $this->findAuthCodeBy(['token' => $token]);
     }
 }

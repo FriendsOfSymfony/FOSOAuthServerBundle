@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -28,6 +30,6 @@ abstract class TokenManager implements TokenManagerInterface
      */
     public function findTokenByToken($token)
     {
-        return $this->findTokenBy(array('token' => $token));
+        return $this->findTokenBy(['token' => $token]);
     }
 }

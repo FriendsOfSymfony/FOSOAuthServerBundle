@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -30,7 +32,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('fos_oauth_server');
 
-        $supportedDrivers = array('orm', 'mongodb', 'propel');
+        $supportedDrivers = ['orm', 'mongodb', 'propel'];
 
         $rootNode
             ->children()
@@ -72,7 +74,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('name')->defaultValue('fos_oauth_server_authorize_form')->cannotBeEmpty()->end()
                                 ->arrayNode('validation_groups')
                                     ->prototype('scalar')->end()
-                                    ->defaultValue(array('Authorize', 'Default'))
+                                    ->defaultValue(['Authorize', 'Default'])
                                 ->end()
                             ->end()
                         ->end()
@@ -97,7 +99,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('auth_code_manager')->defaultValue('fos_oauth_server.auth_code_manager.default')->end()
                             ->arrayNode('options')
                                 ->useAttributeAsKey('key')
-                                ->treatNullLike(array())
+                                ->treatNullLike([])
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -25,7 +27,7 @@ class ClientTest extends PropelTestCase
 
         $types = $client->getAllowedGrantTypes();
         $this->assertCount(1, $types);
-        $this->assertEquals(OAuth2::GRANT_TYPE_AUTH_CODE, $types[0]);
+        $this->assertSame(OAuth2::GRANT_TYPE_AUTH_CODE, $types[0]);
     }
 
     public function testCheckSecretWithInvalidArgument()

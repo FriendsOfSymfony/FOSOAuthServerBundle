@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,10 +13,10 @@
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use FOS\OAuthServerBundle\Document\TokenManager;
 use FOS\OAuthServerBundle\Document\AccessToken;
+use FOS\OAuthServerBundle\Document\TokenManager;
 
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     protected $class;
     protected $dm;
@@ -46,12 +48,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
     {
         $manager = $this->getMockBuilder('FOS\OAuthServerBundle\Document\TokenManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('findTokenBy'))
+            ->setMethods(['findTokenBy'])
             ->getMock();
 
         $manager->expects($this->once())
             ->method('findTokenBy')
-            ->with($this->equalTo(array('token' => '1234')));
+            ->with($this->equalTo(['token' => '1234']));
 
         $manager->findTokenByToken('1234');
     }
