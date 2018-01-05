@@ -119,11 +119,6 @@ class OAuthProvider implements AuthenticationProviderInterface
                 return $token;
             }
         } catch (OAuth2ServerException $e) {
-            if (!method_exists('Symfony\Component\Security\Core\Exception\AuthenticationException', 'setToken')) {
-                // Symfony 2.1
-                throw new AuthenticationException('OAuth2 authentication failed', null, 0, $e);
-            }
-
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
         }
 

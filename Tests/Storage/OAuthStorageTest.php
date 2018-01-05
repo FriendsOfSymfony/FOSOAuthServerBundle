@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuth2ServiceBundle\Tests\Storage;
+namespace FOS\OAuthServerBundle\Tests\Storage;
 
 use FOS\OAuthServerBundle\Model\AccessToken;
 use FOS\OAuthServerBundle\Model\AuthCode;

@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterfac
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
 /**
@@ -32,7 +31,7 @@ use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 class OAuthListener implements ListenerInterface
 {
     /**
-     * @var TokenStorageInterface|SecurityContextInterface
+     * @var TokenStorageInterface
      */
     protected $securityContext;
 
@@ -47,15 +46,15 @@ class OAuthListener implements ListenerInterface
     protected $serverService;
 
     /**
-     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage          the token storage
-     * @param AuthenticationManagerInterface                 $authenticationManager the authentication manager
-     * @param OAuth2                                         $serverService
-     * @param mixed                                          $securityContext
+     * @param TokenStorageInterface          $tokenStorage          the token storage
+     * @param AuthenticationManagerInterface $authenticationManager the authentication manager
+     * @param OAuth2                         $serverService
+     * @param mixed                          $securityContext
      */
     public function __construct($securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
-        if (!$securityContext instanceof  TokenStorageInterface && !$securityContext instanceof SecurityContextInterface) {
-            throw new \InvalidArgumentException('Wrong type for OAuthListener, it has to implement TokenStorageInterface or SecurityContextInterface');
+        if (!$securityContext instanceof TokenStorageInterface) {
+            throw new \InvalidArgumentException('Wrong type for OAuthListener, it has to implement TokenStorageInterface');
         }
         if ($securityContext instanceof SecurityContextInterface) {
             @trigger_error(sprintf('Injecting SecurityContextInterface into %1$s::__construct is deprecated since 1.6 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
