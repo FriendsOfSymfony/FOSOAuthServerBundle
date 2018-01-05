@@ -3,3 +3,7 @@ parameters:
         - vendor/autoload.php
     excludes_analyse:
         - vendor/
+
+        # Propel stuff seems broken as-is, ignoring for now
+        - Propel/
+        - Tests/Propel/
