@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -84,7 +86,7 @@ class AuthCodeManager extends BaseAuthCodeManager
             ->createQueryBuilder()
             ->remove()
             ->field('expiresAt')->lt(time())
-            ->getQuery(array('safe' => true))
+            ->getQuery(['safe' => true])
             ->execute();
 
         return $result['n'];

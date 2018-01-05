@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,8 +13,8 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 
 class TokenManager extends BaseTokenManager
 {
@@ -22,7 +24,7 @@ class TokenManager extends BaseTokenManager
     protected $class;
 
     /**
-     * @param string $class A class name.
+     * @param string $class a class name
      */
     public function __construct($class)
     {

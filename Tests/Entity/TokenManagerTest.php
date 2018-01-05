@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,10 +13,10 @@
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Entity\AccessToken;
+use FOS\OAuthServerBundle\Entity\TokenManager;
 
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     protected $em;
 

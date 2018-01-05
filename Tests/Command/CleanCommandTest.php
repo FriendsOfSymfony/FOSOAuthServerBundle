@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -16,7 +18,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\Container;
 
-class CleanCommandTest extends \PHPUnit_Framework_TestCase
+class CleanCommandTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CleanCommand
@@ -49,7 +51,7 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider classProvider
      *
-     * @param string $class A fully qualified class name.
+     * @param string $class a fully qualified class name
      */
     public function testItShouldRemoveExpiredToken($class)
     {
@@ -79,7 +81,7 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
         $this->container->set('fos_oauth_server.auth_code_manager', $authCodeManager);
 
         $tester = new CommandTester($this->command);
-        $tester->execute(array('command' => $this->command->getName()));
+        $tester->execute(['command' => $this->command->getName()]);
 
         $display = $tester->getDisplay();
 
@@ -98,7 +100,7 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
         $this->container->set('fos_oauth_server.auth_code_manager', new \stdClass());
 
         $tester = new CommandTester($this->command);
-        $tester->execute(array('command' => $this->command->getName()));
+        $tester->execute(['command' => $this->command->getName()]);
 
         $display = $tester->getDisplay();
 
@@ -114,9 +116,9 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function classProvider()
     {
-        return array(
-            array('FOS\OAuthServerBundle\Model\TokenManagerInterface'),
-            array('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface'),
-        );
+        return [
+            ['FOS\OAuthServerBundle\Model\TokenManagerInterface'],
+            ['FOS\OAuthServerBundle\Model\AuthCodeManagerInterface'],
+        ];
     }
 }

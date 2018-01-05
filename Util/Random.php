@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -16,7 +18,7 @@ class Random
     public static function generateToken()
     {
         $bytes = false;
-        if (function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win')) {
+        if (function_exists('openssl_random_pseudo_bytes') && 0 !== mb_stripos(PHP_OS, 'win')) {
             $bytes = openssl_random_pseudo_bytes(32, $strong);
 
             if (true !== $strong) {

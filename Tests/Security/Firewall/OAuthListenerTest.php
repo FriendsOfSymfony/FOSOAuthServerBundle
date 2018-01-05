@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -74,7 +76,7 @@ class OAuthListenerTest extends TestCase
         $token = $listener->handle($this->event);
 
         $this->assertInstanceOf('FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken', $token);
-        $this->assertEquals('a-token', $token->getToken());
+        $this->assertSame('a-token', $token->getToken());
     }
 
     public function testHandleResponse()
@@ -106,6 +108,6 @@ class OAuthListenerTest extends TestCase
 
         $ret = $listener->handle($this->event);
 
-        $this->assertEquals($response, $ret);
+        $this->assertSame($response, $ret);
     }
 }

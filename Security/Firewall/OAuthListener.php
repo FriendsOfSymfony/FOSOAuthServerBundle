@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -16,8 +18,8 @@ use OAuth2\OAuth2;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
@@ -45,9 +47,10 @@ class OAuthListener implements ListenerInterface
     protected $serverService;
 
     /**
-     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage          The token storage.
-     * @param AuthenticationManagerInterface                 $authenticationManager The authentication manager.
+     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage          the token storage
+     * @param AuthenticationManagerInterface                 $authenticationManager the authentication manager
      * @param OAuth2                                         $serverService
+     * @param mixed                                          $securityContext
      */
     public function __construct($securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
@@ -63,7 +66,7 @@ class OAuthListener implements ListenerInterface
     }
 
     /**
-     * @param GetResponseEvent $event The event.
+     * @param GetResponseEvent $event the event
      */
     public function handle(GetResponseEvent $event)
     {

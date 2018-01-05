@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -16,13 +18,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class TestCase extends WebTestCase
 {
-    protected static function createKernel(array $options = array())
-    {
-        $env = @$options['env'] ?: 'test';
-
-        return new AppKernel($env, true);
-    }
-
     protected function setUp()
     {
         $fs = new Filesystem();
@@ -32,5 +27,12 @@ abstract class TestCase extends WebTestCase
     protected function tearDown()
     {
         static::$kernel = null;
+    }
+
+    protected static function createKernel(array $options = [])
+    {
+        $env = @$options['env'] ?: 'test';
+
+        return new AppKernel($env, true);
     }
 }

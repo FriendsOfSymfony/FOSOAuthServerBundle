@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -12,8 +14,8 @@
 namespace FOS\OAuthServerBundle\Tests\Propel;
 
 use FOS\OAuthServerBundle\Propel\Client;
-use FOS\OAuthServerBundle\Propel\ClientQuery;
 use FOS\OAuthServerBundle\Propel\ClientManager;
+use FOS\OAuthServerBundle\Propel\ClientQuery;
 
 class ClientManagerTest extends PropelTestCase
 {
@@ -31,7 +33,7 @@ class ClientManagerTest extends PropelTestCase
 
     public function testConstruct()
     {
-        $this->assertEquals(self::CLIENT_CLASS, $this->manager->getClass());
+        $this->assertSame(self::CLIENT_CLASS, $this->manager->getClass());
     }
 
     public function testCreateClass()
@@ -65,27 +67,27 @@ class ClientManagerTest extends PropelTestCase
 
     public function testFindClientReturnsNullIfNotFound()
     {
-        $client = $this->manager->findClientBy(array('id' => '1', 'randomId' => '2345'));
+        $client = $this->manager->findClientBy(['id' => '1', 'randomId' => '2345']);
 
         $this->assertNull($client);
     }
 
     public function testFindClientWithInvalidCriteria()
     {
-        $client = $this->manager->findClientBy(array('randomId' => '2345'));
+        $client = $this->manager->findClientBy(['randomId' => '2345']);
         $this->assertNull($client);
 
-        $client = $this->manager->findClientBy(array('id' => '2345'));
+        $client = $this->manager->findClientBy(['id' => '2345']);
         $this->assertNull($client);
 
-        $client = $this->manager->findClientBy(array('foo' => '2345'));
+        $client = $this->manager->findClientBy(['foo' => '2345']);
         $this->assertNull($client);
     }
 
     public function testFindClient()
     {
         $client = $this->createClient('2345');
-        $return = $this->manager->findClientBy(array('id' => '1', 'randomId' => '2345'));
+        $return = $this->manager->findClientBy(['id' => '1', 'randomId' => '2345']);
 
         $this->assertNotNull($return);
         $this->assertSame($client, $return);
@@ -115,15 +117,16 @@ class ClientManagerTest extends PropelTestCase
         $return = $this->manager->findClientByPublicId('');
         $this->assertNull($return);
 
-        $return = $this->manager->findClientByPublicId(null);
-        $this->assertNull($return);
+        // invalid type
+        // $return = $this->manager->findClientByPublicId(null);
+        // $this->assertNull($return);
     }
 
     protected function createClient($randomId)
     {
         $client = new Client();
         $client->setRandomId($randomId);
-        $client->setRedirectUris(array('foo'));
+        $client->setRedirectUris(['foo']);
         $client->save();
 
         return $client;

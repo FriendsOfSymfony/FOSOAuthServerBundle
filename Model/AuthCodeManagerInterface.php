@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -63,7 +65,7 @@ interface AuthCodeManagerInterface
     /**
      * Delete expired auth codes.
      *
-     * @return int The number of auth codes deleted.
+     * @return int the number of auth codes deleted
      */
     public function deleteExpired();
 }

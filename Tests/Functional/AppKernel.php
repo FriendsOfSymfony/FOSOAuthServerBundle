@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -18,15 +20,15 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = array(
+        $bundles = [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
 
             new \FOS\OAuthServerBundle\Tests\Functional\TestBundle\TestBundle(),
-        );
+        ];
 
-        if ('orm' == $this->getEnvironment()) {
+        if ('orm' === $this->getEnvironment()) {
             $bundles[] = new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,11 +13,11 @@
 
 namespace FOS\OAuthServerBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
+use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -48,9 +50,9 @@ class AuthorizeFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
-        ));
+        ]);
     }
 
     /**
