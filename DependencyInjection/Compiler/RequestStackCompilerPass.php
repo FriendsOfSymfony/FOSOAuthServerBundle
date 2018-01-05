@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -32,6 +34,6 @@ final class RequestStackCompilerPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('fos_oauth_server.authorize.form.handler.default');
-        $definition->addMethodCall('setContainer', array(new Reference('service_container')));
+        $definition->addMethodCall('setContainer', [new Reference('service_container')]);
     }
 }

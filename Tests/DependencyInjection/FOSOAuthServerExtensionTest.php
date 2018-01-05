@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -14,7 +16,7 @@ namespace DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 
-class FOSOAuthServerExtensionTest extends \PHPUnit_Framework_TestCase
+class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testLoadAuthorizeRouting()
     {
@@ -23,8 +25,8 @@ class FOSOAuthServerExtensionTest extends \PHPUnit_Framework_TestCase
 
         $collection = $loader->load(__DIR__.'/../../Resources/config/routing/authorize.xml');
         $authorizeRoute = $collection->get('fos_oauth_server_authorize');
-        $this->assertEquals('/oauth/v2/auth', $authorizeRoute->getPath());
-        $this->assertEquals(array('GET', 'POST'), $authorizeRoute->getMethods());
+        $this->assertSame('/oauth/v2/auth', $authorizeRoute->getPath());
+        $this->assertSame(['GET', 'POST'], $authorizeRoute->getMethods());
     }
 
     public function testLoadTokenRouting()
@@ -34,7 +36,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit_Framework_TestCase
 
         $collection = $loader->load(__DIR__.'/../../Resources/config/routing/token.xml');
         $tokenRoute = $collection->get('fos_oauth_server_token');
-        $this->assertEquals('/oauth/v2/token', $tokenRoute->getPath());
-        $this->assertEquals(array('GET', 'POST'), $tokenRoute->getMethods());
+        $this->assertSame('/oauth/v2/token', $tokenRoute->getPath());
+        $this->assertSame(['GET', 'POST'], $tokenRoute->getMethods());
     }
 }

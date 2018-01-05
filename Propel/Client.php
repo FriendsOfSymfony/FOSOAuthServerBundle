@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,8 +13,8 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-use FOS\OAuthServerBundle\Propel\om\BaseClient;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Propel\om\BaseClient;
 use FOS\OAuthServerBundle\Util\Random;
 use OAuth2\OAuth2;
 
@@ -22,9 +24,9 @@ class Client extends BaseClient implements ClientInterface
     {
         parent::__construct();
 
-        $this->setAllowedGrantTypes(array(
+        $this->setAllowedGrantTypes([
             OAuth2::GRANT_TYPE_AUTH_CODE,
-        ));
+        ]);
         $this->setRandomId(Random::generateToken());
         $this->setSecret(Random::generateToken());
     }

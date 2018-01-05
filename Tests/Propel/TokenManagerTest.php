@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -31,7 +33,7 @@ class TokenManagerTest extends PropelTestCase
 
     public function testConstruct()
     {
-        $this->assertEquals(self::TOKEN_CLASS, $this->manager->getClass());
+        $this->assertSame(self::TOKEN_CLASS, $this->manager->getClass());
     }
 
     public function testCreateClass()
@@ -66,27 +68,27 @@ class TokenManagerTest extends PropelTestCase
 
     public function testFindTokenReturnsNullIfNotFound()
     {
-        $token = $this->manager->findTokenBy(array('token' => '12345'));
+        $token = $this->manager->findTokenBy(['token' => '12345']);
 
         $this->assertNull($token);
     }
 
     public function testFindTokenWithInvalidData()
     {
-        $token = $this->manager->findTokenBy(array('foo' => '12345'));
+        $token = $this->manager->findTokenBy(['foo' => '12345']);
         $this->assertNull($token);
 
-        $token = $this->manager->findTokenBy(array());
+        $token = $this->manager->findTokenBy([]);
         $this->assertNull($token);
 
-        $token = $this->manager->findTokenBy(array('token'));
+        $token = $this->manager->findTokenBy(['token']);
         $this->assertNull($token);
     }
 
     public function testFindToken()
     {
         $token = $this->createToken('12345');
-        $return = $this->manager->findTokenBy(array('token' => '12345'));
+        $return = $this->manager->findTokenBy(['token' => '12345']);
 
         $this->assertNotNull($return);
         $this->assertSame($token, $return);
@@ -113,11 +115,11 @@ class TokenManagerTest extends PropelTestCase
         $a1 = $this->createToken('12345', time() + 100);
         $a2 = $this->createToken('67890', time() - 100);
 
-        $this->assertEquals(2, TokenQuery::create()->count());
+        $this->assertSame(2, TokenQuery::create()->count());
 
         $nb = $this->manager->deleteExpired();
 
-        $this->assertEquals(1, $nb);
+        $this->assertSame(1, $nb);
         $this->assertTrue($a1->equals(TokenQuery::create()->findOne()));
     }
 

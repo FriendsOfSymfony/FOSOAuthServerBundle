@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -38,8 +40,7 @@ class OAuthFactory implements SecurityFactoryInterface
         }
         $container
             ->setDefinition($providerId, $definition)
-            ->replaceArgument(0, new Reference($userProvider))
-        ;
+            ->replaceArgument(0, new Reference($userProvider));
 
         $listenerId = 'security.authentication.listener.fos_oauth_server.'.$id;
 
@@ -50,7 +51,7 @@ class OAuthFactory implements SecurityFactoryInterface
         }
         $container->setDefinition($listenerId, $definition);
 
-        return array($providerId, $listenerId, 'fos_oauth_server.security.entry_point');
+        return [$providerId, $listenerId, 'fos_oauth_server.security.entry_point'];
     }
 
     /**
