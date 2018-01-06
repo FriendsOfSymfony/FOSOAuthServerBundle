@@ -11,6 +11,8 @@
 
 namespace FOS\OAuthServerBundle\Controller;
 
+use FOS\OAuthServerBundle\Event\OAuthTokenEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
@@ -24,11 +26,18 @@ class TokenController
     protected $server;
 
     /**
-     * @param OAuth2 $server
+     * @var EventDispatcherInterface
      */
-    public function __construct(OAuth2 $server)
+    protected $dispatcher;
+
+    /**
+     * @param OAuth2 $server
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function __construct(OAuth2 $server, EventDispatcherInterface $dispatcher = null)
     {
         $this->server = $server;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -38,10 +47,20 @@ class TokenController
      */
     public function tokenAction(Request $request)
     {
-        try {
-            return $this->server->grantAccessToken($request);
-        } catch (OAuth2ServerException $e) {
+        try
+        {
+            $response = $this->server->grantAccessToken($request);
+        }
+        catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
+
+        if($this->dispatcher)
+        {
+            $event = new OAuthTokenEvent(json_decode($response->getContent(), true));
+            $this->dispatcher->dispatch(OAuthTokenEvent::POST_ACCESS_TOKEN_GRANT, $event);
+        }
+
+        return $response;
     }
 }
