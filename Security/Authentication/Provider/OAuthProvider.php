@@ -98,6 +98,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                 $token = new OAuthToken($roles);
                 $token->setAuthenticated(true);
                 $token->setToken($tokenString);
+                $token->setAttribute('client', $accessToken->getClient());
 
                 if (null !== $user) {
                     try {
