@@ -14,6 +14,7 @@ namespace FOS\OAuthServerBundle\DependencyInjection\Security\Factory;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -30,13 +31,24 @@ class OAuthFactory implements SecurityFactoryInterface
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
         $providerId = 'security.authentication.provider.fos_oauth_server.'.$id;
+        if (class_exists(ChildDefinition::class)) {
+            $definition = new ChildDefinition('fos_oauth_server.security.authentication.provider');
+        } else {
+            $definition = new DefinitionDecorator('fos_oauth_server.security.authentication.provider');
+        }
         $container
-            ->setDefinition($providerId, new DefinitionDecorator('fos_oauth_server.security.authentication.provider'))
+            ->setDefinition($providerId, $definition)
             ->replaceArgument(0, new Reference($userProvider))
             ;
 
         $listenerId = 'security.authentication.listener.fos_oauth_server.'.$id;
-        $container->setDefinition($listenerId, new DefinitionDecorator('fos_oauth_server.security.authentication.listener'));
+
+        if (class_exists(ChildDefinition::class)) {
+            $definition = new ChildDefinition('fos_oauth_server.security.authentication.listener');
+        } else {
+            $definition = new DefinitionDecorator('fos_oauth_server.security.authentication.listener');
+        }
+        $container->setDefinition($listenerId, $definition);
 
         return array($providerId, $listenerId, 'fos_oauth_server.security.entry_point');
     }
