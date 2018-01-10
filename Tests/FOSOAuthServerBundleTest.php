@@ -87,10 +87,14 @@ class FOSOAuthServerBundleTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($bundle->build($containerBuilder));
     }
 
-    public function xtestBuildForSymfony20()
+    public function testBuildForSymfony20()
     {
         $bundle = new FOSOAuthServerBundle();
         $objectReflection = new \ReflectionObject($bundle);
+
+        $propertyReflection = $objectReflection->getProperty('kernelVersion');
+        $propertyReflection->setAccessible(true);
+        $propertyReflection->setValue($bundle, '2.0.0');
 
         /** @var ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject $containerBuilder */
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
@@ -99,12 +103,20 @@ class FOSOAuthServerBundleTest extends \PHPUnit_Framework_TestCase
         ;
 
         $containerBuilder
-            ->expects($this->at(0))
+            ->expects($this->at(1))
             ->method('addCompilerPass')
+            ->withConsecutive(
+                new Compiler\GrantExtensionsCompilerPass(),
+                new Compiler\TokenStorageCompilerPass(),
+                new Compiler\RequestStackCompilerPass()
+            )
+            ->willReturnOnConsecutiveCalls(
+                $containerBuilder,
+                $containerBuilder,
+                $containerBuilder
+            )
         ;
 
-        $propertyReflection = $objectReflection->getProperty('kernelVersion');
-        $propertyReflection->setAccessible(true);
-//        $propertyReflection->setValue()
+        $this->assertNull($bundle->build($containerBuilder));
     }
 }
