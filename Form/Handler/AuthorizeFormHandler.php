@@ -53,15 +53,6 @@ class AuthorizeFormHandler
         $this->requestStack = $requestStack;
     }
 
-    public function __get($name)
-    {
-        if ($name === 'request') {
-            @trigger_error(sprintf('%s::$request is deprecated since 1.4 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
-
-            return $this->getCurrentRequest();
-        }
-    }
-
     /**
      * Sets the container.
      *
