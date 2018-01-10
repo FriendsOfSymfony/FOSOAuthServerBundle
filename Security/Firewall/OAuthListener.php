@@ -54,6 +54,9 @@ class OAuthListener implements ListenerInterface
         if (!$securityContext instanceof  TokenStorageInterface && !$securityContext instanceof SecurityContextInterface) {
             throw new \InvalidArgumentException('Wrong type for OAuthListener, it has to implement TokenStorageInterface or SecurityContextInterface');
         }
+        if ($securityContext instanceof SecurityContextInterface) {
+            @trigger_error(sprintf('Injecting SecurityContextInterface into %1$s::__construct is deprecated since 1.6 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
+        }
         $this->securityContext = $securityContext;
         $this->authenticationManager = $authenticationManager;
         $this->serverService = $serverService;
