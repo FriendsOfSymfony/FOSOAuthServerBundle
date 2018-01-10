@@ -1,12 +1,12 @@
 QA_DOCKER_IMAGE=jakzal/phpqa:alpine
 QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" -w /project ${QA_DOCKER_IMAGE}
 
-dist: cs-full phpstan
-ci: cs-full-check phpstan
+dist: cs-full phpstan phpunit
+ci: cs-full-check phpstan phpunit-coverage
 lint: cs-full-check phpstan
 
 phpstan:
-	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level 0 ."
+	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level 1 ."
 
 cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"
@@ -17,5 +17,22 @@ cs-full:
 cs-full-check:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff --dry-run"
 
-.PHONY: install install-dev install-lowest phpstan cs cs-full cs-full-checks docker-up down-down
-.PHONY: in-docker-install in-docker-install-dev in-docker-install-lowest in-docker-test in-docker-test-coverage
+composer-compat:
+	composer config "platform.ext-mongo" "1.6.16"
+	composer require alcaeus/mongo-php-adapter  --no-update
+
+composer-config-beta:
+	composer config "minimum-stability" "beta"
+
+composer-install:
+	rm -f composer.lock && cp composer.json composer.json~
+	composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update
+	composer update --prefer-dist --no-interaction
+	mv composer.json~ composer.json
+
+phpunit:
+	vendor/bin/phpunit
+
+# TODO: output to COV
+phpunit-coverage:
+	phpdbg -qrr vendor/bin/phpunit --coverage-text
