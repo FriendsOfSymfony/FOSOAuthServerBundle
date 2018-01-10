@@ -14,28 +14,52 @@ namespace FOS\OAuthServerBundle\Tests\Security\Authentication\Provider;
 use FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use FOS\OAuthServerBundle\Model\AccessToken;
+use OAuth2\OAuth2;
+use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\User\UserCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|UserInterface
+     */
     protected $user;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|UserProviderInterface
+     */
     protected $userProvider;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|OAuthProvider
+     */
     protected $provider;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|OAuth2
+     */
     protected $serverService;
+
+    /**
+     * @var UserCheckerInterface
+     */
     protected $userChecker;
 
     public function setUp()
     {
-        $this->user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
+        $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->userProvider = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserProviderInterface')
+        $this->userProvider = $this->getMockBuilder(UserProviderInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->serverService = $this->getMockBuilder('OAuth2\OAuth2')
+        $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
             ->setMethods(array('verifyAccessToken'))
             ->getMock();
-        $this->userChecker = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserCheckerInterface')
+        $this->userChecker = $this->getMockBuilder(UserCheckerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->provider = new OAuthProvider($this->userProvider, $this->serverService, $this->userChecker);
@@ -108,9 +132,9 @@ class OAuthProviderTest extends \PHPUnit_Framework_TestCase
 
         $roles = $result->getRoles();
         $this->assertCount(2, $roles);
-        $this->assertInstanceOf('Symfony\Component\Security\Core\Role\Role', $roles[0]);
+        $this->assertInstanceOf(Role::class, $roles[0]);
         $this->assertEquals('ROLE_FOO', $roles[0]->getRole());
-        $this->assertInstanceOf('Symfony\Component\Security\Core\Role\Role', $roles[1]);
+        $this->assertInstanceOf(Role::class, $roles[1]);
         $this->assertEquals('ROLE_BAR', $roles[1]->getRole());
     }
 
