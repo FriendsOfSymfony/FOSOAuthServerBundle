@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -48,7 +50,9 @@ class CreateClientCommandTest extends TestCase
     /**
      * @dataProvider classProvider
      *
-     * @param string $class A fully qualified class name.
+     * @param string $class         a fully qualified class name
+     * @param mixed  $clientManager
+     * @param mixed  $client
      */
     public function testItShouldCreateClient($clientManager, $client)
     {
@@ -60,7 +64,7 @@ class CreateClientCommandTest extends TestCase
         $clientManager
             ->expects($this->any())
             ->method('createClient')
-            ->will($this->returnValue(new $client));
+            ->will($this->returnValue(new $client()));
 
         $this->container->set('fos_oauth_server.client_manager.default', $clientManager);
 
@@ -78,7 +82,7 @@ class CreateClientCommandTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(0, $commandTester->getStatusCode());
+        $this->assertSame(0, $commandTester->getStatusCode());
 
         $output = $commandTester->getDisplay();
 

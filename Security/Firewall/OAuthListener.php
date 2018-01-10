@@ -33,7 +33,7 @@ class OAuthListener implements ListenerInterface
     /**
      * @var TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /**
      * @var AuthenticationManagerInterface
@@ -49,17 +49,10 @@ class OAuthListener implements ListenerInterface
      * @param TokenStorageInterface          $tokenStorage          the token storage
      * @param AuthenticationManagerInterface $authenticationManager the authentication manager
      * @param OAuth2                         $serverService
-     * @param mixed                          $securityContext
      */
-    public function __construct($securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
+    public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
-        if (!$securityContext instanceof TokenStorageInterface) {
-            throw new \InvalidArgumentException('Wrong type for OAuthListener, it has to implement TokenStorageInterface');
-        }
-        if ($securityContext instanceof SecurityContextInterface) {
-            @trigger_error(sprintf('Injecting SecurityContextInterface into %1$s::__construct is deprecated since 1.6 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
-        }
-        $this->securityContext = $securityContext;
+        $this->tokenStorage = $tokenStorage;
         $this->authenticationManager = $authenticationManager;
         $this->serverService = $serverService;
     }
@@ -80,7 +73,7 @@ class OAuthListener implements ListenerInterface
             $returnValue = $this->authenticationManager->authenticate($token);
 
             if ($returnValue instanceof TokenInterface) {
-                return $this->securityContext->setToken($returnValue);
+                return $this->tokenStorage->setToken($returnValue);
             }
 
             if ($returnValue instanceof Response) {
