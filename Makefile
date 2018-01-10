@@ -26,7 +26,7 @@ composer-config-beta:
 
 composer-install:
 	rm -f composer.lock && cp composer.json composer.json~
-	composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update
+	[[ -v SYMFONY_VERSION ]] && composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update || true
 	composer update --prefer-dist --no-interaction
 	mv composer.json~ composer.json
 
