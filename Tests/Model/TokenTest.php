@@ -15,6 +15,8 @@ use FOS\OAuthServerBundle\Model\Token;
 use FOS\OAuthServerBundle\Tests\TestCase;
 
 /**
+ * @group time-sensitive
+ *
  * If you update the following class, please don't forget
  * to update: FOS\OAuthServerBundle\Tests\Propel\TokenTest.
  */

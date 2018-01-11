@@ -13,6 +13,12 @@ namespace FOS\OAuthServerBundle\Tests\Propel;
 
 use FOS\OAuthServerBundle\Propel\Token as AbstractToken;
 
+/**
+ * @group time-sensitive
+ *
+ * Class TokenTest
+ * @package FOS\OAuthServerBundle\Tests\Propel
+ */
 class TokenTest extends PropelTestCase
 {
     /**
