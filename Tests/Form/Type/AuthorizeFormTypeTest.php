@@ -17,18 +17,27 @@ use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AuthorizeFormTypeTest extends TypeTestCase
 {
+    /**
+     * @var AuthorizeFormType
+     */
+    protected $instance;
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->factory = Forms::createFormFactoryBuilder()
-        ->addTypes($this->getTypes())
-        ->getFormFactory();
+            ->addTypes($this->getTypes())
+            ->getFormFactory()
+        ;
 
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
+
+        $this->instance = new AuthorizeFormType();
     }
 
     public function testSubmit()
@@ -58,6 +67,33 @@ class AuthorizeFormTypeTest extends TypeTestCase
         foreach (array_keys($formData) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
+    }
+
+    public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|OptionsResolver $resolver */
+        $resolver = $this->createMock(OptionsResolver::class);
+
+        $resolver
+            ->expects($this->once())
+            ->method('setDefaults')
+            ->with([
+                'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
+            ])
+            ->willReturn($resolver)
+        ;
+
+        $this->assertNull($this->instance->configureOptions($resolver));
+    }
+
+    public function testGetName()
+    {
+        $this->assertSame('fos_oauth_server_authorize', $this->instance->getName());
+    }
+
+    public function testGetBlockPrefix()
+    {
+        $this->assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
     }
 
     protected function getTypes()
