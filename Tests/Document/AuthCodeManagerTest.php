@@ -1,30 +1,21 @@
 <?php
 
-/*
- * This file is part of the FOSOAuthServerBundle package.
- *
- * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use Doctrine\MongoDB\Query\Query;
+use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ODM\MongoDB\Query\Builder;
-use FOS\OAuthServerBundle\Document\TokenManager;
-use FOS\OAuthServerBundle\Document\AccessToken;
+use Doctrine\ORM\AbstractQuery;
+use FOS\OAuthServerBundle\Document\AuthCodeManager;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+/**
+ * Class AuthCodeManagerTest
+ * @package FOS\OAuthServerBundle\Tests\Entity
+ * @author Nikola Petkanski <nikola@petkanski.com>
+ */
+class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var string
-     */
-    protected $className;
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
      */
@@ -36,7 +27,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
     protected $repository;
 
     /**
-     * @var TokenManager
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * @var AuthCodeManager
      */
     protected $instance;
 
@@ -46,9 +42,9 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 
-        $this->className = AccessToken::class;
-        $this->repository = $this->createMock(DocumentRepository::class);
         $this->documentManager = $this->createMock(DocumentManager::class);
+        $this->repository = $this->createMock(DocumentRepository::class);
+        $this->className = 'TestClassName' . \random_bytes(5);
 
         $this->documentManager
             ->expects($this->once())
@@ -57,58 +53,47 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->repository)
         ;
 
-        $this->instance = new TokenManager($this->documentManager, $this->className);
+        $this->instance = new AuthCodeManager($this->documentManager, $this->className);
+
+        parent::setUp();
     }
 
-    public function testFindTokenByToken()
+    public function testConstructWillSetParameters()
     {
-        $randomToken = \random_bytes(5);
-        $randomResult = \random_bytes(5);
-
-        $this->repository
-            ->expects($this->once())
-            ->method('findOneBy')
-            ->with([
-                'token' => $randomToken,
-            ])
-            ->willReturn($randomResult)
-        ;
-
-        $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
+        $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
+        $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
-    {
-        $token = $this->createMock(AccessToken::class);
-
-        $this->documentManager
-            ->expects($this->once())
-            ->method('persist')
-            ->with($token)
-        ;
-
-        $this->documentManager
-            ->expects($this->once())
-            ->method('flush')
-            ->with()
-        ;
-
-        $this->assertNull($this->instance->updateToken($token));
-    }
-
-    public function testGetClass()
+    public function testGetClassWillReturnClassName()
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testDeleteToken()
+    public function testFindAuthCodeBy()
     {
-        $token = $this->createMock(AccessToken::class);
+        $randomResult = \random_bytes(10);
+        $criteria = [
+            \random_bytes(10)
+        ];
+
+        $this->repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with($criteria)
+            ->willReturn($randomResult)
+        ;
+
+        $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
+    }
+
+    public function testUpdateAuthCode()
+    {
+        $authCode = $this->createMock(AuthCodeInterface::class);
 
         $this->documentManager
             ->expects($this->once())
-            ->method('remove')
-            ->with($token)
+            ->method('persist')
+            ->with($authCode)
             ->willReturn(null)
         ;
 
@@ -119,7 +104,28 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteToken($token));
+        $this->assertNull($this->instance->updateAuthCode($authCode));
+    }
+
+    public function testDeleteAuthCode()
+    {
+        $authCode = $this->createMock(AuthCodeInterface::class);
+
+        $this->documentManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($authCode)
+            ->willReturn(null)
+        ;
+
+        $this->documentManager
+            ->expects($this->once())
+            ->method('flush')
+            ->with()
+            ->willReturn(null)
+        ;
+
+        $this->assertNull($this->instance->deleteAuthCode($authCode));
     }
 
     public function testDeleteExpired()
@@ -154,7 +160,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->createMock(Query::class);
+        $query = $this->createMock(AbstractQuery::class);
 
         $queryBuilder
             ->expects($this->once())
@@ -166,7 +172,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
         ;
 
         $data = [
-            'n' => \random_bytes(5),
+            'n' => \random_bytes(10),
         ];
 
         $query
