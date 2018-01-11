@@ -11,6 +11,8 @@ use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 
 /**
+ * @group time-sensitive
+ *
  * Class AuthCodeManagerTest
  * @package FOS\OAuthServerBundle\Tests\Entity
  * @author Nikola Petkanski <nikola@petkanski.com>

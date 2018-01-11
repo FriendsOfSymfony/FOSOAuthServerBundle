@@ -18,6 +18,13 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use FOS\OAuthServerBundle\Document\TokenManager;
 use FOS\OAuthServerBundle\Document\AccessToken;
 
+/**
+ * @group time-sensitive
+ *
+ * Class TokenManagerTest
+ * @package FOS\OAuthServerBundle\Tests\Document
+ * @author Nikola Petkanski <nikola@petkanski.com>
+ */
 class TokenManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
