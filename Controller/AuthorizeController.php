@@ -249,25 +249,23 @@ class AuthorizeController implements ContainerAwareInterface
      */
     protected function getClient()
     {
+        if (null !== $this->client) {
+            return $this->client;
+        }
+
+        if (null === $request = $this->getCurrentRequest()) {
+            throw new NotFoundHttpException('Client not found.');
+        }
+
+        if (null === $clientId = $request->get('client_id')) {
+            $formData = $request->get($this->authorizeForm->getName(), []);
+            $clientId = $formData['client_id'] ?? null;
+        }
+
+        $this->client = $this->clientManager->findClientByPublicId($clientId);
+
         if (null === $this->client) {
-            $request = $this->getCurrentRequest();
-
-            $client = null;
-            if (null !== $request) {
-                if (null === $clientId = $request->get('client_id')) {
-                    $form = $this->authorizeForm;
-                    $formData = $request->get($form->getName(), array());
-                    $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
-                }
-
-                $client = $this->clientManager->findClientByPublicId($clientId);
-            }
-
-            if (null === $client) {
-                throw new NotFoundHttpException('Client not found.');
-            }
-
-            $this->client = $client;
+            throw new NotFoundHttpException('Client not found.');
         }
 
         return $this->client;
