@@ -151,10 +151,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthorizeActionWillThrowAccessDeniedException()
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createMock(TokenInterface::class);
 
         $this->tokenStorage
             ->expects($this->at(0))
@@ -176,10 +173,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthorizeActionWillRenderTemplate()
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createMock(TokenInterface::class);
 
         $this->tokenStorage
             ->expects($this->at(0))
@@ -251,10 +245,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthorizeActionWillFinishClientAuthorization()
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createMock(TokenInterface::class);
 
         $this->tokenStorage
             ->expects($this->at(0))
@@ -321,10 +312,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthorizeActionWillEnsureLogout()
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createMock(TokenInterface::class);
 
         $this->tokenStorage
             ->expects($this->at(0))
@@ -408,12 +396,9 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
-    public function testAuthorizeActionWillProcessForm()
+    public function testAuthorizeActionWillProcessAuthorizationForm()
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $token = $this->createMock(TokenInterface::class);
 
         $this->tokenStorage
             ->expects($this->once())
@@ -448,27 +433,18 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
         $this->event
             ->expects($this->once())
             ->method('isAuthorizedClient')
-            ->with()
             ->willReturn(false)
         ;
 
         $this->authorizeFormHandler
             ->expects($this->once())
             ->method('process')
-            ->with(
-                $this->user,
-                $this->authorizeFormHandler,
-                $this->request
-            )
             ->willReturn(true)
         ;
-
-        $this->markTestIncomplete('Not finished yet');
 
         $this->authorizeFormHandler
             ->expects($this->exactly(2))
             ->method('isAccepted')
-            ->with()
             ->willReturn(true)
         ;
 
@@ -486,14 +462,12 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
         $this->form
             ->expects($this->once())
             ->method('getName')
-            ->with()
             ->willReturn($formName)
         ;
 
         $this->request->query
             ->expects($this->once())
             ->method('all')
-            ->with()
             ->willReturn([])
         ;
 
@@ -507,16 +481,15 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
         $randomScope = 'scope' . \random_bytes(10);
 
         $this->authorizeFormHandler
-            ->expects($this->at(3))
+            ->expects($this->once())
             ->method('getScope')
-            ->with('scope', null)
             ->willReturn($randomScope)
         ;
 
         $response = new Response();
 
         $this->oAuth2Server
-            ->expects($this->at(4))
+            ->expects($this->once())
             ->method('finishClientAuthorization')
             ->with(
                 true,
@@ -527,8 +500,6 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($response)
         ;
 
-        var_dump($this->instance->authorizeAction($this->request));
-        return;
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 }
