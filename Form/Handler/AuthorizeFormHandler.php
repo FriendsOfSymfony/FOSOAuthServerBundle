@@ -88,7 +88,7 @@ class AuthorizeFormHandler
         ));
 
         if ('POST' !== $request->getMethod()) {
-            return;
+            return false;
         }
 
         $this->form->handleRequest($request);
