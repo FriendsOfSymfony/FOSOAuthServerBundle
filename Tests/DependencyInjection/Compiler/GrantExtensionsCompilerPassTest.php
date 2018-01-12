@@ -31,7 +31,15 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessWillNotDoAnythingIfTheStorageDoesNotImplementOurInterface()
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = $this->getMockBuilder(ContainerBuilder::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'findDefinition',
+                'getParameterBag',
+
+            ])
+            ->getMock()
+        ;
         $storageDefinition = $this->createMock(Definition::class);
         $parameterBag = $this->createMock(ParameterBag::class);
 
@@ -71,7 +79,15 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessWillFailIfUriIsEmpty()
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = $this->getMockBuilder(ContainerBuilder::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'findDefinition',
+                'getParameterBag',
+                'findTaggedServiceIds',
+            ])
+            ->getMock()
+        ;
         $storageDefinition = $this->createMock(Definition::class);
         $parameterBag = $this->createMock(ParameterBag::class);
 
@@ -156,7 +172,15 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = $this->getMockBuilder(ContainerBuilder::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'findDefinition',
+                'getParameterBag',
+                'findTaggedServiceIds',
+            ])
+            ->getMock()
+        ;
         $storageDefinition = $this->createMock(Definition::class);
         $parameterBag = $this->createMock(ParameterBag::class);
 

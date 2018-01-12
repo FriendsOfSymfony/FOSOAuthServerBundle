@@ -26,7 +26,14 @@ class TokenStorageCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->container = $this->createMock(ContainerBuilder::class);
+        $this->container = $this->getMockBuilder(ContainerBuilder::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'getDefinition',
+                'hasDefinition',
+            ])
+            ->getMock()
+        ;
         $this->instance = new TokenStorageCompilerPass();
 
         parent::setUp();

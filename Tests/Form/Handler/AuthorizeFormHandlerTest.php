@@ -429,15 +429,16 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             'scope' => $query->scope,
         ];
 
-//        $this->assertSame($expectedSuperGlobalValue, $_GET);
         $this->assertTrue($this->instance->process());
+
+        $this->assertSame($expectedSuperGlobalValue, $_GET);
     }
 
     /**
      * @param string $methodName
      * @return \ReflectionMethod
      */
-    protected function getReflectionMethod(string $methodName)
+    protected function getReflectionMethod($methodName)
     {
         $reflectionObject = new \ReflectionObject($this->instance);
         $reflectionMethod = $reflectionObject->getMethod($methodName);
