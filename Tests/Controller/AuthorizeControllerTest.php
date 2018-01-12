@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -61,7 +61,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
     protected $tokenStorage;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Router
+     * @var \PHPUnit_Framework_MockObject_MockObject|UrlGeneratorInterface
      */
     protected $router;
 
@@ -119,7 +119,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
         $this->oAuth2Server = $this->createMock(OAuth2::class);
         $this->templateEngine = $this->createMock(EngineInterface::class);
         $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
-        $this->router = $this->createMock(Router::class);
+        $this->router = $this->createMock(UrlGeneratorInterface::class);
         $this->clientManager = $this->createMock(ClientManagerInterface::class);
         $this->eventDispatcher = $this->createMock(EventDispatcher::class);
         $this->templateEngineType = 'twig';
