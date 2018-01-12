@@ -36,8 +36,14 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->repository = $this->createMock(EntityRepository::class);
+        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->repository = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->className = 'RandomClassName'. \random_bytes(5);
 
         $this->entityManager
@@ -83,7 +89,10 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateClient()
     {
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->getMockBuilder(ClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -104,7 +113,10 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteClient()
     {
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->getMockBuilder(ClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())

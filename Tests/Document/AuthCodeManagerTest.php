@@ -44,8 +44,14 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 
-        $this->documentManager = $this->createMock(DocumentManager::class);
-        $this->repository = $this->createMock(DocumentRepository::class);
+        $this->documentManager = $this->getMockBuilder(DocumentManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->repository = $this->getMockBuilder(DocumentRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->className = 'TestClassName' . \random_bytes(5);
 
         $this->documentManager
@@ -90,7 +96,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateAuthCode()
     {
-        $authCode = $this->createMock(AuthCodeInterface::class);
+        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->documentManager
             ->expects($this->once())
@@ -111,7 +120,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteAuthCode()
     {
-        $authCode = $this->createMock(AuthCodeInterface::class);
+        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->documentManager
             ->expects($this->once())
@@ -132,7 +144,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteExpired()
     {
-        $queryBuilder = $this->createMock(Builder::class);
+        $queryBuilder = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->repository
             ->expects($this->once())
@@ -162,7 +177,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->getMockBuilder(AbstractQuery::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $queryBuilder
             ->expects($this->once())

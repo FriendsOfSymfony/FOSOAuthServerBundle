@@ -36,7 +36,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->className = 'TestClassName' . \random_bytes(5);
 
         $this->instance = new AuthCodeManager($this->entityManager, $this->className);
@@ -57,7 +60,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testFindAuthCodeBy()
     {
-        $repository = $this->createMock(ObjectRepository::class);
+        $repository = $this->getMockBuilder(ObjectRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -83,7 +89,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateAuthCode()
     {
-        $authCode = $this->createMock(AuthCodeInterface::class);
+        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -104,7 +113,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteAuthCode()
     {
-        $authCode = $this->createMock(AuthCodeInterface::class);
+        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -127,9 +139,15 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
     {
         $randomResult = \random_bytes(10);
 
-        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -166,7 +184,10 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->getMockBuilder(AbstractQuery::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $queryBuilder
             ->expects($this->once())

@@ -61,7 +61,10 @@ class RequestStackCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->willReturn(false)
         ;
 
-        $definition = $this->createMock(Definition::class);
+        $definition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->container
             ->expects($this->once())

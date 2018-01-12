@@ -40,8 +40,14 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ])
             ->getMock()
         ;
-        $storageDefinition = $this->createMock(Definition::class);
-        $parameterBag = $this->createMock(ParameterBag::class);
+        $storageDefinition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $parameterBag = $this->getMockBuilder(ParameterBag::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $className = 'stdClassUnresolved' . random_bytes(5);
         $resolvedClassName = 'stdClass';
@@ -88,10 +94,19 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ])
             ->getMock()
         ;
-        $storageDefinition = $this->createMock(Definition::class);
-        $parameterBag = $this->createMock(ParameterBag::class);
+        $storageDefinition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $parameterBag = $this->getMockBuilder(ParameterBag::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $storageInstance = $this->createMock(GrantExtensionDispatcherInterface::class);
+        $storageInstance = $this->getMockBuilder(GrantExtensionDispatcherInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $className = 'stdClassUnresolved' . random_bytes(5);
         $resolvedClassName = get_class($storageInstance);
@@ -142,12 +157,13 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->willReturn($data)
         ;
 
+        $exceptionMessage = 'Service "%s" must define the "uri" attribute on "fos_oauth_server.grant_extension" tags.';
+
         $idx = 0;
         foreach ($data as $id => $tags) {
             foreach ($tags as $tag) {
                 if (empty($tag['uri'])) {
-                    $exceptionMessage = sprintf('Service "%s" must define the "uri" attribute on "fos_oauth_server.grant_extension" tags.', $id);
-                    $this->expectExceptionMessage($exceptionMessage);
+                    $exceptionMessage = sprintf($exceptionMessage, $id);
                     break;
                 }
 
@@ -165,7 +181,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->setExpectedException(InvalidArgumentException::class, $exceptionMessage);
 
         $this->assertNull($this->instance->process($container));
     }
@@ -181,10 +197,19 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ])
             ->getMock()
         ;
-        $storageDefinition = $this->createMock(Definition::class);
-        $parameterBag = $this->createMock(ParameterBag::class);
+        $storageDefinition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $parameterBag = $this->getMockBuilder(ParameterBag::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $storageInstance = $this->createMock(GrantExtensionDispatcherInterface::class);
+        $storageInstance = $this->getMockBuilder(GrantExtensionDispatcherInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $className = 'stdClassUnresolved' . random_bytes(5);
         $resolvedClassName = get_class($storageInstance);

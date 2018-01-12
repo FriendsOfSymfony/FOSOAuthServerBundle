@@ -51,8 +51,14 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->className = AccessToken::class;
-        $this->repository = $this->createMock(EntityRepository::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->repository = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -115,7 +121,10 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateToken()
     {
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->getMockBuilder(TokenInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -136,7 +145,10 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteToken()
     {
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->getMockBuilder(TokenInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->entityManager
             ->expects($this->once())
@@ -159,7 +171,10 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
     {
         $randomResult = \random_bytes(10);
 
-        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->repository
             ->expects($this->once())
@@ -189,7 +204,10 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->getMockBuilder(AbstractQuery::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $queryBuilder
             ->expects($this->once())

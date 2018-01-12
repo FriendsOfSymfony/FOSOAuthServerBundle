@@ -72,7 +72,10 @@ class AuthorizeFormTypeTest extends TypeTestCase
     public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|OptionsResolver $resolver */
-        $resolver = $this->createMock(OptionsResolver::class);
+        $resolver = $this->getMockBuilder(OptionsResolver::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $resolver
             ->expects($this->once())
