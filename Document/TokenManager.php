@@ -87,7 +87,8 @@ class TokenManager extends BaseTokenManager
             ->remove()
             ->field('expiresAt')->lt(time())
             ->getQuery(['safe' => true])
-            ->execute();
+            ->execute()
+        ;
 
         return $result['n'];
     }

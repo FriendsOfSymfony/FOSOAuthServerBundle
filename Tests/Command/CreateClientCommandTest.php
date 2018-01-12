@@ -59,12 +59,14 @@ class CreateClientCommandTest extends TestCase
         $clientManager = $this
             ->getMockBuilder($clientManager)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $clientManager
             ->expects($this->any())
             ->method('createClient')
-            ->will($this->returnValue(new $client()));
+            ->will($this->returnValue(new $client()))
+        ;
 
         $this->container->set('fos_oauth_server.client_manager.default', $clientManager);
 

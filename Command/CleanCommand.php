@@ -34,7 +34,8 @@ The <info>%command.name%</info> command will remove expired OAuth2 tokens.
 
   <info>php %command.full_name%</info>
 EOT
-        );
+            )
+        ;
     }
 
     /**

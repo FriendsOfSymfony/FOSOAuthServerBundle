@@ -29,17 +29,21 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
     {
         $this->user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->userProvider = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserProviderInterface')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->serverService = $this->getMockBuilder('OAuth2\OAuth2')
             ->disableOriginalConstructor()
             ->setMethods(['verifyAccessToken'])
-            ->getMock();
+            ->getMock()
+        ;
         $this->userChecker = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserCheckerInterface')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->provider = new OAuthProvider($this->userProvider, $this->serverService, $this->userChecker);
     }
 
@@ -50,7 +54,8 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
 
         $this->user->expects($this->once())
             ->method('getRoles')
-            ->will($this->returnValue(['ROLE_USER']));
+            ->will($this->returnValue(['ROLE_USER']))
+        ;
 
         $accessToken = new AccessToken();
         $accessToken->setUser($this->user);
@@ -58,7 +63,8 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
             ->with('x')
-            ->will($this->returnValue($accessToken));
+            ->will($this->returnValue($accessToken))
+        ;
 
         $result = $this->provider->authenticate($token);
 
@@ -81,7 +87,8 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
             ->with('x')
-            ->will($this->returnValue($accessToken));
+            ->will($this->returnValue($accessToken))
+        ;
 
         $result = $this->provider->authenticate($token);
 
@@ -101,7 +108,8 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
             ->with('x')
-            ->will($this->returnValue($accessToken));
+            ->will($this->returnValue($accessToken))
+        ;
 
         $result = $this->provider->authenticate($token);
 
@@ -127,7 +135,8 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
             ->with('x')
-            ->will($this->returnValue($accessToken));
+            ->will($this->returnValue($accessToken))
+        ;
 
         $result = $this->provider->authenticate($token);
 
@@ -149,7 +158,8 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
             ->with('x')
-            ->will($this->returnValue($accessToken));
+            ->will($this->returnValue($accessToken))
+        ;
 
         $result = $this->provider->authenticate($token);
 

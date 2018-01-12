@@ -87,7 +87,8 @@ class AuthCodeManager extends BaseAuthCodeManager
             ->remove()
             ->field('expiresAt')->lt(time())
             ->getQuery(['safe' => true])
-            ->execute();
+            ->execute()
+        ;
 
         return $result['n'];
     }

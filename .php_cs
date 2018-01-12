@@ -40,7 +40,7 @@ return PhpCsFixer\Config::create()
             'modernize_types_casting' => true,
             // 'native_function_invocation' => true,
             'no_extra_consecutive_blank_lines' => ['continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block'],
-            'no_multiline_whitespace_before_semicolons' => true,
+            'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
             'no_php4_constructor' => true,
             'no_short_echo_tag' => true,
             'no_unreachable_default_argument_value' => true,

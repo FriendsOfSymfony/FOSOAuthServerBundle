@@ -60,21 +60,24 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
         $accessTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAccessTokens));
+            ->will($this->returnValue($expiredAccessTokens))
+        ;
 
         $expiredRefreshTokens = 183;
         $refreshTokenManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
         $refreshTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredRefreshTokens));
+            ->will($this->returnValue($expiredRefreshTokens))
+        ;
 
         $expiredAuthCodes = 0;
         $authCodeManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
         $authCodeManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAuthCodes));
+            ->will($this->returnValue($expiredAuthCodes))
+        ;
 
         $this->container->set('fos_oauth_server.access_token_manager', $accessTokenManager);
         $this->container->set('fos_oauth_server.refresh_token_manager', $refreshTokenManager);

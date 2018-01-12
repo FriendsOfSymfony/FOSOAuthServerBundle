@@ -32,14 +32,17 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->class = 'FOS\OAuthServerBundle\Document\AccessToken';
         $this->repository = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentRepository')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->dm = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->dm->expects($this->once())
             ->method('getRepository')
             ->with($this->class)
-            ->will($this->returnValue($this->repository));
+            ->will($this->returnValue($this->repository))
+        ;
 
         $this->manager = new TokenManager($this->dm, $this->class);
     }
@@ -49,11 +52,13 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $manager = $this->getMockBuilder('FOS\OAuthServerBundle\Document\TokenManager')
             ->disableOriginalConstructor()
             ->setMethods(['findTokenBy'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $manager->expects($this->once())
             ->method('findTokenBy')
-            ->with($this->equalTo(['token' => '1234']));
+            ->with($this->equalTo(['token' => '1234']))
+        ;
 
         $manager->findTokenByToken('1234');
     }
@@ -64,10 +69,12 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->dm->expects($this->once())
             ->method('persist')
-            ->with($token);
+            ->with($token)
+        ;
         $this->dm->expects($this->once())
             ->method('flush')
-            ->with();
+            ->with()
+        ;
 
         $this->manager->updateToken($token);
     }

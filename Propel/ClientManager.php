@@ -50,7 +50,8 @@ class ClientManager extends BaseClientManager
         return $queryClass::create()
             ->filterById($criteria['id'])
             ->filterByRandomId($criteria['randomId'])
-            ->findOne();
+            ->findOne()
+        ;
     }
 
     /**
