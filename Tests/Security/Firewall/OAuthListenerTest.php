@@ -30,28 +30,33 @@ class OAuthListenerTest extends TestCase
     {
         $this->serverService = $this->getMockBuilder('OAuth2\OAuth2')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->authManager = $this
             ->getMockBuilder('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
             $this->securityContext = $this
                 ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
                 ->disableOriginalConstructor()
-                ->getMock();
+                ->getMock()
+            ;
         } else {
             $this->securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
                 ->disableOriginalConstructor()
-                ->getMock();
+                ->getMock()
+            ;
         }
 
         $this->event = $this
             ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
     }
 
     public function testHandle()
@@ -61,17 +66,20 @@ class OAuthListenerTest extends TestCase
         $this->serverService
             ->expects($this->once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'));
+            ->will($this->returnValue('a-token'))
+        ;
 
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
-            ->will($this->returnArgument(0));
+            ->will($this->returnArgument(0))
+        ;
 
         $this->securityContext
             ->expects($this->once())
             ->method('setToken')
-            ->will($this->returnArgument(0));
+            ->will($this->returnArgument(0))
+        ;
 
         $token = $listener->handle($this->event);
 
@@ -86,25 +94,30 @@ class OAuthListenerTest extends TestCase
         $this->serverService
             ->expects($this->once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'));
+            ->will($this->returnValue('a-token'))
+        ;
 
         $response = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
-            ->will($this->returnValue($response));
+            ->will($this->returnValue($response))
+        ;
 
         $this->securityContext
             ->expects($this->never())
-            ->method('setToken');
+            ->method('setToken')
+        ;
 
         $this->event
             ->expects($this->once())
             ->method('setResponse')
-            ->will($this->returnArgument(0));
+            ->will($this->returnArgument(0))
+        ;
 
         $ret = $listener->handle($this->event);
 

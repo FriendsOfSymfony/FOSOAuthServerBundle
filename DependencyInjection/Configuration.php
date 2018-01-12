@@ -49,7 +49,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('refresh_token_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('auth_code_class')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('model_manager_name')->defaultNull()->end()
-            ->end();
+            ->end()
+        ;
 
         $this->addAuthorizeSection($rootNode);
         $this->addServiceSection($rootNode);
@@ -80,7 +81,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function addServiceSection(ArrayNodeDefinition $node)
@@ -105,7 +107,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function addTemplateSection(ArrayNodeDefinition $node)
@@ -118,6 +121,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('engine')->defaultValue('twig')->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 }

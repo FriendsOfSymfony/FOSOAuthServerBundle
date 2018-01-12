@@ -31,14 +31,17 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->class = 'FOS\OAuthServerBundle\Entity\AccessToken';
         $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->em->expects($this->once())
             ->method('getRepository')
             ->with($this->class)
-            ->will($this->returnValue($this->repository));
+            ->will($this->returnValue($this->repository))
+        ;
 
         $this->manager = new TokenManager($this->em, $this->class);
     }
@@ -49,10 +52,12 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->em->expects($this->once())
             ->method('persist')
-            ->with($token);
+            ->with($token)
+        ;
         $this->em->expects($this->once())
             ->method('flush')
-            ->with();
+            ->with()
+        ;
 
         $this->manager->updateToken($token);
     }
