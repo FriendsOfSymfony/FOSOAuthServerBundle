@@ -52,7 +52,8 @@ class TokenManager extends BaseTokenManager
 
         return $queryClass::create()
             ->filterByToken($criteria['token'])
-            ->findOne();
+            ->findOne()
+        ;
     }
 
     /**
@@ -80,6 +81,7 @@ class TokenManager extends BaseTokenManager
 
         return $queryClass::create()
             ->filterByExpiresAt(time(), \Criteria::LESS_THAN)
-            ->delete();
+            ->delete()
+        ;
     }
 }

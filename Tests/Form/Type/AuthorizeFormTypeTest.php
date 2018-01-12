@@ -28,7 +28,8 @@ class AuthorizeFormTypeTest extends TypeTestCase
 
         $this->factory = Forms::createFormFactoryBuilder()
         ->addTypes($this->getTypes())
-        ->getFormFactory();
+        ->getFormFactory()
+        ;
 
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
     }

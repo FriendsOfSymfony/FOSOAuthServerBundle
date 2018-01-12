@@ -52,7 +52,8 @@ class AuthCodeManager extends BaseAuthCodeManager
 
         return $queryClass::create()
             ->filterByToken($criteria['token'])
-            ->findOne();
+            ->findOne()
+        ;
     }
 
     /**
@@ -80,6 +81,7 @@ class AuthCodeManager extends BaseAuthCodeManager
 
         return $queryClass::create()
             ->filterByExpiresAt(time(), \Criteria::LESS_THAN)
-            ->delete();
+            ->delete()
+        ;
     }
 }

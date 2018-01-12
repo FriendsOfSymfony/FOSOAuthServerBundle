@@ -45,10 +45,12 @@ class AuthCodeManagerTest extends PropelTestCase
     {
         $authCode = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\AuthCode')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $authCode
             ->expects($this->once())
-            ->method('save');
+            ->method('save')
+        ;
 
         $this->manager->updateAuthCode($authCode);
     }
@@ -57,10 +59,12 @@ class AuthCodeManagerTest extends PropelTestCase
     {
         $authCode = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\AuthCode')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $authCode
             ->expects($this->once())
-            ->method('delete');
+            ->method('delete')
+        ;
 
         $this->manager->deleteAuthCode($authCode);
     }
