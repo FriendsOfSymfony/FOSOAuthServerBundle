@@ -40,7 +40,14 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = $this->getMockBuilder(ContainerBuilder::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'setDefinition',
+
+            ])
+            ->getMock()
+        ;
         $id = '12';
         $config = [];
         $userProvider = 'mock.user.provider.service';
