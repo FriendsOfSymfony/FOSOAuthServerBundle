@@ -298,7 +298,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->form)
         ;
 
-        $this->assertNull($this->instance->process());
+        $this->assertFalse($this->instance->process());
     }
 
     public function testProcessWillHandleRequestOnPost()
