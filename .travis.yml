@@ -3,6 +3,9 @@ language: php
 sudo: false
 
 php:
+  - 5.4
+  - 5.5
+  - 5.6
   - hhvm
   - 7.0
   - 7.1
@@ -14,6 +17,10 @@ service:
 matrix:
   fast_finish: true
   include:
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.*
+    - php: 5.6
+      env: SYMFONY_VERSION=3.0.* COVERAGE=true
     # test the latest release (including beta releases)
     - php: 7.1
       env: SYMFONY_VERSION=2.8.* COVERAGE=true
