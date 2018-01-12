@@ -25,7 +25,7 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
 /**
  * @group time-sensitive
  *
- * Class TokenManagerTest
+ * Class Entity\TokenManagerTest
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
