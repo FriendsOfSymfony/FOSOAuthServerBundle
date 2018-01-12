@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Container;
 class CreateClientCommandTest extends TestCase
 {
     /**
-     * @var
+     * @var CreateClientCommand
      */
     private $command;
 
@@ -43,16 +43,18 @@ class CreateClientCommandTest extends TestCase
 
         $this->container = new Container();
 
-        $this->command = $application->find($command->getName());
-        $this->command->setContainer($this->container);
+        /** @var CreateClientCommand $command */
+        $command = $application->find($command->getName());
+        $command->setContainer($this->container);
+
+        $this->command = $command;
     }
 
     /**
      * @dataProvider classProvider
      *
-     * @param string $class         a fully qualified class name
-     * @param mixed  $clientManager
-     * @param mixed  $client
+     * @param mixed $clientManager
+     * @param mixed $client
      */
     public function testItShouldCreateClient($clientManager, $client)
     {

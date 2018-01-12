@@ -82,12 +82,7 @@ class FOSOAuthServerExtension extends Extension
         // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
         if ('orm' === $config['db_driver']) {
             $ormEntityManagerDefinition = $container->getDefinition('fos_oauth_server.entity_manager');
-            if (method_exists($ormEntityManagerDefinition, 'setFactory')) {
-                $ormEntityManagerDefinition->setFactory([new Reference('doctrine'), 'getManager']);
-            } else {
-                $ormEntityManagerDefinition->setFactoryService('doctrine');
-                $ormEntityManagerDefinition->setFactoryMethod('getManager');
-            }
+            $ormEntityManagerDefinition->setFactory([new Reference('doctrine'), 'getManager']);
         }
 
         if (!empty($config['authorize'])) {
@@ -97,12 +92,7 @@ class FOSOAuthServerExtension extends Extension
         // Authorize form factory definition
         // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
         $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
-        if (method_exists($authorizeFormDefinition, 'setFactory')) {
-            $authorizeFormDefinition->setFactory([new Reference('form.factory'), 'createNamed']);
-        } else {
-            $authorizeFormDefinition->setFactoryService('form.factory');
-            $authorizeFormDefinition->setFactoryMethod('createNamed');
-        }
+        $authorizeFormDefinition->setFactory([new Reference('form.factory'), 'createNamed']);
     }
 
     /**

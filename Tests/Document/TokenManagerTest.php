@@ -49,6 +49,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindTokenByToken()
     {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|TokenManager $manager */
         $manager = $this->getMockBuilder('FOS\OAuthServerBundle\Document\TokenManager')
             ->disableOriginalConstructor()
             ->setMethods(['findTokenBy'])
