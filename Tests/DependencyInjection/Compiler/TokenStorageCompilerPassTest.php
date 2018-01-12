@@ -41,7 +41,10 @@ class TokenStorageCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessWithExistingTokenStorage()
     {
-        $authenticationListenerDefinition = $this->createMock(Definition::class);
+        $authenticationListenerDefinition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->container
             ->expects($this->once())
@@ -62,7 +65,10 @@ class TokenStorageCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessWithoutExistingTokenStorage()
     {
-        $authenticationListenerDefinition = $this->createMock(Definition::class);
+        $authenticationListenerDefinition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->container
             ->expects($this->once())

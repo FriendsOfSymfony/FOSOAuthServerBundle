@@ -53,7 +53,10 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
         $userProvider = 'mock.user.provider.service';
         $defaultEntryPoint = '';
 
-        $definition = $this->createMock(Definition::class);
+        $definition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $container
             ->expects($this->exactly(2))
@@ -90,7 +93,10 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testAddConfigurationDoesNothing()
     {
-        $nodeDefinition = $this->createMock(NodeDefinition::class);
+        $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->assertNull($this->instance->addConfiguration($nodeDefinition));
     }
 }

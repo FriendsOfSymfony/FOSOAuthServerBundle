@@ -51,13 +51,28 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->form = $this->createMock(FormInterface::class);
-        $this->request = $this->createMock(Request::class);
-        $this->requestQuery = $this->createMock(ParameterBag::class);
-        $this->requestRequest = $this->createMock(ParameterBag::class);
+        $this->form = $this->getMockBuilder(FormInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->requestQuery = $this->getMockBuilder(ParameterBag::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->requestRequest = $this->getMockBuilder(ParameterBag::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->request->query = $this->requestQuery;
         $this->request->request = $this->requestRequest;
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->instance = new AuthorizeFormHandler($this->form, $this->request);
         $this->instance->setContainer($this->container);
@@ -67,7 +82,10 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructWillAcceptRequestObjectAsRequest()
     {
-        $request = $this->createMock(Request::class);
+        $request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->instance = new AuthorizeFormHandler($this->form, $request);
 
@@ -77,7 +95,10 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructWillAcceptRequestStackObjectAsRequest()
     {
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->getMockBuilder(RequestStack::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
@@ -103,8 +124,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             AuthorizeFormHandler::class
         );
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage($exceptionMessage);
+        $this->setExpectedException(\InvalidArgumentException::class, $exceptionMessage);
 
         new AuthorizeFormHandler($this->form, new \stdClass());
     }
@@ -168,7 +188,10 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack()
     {
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->getMockBuilder(RequestStack::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
         $request = new \stdClass();

@@ -40,8 +40,14 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 
-        $this->documentManager = $this->createMock(DocumentManager::class);
-        $this->repository = $this->createMock(DocumentRepository::class);
+        $this->documentManager = $this->getMockBuilder(DocumentManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->repository = $this->getMockBuilder(DocumentRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->className = 'RandomClassName'. \random_bytes(5);
 
         $this->documentManager
@@ -87,7 +93,10 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateClient()
     {
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->getMockBuilder(ClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->documentManager
             ->expects($this->once())
@@ -108,7 +117,10 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteClient()
     {
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->getMockBuilder(ClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->documentManager
             ->expects($this->once())
