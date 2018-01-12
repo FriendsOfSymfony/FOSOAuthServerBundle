@@ -7,3 +7,7 @@ parameters:
         # Propel stuff seems broken as-is, ignoring for now
         - Propel/
         - Tests/Propel/
+    ignoreErrors:
+        # how to avoid excluding these?
+        - '#Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::scalarNode()#'
+        - '#Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::end()#'

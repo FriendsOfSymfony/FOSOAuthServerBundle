@@ -38,12 +38,12 @@ interface ClientManagerInterface
     public function findClientByPublicId($publicId);
 
     /**
-     * @param ClientInterface
+     * @param ClientInterface $client
      */
     public function updateClient(ClientInterface $client);
 
     /**
-     * @param ClientInterface
+     * @param ClientInterface $client
      */
     public function deleteClient(ClientInterface $client);
 }

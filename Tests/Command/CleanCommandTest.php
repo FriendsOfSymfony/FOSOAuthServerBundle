@@ -42,8 +42,11 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
 
         $this->container = new Container();
 
-        $this->command = $application->find($command->getName());
-        $this->command->setContainer($this->container);
+        /** @var CleanCommand $command */
+        $command = $application->find($command->getName());
+        $command->setContainer($this->container);
+
+        $this->command = $command;
     }
 
     /**

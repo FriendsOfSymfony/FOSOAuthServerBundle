@@ -57,7 +57,9 @@ class OAuthProvider implements AuthenticationProviderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param OAuthToken&TokenInterface $token
+     *
+     * @return OAuthToken
      */
     public function authenticate(TokenInterface $token)
     {
@@ -68,7 +70,10 @@ class OAuthProvider implements AuthenticationProviderInterface
         try {
             $tokenString = $token->getToken();
 
-            if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
+            // TODO: this is nasty, create a proper interface here
+            /** @var OAuthToken&TokenInterface&\OAuth2\Model\IOAuth2AccessToken $accessToken */
+            $accessToken = $this->serverService->verifyAccessToken($tokenString);
+            if (null !== $accessToken) {
                 $scope = $accessToken->getScope();
                 $user = $accessToken->getUser();
 
@@ -76,7 +81,8 @@ class OAuthProvider implements AuthenticationProviderInterface
                     try {
                         $this->userChecker->checkPreAuth($user);
                     } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                        throw new OAuth2AuthenticateException(
+                            OAuth2::HTTP_UNAUTHORIZED,
                             OAuth2::TOKEN_TYPE_BEARER,
                             $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                             'access_denied',
@@ -105,7 +111,8 @@ class OAuthProvider implements AuthenticationProviderInterface
                     try {
                         $this->userChecker->checkPostAuth($user);
                     } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                        throw new OAuth2AuthenticateException(
+                            OAuth2::HTTP_UNAUTHORIZED,
                             OAuth2::TOKEN_TYPE_BEARER,
                             $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                             'access_denied',

@@ -33,7 +33,7 @@ interface ClientInterface extends IOAuth2Client
     public function setSecret($secret);
 
     /**
-     * @param $secret
+     * @param string $secret
      *
      * @return bool
      */
