@@ -41,10 +41,12 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
+        if (class_exists('Symfony\Component\DependencyInjection\ChildDefinition')) {
+            return $this->useChildDefinition();
+        }
+
         if (class_exists('Symfony\Component\DependencyInjection\DefinitionDecorator')) {
             return $this->useDefinitionDecorator();
-        } elseif (class_exists('Symfony\Component\DependencyInjection\ChildDefinition')) {
-            return $this->useChildDefinition();
         }
 
         throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
