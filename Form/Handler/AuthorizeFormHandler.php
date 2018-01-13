@@ -72,7 +72,7 @@ class AuthorizeFormHandler
     }
 
     /**
-     * @return bool|void
+     * @return bool
      */
     public function process()
     {
@@ -93,7 +93,7 @@ class AuthorizeFormHandler
 
         $this->form->handleRequest($request);
         if (!$this->form->isValid()) {
-            return;
+            return false;
         }
 
         $this->onSuccess();
