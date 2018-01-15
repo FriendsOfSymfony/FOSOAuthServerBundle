@@ -195,7 +195,7 @@ class AuthorizeController implements ContainerAwareInterface
         }
 
         return $this->templating->renderResponse(
-            'FOSOAuthServerBundle:Authorize:authorize.html.'.$this->templateEngineType,
+            '@FOSOAuthServerBundle:Authorize:authorize.html.'.$this->templateEngineType,
             [
                 'form' => $form->createView(),
                 'client' => $this->getClient(),
