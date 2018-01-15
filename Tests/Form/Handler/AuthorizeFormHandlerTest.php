@@ -226,20 +226,6 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group legacy
-     * @expectedDeprecation FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler::$request is deprecated since 1.4 and will be removed in 2.0.
-     */
-    public function testGettingRequestVariableWillWorkButWillTriggerUserWarning()
-    {
-        $this->assertSame($this->request, $this->instance->__get('request'));
-    }
-
-    public function testGettingAnyVariableWillReturnNull()
-    {
-        $this->assertNull($this->instance->__get('test'));
-    }
-
-    /**
      * @TODO Fix this behavior. This method MUST not modify $_GET.
      */
     public function testOnSuccessWillReplaceGETSuperGlobal()
