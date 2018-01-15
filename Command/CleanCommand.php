@@ -50,7 +50,7 @@ EOT
         ];
 
         foreach ($services as $service => $name) {
-            /** @var $instance TokenManagerInterface */
+            /** @var TokenManagerInterface $instance */
             $instance = $this->getContainer()->get($service);
             if ($instance instanceof TokenManagerInterface || $instance instanceof AuthCodeManagerInterface) {
                 $result = $instance->deleteExpired();

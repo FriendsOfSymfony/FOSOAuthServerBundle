@@ -1,11 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Serialization\Author;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -13,11 +23,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class AuthorizeFormHandlerTest
- * @package FOS\OAuthServerBundle\Tests\Form\Handler
+ * Class AuthorizeFormHandlerTest.
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
+class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|FormInterface
@@ -55,7 +65,8 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request = $this->getMockBuilder(Request::class)
+        /** @var \PHPUnit_Framework_MockObject_MockObject&Request $request */
+        $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -67,8 +78,9 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request->query = $this->requestQuery;
-        $this->request->request = $this->requestRequest;
+        $request->query = $this->requestQuery;
+        $request->request = $this->requestRequest;
+        $this->request = $request;
         $this->container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -124,7 +136,8 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             AuthorizeFormHandler::class
         );
 
-        $this->setExpectedException(\InvalidArgumentException::class, $exceptionMessage);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($exceptionMessage);
 
         new AuthorizeFormHandler($this->form, new \stdClass());
     }
@@ -223,20 +236,6 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
 
         $method = $this->getReflectionMethod('getCurrentRequest');
         $this->assertSame($randomData, $method->invoke($this->instance));
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler::$request is deprecated since 1.4 and will be removed in 2.0.
-     */
-    public function testGettingRequestVariableWillWorkButWillTriggerUserWarning()
-    {
-        $this->assertSame($this->request, $this->instance->__get('request'));
-    }
-
-    public function testGettingAnyVariableWillReturnNull()
-    {
-        $this->assertNull($this->instance->__get('test'));
     }
 
     /**
@@ -459,6 +458,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $methodName
+     *
      * @return \ReflectionMethod
      */
     protected function getReflectionMethod($methodName)
@@ -466,6 +466,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
         $reflectionObject = new \ReflectionObject($this->instance);
         $reflectionMethod = $reflectionObject->getMethod($methodName);
         $reflectionMethod->setAccessible(true);
+
         return $reflectionMethod;
     }
 }

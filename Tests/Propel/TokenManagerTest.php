@@ -21,7 +21,6 @@ use FOS\OAuthServerBundle\Propel\TokenManager;
  * @group time-sensitive
  *
  * Class TokenManagerTest
- * @package FOS\OAuthServerBundle\Tests\Propel
  */
 class TokenManagerTest extends PropelTestCase
 {

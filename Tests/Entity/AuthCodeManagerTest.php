@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -14,10 +25,10 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
  * @group time-sensitive
  *
  * Class AuthCodeManagerTest
- * @package FOS\OAuthServerBundle\Tests\Entity
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
+class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
@@ -40,7 +51,7 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'TestClassName' . \random_bytes(5);
+        $this->className = 'TestClassName'.\random_bytes(5);
 
         $this->instance = new AuthCodeManager($this->entityManager, $this->className);
 
@@ -73,7 +84,7 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
         ;
 
         $criteria = [
-            \random_bytes(10)
+            \random_bytes(10),
         ];
         $randomResult = \random_bytes(10);
 

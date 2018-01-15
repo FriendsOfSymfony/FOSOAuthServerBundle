@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -8,11 +19,11 @@ use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
 /**
- * Class ClientManagerTest
- * @package FOS\OAuthServerBundle\Tests\Entity
+ * Class ClientManagerTest.
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class ClientManagerTest extends \PHPUnit_Framework_TestCase
+class ClientManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
@@ -48,7 +59,7 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'RandomClassName'. \random_bytes(5);
+        $this->className = 'RandomClassName'.\random_bytes(5);
 
         $this->documentManager
             ->expects($this->once())

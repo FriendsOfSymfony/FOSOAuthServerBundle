@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
 class AuthCodeManager extends BaseAuthCodeManager
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
@@ -31,10 +30,10 @@ class AuthCodeManager extends BaseAuthCodeManager
     protected $class;
 
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param EntityManagerInterface $em
+     * @param string                 $class
      */
-    public function __construct(ObjectManager $em, $class)
+    public function __construct(EntityManagerInterface $em, $class)
     {
         $this->em = $em;
         $this->class = $class;
@@ -79,7 +78,10 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     public function deleteExpired()
     {
-        $qb = $this->em->getRepository($this->class)->createQueryBuilder('a');
+        /** @var \Doctrine\ORM\EntityRepository $repository */
+        $repository = $this->em->getRepository($this->class);
+
+        $qb = $repository->createQueryBuilder('a');
         $qb
             ->delete()
             ->where('a.expiresAt < ?1')
