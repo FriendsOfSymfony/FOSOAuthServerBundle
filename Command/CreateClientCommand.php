@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Command;
 
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -63,6 +64,7 @@ EOT
         $io->title('Client Credentials');
 
         // Get the client manager
+        /** @var ClientManagerInterface $clientManager */
         $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
 
         // Create a new client
