@@ -21,7 +21,6 @@ use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 
-class TokenManagerTest extends \PHPUnit\Framework\TestCase
 /**
  * @group time-sensitive
  *

@@ -20,7 +20,6 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use FOS\OAuthServerBundle\Document\TokenManager;
 use FOS\OAuthServerBundle\Document\AccessToken;
 
-class TokenManagerTest extends \PHPUnit\Framework\TestCase
 /**
  * @group time-sensitive
  *
