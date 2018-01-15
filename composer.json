@@ -20,7 +20,8 @@
         "friendsofsymfony/oauth2-php": "~1.1",
         "symfony/framework-bundle": "~2.8|~3.0|^4.0",
         "symfony/security-bundle": "~2.8|~3.0|^4.0",
-        "symfony/dependency-injection": "^2.8|~3.0|^4.0"
+        "symfony/dependency-injection": "^2.8|~3.0|^4.0",
+        "paragonie/random_compat": "^1|^2"
     },
     "require-dev": {
         "symfony/class-loader": "~2.8|~3.0|^4.0",
@@ -35,7 +36,8 @@
         "doctrine/doctrine-bundle": "~1.0",
         "doctrine/orm": "~2.2",
         "phpunit/phpunit": "~4.8|~5.0",
-        "symfony/phpunit-bridge": "~2.8|~3.0|^4.0"
+        "symfony/phpunit-bridge": "~2.8|~3.0|^4.0",
+        "php-mock/php-mock-phpunit": "^1.1"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
