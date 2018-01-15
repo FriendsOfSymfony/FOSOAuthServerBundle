@@ -143,9 +143,9 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $roles = $result->getRoles();
         $this->assertCount(2, $roles);
         $this->assertInstanceOf(Role::class, $roles[0]);
-        $this->assertEquals('ROLE_FOO', $roles[0]->getRole());
+        $this->assertSame('ROLE_FOO', $roles[0]->getRole());
         $this->assertInstanceOf(Role::class, $roles[1]);
-        $this->assertEquals('ROLE_BAR', $roles[1]->getRole());
+        $this->assertSame('ROLE_BAR', $roles[1]->getRole());
     }
 
     public function testAuthenticateWithNullScope()
