@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler;
@@ -10,7 +21,7 @@ use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 
-class FOSOAuthServerBundleTest extends \PHPUnit_Framework_TestCase
+class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
     {
@@ -31,7 +42,7 @@ class FOSOAuthServerBundleTest extends \PHPUnit_Framework_TestCase
         $propertyReflection = $objectReflection->getProperty('kernelVersion');
         $propertyReflection->setAccessible(true);
 
-        $this->assertEquals(Kernel::VERSION, $propertyReflection->getValue($bundle));
+        $this->assertSame(Kernel::VERSION, $propertyReflection->getValue($bundle));
     }
 
     public function testBuildForSymfonyHigherThan20()

@@ -17,18 +17,18 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Entity\AccessToken;
+use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 
 /**
  * @group time-sensitive
  *
  * Class TokenManagerTest
- * @package FOS\OAuthServerBundle\Tests\Entity
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface

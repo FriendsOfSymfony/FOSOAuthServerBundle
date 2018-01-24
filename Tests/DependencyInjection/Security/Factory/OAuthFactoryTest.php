@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Security\Factory;
 
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
@@ -11,11 +22,11 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class OAuthFactoryTest
- * @package FOS\OAuthServerBundle\Tests\DependencyInjection\Security\Factory
+ * Class OAuthFactoryTest.
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
+class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var OAuthFactory
@@ -52,13 +63,21 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
         throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
     }
 
+    public function testAddConfigurationDoesNothing()
+    {
+        $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->assertNull($this->instance->addConfiguration($nodeDefinition));
+    }
+
     protected function useDefinitionDecorator()
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
             ->setMethods([
                 'setDefinition',
-
             ])
             ->getMock()
         ;
@@ -77,12 +96,12 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    'security.authentication.provider.fos_oauth_server.'. $id,
-                    new DefinitionDecorator('fos_oauth_server.security.authentication.provider')
+                    'security.authentication.provider.fos_oauth_server.'.$id,
+                    new DefinitionDecorator('fos_oauth_server.security.authentication.provider'),
                 ],
                 [
-                    'security.authentication.listener.fos_oauth_server.'. $id,
-                    new DefinitionDecorator('fos_oauth_server.security.authentication.listener')
+                    'security.authentication.listener.fos_oauth_server.'.$id,
+                    new DefinitionDecorator('fos_oauth_server.security.authentication.listener'),
                 ]
             )
             ->willReturnOnConsecutiveCalls(
@@ -99,9 +118,9 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertSame([
-            'security.authentication.provider.fos_oauth_server.'. $id,
-            'security.authentication.listener.fos_oauth_server.'. $id,
-            'fos_oauth_server.security.entry_point'
+            'security.authentication.provider.fos_oauth_server.'.$id,
+            'security.authentication.listener.fos_oauth_server.'.$id,
+            'fos_oauth_server.security.entry_point',
         ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
     }
 
@@ -111,7 +130,6 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods([
                 'setDefinition',
-
             ])
             ->getMock()
         ;
@@ -130,12 +148,12 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    'security.authentication.provider.fos_oauth_server.'. $id,
-                    new ChildDefinition('fos_oauth_server.security.authentication.provider')
+                    'security.authentication.provider.fos_oauth_server.'.$id,
+                    new ChildDefinition('fos_oauth_server.security.authentication.provider'),
                 ],
                 [
-                    'security.authentication.listener.fos_oauth_server.'. $id,
-                    new ChildDefinition('fos_oauth_server.security.authentication.listener')
+                    'security.authentication.listener.fos_oauth_server.'.$id,
+                    new ChildDefinition('fos_oauth_server.security.authentication.listener'),
                 ]
             )
             ->willReturnOnConsecutiveCalls(
@@ -152,18 +170,9 @@ class OAuthFactoryTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertSame([
-            'security.authentication.provider.fos_oauth_server.'. $id,
-            'security.authentication.listener.fos_oauth_server.'. $id,
-            'fos_oauth_server.security.entry_point'
+            'security.authentication.provider.fos_oauth_server.'.$id,
+            'security.authentication.listener.fos_oauth_server.'.$id,
+            'fos_oauth_server.security.entry_point',
         ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
-    }
-
-    public function testAddConfigurationDoesNothing()
-    {
-        $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $this->assertNull($this->instance->addConfiguration($nodeDefinition));
     }
 }
