@@ -97,9 +97,19 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Request
+     * @var Request|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $request;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     */
+    protected $requestQuery;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     */
+    protected $requestRequest;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|UserInterface
@@ -183,14 +193,16 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request->query = $this->getMockBuilder(ParameterBag::class)
+        $this->requestQuery = $this->getMockBuilder(ParameterBag::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request->request = $this->getMockBuilder(ParameterBag::class)
+        $this->request->query = $this->requestQuery;
+        $this->requestRequest = $this->getMockBuilder(ParameterBag::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $this->request->request = $this->requestRequest;
         $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -542,13 +554,13 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($formName)
         ;
 
-        $this->request->query
+        $this->requestQuery
             ->expects($this->once())
             ->method('all')
             ->willReturn([])
         ;
 
-        $this->request->request
+        $this->requestRequest
             ->expects($this->once())
             ->method('has')
             ->with($formName)
