@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -84,7 +86,8 @@ class TokenManager extends BaseTokenManager
         $qb
             ->delete()
             ->where('t.expiresAt < ?1')
-            ->setParameters(array(1 => time()));
+            ->setParameters([1 => time()])
+        ;
 
         return $qb->getQuery()->execute();
     }

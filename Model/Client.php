@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -34,12 +36,12 @@ class Client implements ClientInterface
     /**
      * @var array
      */
-    protected $redirectUris = array();
+    protected $redirectUris = [];
 
     /**
      * @var array
      */
-    protected $allowedGrantTypes = array();
+    protected $allowedGrantTypes = [];
 
     public function __construct()
     {

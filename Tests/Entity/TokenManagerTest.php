@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,10 +13,10 @@
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Entity\AccessToken;
+use FOS\OAuthServerBundle\Entity\TokenManager;
 
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     protected $em;
 
@@ -27,12 +29,19 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->class = 'FOS\OAuthServerBundle\Entity\AccessToken';
-        $this->repository = $this->getMock('Doctrine\ORM\EntityRepository', array(), array(), '', false);
-        $this->em = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->em->expects($this->once())
             ->method('getRepository')
             ->with($this->class)
-            ->will($this->returnValue($this->repository));
+            ->will($this->returnValue($this->repository))
+        ;
 
         $this->manager = new TokenManager($this->em, $this->class);
     }
@@ -43,10 +52,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->em->expects($this->once())
             ->method('persist')
-            ->with($token);
+            ->with($token)
+        ;
         $this->em->expects($this->once())
             ->method('flush')
-            ->with();
+            ->with()
+        ;
 
         $this->manager->updateToken($token);
     }

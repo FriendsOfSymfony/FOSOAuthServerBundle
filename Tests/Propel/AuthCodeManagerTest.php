@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -12,8 +14,8 @@
 namespace FOS\OAuthServerBundle\Tests\Propel;
 
 use FOS\OAuthServerBundle\Propel\AuthCode;
-use FOS\OAuthServerBundle\Propel\AuthCodeQuery;
 use FOS\OAuthServerBundle\Propel\AuthCodeManager;
+use FOS\OAuthServerBundle\Propel\AuthCodeQuery;
 
 class AuthCodeManagerTest extends PropelTestCase
 {
@@ -31,7 +33,7 @@ class AuthCodeManagerTest extends PropelTestCase
 
     public function testConstruct()
     {
-        $this->assertEquals(self::AUTH_CODE_CLASS, $this->manager->getClass());
+        $this->assertSame(self::AUTH_CODE_CLASS, $this->manager->getClass());
     }
 
     public function testCreateClass()
@@ -41,27 +43,35 @@ class AuthCodeManagerTest extends PropelTestCase
 
     public function testUpdate()
     {
-        $authCode = $this->getMock('FOS\OAuthServerBundle\Propel\AuthCode');
+        $authCode = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\AuthCode')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $authCode
             ->expects($this->once())
-            ->method('save');
+            ->method('save')
+        ;
 
         $this->manager->updateAuthCode($authCode);
     }
 
     public function testDelete()
     {
-        $authCode = $this->getMock('FOS\OAuthServerBundle\Propel\AuthCode');
+        $authCode = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\AuthCode')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $authCode
             ->expects($this->once())
-            ->method('delete');
+            ->method('delete')
+        ;
 
         $this->manager->deleteAuthCode($authCode);
     }
 
     public function testFindAuthCodeReturnsNullIfNotFound()
     {
-        $authCode = $this->manager->findAuthCodeBy(array('token' => '12345'));
+        $authCode = $this->manager->findAuthCodeBy(['token' => '12345']);
 
         $this->assertNull($authCode);
     }
@@ -69,7 +79,7 @@ class AuthCodeManagerTest extends PropelTestCase
     public function testFindAuthCode()
     {
         $authCode = $this->createAuthCode('12345');
-        $return = $this->manager->findAuthCodeBy(array('token' => '12345'));
+        $return = $this->manager->findAuthCodeBy(['token' => '12345']);
 
         $this->assertNotNull($return);
         $this->assertSame($authCode, $return);
@@ -93,13 +103,13 @@ class AuthCodeManagerTest extends PropelTestCase
 
     public function testFindAuthCodeWithInvalidData()
     {
-        $token = $this->manager->findAuthCodeBy(array('foo' => '12345'));
+        $token = $this->manager->findAuthCodeBy(['foo' => '12345']);
         $this->assertNull($token);
 
-        $token = $this->manager->findAuthCodeBy(array());
+        $token = $this->manager->findAuthCodeBy([]);
         $this->assertNull($token);
 
-        $token = $this->manager->findAuthCodeBy(array('token'));
+        $token = $this->manager->findAuthCodeBy(['token']);
         $this->assertNull($token);
     }
 
@@ -108,11 +118,11 @@ class AuthCodeManagerTest extends PropelTestCase
         $a1 = $this->createAuthCode('12345', time() + 100);
         $a2 = $this->createAuthCode('67890', time() - 100);
 
-        $this->assertEquals(2, AuthCodeQuery::create()->count());
+        $this->assertSame(2, AuthCodeQuery::create()->count());
 
         $nb = $this->manager->deleteExpired();
 
-        $this->assertEquals(1, $nb);
+        $this->assertSame(1, $nb);
         $this->assertTrue($a1->equals(AuthCodeQuery::create()->findOne()));
     }
 

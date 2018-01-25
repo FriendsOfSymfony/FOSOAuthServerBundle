@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -9,16 +11,16 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\OAuth2ServiceBundle\Tests\Storage;
+namespace FOS\OAuthServerBundle\Tests\Storage;
 
 use FOS\OAuthServerBundle\Model\AccessToken;
-use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Model\AuthCode;
 use FOS\OAuthServerBundle\Model\Client;
+use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class OAuthStorageTest extends \PHPUnit_Framework_TestCase
+class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 {
     protected $clientManager;
 
@@ -36,12 +38,30 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->clientManager = $this->getMock('FOS\OAuthServerBundle\Model\ClientManagerInterface');
-        $this->accessTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\AccessTokenManagerInterface');
-        $this->refreshTokenManager = $this->getMock('FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface');
-        $this->authCodeManager = $this->getMock('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface');
-        $this->userProvider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
-        $this->encoderFactory = $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface');
+        $this->clientManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\ClientManagerInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->accessTokenManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\AccessTokenManagerInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->refreshTokenManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->authCodeManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->userProvider = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserProviderInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->encoderFactory = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
     }
@@ -53,7 +73,8 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->clientManager->expects($this->once())
             ->method('findClientByPublicId')
             ->with('123_abc')
-            ->will($this->returnValue($client));
+            ->will($this->returnValue($client))
+        ;
 
         $this->assertSame($client, $this->storage->getClient('123_abc'));
     }
@@ -65,16 +86,20 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->clientManager->expects($this->once())
             ->method('findClientByPublicId')
             ->with('123_abc')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue(null))
+        ;
 
         $this->assertNull($this->storage->getClient('123_abc'));
     }
 
     public function testCheckClientCredentialsThrowsIfInvalidClientClass()
     {
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->storage->checkClientCredentials($client, 'dummy');
     }
 
@@ -101,7 +126,8 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->accessTokenManager->expects($this->once())
             ->method('findTokenByToken')
             ->with('123_abc')
-            ->will($this->returnValue($token));
+            ->will($this->returnValue($token))
+        ;
 
         $this->assertSame($token, $this->storage->getAccessToken('123_abc'));
     }
@@ -113,16 +139,20 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->accessTokenManager->expects($this->once())
             ->method('findTokenByToken')
             ->with('123_abc')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue(null))
+        ;
 
         $this->assertNull($this->storage->getAccessToken('123_abc'));
     }
 
     public function testCreateAccessTokenThrowsOnInvalidClientClass()
     {
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->storage->createAccessToken('foo', $client, new User(42), 1, 'foo bar');
     }
 
@@ -133,19 +163,21 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->accessTokenManager->expects($this->once())
             ->method('createToken')
             ->with()
-            ->will($this->returnValue(new AccessToken()));
+            ->will($this->returnValue(new AccessToken()))
+        ;
         $this->accessTokenManager->expects($this->once())
             ->method('updateToken')
             ->will($this->returnCallback(function ($token) use (&$savedToken) {
                 $savedToken = $token;
-            }));
+            }))
+        ;
 
         $client = new Client();
         $user = new User(42);
 
         $token = $this->storage->createAccessToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertEquals($token, $savedToken);
+        $this->assertSame($token, $savedToken);
 
         $this->assertSame('foo', $token->getToken());
         $this->assertSame($client, $token->getClient());
@@ -162,19 +194,21 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->accessTokenManager->expects($this->once())
             ->method('createToken')
             ->with()
-            ->will($this->returnValue(new AccessToken()));
+            ->will($this->returnValue(new AccessToken()))
+        ;
         $this->accessTokenManager->expects($this->once())
             ->method('updateToken')
             ->will($this->returnCallback(function ($token) use (&$savedToken) {
-            $savedToken = $token;
-        }));
+                $savedToken = $token;
+            }))
+        ;
 
         $client = new Client();
         $user = null;
 
         $token = $this->storage->createAccessToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertEquals($token, $savedToken);
+        $this->assertSame($token, $savedToken);
     }
 
     public function testGetRefreshTokenReturnsRefreshTokenWithGivenId()
@@ -184,7 +218,8 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->refreshTokenManager->expects($this->once())
             ->method('findTokenByToken')
             ->with('123_abc')
-            ->will($this->returnValue($token));
+            ->will($this->returnValue($token))
+        ;
 
         $this->assertSame($token, $this->storage->getRefreshToken('123_abc'));
     }
@@ -194,16 +229,20 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->refreshTokenManager->expects($this->once())
             ->method('findTokenByToken')
             ->with('123_abc')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue(null))
+        ;
 
         $this->assertNull($this->storage->getRefreshToken('123_abc'));
     }
 
     public function testCreateRefreshTokenThrowsOnInvalidClientClass()
     {
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->storage->createRefreshToken('foo', $client, 42, 1, 'foo bar');
     }
 
@@ -214,19 +253,21 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->refreshTokenManager->expects($this->once())
             ->method('createToken')
             ->with()
-            ->will($this->returnValue(new RefreshToken()));
+            ->will($this->returnValue(new RefreshToken()))
+        ;
         $this->refreshTokenManager->expects($this->once())
             ->method('updateToken')
             ->will($this->returnCallback(function ($token) use (&$savedToken) {
                 $savedToken = $token;
-            }));
+            }))
+        ;
 
         $client = new Client();
         $user = new User(42);
 
         $token = $this->storage->createRefreshToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertEquals($token, $savedToken);
+        $this->assertSame($token, $savedToken);
 
         $this->assertSame('foo', $token->getToken());
         $this->assertSame($client, $token->getClient());
@@ -243,26 +284,31 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->refreshTokenManager->expects($this->once())
             ->method('createToken')
             ->with()
-            ->will($this->returnValue(new RefreshToken()));
+            ->will($this->returnValue(new RefreshToken()))
+        ;
         $this->refreshTokenManager->expects($this->once())
             ->method('updateToken')
             ->will($this->returnCallback(function ($token) use (&$savedToken) {
-            $savedToken = $token;
-        }));
+                $savedToken = $token;
+            }))
+        ;
 
         $client = new Client();
         $user = null;
 
         $token = $this->storage->createRefreshToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertEquals($token, $savedToken);
+        $this->assertSame($token, $savedToken);
     }
 
     public function testCheckRestrictedGrantTypeThrowsOnInvalidClientClass()
     {
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $this->storage->checkRestrictedGrantType($client, 'foo');
     }
@@ -270,7 +316,7 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
     public function testCheckRestrictedGrantType()
     {
         $client = new Client();
-        $client->setAllowedGrantTypes(array('foo', 'bar'));
+        $client->setAllowedGrantTypes(['foo', 'bar']);
 
         $this->assertTrue($this->storage->checkRestrictedGrantType($client, 'foo'));
         $this->assertTrue($this->storage->checkRestrictedGrantType($client, 'bar'));
@@ -279,9 +325,12 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckUserCredentialsThrowsOnInvalidClientClass()
     {
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $this->storage->checkUserCredentials($client, 'Joe', 'baz');
     }
@@ -298,57 +347,75 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
     public function testCheckUserCredentialsReturnsTrueOnValidCredentials()
     {
         $client = new Client();
-        $user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
+        $user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $user->expects($this->once())
             ->method('getPassword')->with()->will($this->returnValue('foo'));
         $user->expects($this->once())
             ->method('getSalt')->with()->will($this->returnValue('bar'));
 
-        $encoder = $this->getMock('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface');
+        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $encoder->expects($this->once())
             ->method('isPasswordValid')
             ->with('foo', 'baz', 'bar')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $this->userProvider->expects($this->once())
             ->method('loadUserByUsername')
             ->with('Joe')
-            ->will($this->returnValue($user));
+            ->will($this->returnValue($user))
+        ;
 
         $this->encoderFactory->expects($this->once())
             ->method('getEncoder')
             ->with($user)
-            ->will($this->returnValue($encoder));
+            ->will($this->returnValue($encoder))
+        ;
 
-        $this->assertSame(array(
+        $this->assertSame([
             'data' => $user,
-        ), $this->storage->checkUserCredentials($client, 'Joe', 'baz'));
+        ], $this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
 
     public function testCheckUserCredentialsReturnsFalseOnInvalidCredentials()
     {
         $client = new Client();
-        $user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
+        $user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $user->expects($this->once())
             ->method('getPassword')->with()->will($this->returnValue('foo'));
         $user->expects($this->once())
             ->method('getSalt')->with()->will($this->returnValue('bar'));
 
-        $encoder = $this->getMock('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface');
+        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $encoder->expects($this->once())
             ->method('isPasswordValid')
             ->with('foo', 'baz', 'bar')
-            ->will($this->returnValue(false));
+            ->will($this->returnValue(false))
+        ;
 
         $this->userProvider->expects($this->once())
             ->method('loadUserByUsername')
             ->with('Joe')
-            ->will($this->returnValue($user));
+            ->will($this->returnValue($user))
+        ;
 
         $this->encoderFactory->expects($this->once())
             ->method('getEncoder')
             ->with($user)
-            ->will($this->returnValue($encoder));
+            ->will($this->returnValue($encoder))
+        ;
 
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
@@ -360,16 +427,20 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->userProvider->expects($this->once())
             ->method('loadUserByUsername')
             ->with('Joe')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue(null))
+        ;
 
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
 
     public function testCreateAuthCodeThrowsOnInvalidClientClass()
     {
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->storage->createAuthCode('foo', $client, 42, 'http://www.example.com/', 1, 'foo bar');
     }
 
@@ -380,19 +451,21 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->authCodeManager->expects($this->once())
             ->method('createAuthCode')
             ->with()
-            ->will($this->returnValue(new AuthCode()));
+            ->will($this->returnValue(new AuthCode()))
+        ;
         $this->authCodeManager->expects($this->once())
             ->method('updateAuthCode')
             ->will($this->returnCallback(function ($code) use (&$savedCode) {
                 $savedCode = $code;
-            }));
+            }))
+        ;
 
         $client = new Client();
         $user = new User(42);
 
         $code = $this->storage->createAuthCode('foo', $client, $user, 'http://www.example.com/', 1, 'foo bar');
 
-        $this->assertEquals($code, $savedCode);
+        $this->assertSame($code, $savedCode);
 
         $this->assertSame('foo', $code->getToken());
         $this->assertSame($client, $code->getClient());
@@ -409,7 +482,8 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->authCodeManager->expects($this->once())
             ->method('findAuthCodeByToken')
             ->with('123_abc')
-            ->will($this->returnValue($code));
+            ->will($this->returnValue($code))
+        ;
 
         $this->assertSame($code, $this->storage->getAuthCode('123_abc'));
     }
@@ -419,14 +493,18 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $this->authCodeManager->expects($this->once())
             ->method('findAuthCodeByToken')
             ->with('123_abc')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue(null))
+        ;
 
         $this->assertNull($this->storage->getAuthCode('123_abc'));
     }
 
     public function testValidGrantExtension()
     {
-        $grantExtension = $this->getMock('FOS\OAuthServerBundle\Storage\GrantExtensionInterface');
+        $grantExtension = $this->getMockBuilder('FOS\OAuthServerBundle\Storage\GrantExtensionInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $grantExtension
             ->expects($this->once())
             ->method('checkGrantExtension')
@@ -434,23 +512,34 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         ;
         $this->storage->setGrantExtension('https://friendsofsymfony.com/grants/foo', $grantExtension);
 
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
-        $this->assertTrue($this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/foo', array(), array()));
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->assertTrue($this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/foo', [], []));
     }
 
-    /**
-     * @expectedException \OAuth2\OAuth2ServerException
-     */
     public function testInvalidGrantExtension()
     {
-        $client = $this->getMock('OAuth2\Model\IOAuth2Client');
-        $this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/bar', array(), array());
+        $this->expectException(\OAuth2\OAuth2ServerException::class);
+
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/bar', [], []);
     }
 
     public function testDoubleSetGrantExtension()
     {
-        $grantExtension = $this->getMock('FOS\OAuthServerBundle\Storage\GrantExtensionInterface');
-        $grantExtension2 = $this->getMock('FOS\OAuthServerBundle\Storage\GrantExtensionInterface');
+        $grantExtension = $this->getMockBuilder('FOS\OAuthServerBundle\Storage\GrantExtensionInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $grantExtension2 = $this->getMockBuilder('FOS\OAuthServerBundle\Storage\GrantExtensionInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->storage->setGrantExtension($uri = 'https://friendsofsymfony.com/grants/foo', $grantExtension);
         $this->storage->setGrantExtension($uri, $grantExtension2);
 
@@ -459,12 +548,15 @@ class OAuthStorageTest extends \PHPUnit_Framework_TestCase
         $grantExtensionsProperty->setAccessible(true);
         $grantExtensions = $grantExtensionsProperty->getValue($this->storage);
 
-        $this->assertEquals($grantExtension2, $grantExtensions[$uri]);
+        $this->assertSame($grantExtension2, $grantExtensions[$uri]);
     }
 
     public function testMarkAuthCodeAsUsedIfAuthCodeFound()
     {
-        $authCode = $this->getMock('FOS\OAuthServerBundle\Model\AuthCodeInterface');
+        $authCode = $this->getMockBuilder('FOS\OAuthServerBundle\Model\AuthCodeInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->authCodeManager->expects($this->atLeastOnce())
             ->method('findAuthCodeByToken')

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,8 +13,8 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
 class AuthCodeManager extends BaseAuthCodeManager
 {
@@ -50,7 +52,8 @@ class AuthCodeManager extends BaseAuthCodeManager
 
         return $queryClass::create()
             ->filterByToken($criteria['token'])
-            ->findOne();
+            ->findOne()
+        ;
     }
 
     /**
@@ -78,6 +81,7 @@ class AuthCodeManager extends BaseAuthCodeManager
 
         return $queryClass::create()
             ->filterByExpiresAt(time(), \Criteria::LESS_THAN)
-            ->delete();
+            ->delete()
+        ;
     }
 }

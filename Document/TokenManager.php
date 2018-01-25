@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -84,8 +86,9 @@ class TokenManager extends BaseTokenManager
             ->createQueryBuilder()
             ->remove()
             ->field('expiresAt')->lt(time())
-            ->getQuery(array('safe' => true))
-            ->execute();
+            ->getQuery(['safe' => true])
+            ->execute()
+        ;
 
         return $result['n'];
     }
