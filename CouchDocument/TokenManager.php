@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -79,11 +81,12 @@ class TokenManager extends BaseTokenManager
      */
     public function deleteExpired()
     {
-        $result = $this->dm->createQuery("symfony", "accesstoken")
-            ->remove()
-            ->field('expiresAt')->lt(time())
-            ->getQuery(array('safe' => true))
-            ->execute();
+        $result = $this->dm->createQuery('symfony', 'accesstoken')
+		   ->remove()
+		   ->field('expiresAt')->lt(time())
+		   ->getQuery(['safe' => true])
+		   ->execute()
+	;
 
         return $result['n'];
     }

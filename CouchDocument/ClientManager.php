@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -53,11 +55,13 @@ class ClientManager extends BaseClientManager
      */
     public function findClientBy(array $criteria)
     {
-        $client =  $this->repository->findOneBy(array("randomId"=>$criteria["randomId"]));
+        $client =  $this->repository->findOneBy(["randomId"=>$criteria["randomId"]]);
 
-	if ($client != null)
-	    if ($client->getId() == $criteria["id"])
+	if ($client != null) {
+	    if ($client->getId() == $criteria["id"]) {
 		return $client;
+	    }
+	}
 
 	return null;
     }
