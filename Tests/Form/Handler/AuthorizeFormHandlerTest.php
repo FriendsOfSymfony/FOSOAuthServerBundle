@@ -35,7 +35,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Request|RequestStack
+     * @var \PHPUnit_Framework_MockObject_MockObject&Request&RequestStack
      */
     protected $request;
 

@@ -97,7 +97,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $instance;
 
     /**
-     * @var Request|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject&Request
      */
     protected $request;
 
