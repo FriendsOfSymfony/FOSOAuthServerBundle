@@ -31,7 +31,7 @@ class AuthCodeManager extends BaseAuthCodeManager
 
     /**
      * @param EntityManagerInterface $em
-     * @param string        $class
+     * @param string                 $class
      */
     public function __construct(EntityManagerInterface $em, $class)
     {
