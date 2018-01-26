@@ -97,7 +97,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject&Request
+     * @var \PHPUnit_Framework_MockObject_MockObject|Request
      */
     protected $request;
 
@@ -189,7 +189,8 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             $this->templateEngineType
         );
 
-        $this->request = $this->getMockBuilder(Request::class)
+        /** @var \PHPUnit_Framework_MockObject_MockObject&Request $request */
+        $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -197,12 +198,13 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request->query = $this->requestQuery;
         $this->requestRequest = $this->getMockBuilder(ParameterBag::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request->request = $this->requestRequest;
+        $request->query = $this->requestQuery;
+        $request->request = $this->requestRequest;
+        $this->request = $request;
         $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()
             ->getMock()

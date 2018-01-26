@@ -35,7 +35,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject&Request&RequestStack
+     * @var \PHPUnit_Framework_MockObject_MockObject|Request|RequestStack
      */
     protected $request;
 
@@ -65,7 +65,8 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request = $this->getMockBuilder(Request::class)
+        /** @var \PHPUnit_Framework_MockObject_MockObject&Request $request */
+        $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -77,8 +78,9 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->request->query = $this->requestQuery;
-        $this->request->request = $this->requestRequest;
+        $request->query = $this->requestQuery;
+        $request->request = $this->requestRequest;
+        $this->request = $request;
         $this->container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
