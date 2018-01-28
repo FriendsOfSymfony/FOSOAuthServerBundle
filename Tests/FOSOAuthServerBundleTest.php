@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler;
-use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
 use FOS\OAuthServerBundle\FOSOAuthServerBundle;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Kernel;
 
 class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
 {
