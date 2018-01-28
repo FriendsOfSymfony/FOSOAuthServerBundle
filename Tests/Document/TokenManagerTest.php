@@ -13,15 +13,41 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
+use Doctrine\MongoDB\Query\Query;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
 
+/**
+ * @group time-sensitive
+ *
+ * Class TokenManagerTest
+ *
+ * @author Nikola Petkanski <nikola@petkanski.com>
+ */
 class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
-    protected $class;
-    protected $dm;
+    /**
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     */
+    protected $documentManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     */
     protected $repository;
-    protected $manager;
+
+    /**
+     * @var TokenManager
+     */
+    protected $instance;
 
     public function setUp()
     {
@@ -29,54 +55,154 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 
-        $this->class = 'FOS\OAuthServerBundle\Document\AccessToken';
-        $this->repository = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentRepository')
+        $this->className = AccessToken::class;
+        $this->repository = $this->getMockBuilder(DocumentRepository::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->dm = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')
+        $this->documentManager = $this->getMockBuilder(DocumentManager::class)
             ->disableOriginalConstructor()
             ->getMock()
-        ;
-        $this->dm->expects($this->once())
-            ->method('getRepository')
-            ->with($this->class)
-            ->will($this->returnValue($this->repository))
         ;
 
-        $this->manager = new TokenManager($this->dm, $this->class);
+        $this->documentManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
+
+        $this->instance = new TokenManager($this->documentManager, $this->className);
     }
 
     public function testFindTokenByToken()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|TokenManager $manager */
-        $manager = $this->getMockBuilder('FOS\OAuthServerBundle\Document\TokenManager')
-            ->disableOriginalConstructor()
-            ->setMethods(['findTokenBy'])
-            ->getMock()
+        $randomToken = \random_bytes(5);
+        $randomResult = \random_bytes(5);
+
+        $this->repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with([
+                'token' => $randomToken,
+            ])
+            ->willReturn($randomResult)
         ;
 
-        $manager->expects($this->once())
-            ->method('findTokenBy')
-            ->with($this->equalTo(['token' => '1234']))
-        ;
-
-        $manager->findTokenByToken('1234');
+        $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
     public function testUpdateTokenPersistsAndFlushes()
     {
-        $token = new AccessToken();
+        $token = $this->getMockBuilder(AccessToken::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
-        $this->dm->expects($this->once())
+        $this->documentManager
+            ->expects($this->once())
             ->method('persist')
             ->with($token)
         ;
-        $this->dm->expects($this->once())
+
+        $this->documentManager
+            ->expects($this->once())
             ->method('flush')
             ->with()
         ;
 
-        $this->manager->updateToken($token);
+        $this->assertNull($this->instance->updateToken($token));
+    }
+
+    public function testGetClass()
+    {
+        $this->assertSame($this->className, $this->instance->getClass());
+    }
+
+    public function testDeleteToken()
+    {
+        $token = $this->getMockBuilder(AccessToken::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->documentManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($token)
+            ->willReturn(null)
+        ;
+
+        $this->documentManager
+            ->expects($this->once())
+            ->method('flush')
+            ->with()
+            ->willReturn(null)
+        ;
+
+        $this->assertNull($this->instance->deleteToken($token));
+    }
+
+    public function testDeleteExpired()
+    {
+        $queryBuilder = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->repository
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with()
+            ->willReturn($queryBuilder)
+        ;
+
+        $queryBuilder
+            ->expects($this->once())
+            ->method('remove')
+            ->with()
+            ->willReturn($queryBuilder)
+        ;
+
+        $queryBuilder
+            ->expects($this->once())
+            ->method('field')
+            ->with('expiresAt')
+            ->willReturn($queryBuilder)
+        ;
+
+        $queryBuilder
+            ->expects($this->once())
+            ->method('lt')
+            ->with(time())
+            ->willReturn($queryBuilder)
+        ;
+
+        $query = $this->getMockBuilder(Query::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $queryBuilder
+            ->expects($this->once())
+            ->method('getQuery')
+            ->with([
+                'safe' => true,
+            ])
+            ->willReturn($query)
+        ;
+
+        $data = [
+            'n' => \random_bytes(5),
+        ];
+
+        $query
+            ->expects($this->once())
+            ->method('execute')
+            ->with()
+            ->willReturn($data)
+        ;
+
+        $this->assertSame($data['n'], $this->instance->deleteExpired());
     }
 }
