@@ -78,6 +78,20 @@ class FOSOAuthServerExtension extends Extension
             }
         }
 
+        // Handle the MongoDB document manager name in a specific way as it does not have a registry to make it easy
+        // TODO: change it when bumping the requirement to Symfony 2.1
+        if ('couchdb' === $config['db_driver']) {
+            if (null === $config['model_manager_name']) {
+                $container->setAlias('fos_oauth_server.document_manager', new Alias('doctrine_couchdb.odm.default_document_manager', false));
+            } else {
+                $container->setAlias('fos_oauth_server.document_manager', new Alias(
+                    sprintf('doctrine.odm.%s_couchdb.document_manager',
+                    $config['model_manager_name']),
+                    false
+                ));
+            }
+        }
+
         // Entity manager factory definition
         // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
         if ('orm' === $config['db_driver']) {
