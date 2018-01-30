@@ -15,8 +15,8 @@ namespace FOS\OAuthServerBundle\CouchDocument;
 
 use Doctrine\ODM\CouchDB\DocumentManager;
 use Doctrine\ODM\CouchDB\DocumentRepository;
-use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 
 class ClientManager extends BaseClientManager
 {
@@ -55,15 +55,15 @@ class ClientManager extends BaseClientManager
      */
     public function findClientBy(array $criteria)
     {
-        $client =  $this->repository->findOneBy(["randomId"=>$criteria["randomId"]]);
+        $client = $this->repository->findOneBy(['randomId' => $criteria['randomId']]);
 
-	if ($client != null) {
-	    if ($client->getId() == $criteria["id"]) {
-		return $client;
-	    }
-	}
+        if ($client !== null) {
+            if ($client->getId() === $criteria['id']) {
+                return $client;
+            }
+        }
 
-	return null;
+        return null;
     }
 
     /**
