@@ -20,7 +20,7 @@ use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Class FOSOAuthServerBundleTest
+ * Class FOSOAuthServerBundleTest.
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
