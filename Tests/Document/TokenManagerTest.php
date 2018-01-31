@@ -65,13 +65,6 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->documentManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with($this->className)
-            ->willReturn($this->repository)
-        ;
-
         $this->instance = new TokenManager($this->documentManager, $this->className);
     }
 
@@ -79,6 +72,13 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     {
         $randomToken = \random_bytes(5);
         $randomResult = \random_bytes(5);
+
+        $this->documentManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
 
         $this->repository
             ->expects($this->once())
@@ -145,6 +145,13 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testDeleteExpired()
     {
+        $this->documentManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
+
         $queryBuilder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->getMock()
