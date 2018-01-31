@@ -29,7 +29,7 @@ use OAuth2\Model\IOAuth2Client;
  */
 class BingoGrantExtension implements GrantExtensionInterface
 {
-    /*
+    /**
      * {@inheritdoc}
      */
     public function checkGrantExtension(IOAuth2Client $client, array $inputData, array $authHeaders)
