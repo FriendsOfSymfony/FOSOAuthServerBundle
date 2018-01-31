@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -19,9 +17,9 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -42,13 +40,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AuthorizeController implements ContainerAwareInterface
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-    /**
      * @var ClientInterface
      */
     private $client;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * @var SessionInterface
@@ -86,7 +85,7 @@ class AuthorizeController implements ContainerAwareInterface
     private $tokenStorage;
 
     /**
-     * @var Router
+     * @var UrlGeneratorInterface
      */
     private $router;
 
@@ -106,9 +105,18 @@ class AuthorizeController implements ContainerAwareInterface
     private $eventDispatcher;
 
     /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * This controller had been made as a service due to support symfony 4 where all* services are private by default.
      * Thus, there is considered a bad practice to fetch services directly from container.
-     *
      * @todo This controller could be refactored to do not rely on so many dependencies
      *
      * @param RequestStack           $requestStack
@@ -118,7 +126,7 @@ class AuthorizeController implements ContainerAwareInterface
      * @param OAuth2                 $oAuth2Server
      * @param EngineInterface        $templating
      * @param TokenStorageInterface  $tokenStorage
-     * @param Router                 $router
+     * @param UrlGeneratorInterface  $router
      * @param ClientManagerInterface $clientManager
      * @param EventDispatcher        $eventDispatcher
      * @param string                 $templateEngineType
@@ -131,7 +139,7 @@ class AuthorizeController implements ContainerAwareInterface
         OAuth2 $oAuth2Server,
         EngineInterface $templating,
         TokenStorageInterface $tokenStorage,
-        Router $router,
+        UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcher $eventDispatcher,
         $templateEngineType = 'twig'
@@ -147,16 +155,6 @@ class AuthorizeController implements ContainerAwareInterface
         $this->clientManager = $clientManager;
         $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Sets the container.
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**
@@ -178,7 +176,6 @@ class AuthorizeController implements ContainerAwareInterface
         $form = $this->authorizeForm;
         $formHandler = $this->authorizeFormHandler;
 
-        /** @var OAuthEvent $event */
         $event = $this->eventDispatcher->dispatch(
             OAuthEvent::PRE_AUTHORIZATION_PROCESS,
             new OAuthEvent($user, $this->getClient())
@@ -196,10 +193,10 @@ class AuthorizeController implements ContainerAwareInterface
 
         return $this->templating->renderResponse(
             'FOSOAuthServerBundle:Authorize:authorize.html.'.$this->templateEngineType,
-            [
-                'form' => $form->createView(),
+            array(
+                'form'   => $form->createView(),
                 'client' => $this->getClient(),
-            ]
+            )
         );
     }
 
@@ -229,8 +226,7 @@ class AuthorizeController implements ContainerAwareInterface
 
         try {
             return $this->oAuth2Server
-                ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope())
-            ;
+                ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope());
         } catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
@@ -253,25 +249,23 @@ class AuthorizeController implements ContainerAwareInterface
      */
     protected function getClient()
     {
+        if (null !== $this->client) {
+            return $this->client;
+        }
+
+        if (null === $request = $this->getCurrentRequest()) {
+            throw new NotFoundHttpException('Client not found.');
+        }
+
+        if (null === $clientId = $request->get('client_id')) {
+            $formData = $request->get($this->authorizeForm->getName(), []);
+            $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
+        }
+
+        $this->client = $this->clientManager->findClientByPublicId($clientId);
+
         if (null === $this->client) {
-            $request = $this->getCurrentRequest();
-
-            $client = null;
-            if (null !== $request) {
-                if (null === $clientId = $request->get('client_id')) {
-                    $form = $this->authorizeForm;
-                    $formData = $request->get($form->getName(), []);
-                    $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
-                }
-
-                $client = $this->clientManager->findClientByPublicId($clientId);
-            }
-
-            if (null === $client) {
-                throw new NotFoundHttpException('Client not found.');
-            }
-
-            $this->client = $client;
+            throw new NotFoundHttpException('Client not found.');
         }
 
         return $this->client;

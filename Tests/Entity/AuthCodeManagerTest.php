@@ -1,32 +1,23 @@
 <?php
 
-/*
- * This file is part of the FOSOAuthServerBundle package.
- *
- * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use FOS\OAuthServerBundle\Entity\TokenManager;
-use FOS\OAuthServerBundle\Entity\AccessToken;
-use FOS\OAuthServerBundle\Model\TokenInterface;
+use FOS\OAuthServerBundle\Entity\AuthCodeManager;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 
 /**
  * @group time-sensitive
  *
- * Class TokenManagerTest
+ * Class AuthCodeManagerTest
  * @package FOS\OAuthServerBundle\Tests\Entity
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
@@ -34,28 +25,42 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
     protected $entityManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
-     */
-    protected $repository;
-
-    /**
      * @var string
      */
     protected $className;
 
     /**
-     * @var TokenManager
+     * @var AuthCodeManager
      */
     protected $instance;
 
     public function setUp()
     {
-        $this->className = AccessToken::class;
-        $this->repository = $this->getMockBuilder(EntityRepository::class)
+        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
+        $this->className = 'TestClassName' . \random_bytes(5);
+
+        $this->instance = new AuthCodeManager($this->entityManager, $this->className);
+
+        parent::setUp();
+    }
+
+    public function testConstructWillSetParameters()
+    {
+        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
+        $this->assertAttributeSame($this->className, 'class', $this->instance);
+    }
+
+    public function testGetClassWillReturnClassName()
+    {
+        $this->assertSame($this->className, $this->instance->getClass());
+    }
+
+    public function testFindAuthCodeBy()
+    {
+        $repository = $this->getMockBuilder(ObjectRepository::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -64,64 +69,27 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getRepository')
             ->with($this->className)
-            ->willReturn($this->repository)
+            ->willReturn($repository)
         ;
-
-        $this->instance = new TokenManager($this->entityManager, $this->className);
-    }
-
-    public function testConstructWillSetParameters()
-    {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
-    }
-
-    public function testUpdateTokenPersistsAndFlushes()
-    {
-        $token = new AccessToken();
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('persist')
-            ->with($token)
-        ;
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('flush')
-            ->with()
-        ;
-
-        $this->assertNull($this->instance->updateToken($token));
-    }
-
-    public function testGetClass()
-    {
-        $this->assertSame($this->className, $this->instance->getClass());
-    }
-
-    public function testFindTokenBy()
-    {
-        $randomResult = \random_bytes(5);
 
         $criteria = [
-            \random_bytes(5),
+            \random_bytes(10)
         ];
+        $randomResult = \random_bytes(10);
 
-        $this->repository
+        $repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($criteria)
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findTokenBy($criteria));
+        $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
     }
 
-    public function testUpdateToken()
+    public function testUpdateAuthCode()
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
+        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -129,7 +97,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
         $this->entityManager
             ->expects($this->once())
             ->method('persist')
-            ->with($token)
+            ->with($authCode)
             ->willReturn(null)
         ;
 
@@ -140,12 +108,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->updateToken($token));
+        $this->assertNull($this->instance->updateAuthCode($authCode));
     }
 
-    public function testDeleteToken()
+    public function testDeleteAuthCode()
     {
-        $token = $this->getMockBuilder(TokenInterface::class)
+        $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -153,7 +121,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
         $this->entityManager
             ->expects($this->once())
             ->method('remove')
-            ->with($token)
+            ->with($authCode)
             ->willReturn(null)
         ;
 
@@ -164,7 +132,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteToken($token));
+        $this->assertNull($this->instance->deleteAuthCode($authCode));
     }
 
     public function testDeleteExpired()
@@ -176,10 +144,22 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
 
-        $this->repository
+        $repository = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($repository)
+        ;
+
+        $repository
             ->expects($this->once())
             ->method('createQueryBuilder')
-            ->with('t')
+            ->with('a')
             ->willReturn($queryBuilder)
         ;
 
@@ -193,7 +173,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
         $queryBuilder
             ->expects($this->once())
             ->method('where')
-            ->with('t.expiresAt < ?1')
+            ->with('a.expiresAt < ?1')
             ->willReturn($queryBuilder)
         ;
 
