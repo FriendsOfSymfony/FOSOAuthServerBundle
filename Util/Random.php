@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -12,7 +14,7 @@
 namespace FOS\OAuthServerBundle\Util;
 
 /**
- * Class Random
+ * Class Random.
  *
  * @author Nikola Petkanski <nikola@petkanski.com
  */

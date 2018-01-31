@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\GrantExtensionsCompilerPass;
@@ -11,11 +22,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class GrantExtensionsCompilerPassTest
- * @package FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler
+ * Class GrantExtensionsCompilerPassTest.
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
+class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var GrantExtensionsCompilerPass
@@ -36,7 +47,6 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setMethods([
                 'findDefinition',
                 'getParameterBag',
-
             ])
             ->getMock()
         ;
@@ -49,7 +59,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
 
-        $className = 'stdClassUnresolved' . random_bytes(5);
+        $className = 'stdClassUnresolved'.random_bytes(5);
         $resolvedClassName = 'stdClass';
 
         $container
@@ -108,7 +118,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
 
-        $className = 'stdClassUnresolved' . random_bytes(5);
+        $className = 'stdClassUnresolved'.random_bytes(5);
         $resolvedClassName = get_class($storageInstance);
 
         $container
@@ -174,14 +184,15 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
                         'setGrantExtension',
                         [
                             $tag['uri'],
-                            new Reference($id)
+                            new Reference($id),
                         ]
                     )
                 ;
             }
         }
 
-        $this->setExpectedException(InvalidArgumentException::class, $exceptionMessage);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage($exceptionMessage);
 
         $this->assertNull($this->instance->process($container));
     }
@@ -211,7 +222,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
 
-        $className = 'stdClassUnresolved' . random_bytes(5);
+        $className = 'stdClassUnresolved'.random_bytes(5);
         $resolvedClassName = get_class($storageInstance);
 
         $container
@@ -278,7 +289,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
                         'setGrantExtension',
                         [
                             $tag['uri'],
-                            new Reference($id)
+                            new Reference($id),
                         ]
                     )
                 ;

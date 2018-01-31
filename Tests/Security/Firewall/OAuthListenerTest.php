@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -33,28 +35,33 @@ class OAuthListenerTest extends TestCase
     {
         $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->authManager = $this
             ->getMockBuilder(AuthenticationManagerInterface::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
             $this->securityContext = $this
                 ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
                 ->disableOriginalConstructor()
-                ->getMock();
+                ->getMock()
+            ;
         } else {
             $this->securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
                 ->disableOriginalConstructor()
-                ->getMock();
+                ->getMock()
+            ;
         }
 
         $this->event = $this
             ->getMockBuilder(GetResponseEvent::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
     }
 
     public function testHandle()
@@ -64,23 +71,26 @@ class OAuthListenerTest extends TestCase
         $this->serverService
             ->expects($this->once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'));
+            ->will($this->returnValue('a-token'))
+        ;
 
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
-            ->will($this->returnArgument(0));
+            ->will($this->returnArgument(0))
+        ;
 
         $this->securityContext
             ->expects($this->once())
             ->method('setToken')
-            ->will($this->returnArgument(0));
+            ->will($this->returnArgument(0))
+        ;
 
         /** @var OAuthToken $token */
         $token = $listener->handle($this->event);
 
         $this->assertInstanceOf(OAuthToken::class, $token);
-        $this->assertEquals('a-token', $token->getToken());
+        $this->assertSame('a-token', $token->getToken());
     }
 
     public function testHandleResponse()
@@ -90,28 +100,33 @@ class OAuthListenerTest extends TestCase
         $this->serverService
             ->expects($this->once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'));
+            ->will($this->returnValue('a-token'))
+        ;
 
         $response = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
-            ->will($this->returnValue($response));
+            ->will($this->returnValue($response))
+        ;
 
         $this->securityContext
             ->expects($this->never())
-            ->method('setToken');
+            ->method('setToken')
+        ;
 
         $this->event
             ->expects($this->once())
             ->method('setResponse')
-            ->will($this->returnArgument(0));
+            ->will($this->returnArgument(0))
+        ;
 
         $ret = $listener->handle($this->event);
 
-        $this->assertEquals($response, $ret);
+        $this->assertSame($response, $ret);
     }
 }

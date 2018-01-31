@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -15,17 +17,17 @@ use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use FOS\OAuthServerBundle\Document\TokenManager;
 use FOS\OAuthServerBundle\Document\AccessToken;
+use FOS\OAuthServerBundle\Document\TokenManager;
 
 /**
  * @group time-sensitive
  *
  * Class TokenManagerTest
- * @package FOS\OAuthServerBundle\Tests\Document
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class TokenManagerTest extends \PHPUnit_Framework_TestCase
+class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var string
