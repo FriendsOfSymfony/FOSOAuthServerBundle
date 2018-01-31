@@ -21,6 +21,11 @@ use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class Form\AuthorizeFormTypeTest.
+ *
+ * @author Nikola Petkanski <nikola@petkanski.com>
+ */
 class AuthorizeFormTypeTest extends TypeTestCase
 {
     /**

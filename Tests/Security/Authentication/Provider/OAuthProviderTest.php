@@ -22,6 +22,11 @@ use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * Class OAuthProviderTest.
+ *
+ * @author Nikola Petkanski <nikola@petkanski.com>
+ */
 class OAuthProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**

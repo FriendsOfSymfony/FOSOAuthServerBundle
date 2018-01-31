@@ -23,7 +23,7 @@ use FOS\OAuthServerBundle\Document\TokenManager;
 /**
  * @group time-sensitive
  *
- * Class TokenManagerTest
+ * Class Document\TokenManagerTest
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */

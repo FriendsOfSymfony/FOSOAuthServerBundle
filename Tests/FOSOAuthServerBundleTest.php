@@ -19,6 +19,11 @@ use FOS\OAuthServerBundle\FOSOAuthServerBundle;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * Class FOSOAuthServerBundleTest.
+ *
+ * @author Nikola Petkanski <nikola@petkanski.com>
+ */
 class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
