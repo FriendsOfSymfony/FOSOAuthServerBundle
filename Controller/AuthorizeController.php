@@ -22,12 +22,12 @@ use OAuth2\OAuth2ServerException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -101,7 +101,7 @@ class AuthorizeController implements ContainerAwareInterface
     private $templateEngineType;
 
     /**
-     * @var EventDispatcher
+     * @var TraceableEventDispatcher
      */
     private $eventDispatcher;
 
@@ -111,17 +111,17 @@ class AuthorizeController implements ContainerAwareInterface
      *
      * @todo This controller could be refactored to do not rely on so many dependencies
      *
-     * @param RequestStack           $requestStack
-     * @param SessionInterface       $session
-     * @param Form                   $authorizeForm
-     * @param AuthorizeFormHandler   $authorizeFormHandler
-     * @param OAuth2                 $oAuth2Server
-     * @param EngineInterface        $templating
-     * @param TokenStorageInterface  $tokenStorage
-     * @param Router                 $router
-     * @param ClientManagerInterface $clientManager
-     * @param EventDispatcher        $eventDispatcher
-     * @param string                 $templateEngineType
+     * @param RequestStack             $requestStack
+     * @param SessionInterface         $session
+     * @param Form                     $authorizeForm
+     * @param AuthorizeFormHandler     $authorizeFormHandler
+     * @param OAuth2                   $oAuth2Server
+     * @param EngineInterface          $templating
+     * @param TokenStorageInterface    $tokenStorage
+     * @param Router                   $router
+     * @param ClientManagerInterface   $clientManager
+     * @param TraceableEventDispatcher $eventDispatcher
+     * @param string                   $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
@@ -133,7 +133,7 @@ class AuthorizeController implements ContainerAwareInterface
         TokenStorageInterface $tokenStorage,
         Router $router,
         ClientManagerInterface $clientManager,
-        EventDispatcher $eventDispatcher,
+        TraceableEventDispatcher $eventDispatcher,
         $templateEngineType = 'twig'
     ) {
         $this->requestStack = $requestStack;
