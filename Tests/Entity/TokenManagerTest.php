@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -53,11 +54,11 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $this->className = AccessToken::class;
-        $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+        $this->repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $this->entityManager = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;

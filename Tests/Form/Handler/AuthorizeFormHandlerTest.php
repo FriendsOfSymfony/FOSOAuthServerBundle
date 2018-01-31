@@ -89,6 +89,8 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->instance = new AuthorizeFormHandler($this->form, $this->request);
         $this->instance->setContainer($this->container);
 
+        $_GET = [];
+
         parent::setUp();
     }
 

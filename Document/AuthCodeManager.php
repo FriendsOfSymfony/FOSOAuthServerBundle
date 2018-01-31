@@ -37,8 +37,12 @@ class AuthCodeManager extends BaseAuthCodeManager
 
     public function __construct(DocumentManager $dm, $class)
     {
+        // NOTE: bug in Doctrine, hinting DocumentRepository|ObjectRepository when only DocumentRepository is expected
+        /** @var DocumentRepository $repository */
+        $repository = $dm->getRepository($class);
+
         $this->dm = $dm;
-        $this->repository = $dm->getRepository($class);
+        $this->repository = $repository;
         $this->class = $class;
     }
 

@@ -59,12 +59,15 @@ class OAuthProvider implements AuthenticationProviderInterface
     /**
      * @param OAuthToken&TokenInterface $token
      *
-     * @return OAuthToken
+     * @return null|OAuthToken
      */
     public function authenticate(TokenInterface $token)
     {
         if (!$this->supports($token)) {
-            return;
+            // note: since strict types in PHP 7, return; and return null; are not the same
+            // Symfony's interface says to "never return null", but return; is still technically null
+            // PHPStan treats return; as return (void);
+            return null;
         }
 
         try {
