@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Util;
 
 /**
- * Class Random
+ * Class Random.
  *
  * @author Nikola Petkanski <nikola@petkanski.com
  */

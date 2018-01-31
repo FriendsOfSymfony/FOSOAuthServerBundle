@@ -21,7 +21,6 @@ use FOS\OAuthServerBundle\Propel\AuthCodeQuery;
  * @group time-sensitive
  *
  * Class AuthCodeManagerTest
- * @package FOS\OAuthServerBundle\Tests\Propel
  */
 class AuthCodeManagerTest extends PropelTestCase
 {

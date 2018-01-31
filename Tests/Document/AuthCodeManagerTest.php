@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\MongoDB\Query\Builder;
@@ -13,10 +24,10 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
  * @group time-sensitive
  *
  * Class AuthCodeManagerTest
- * @package FOS\OAuthServerBundle\Tests\Entity
+ *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
+class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
@@ -52,7 +63,7 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'TestClassName' . \random_bytes(5);
+        $this->className = 'TestClassName'.\random_bytes(5);
 
         $this->documentManager
             ->expects($this->once())
@@ -81,7 +92,7 @@ class AuthCodeManagerTest extends \PHPUnit_Framework_TestCase
     {
         $randomResult = \random_bytes(10);
         $criteria = [
-            \random_bytes(10)
+            \random_bytes(10),
         ];
 
         $this->repository

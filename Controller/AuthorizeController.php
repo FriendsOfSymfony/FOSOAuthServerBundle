@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -86,7 +86,7 @@ class AuthorizeController implements ContainerAwareInterface
     private $tokenStorage;
 
     /**
-     * @var Router
+     * @var UrlGeneratorInterface
      */
     private $router;
 
@@ -118,7 +118,7 @@ class AuthorizeController implements ContainerAwareInterface
      * @param OAuth2                 $oAuth2Server
      * @param EngineInterface        $templating
      * @param TokenStorageInterface  $tokenStorage
-     * @param Router                 $router
+     * @param UrlGeneratorInterface  $router
      * @param ClientManagerInterface $clientManager
      * @param EventDispatcher        $eventDispatcher
      * @param string                 $templateEngineType
@@ -131,7 +131,7 @@ class AuthorizeController implements ContainerAwareInterface
         OAuth2 $oAuth2Server,
         EngineInterface $templating,
         TokenStorageInterface $tokenStorage,
-        Router $router,
+        UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcher $eventDispatcher,
         $templateEngineType = 'twig'
@@ -253,25 +253,23 @@ class AuthorizeController implements ContainerAwareInterface
      */
     protected function getClient()
     {
+        if (null !== $this->client) {
+            return $this->client;
+        }
+
+        if (null === $request = $this->getCurrentRequest()) {
+            throw new NotFoundHttpException('Client not found.');
+        }
+
+        if (null === $clientId = $request->get('client_id')) {
+            $formData = $request->get($this->authorizeForm->getName(), []);
+            $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
+        }
+
+        $this->client = $this->clientManager->findClientByPublicId($clientId);
+
         if (null === $this->client) {
-            $request = $this->getCurrentRequest();
-
-            $client = null;
-            if (null !== $request) {
-                if (null === $clientId = $request->get('client_id')) {
-                    $form = $this->authorizeForm;
-                    $formData = $request->get($form->getName(), []);
-                    $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
-                }
-
-                $client = $this->clientManager->findClientByPublicId($clientId);
-            }
-
-            if (null === $client) {
-                throw new NotFoundHttpException('Client not found.');
-            }
-
-            $this->client = $client;
+            throw new NotFoundHttpException('Client not found.');
         }
 
         return $this->client;
