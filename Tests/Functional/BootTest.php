@@ -24,7 +24,7 @@ class BootTest extends TestCase
     {
         $this->markTestIncomplete('Issue with Stopwatch component');
 
-        $kernel = $this->createKernel(['env' => $env]);
+        $kernel = static::createKernel(['env' => $env]);
         $kernel->boot();
     }
 

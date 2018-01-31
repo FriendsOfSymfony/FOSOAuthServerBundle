@@ -35,7 +35,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
     protected $userProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|OAuthProvider
+     * @var OAuthProvider
      */
     protected $provider;
 

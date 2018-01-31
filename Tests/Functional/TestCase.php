@@ -15,9 +15,15 @@ namespace FOS\OAuthServerBundle\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class TestCase extends WebTestCase
 {
+    /**
+     * @var null|KernelInterface
+     */
+    protected static $kernel;
+
     protected function setUp()
     {
         $fs = new Filesystem();
