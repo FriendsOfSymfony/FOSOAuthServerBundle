@@ -15,6 +15,11 @@ namespace FOS\OAuthServerBundle\Tests\Propel;
 
 use FOS\OAuthServerBundle\Propel\AuthCode;
 
+/**
+ * @group time-sensitive
+ *
+ * Class AuthCodeTest
+ */
 class AuthCodeTest extends PropelTestCase
 {
     /**

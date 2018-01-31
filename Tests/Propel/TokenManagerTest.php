@@ -17,6 +17,11 @@ use FOS\OAuthServerBundle\Propel\RefreshToken as Token;
 use FOS\OAuthServerBundle\Propel\RefreshTokenQuery as TokenQuery;
 use FOS\OAuthServerBundle\Propel\TokenManager;
 
+/**
+ * @group time-sensitive
+ *
+ * Class TokenManagerTest
+ */
 class TokenManagerTest extends PropelTestCase
 {
     const TOKEN_CLASS = 'FOS\OAuthServerBundle\Propel\RefreshToken';
