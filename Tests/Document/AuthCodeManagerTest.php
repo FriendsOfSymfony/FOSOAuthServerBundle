@@ -65,13 +65,6 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         ;
         $this->className = 'TestClassName'.\random_bytes(5);
 
-        $this->documentManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with($this->className)
-            ->willReturn($this->repository)
-        ;
-
         $this->instance = new AuthCodeManager($this->documentManager, $this->className);
 
         parent::setUp();
@@ -94,6 +87,13 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $criteria = [
             \random_bytes(10),
         ];
+
+        $this->documentManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
 
         $this->repository
             ->expects($this->once())
@@ -155,6 +155,13 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testDeleteExpired()
     {
+        $this->documentManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
+
         $queryBuilder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->getMock()
