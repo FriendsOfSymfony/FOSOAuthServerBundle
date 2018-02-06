@@ -101,7 +101,7 @@ class AuthorizeController implements ContainerAwareInterface
     private $templateEngineType;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
@@ -120,7 +120,7 @@ class AuthorizeController implements ContainerAwareInterface
      * @param TokenStorageInterface  $tokenStorage
      * @param UrlGeneratorInterface  $router
      * @param ClientManagerInterface $clientManager
-     * @param EventDispatcher        $eventDispatcher
+     * @param EventDispatcherInterface        $eventDispatcher
      * @param string                 $templateEngineType
      */
     public function __construct(
