@@ -1,5 +1,5 @@
 {
-    "name": "sebscofr/oauth-server-bundle",
+    "name": "friendsofsymfony/oauth-server-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2 OAuth Server Bundle",
     "keywords": ["oauth", "oauth2", "server"],
@@ -21,7 +21,7 @@
         "symfony/framework-bundle": "~2.8|~3.0|^4.0",
         "symfony/security-bundle": "~2.8|~3.0|^4.0",
         "symfony/dependency-injection": "^2.8|~3.0|^4.0",
-        "symfony/console": "^2.8|^3.0|^4.0"
+        "symfony/console": "^2.7|^3.0|^4.0"
     },
     "require-dev": {
         "symfony/class-loader": "~2.8|~3.0|^4.0",
