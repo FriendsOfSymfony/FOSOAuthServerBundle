@@ -1,5 +1,5 @@
 {
-    "name": "friendsofsymfony/oauth-server-bundle",
+    "name": "sebscofr/oauth-server-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2 OAuth Server Bundle",
     "keywords": ["oauth", "oauth2", "server"],
