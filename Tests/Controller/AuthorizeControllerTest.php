@@ -20,7 +20,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -82,7 +82,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $clientManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventDispatcher
+     * @var \PHPUnit_Framework_MockObject_MockObject|EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -169,7 +169,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->eventDispatcher = $this->getMockBuilder(EventDispatcher::class)
+        $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
