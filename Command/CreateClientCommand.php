@@ -24,6 +24,8 @@ class CreateClientCommand extends BaseCommand
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('fos:oauth-server:create-client')
             ->setDescription('Creates a new client')

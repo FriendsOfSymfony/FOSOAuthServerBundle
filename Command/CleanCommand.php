@@ -23,6 +23,8 @@ class CleanCommand extends BaseCommand
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('fos:oauth-server:clean')
             ->setDescription('Clean expired tokens')

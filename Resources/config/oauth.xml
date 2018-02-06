@@ -26,6 +26,15 @@
         <service id="FOS\OAuthServerBundle\Controller\TokenController">
             <argument type="service" id="fos_oauth_server.server" />
         </service>
+
         <service id="fos_oauth_server.controller.token" alias="FOS\OAuthServerBundle\Controller\TokenController" public="true" />
+
+        <service id="fos_oauth_server.clean_command" class="FOS\OAuthServerBundle\Command\CleanCommand">
+            <tag name="console.command" />
+        </service>
+
+        <service id="fos_oauth_server.create_client_command" class="FOS\OAuthServerBundle\Command\CreateClientCommand">
+            <tag name="console.command" />
+        </service>
     </services>
 </container>
