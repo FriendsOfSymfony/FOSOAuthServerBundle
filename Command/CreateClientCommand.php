@@ -15,15 +15,17 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 
-class CreateClientCommand extends ContainerAwareCommand
+class CreateClientCommand extends BaseCommand
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('fos:oauth-server:create-client')
             ->setDescription('Creates a new client')
@@ -60,6 +62,7 @@ EOT
         $io->title('Client Credentials');
 
         // Get the client manager
+        /** @var ClientManagerInterface $clientManager */
         $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
 
         // Create a new client

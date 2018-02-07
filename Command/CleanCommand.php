@@ -11,19 +11,20 @@
 
 namespace FOS\OAuthServerBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use FOS\OAuthServerBundle\Model\TokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 
-class CleanCommand extends ContainerAwareCommand
+class CleanCommand extends BaseCommand
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('fos:oauth-server:clean')
             ->setDescription('Clean expired tokens')
@@ -40,11 +41,11 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $services = array(
+        $services = [
             'fos_oauth_server.access_token_manager'  => 'Access token',
             'fos_oauth_server.refresh_token_manager' => 'Refresh token',
             'fos_oauth_server.auth_code_manager'     => 'Auth code',
-        );
+        ];
 
         foreach ($services as $service => $name) {
             /** @var $instance TokenManagerInterface */
