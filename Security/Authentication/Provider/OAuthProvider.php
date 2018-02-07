@@ -76,58 +76,57 @@ class OAuthProvider implements AuthenticationProviderInterface
             // TODO: this is nasty, create a proper interface here
             /** @var OAuthToken&TokenInterface&\OAuth2\Model\IOAuth2AccessToken $accessToken */
             $accessToken = $this->serverService->verifyAccessToken($tokenString);
-            if (null !== $accessToken) {
-                $scope = $accessToken->getScope();
-                $user = $accessToken->getUser();
 
-                if (null !== $user) {
-                    try {
-                        $this->userChecker->checkPreAuth($user);
-                    } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(
-                            OAuth2::HTTP_UNAUTHORIZED,
-                            OAuth2::TOKEN_TYPE_BEARER,
-                            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                            'access_denied',
-                            $e->getMessage()
-                        );
-                    }
+            $scope = $accessToken->getScope();
+            $user = $accessToken->getUser();
 
-                    $token->setUser($user);
+            if (null !== $user) {
+                try {
+                    $this->userChecker->checkPreAuth($user);
+                } catch (AccountStatusException $e) {
+                    throw new OAuth2AuthenticateException(
+                        OAuth2::HTTP_UNAUTHORIZED,
+                        OAuth2::TOKEN_TYPE_BEARER,
+                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
+                        'access_denied',
+                        $e->getMessage()
+                    );
                 }
 
-                $roles = (null !== $user) ? $user->getRoles() : [];
-
-                if (!empty($scope)) {
-                    foreach (explode(' ', $scope) as $role) {
-                        $roles[] = 'ROLE_'.mb_strtoupper($role);
-                    }
-                }
-
-                $roles = array_unique($roles, SORT_REGULAR);
-
-                $token = new OAuthToken($roles);
-                $token->setAuthenticated(true);
-                $token->setToken($tokenString);
-
-                if (null !== $user) {
-                    try {
-                        $this->userChecker->checkPostAuth($user);
-                    } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(
-                            OAuth2::HTTP_UNAUTHORIZED,
-                            OAuth2::TOKEN_TYPE_BEARER,
-                            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                            'access_denied',
-                            $e->getMessage()
-                        );
-                    }
-
-                    $token->setUser($user);
-                }
-
-                return $token;
+                $token->setUser($user);
             }
+
+            $roles = (null !== $user) ? $user->getRoles() : [];
+
+            if (!empty($scope)) {
+                foreach (explode(' ', $scope) as $role) {
+                    $roles[] = 'ROLE_'.mb_strtoupper($role);
+                }
+            }
+
+            $roles = array_unique($roles, SORT_REGULAR);
+
+            $token = new OAuthToken($roles);
+            $token->setAuthenticated(true);
+            $token->setToken($tokenString);
+
+            if (null !== $user) {
+                try {
+                    $this->userChecker->checkPostAuth($user);
+                } catch (AccountStatusException $e) {
+                    throw new OAuth2AuthenticateException(
+                        OAuth2::HTTP_UNAUTHORIZED,
+                        OAuth2::TOKEN_TYPE_BEARER,
+                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
+                        'access_denied',
+                        $e->getMessage()
+                    );
+                }
+
+                $token->setUser($user);
+            }
+
+            return $token;
         } catch (OAuth2ServerException $e) {
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
         }

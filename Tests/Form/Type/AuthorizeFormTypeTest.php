@@ -44,7 +44,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
 
     public function testSubmit()
     {
-        $accepted = 'true';
+        $accepted = true;
         $formData = [
             'client_id' => '1',
             'response_type' => 'code',
@@ -61,7 +61,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
 
         $this->assertTrue($form->isSynchronized());
         $this->assertSame($authorize, $form->getData());
-        $this->assertSame((bool) $accepted, $authorize->accepted);
+        $this->assertSame($accepted, $authorize->accepted);
 
         $view = $form->createView();
         $children = $view->children;
