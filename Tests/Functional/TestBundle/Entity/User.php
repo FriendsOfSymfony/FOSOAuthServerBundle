@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -38,7 +40,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return ['ROLE_USER'];
     }
 
     public function getPassword()
@@ -53,7 +55,6 @@ class User implements UserInterface
 
     public function getSalt()
     {
-        return;
     }
 
     public function getUsername()

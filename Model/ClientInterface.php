@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -31,7 +33,7 @@ interface ClientInterface extends IOAuth2Client
     public function setSecret($secret);
 
     /**
-     * @param $secret
+     * @param string $secret
      *
      * @return bool
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,11 +13,11 @@
 
 namespace FOS\OAuthServerBundle\Form\Handler;
 
+use FOS\OAuthServerBundle\Form\Model\Authorize;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use FOS\OAuthServerBundle\Form\Model\Authorize;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -71,40 +73,39 @@ class AuthorizeFormHandler
         return !$this->form->getData()->accepted;
     }
 
+    /**
+     * @return bool
+     */
     public function process()
     {
         $request = $this->getCurrentRequest();
-        if (null !== $request) {
-            $this->form->setData(new Authorize(
-                $request->request->has('accepted'),
-                $request->query->all()
-            ));
 
-            if ('POST' === $request->getMethod()) {
-                $this->form->handleRequest($request);
-                if ($this->form->isValid()) {
-                    $this->onSuccess();
-
-                    return true;
-                }
-            }
+        if (null === $request) {
+            return false;
         }
 
-        return false;
+        $this->form->setData(new Authorize(
+            $request->request->has('accepted'),
+            $request->query->all()
+        ));
+
+        if ('POST' !== $request->getMethod()) {
+            return false;
+        }
+
+        $this->form->handleRequest($request);
+        if (!$this->form->isValid()) {
+            return false;
+        }
+
+        $this->onSuccess();
+
+        return true;
     }
 
     public function getScope()
     {
         return $this->form->getData()->scope;
-    }
-
-    public function __get($name)
-    {
-        if ($name === 'request') {
-            @trigger_error(sprintf('%s::$request is deprecated since 1.4 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
-
-            return $this->getCurrentRequest();
-        }
     }
 
     /**
@@ -115,25 +116,25 @@ class AuthorizeFormHandler
      */
     protected function onSuccess()
     {
-        $_GET = array(
-            'client_id'     => $this->form->getData()->client_id,
+        $_GET = [
+            'client_id' => $this->form->getData()->client_id,
             'response_type' => $this->form->getData()->response_type,
-            'redirect_uri'  => $this->form->getData()->redirect_uri,
-            'state'         => $this->form->getData()->state,
-            'scope'         => $this->form->getData()->scope,
-        );
+            'redirect_uri' => $this->form->getData()->redirect_uri,
+            'state' => $this->form->getData()->state,
+            'scope' => $this->form->getData()->scope,
+        ];
     }
 
     private function getCurrentRequest()
     {
-        if (null !== $this->requestStack) {
-            if ($this->requestStack instanceof Request) {
-                return $this->requestStack;
-            } else {
-                return $this->requestStack->getCurrentRequest();
-            }
+        if (null === $this->requestStack) {
+            return $this->container->get('request');
         }
 
-        return $this->container->get('request');
+        if ($this->requestStack instanceof Request) {
+            return $this->requestStack;
+        }
+
+        return $this->requestStack->getCurrentRequest();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,11 +13,11 @@
 
 namespace FOS\OAuthServerBundle\Command;
 
+use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
+use FOS\OAuthServerBundle\Model\TokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use FOS\OAuthServerBundle\Model\TokenManagerInterface;
-use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 
 class CleanCommand extends ContainerAwareCommand
 {
@@ -32,7 +34,8 @@ The <info>%command.name%</info> command will remove expired OAuth2 tokens.
 
   <info>php %command.full_name%</info>
 EOT
-        );
+            )
+        ;
     }
 
     /**
@@ -40,14 +43,14 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $services = array(
-            'fos_oauth_server.access_token_manager'  => 'Access token',
+        $services = [
+            'fos_oauth_server.access_token_manager' => 'Access token',
             'fos_oauth_server.refresh_token_manager' => 'Refresh token',
-            'fos_oauth_server.auth_code_manager'     => 'Auth code',
-        );
+            'fos_oauth_server.auth_code_manager' => 'Auth code',
+        ];
 
         foreach ($services as $service => $name) {
-            /** @var $instance TokenManagerInterface */
+            /** @var TokenManagerInterface $instance */
             $instance = $this->getContainer()->get($service);
             if ($instance instanceof TokenManagerInterface || $instance instanceof AuthCodeManagerInterface) {
                 $result = $instance->deleteExpired();

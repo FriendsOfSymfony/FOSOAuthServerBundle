@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -16,7 +18,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\Container;
 
-class CleanCommandTest extends \PHPUnit_Framework_TestCase
+class CleanCommandTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CleanCommand
@@ -40,8 +42,11 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->container = new Container();
 
-        $this->command = $application->find($command->getName());
-        $this->command->setContainer($this->container);
+        /** @var CleanCommand $command */
+        $command = $application->find($command->getName());
+        $command->setContainer($this->container);
+
+        $this->command = $command;
     }
 
     /**
@@ -49,37 +54,40 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider classProvider
      *
-     * @param string $class A fully qualified class name.
+     * @param string $class a fully qualified class name
      */
     public function testItShouldRemoveExpiredToken($class)
     {
         $expiredAccessTokens = 5;
-        $accessTokenManager = $this->getMock($class);
+        $accessTokenManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
         $accessTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAccessTokens));
+            ->will($this->returnValue($expiredAccessTokens))
+        ;
 
         $expiredRefreshTokens = 183;
-        $refreshTokenManager = $this->getMock($class);
+        $refreshTokenManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
         $refreshTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredRefreshTokens));
+            ->will($this->returnValue($expiredRefreshTokens))
+        ;
 
         $expiredAuthCodes = 0;
-        $authCodeManager = $this->getMock($class);
+        $authCodeManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
         $authCodeManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAuthCodes));
+            ->will($this->returnValue($expiredAuthCodes))
+        ;
 
         $this->container->set('fos_oauth_server.access_token_manager', $accessTokenManager);
         $this->container->set('fos_oauth_server.refresh_token_manager', $refreshTokenManager);
         $this->container->set('fos_oauth_server.auth_code_manager', $authCodeManager);
 
         $tester = new CommandTester($this->command);
-        $tester->execute(array('command' => $this->command->getName()));
+        $tester->execute(['command' => $this->command->getName()]);
 
         $display = $tester->getDisplay();
 
@@ -98,7 +106,7 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
         $this->container->set('fos_oauth_server.auth_code_manager', new \stdClass());
 
         $tester = new CommandTester($this->command);
-        $tester->execute(array('command' => $this->command->getName()));
+        $tester->execute(['command' => $this->command->getName()]);
 
         $display = $tester->getDisplay();
 
@@ -114,9 +122,9 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function classProvider()
     {
-        return array(
-            array('FOS\OAuthServerBundle\Model\TokenManagerInterface'),
-            array('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface'),
-        );
+        return [
+            ['FOS\OAuthServerBundle\Model\TokenManagerInterface'],
+            ['FOS\OAuthServerBundle\Model\AuthCodeManagerInterface'],
+        ];
     }
 }

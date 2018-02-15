@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -35,8 +37,12 @@ class AuthCodeManager extends BaseAuthCodeManager
 
     public function __construct(DocumentManager $dm, $class)
     {
+        // NOTE: bug in Doctrine, hinting DocumentRepository|ObjectRepository when only DocumentRepository is expected
+        /** @var DocumentRepository $repository */
+        $repository = $dm->getRepository($class);
+
         $this->dm = $dm;
-        $this->repository = $dm->getRepository($class);
+        $this->repository = $repository;
         $this->class = $class;
     }
 
@@ -84,8 +90,9 @@ class AuthCodeManager extends BaseAuthCodeManager
             ->createQueryBuilder()
             ->remove()
             ->field('expiresAt')->lt(time())
-            ->getQuery(array('safe' => true))
-            ->execute();
+            ->getQuery(['safe' => true])
+            ->execute()
+        ;
 
         return $result['n'];
     }
