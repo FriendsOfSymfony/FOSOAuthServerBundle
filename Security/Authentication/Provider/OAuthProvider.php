@@ -12,6 +12,7 @@
 namespace FOS\OAuthServerBundle\Security\Authentication\Provider;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -74,7 +75,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                     try {
                         $this->userChecker->checkPreAuth($user);
                     } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                        throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED,
                             OAuth2::TOKEN_TYPE_BEARER,
                             $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                             'access_denied',
@@ -103,7 +104,7 @@ class OAuthProvider implements AuthenticationProviderInterface
                     try {
                         $this->userChecker->checkPostAuth($user);
                     } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                        throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED,
                             OAuth2::TOKEN_TYPE_BEARER,
                             $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                             'access_denied',
