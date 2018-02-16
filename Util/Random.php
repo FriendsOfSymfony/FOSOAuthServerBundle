@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,23 +13,16 @@
 
 namespace FOS\OAuthServerBundle\Util;
 
+/**
+ * Class Random.
+ *
+ * @author Nikola Petkanski <nikola@petkanski.com
+ */
 class Random
 {
     public static function generateToken()
     {
-        $bytes = false;
-        if (function_exists('openssl_random_pseudo_bytes') && 0 !== stripos(PHP_OS, 'win')) {
-            $bytes = openssl_random_pseudo_bytes(32, $strong);
-
-            if (true !== $strong) {
-                $bytes = false;
-            }
-        }
-
-        // let's just hope we got a good seed
-        if (false === $bytes) {
-            $bytes = hash('sha256', uniqid(mt_rand(), true), true);
-        }
+        $bytes = random_bytes(32);
 
         return base_convert(bin2hex($bytes), 16, 36);
     }

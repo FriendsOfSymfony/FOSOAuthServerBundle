@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,8 +13,7 @@
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
@@ -20,7 +21,7 @@ use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 class ClientManager extends BaseClientManager
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
@@ -34,10 +35,14 @@ class ClientManager extends BaseClientManager
      */
     protected $class;
 
-    public function __construct(ObjectManager $em, $class)
+    public function __construct(EntityManagerInterface $em, $class)
     {
+        // NOTE: bug in Doctrine, hinting EntityRepository|ObjectRepository when only EntityRepository is expected
+        /** @var EntityRepository $repository */
+        $repository = $em->getRepository($class);
+
         $this->em = $em;
-        $this->repository = $em->getRepository($class);
+        $this->repository = $repository;
         $this->class = $class;
     }
 

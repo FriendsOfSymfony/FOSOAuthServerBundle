@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -28,16 +30,16 @@ abstract class ClientManager implements ClientManagerInterface
      */
     public function findClientByPublicId($publicId)
     {
-        if (false === $pos = strpos($publicId, '_')) {
-            return;
+        if (false === $pos = mb_strpos($publicId, '_')) {
+            return null;
         }
 
-        $id = substr($publicId, 0, $pos);
-        $randomId = substr($publicId, $pos + 1);
+        $id = mb_substr($publicId, 0, $pos);
+        $randomId = mb_substr($publicId, $pos + 1);
 
-        return $this->findClientBy(array(
-            'id'       => $id,
+        return $this->findClientBy([
+            'id' => $id,
             'randomId' => $randomId,
-        ));
+        ]);
     }
 }

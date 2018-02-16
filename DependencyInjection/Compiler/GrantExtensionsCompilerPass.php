@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -13,8 +15,8 @@ namespace FOS\OAuthServerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
@@ -36,7 +38,7 @@ class GrantExtensionsCompilerPass implements CompilerPassInterface
                     throw new InvalidArgumentException(sprintf('Service "%s" must define the "uri" attribute on "fos_oauth_server.grant_extension" tags.', $id));
                 }
 
-                $storageDefinition->addMethodCall('setGrantExtension', array($tag['uri'], new Reference($id)));
+                $storageDefinition->addMethodCall('setGrantExtension', [$tag['uri'], new Reference($id)]);
             }
         }
     }

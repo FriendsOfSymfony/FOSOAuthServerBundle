@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -25,6 +27,6 @@ if (class_exists('TypehintableBehavior')) {
     $builder = new \PropelQuickBuilder();
     $builder->getConfig()->setBuildProperty('behavior.typehintable.class', $class->getFileName());
     $builder->setSchema(file_get_contents(__DIR__.'/../Resources/config/propel/schema.xml'));
-    $builder->setClassTargets(array('tablemap', 'peer', 'object', 'query', 'peerstub'));
+    $builder->setClassTargets(['tablemap', 'peer', 'object', 'query', 'peerstub']);
     $builder->build();
 }

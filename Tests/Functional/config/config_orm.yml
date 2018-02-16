@@ -4,7 +4,7 @@ imports:
 doctrine:
     dbal:
         driver: pdo_sqlite
-        path: %kernel.cache_dir%/data.sqlite
+        path: '%kernel.cache_dir%/data.sqlite'
     orm:
         entity_managers:
             default:

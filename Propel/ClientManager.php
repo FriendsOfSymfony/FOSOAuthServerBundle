@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -11,8 +13,8 @@
 
 namespace FOS\OAuthServerBundle\Propel;
 
-use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 
 class ClientManager extends BaseClientManager
 {
@@ -48,7 +50,8 @@ class ClientManager extends BaseClientManager
         return $queryClass::create()
             ->filterById($criteria['id'])
             ->filterByRandomId($criteria['randomId'])
-            ->findOne();
+            ->findOne()
+        ;
     }
 
     /**

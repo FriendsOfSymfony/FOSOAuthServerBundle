@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -16,10 +18,9 @@ use OAuth2\OAuth2;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
 /**
@@ -30,9 +31,9 @@ use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 class OAuthListener implements ListenerInterface
 {
     /**
-     * @var TokenStorageInterface|SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /**
      * @var AuthenticationManagerInterface
@@ -45,22 +46,19 @@ class OAuthListener implements ListenerInterface
     protected $serverService;
 
     /**
-     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage          The token storage.
-     * @param AuthenticationManagerInterface                 $authenticationManager The authentication manager.
-     * @param OAuth2                                         $serverService
+     * @param TokenStorageInterface          $tokenStorage          the token storage
+     * @param AuthenticationManagerInterface $authenticationManager the authentication manager
+     * @param OAuth2                         $serverService
      */
-    public function __construct($securityContext, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
+    public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
-        if (!$securityContext instanceof  TokenStorageInterface && !$securityContext instanceof SecurityContextInterface) {
-            throw new \InvalidArgumentException('Wrong type for OAuthListener, it has to implement TokenStorageInterface or SecurityContextInterface');
-        }
-        $this->securityContext = $securityContext;
+        $this->tokenStorage = $tokenStorage;
         $this->authenticationManager = $authenticationManager;
         $this->serverService = $serverService;
     }
 
     /**
-     * @param GetResponseEvent $event The event.
+     * @param GetResponseEvent $event the event
      */
     public function handle(GetResponseEvent $event)
     {
@@ -75,7 +73,7 @@ class OAuthListener implements ListenerInterface
             $returnValue = $this->authenticationManager->authenticate($token);
 
             if ($returnValue instanceof TokenInterface) {
-                return $this->securityContext->setToken($returnValue);
+                return $this->tokenStorage->setToken($returnValue);
             }
 
             if ($returnValue instanceof Response) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the FOSOAuthServerBundle package.
  *
@@ -12,15 +14,15 @@
 namespace FOS\OAuthServerBundle\Security\Authentication\Provider;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
+use OAuth2\OAuth2;
+use OAuth2\OAuth2AuthenticateException;
+use OAuth2\OAuth2ServerException;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
-use OAuth2\OAuth2;
-use OAuth2\OAuth2ServerException;
-use OAuth2\OAuth2AuthenticateException;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * OAuthProvider class.
@@ -43,8 +45,8 @@ class OAuthProvider implements AuthenticationProviderInterface
     protected $userChecker;
 
     /**
-     * @param UserProviderInterface $userProvider  The user provider.
-     * @param OAuth2                $serverService The OAuth2 server service.
+     * @param UserProviderInterface $userProvider  the user provider
+     * @param OAuth2                $serverService the OAuth2 server service
      * @param UserCheckerInterface  $userChecker   The Symfony User Checker for Pre and Post auth checks
      */
     public function __construct(UserProviderInterface $userProvider, OAuth2 $serverService, UserCheckerInterface $userChecker)
@@ -55,18 +57,26 @@ class OAuthProvider implements AuthenticationProviderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param OAuthToken&TokenInterface $token
+     *
+     * @return null|OAuthToken
      */
     public function authenticate(TokenInterface $token)
     {
         if (!$this->supports($token)) {
-            return;
+            // note: since strict types in PHP 7, return; and return null; are not the same
+            // Symfony's interface says to "never return null", but return; is still technically null
+            // PHPStan treats return; as return (void);
+            return null;
         }
 
         try {
             $tokenString = $token->getToken();
 
-            if ($accessToken = $this->serverService->verifyAccessToken($tokenString)) {
+            // TODO: this is nasty, create a proper interface here
+            /** @var OAuthToken&TokenInterface&\OAuth2\Model\IOAuth2AccessToken $accessToken */
+            $accessToken = $this->serverService->verifyAccessToken($tokenString);
+            if (null !== $accessToken) {
                 $scope = $accessToken->getScope();
                 $user = $accessToken->getUser();
 
@@ -74,7 +84,8 @@ class OAuthProvider implements AuthenticationProviderInterface
                     try {
                         $this->userChecker->checkPreAuth($user);
                     } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                        throw new OAuth2AuthenticateException(
+                            OAuth2::HTTP_UNAUTHORIZED,
                             OAuth2::TOKEN_TYPE_BEARER,
                             $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                             'access_denied',
@@ -85,11 +96,11 @@ class OAuthProvider implements AuthenticationProviderInterface
                     $token->setUser($user);
                 }
 
-                $roles = (null !== $user) ? $user->getRoles() : array();
+                $roles = (null !== $user) ? $user->getRoles() : [];
 
                 if (!empty($scope)) {
                     foreach (explode(' ', $scope) as $role) {
-                        $roles[] = 'ROLE_'.strtoupper($role);
+                        $roles[] = 'ROLE_'.mb_strtoupper($role);
                     }
                 }
 
@@ -103,7 +114,8 @@ class OAuthProvider implements AuthenticationProviderInterface
                     try {
                         $this->userChecker->checkPostAuth($user);
                     } catch (AccountStatusException $e) {
-                        throw new OAuth2AuthenticateException(OAuth2::HTTP_UNAUTHORIZED,
+                        throw new OAuth2AuthenticateException(
+                            OAuth2::HTTP_UNAUTHORIZED,
                             OAuth2::TOKEN_TYPE_BEARER,
                             $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                             'access_denied',
@@ -117,11 +129,6 @@ class OAuthProvider implements AuthenticationProviderInterface
                 return $token;
             }
         } catch (OAuth2ServerException $e) {
-            if (!method_exists('Symfony\Component\Security\Core\Exception\AuthenticationException', 'setToken')) {
-                // Symfony 2.1
-                throw new AuthenticationException('OAuth2 authentication failed', null, 0, $e);
-            }
-
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
         }
 
