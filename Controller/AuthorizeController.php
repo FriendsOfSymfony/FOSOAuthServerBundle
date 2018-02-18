@@ -248,7 +248,7 @@ class AuthorizeController implements ContainerAwareInterface
     protected function getRedirectionUrl(UserInterface $user)
     {
         @trigger_error(sprintf('%s() is deprecated since version 1.6 and will be removed in 2.0', __METHOD__));
-      
+
         return $this->router->generate('fos_oauth_server_profile_show');
     }
 
