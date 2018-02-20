@@ -64,17 +64,14 @@ class FOSOAuthServerExtension extends Extension
             'template' => 'fos_oauth_server.template.%s',
         ]);
 
-        // Handle the MongoDB document manager name in a specific way as it does not have a registry to make it easy
-        // TODO: change it when bumping the requirement to Symfony 2.1
+        // Document manager factory definition
         if ('mongodb' === $config['db_driver']) {
-            if (null === $config['model_manager_name']) {
-                $container->setAlias('fos_oauth_server.document_manager', new Alias('doctrine.odm.mongodb.document_manager', false));
+            $odmDocumentManagerDefinition = $container->getDefinition('fos_oauth_server.document_manager');
+            if (method_exists($odmDocumentManagerDefinition, 'setFactory')) {
+                $odmDocumentManagerDefinition->setFactory(array(new Reference('doctrine_mongodb'), 'getManager'));
             } else {
-                $container->setAlias('fos_oauth_server.document_manager', new Alias(
-                    sprintf('doctrine.odm.%s_mongodb.document_manager',
-                    $config['model_manager_name']),
-                    false
-                ));
+                $odmDocumentManagerDefinition->setFactoryService('doctrine_mongodb');
+                $odmDocumentManagerDefinition->setFactoryMethod('getManager');
             }
         }
 
