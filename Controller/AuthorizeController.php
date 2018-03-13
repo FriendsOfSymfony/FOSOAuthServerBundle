@@ -99,8 +99,8 @@ class AuthorizeController
 
     /**
      * This controller had been made as a service due to support symfony 4 where all* services are private by default.
-     * Thus, there is considered a bad practice to fetch services directly from container.
-     * @todo This controller could be refactored to do not rely on so many dependencies
+     * Thus, this is considered a bad practice to fetch services directly from container.
+     * @todo This controller could be refactored to not rely on so many dependencies
      *
      * @param RequestStack             $requestStack
      * @param Form                     $authorizeForm
