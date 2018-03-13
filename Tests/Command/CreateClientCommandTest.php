@@ -12,57 +12,48 @@
 namespace FOS\OAuthServerBundle\Tests\Command;
 
 use FOS\OAuthServerBundle\Command\CreateClientCommand;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Tests\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\Container;
 
 class CreateClientCommandTest extends TestCase
 {
     /**
-     * @var
+     * @var CreateClientCommand
      */
     private $command;
 
     /**
-     * @var Container
+     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
      */
-    private $container;
+    private $clientManager;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $command = new CreateClientCommand();
+        $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $command = new CreateClientCommand($this->clientManager);
 
         $application = new Application();
         $application->add($command);
 
-        $this->container = new Container();
-
         $this->command = $application->find($command->getName());
-        $this->command->setContainer($this->container);
     }
 
     /**
-     * @dataProvider classProvider
+     * @dataProvider clientProvider
      *
-     * @param string $class A fully qualified class name.
+     * @param string $client A fully qualified class name.
      */
-    public function testItShouldCreateClient($clientManager, $client)
+    public function testItShouldCreateClient($client)
     {
-        $clientManager = $this
-            ->getMockBuilder($clientManager)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $clientManager
+        $this->clientManager
             ->expects($this->any())
             ->method('createClient')
             ->will($this->returnValue(new $client));
-
-        $this->container->set('fos_oauth_server.client_manager.default', $clientManager);
 
         $commandTester = new CommandTester($this->command);
 
@@ -89,13 +80,13 @@ class CreateClientCommandTest extends TestCase
     /**
      * @return array
      */
-    public function classProvider()
+    public function clientProvider()
     {
         return [
-            ['FOS\OAuthServerBundle\Document\ClientManager', 'FOS\OAuthServerBundle\Document\Client'],
-            ['FOS\OAuthServerBundle\Entity\ClientManager', 'FOS\OAuthServerBundle\Entity\Client'],
-            ['FOS\OAuthServerBundle\Model\ClientManager', 'FOS\OAuthServerBundle\Model\Client'],
-            ['FOS\OAuthServerBundle\Propel\ClientManager', 'FOS\OAuthServerBundle\Propel\Client'],
+            ['FOS\OAuthServerBundle\Document\Client'],
+            ['FOS\OAuthServerBundle\Entity\Client'],
+            ['FOS\OAuthServerBundle\Model\Client'],
+            ['FOS\OAuthServerBundle\Propel\Client'],
         ];
     }
 }
