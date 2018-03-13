@@ -20,7 +20,7 @@ use OAuth2\OAuth2ServerException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -100,7 +100,7 @@ class AuthorizeController implements ContainerAwareInterface
     private $templateEngineType;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
@@ -119,17 +119,17 @@ class AuthorizeController implements ContainerAwareInterface
      * Thus, there is considered a bad practice to fetch services directly from container.
      * @todo This controller could be refactored to do not rely on so many dependencies
      *
-     * @param RequestStack           $requestStack
-     * @param SessionInterface       $session
-     * @param Form                   $authorizeForm
-     * @param AuthorizeFormHandler   $authorizeFormHandler
-     * @param OAuth2                 $oAuth2Server
-     * @param EngineInterface        $templating
-     * @param TokenStorageInterface  $tokenStorage
-     * @param UrlGeneratorInterface  $router
-     * @param ClientManagerInterface $clientManager
-     * @param EventDispatcher        $eventDispatcher
-     * @param string                 $templateEngineType
+     * @param RequestStack             $requestStack
+     * @param SessionInterface         $session
+     * @param Form                     $authorizeForm
+     * @param AuthorizeFormHandler     $authorizeFormHandler
+     * @param OAuth2                   $oAuth2Server
+     * @param EngineInterface          $templating
+     * @param TokenStorageInterface    $tokenStorage
+     * @param UrlGeneratorInterface    $router
+     * @param ClientManagerInterface   $clientManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
@@ -141,7 +141,7 @@ class AuthorizeController implements ContainerAwareInterface
         TokenStorageInterface $tokenStorage,
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         $templateEngineType = 'twig'
     ) {
         $this->requestStack = $requestStack;
