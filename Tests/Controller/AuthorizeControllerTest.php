@@ -116,10 +116,6 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->session = $this->getMockBuilder(SessionInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
         $this->form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -152,11 +148,14 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $this->session = $this->getMockBuilder(SessionInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->templateEngineType = 'twig';
 
         $this->instance = new AuthorizeController(
             $this->requestStack,
-            $this->session,
             $this->form,
             $this->authorizeFormHandler,
             $this->oAuth2Server,
@@ -165,6 +164,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
             $this->router,
             $this->clientManager,
             $this->eventDispatcher,
+            $this->session,
             $this->templateEngineType
         );
 
@@ -221,7 +221,7 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(
             AccessDeniedException::class,
-            'This user does not have access to this section.');
+            'This user does not have access to this section.')
         ;
 
         $this->instance->authorizeAction($this->request);
