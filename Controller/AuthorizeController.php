@@ -103,7 +103,6 @@ class AuthorizeController
      * @todo This controller could be refactored to do not rely on so many dependencies
      *
      * @param RequestStack             $requestStack
-     * @param SessionInterface         $session
      * @param Form                     $authorizeForm
      * @param AuthorizeFormHandler     $authorizeFormHandler
      * @param OAuth2                   $oAuth2Server
@@ -112,11 +111,11 @@ class AuthorizeController
      * @param UrlGeneratorInterface    $router
      * @param ClientManagerInterface   $clientManager
      * @param EventDispatcherInterface $eventDispatcher
+     * @param SessionInterface         $session
      * @param string                   $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
-        SessionInterface $session,
         Form $authorizeForm,
         AuthorizeFormHandler $authorizeFormHandler,
         OAuth2 $oAuth2Server,
@@ -125,6 +124,7 @@ class AuthorizeController
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcherInterface $eventDispatcher,
+        SessionInterface $session = null,
         $templateEngineType = 'twig'
     ) {
         $this->requestStack = $requestStack;
@@ -151,7 +151,7 @@ class AuthorizeController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        if (true === $this->session->get('_fos_oauth_server.ensure_logout')) {
+        if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
             $this->session->invalidate(600);
             $this->session->set('_fos_oauth_server.ensure_logout', true);
         }
@@ -192,7 +192,7 @@ class AuthorizeController
      */
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
     {
-        if (true === $this->session->get('_fos_oauth_server.ensure_logout')) {
+        if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
             $this->session->invalidate();
         }
