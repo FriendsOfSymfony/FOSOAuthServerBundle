@@ -30,10 +30,14 @@
         <service id="fos_oauth_server.controller.token" alias="FOS\OAuthServerBundle\Controller\TokenController" public="true" />
 
         <service id="fos_oauth_server.clean_command" class="FOS\OAuthServerBundle\Command\CleanCommand">
+            <argument type="service" id="fos_oauth_server.access_token_manager" />
+            <argument type="service" id="fos_oauth_server.refresh_token_manager" />
+            <argument type="service" id="fos_oauth_server.auth_code_manager" />
             <tag name="console.command" />
         </service>
 
         <service id="fos_oauth_server.create_client_command" class="FOS\OAuthServerBundle\Command\CreateClientCommand">
+            <argument type="service" id="fos_oauth_server.client_manager.default" />
             <tag name="console.command" />
         </service>
     </services>
