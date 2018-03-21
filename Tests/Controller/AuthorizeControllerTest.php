@@ -461,6 +461,256 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
+    public function testAuthorizeActionWillEnsureLogoutWithProcess()
+    {
+        $token = $this->getMockBuilder(TokenInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->tokenStorage
+            ->expects($this->at(0))
+            ->method('getToken')
+            ->willReturn($token)
+        ;
+
+        $token
+            ->expects($this->at(0))
+            ->method('getUser')
+            ->willReturn($this->user)
+        ;
+
+        $this->session
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('_fos_oauth_server.ensure_logout')
+            ->willReturn(true)
+        ;
+
+        $this->session
+            ->expects($this->at(1))
+            ->method('invalidate')
+            ->with(600)
+            ->willReturn(true)
+        ;
+
+        $this->session
+            ->expects($this->at(2))
+            ->method('set')
+            ->with('_fos_oauth_server.ensure_logout', true)
+            ->willReturn(null)
+        ;
+
+        $propertyReflection = new \ReflectionProperty(AuthorizeController::class, 'client');
+        $propertyReflection->setAccessible(true);
+        $propertyReflection->setValue($this->instance, $this->client);
+
+        $this->eventDispatcher
+            ->expects($this->at(0))
+            ->method('dispatch')
+            ->with(OAuthEvent::PRE_AUTHORIZATION_PROCESS, new OAuthEvent($this->user, $this->client))
+            ->willReturn($this->event)
+        ;
+
+        $this->event
+            ->expects($this->at(0))
+            ->method('isAuthorizedClient')
+            ->with()
+            ->willReturn(false)
+        ;
+
+        $this->authorizeFormHandler
+            ->expects($this->at(0))
+            ->method('process')
+            ->with()
+            ->willReturn(true)
+        ;
+
+        $this->session
+            ->expects($this->at(3))
+            ->method('get')
+            ->with('_fos_oauth_server.ensure_logout')
+            ->willReturn(true)
+        ;
+
+        $this->tokenStorage
+            ->expects($this->at(1))
+            ->method('setToken')
+            ->with(null)
+        ;
+
+        $this->session
+            ->expects($this->at(4))
+            ->method('invalidate')
+            ->with()
+            ->willReturn(true)
+        ;
+
+        $this->authorizeFormHandler
+            ->expects($this->exactly(2))
+            ->method('isAccepted')
+            ->willReturn(true)
+        ;
+
+        $this->eventDispatcher
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(
+                OAuthEvent::POST_AUTHORIZATION_PROCESS,
+                new OAuthEvent($this->user, $this->client, true)
+            )
+        ;
+
+        $formName = 'formName' . \random_bytes(10);
+
+        $this->form
+            ->expects($this->once())
+            ->method('getName')
+            ->willReturn($formName)
+        ;
+
+        $this->request->query
+            ->expects($this->once())
+            ->method('all')
+            ->willReturn([])
+        ;
+
+        $this->request->request
+            ->expects($this->once())
+            ->method('has')
+            ->with($formName)
+            ->willReturn(false)
+        ;
+
+        $randomScope = 'scope' . \random_bytes(10);
+
+        $this->authorizeFormHandler
+            ->expects($this->once())
+            ->method('getScope')
+            ->willReturn($randomScope)
+        ;
+
+        $response = new Response();
+
+        $this->oAuth2Server
+            ->expects($this->once())
+            ->method('finishClientAuthorization')
+            ->with(
+                true,
+                $this->user,
+                $this->request,
+                $randomScope
+            )
+            ->willReturn($response)
+        ;
+
+        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+    }
+
+    public function testAuthorizeActionWillEnsureLogoutWithAuthorizedClient()
+    {
+        $token = $this->getMockBuilder(TokenInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->tokenStorage
+            ->expects($this->at(0))
+            ->method('getToken')
+            ->willReturn($token)
+        ;
+
+        $token
+            ->expects($this->at(0))
+            ->method('getUser')
+            ->willReturn($this->user)
+        ;
+
+        $this->session
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('_fos_oauth_server.ensure_logout')
+            ->willReturn(true)
+        ;
+
+        $this->session
+            ->expects($this->at(1))
+            ->method('invalidate')
+            ->with(600)
+            ->willReturn(true)
+        ;
+
+        $this->session
+            ->expects($this->at(2))
+            ->method('set')
+            ->with('_fos_oauth_server.ensure_logout', true)
+            ->willReturn(null)
+        ;
+
+        $propertyReflection = new \ReflectionProperty(AuthorizeController::class, 'client');
+        $propertyReflection->setAccessible(true);
+        $propertyReflection->setValue($this->instance, $this->client);
+
+        $this->eventDispatcher
+            ->expects($this->at(0))
+            ->method('dispatch')
+            ->with(OAuthEvent::PRE_AUTHORIZATION_PROCESS, new OAuthEvent($this->user, $this->client))
+            ->willReturn($this->event)
+        ;
+
+        $this->event
+            ->expects($this->at(0))
+            ->method('isAuthorizedClient')
+            ->with()
+            ->willReturn(true)
+        ;
+
+        $this->session
+            ->expects($this->at(3))
+            ->method('get')
+            ->with('_fos_oauth_server.ensure_logout')
+            ->willReturn(true)
+        ;
+
+        $this->tokenStorage
+            ->expects($this->at(1))
+            ->method('setToken')
+            ->with(null)
+        ;
+
+        $this->session
+            ->expects($this->at(4))
+            ->method('invalidate')
+            ->with()
+            ->willReturn(true)
+        ;
+
+        $randomScope = 'scope' . \random_bytes(10);
+
+        $this->request
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('scope', null)
+            ->willReturn($randomScope)
+        ;
+
+        $response = new Response();
+
+        $this->oAuth2Server
+            ->expects($this->at(0))
+            ->method('finishClientAuthorization')
+            ->with(
+                true,
+                $this->user,
+                $this->request,
+                $randomScope
+            )
+            ->willReturn($response)
+        ;
+
+        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+    }
+
     public function testAuthorizeActionWillProcessAuthorizationForm()
     {
         $token = $this->getMockBuilder(TokenInterface::class)
