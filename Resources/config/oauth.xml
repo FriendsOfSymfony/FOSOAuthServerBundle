@@ -27,7 +27,7 @@
             <argument type="service" id="fos_oauth_server.server" />
         </service>
 
-        <service id="fos_oauth_server.controller.token" alias="FOS\OAuthServerBundle\Controller\TokenController" public="true" />
+        <service id="fos_oauth_server.controller.token" class="FOS\OAuthServerBundle\Controller\TokenController" public="true" />
 
         <service id="fos_oauth_server.clean_command" class="FOS\OAuthServerBundle\Command\CleanCommand">
             <argument type="service" id="fos_oauth_server.access_token_manager" />
