@@ -51,7 +51,11 @@ class FOSOAuthServerExtension extends Extension
             $container->setAlias('fos_oauth_server.user_provider', new Alias($config['service']['user_provider'], false));
         }
 
-        $container->setParameter('fos_oauth_server.server.options', $config['service']['options']);
+        $options = $config['service']['options'];
+        if (!empty($options['supported_scopes'])) {
+            $options['supported_scopes'] = str_replace("\n", ' ', $options['supported_scopes']);
+        }
+        $container->setParameter('fos_oauth_server.server.options', $options);
 
         $this->remapParametersNamespaces($config, $container, [
             '' => [
