@@ -30,9 +30,38 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('fos_oauth_server');
 
-        $supportedDrivers = array('orm', 'mongodb', 'propel');
+        $supportedDrivers = array('orm', 'mongodb', 'propel', 'custom');
 
         $rootNode
+            ->validate()
+                ->always(function($v) {
+                    if ('custom' !== $v['db_driver']) {
+                        return $v;
+                    }
+
+                    if (empty($v['service']['user_provider'])) {
+                        throw new \InvalidArgumentException('The service user_provider must be set explicitly for custom db_driver.');
+                    }
+
+                    if (empty($v['service']['client_manager'])) {
+                        throw new \InvalidArgumentException('The service client_manager must be set explicitly for custom db_driver.');
+                    }
+
+                    if (empty($v['service']['access_token_manager'])) {
+                        throw new \InvalidArgumentException('The service access_token_manager must be set explicitly for custom db_driver.');
+                    }
+
+                    if (empty($v['service']['refresh_token_manager'])) {
+                        throw new \InvalidArgumentException('The service refresh_token_manager must be set explicitly for custom db_driver.');
+                    }
+
+                    if (empty($v['service']['auth_code_manager'])) {
+                        throw new \InvalidArgumentException('The service auth_code_manager must be set explicitly for custom db_driver.');
+                    }
+
+                    return $v;
+                })
+            ->end()
             ->children()
                 ->scalarNode('db_driver')
                     ->validate()

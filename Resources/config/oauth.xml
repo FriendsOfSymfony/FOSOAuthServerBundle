@@ -37,7 +37,7 @@
         </service>
 
         <service id="fos_oauth_server.create_client_command" class="FOS\OAuthServerBundle\Command\CreateClientCommand">
-            <argument type="service" id="fos_oauth_server.client_manager.default" />
+            <argument type="service" id="fos_oauth_server.client_manager" />
             <tag name="console.command" />
         </service>
     </services>
