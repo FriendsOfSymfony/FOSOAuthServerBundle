@@ -71,13 +71,9 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testMultilineScopes()
+    public function testStringSupportedScopes()
     {
-        $scopes = <<<'SCOPES'
-scope1
-scope2
-scope3 scope4
-SCOPES;
+        $scopes = 'scope1 scope2 scope3 scope4';
 
         $config = [
             'db_driver' => 'orm',
@@ -91,12 +87,44 @@ SCOPES;
                 ],
             ],
         ];
+
         $instance = new FOSOAuthServerExtension();
         $instance->load([$config], $this->container);
 
         $this->assertSame(
             $this->container->getParameter('fos_oauth_server.server.options'),
-            ['supported_scopes' => 'scope1 scope2 scope3 scope4']
+            [
+                'supported_scopes' => 'scope1 scope2 scope3 scope4',
+            ]
+        );
+    }
+
+    public function testArraySupportedScopes()
+    {
+        $scopes = ['scope1', 'scope2', 'scope3', 'scope4'];
+
+        $config = [
+            'db_driver' => 'orm',
+            'client_class' => 'dumb_class',
+            'access_token_class' => 'dumb_access_token_class',
+            'refresh_token_class' => 'dumb_refresh_token_class',
+            'auth_code_class' => 'dumb_auth_code_class',
+            'service' => [
+                'options' => [
+                    'supported_scopes' => $scopes,
+                    'enforce_redirect' => true,
+                ],
+            ],
+        ];
+        $instance = new FOSOAuthServerExtension();
+        $instance->load([$config], $this->container);
+
+        $this->assertSame(
+            $this->container->getParameter('fos_oauth_server.server.options'),
+            [
+                'supported_scopes' => 'scope1 scope2 scope3 scope4',
+                'enforce_redirect' => true,
+            ]
         );
     }
 }

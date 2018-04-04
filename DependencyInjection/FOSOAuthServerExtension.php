@@ -52,8 +52,8 @@ class FOSOAuthServerExtension extends Extension
         }
 
         $options = $config['service']['options'];
-        if (!empty($options['supported_scopes'])) {
-            $options['supported_scopes'] = str_replace("\n", ' ', $options['supported_scopes']);
+        if (is_array($options['supported_scopes'] ?? null)) {
+            $options['supported_scopes'] = implode(' ', $options['supported_scopes']);
         }
         $container->setParameter('fos_oauth_server.server.options', $options);
 
