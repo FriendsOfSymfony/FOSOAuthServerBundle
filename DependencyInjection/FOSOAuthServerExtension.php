@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\DependencyInjection;
 
 use FOS\OAuthServerBundle\Util\LegacyFormHelper;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
@@ -51,7 +52,11 @@ class FOSOAuthServerExtension extends Extension
             $container->setAlias('fos_oauth_server.user_provider', new Alias($config['service']['user_provider'], false));
         }
 
-        $container->setParameter('fos_oauth_server.server.options', $config['service']['options']);
+        $options = $config['service']['options'];
+        if (is_array($options['supported_scopes'] ?? null)) {
+            $options['supported_scopes'] = $this->computeArraySupportedScopes($options['supported_scopes']);
+        }
+        $container->setParameter('fos_oauth_server.server.options', $options);
 
         $this->remapParametersNamespaces($config, $container, [
             '' => [
@@ -149,5 +154,16 @@ class FOSOAuthServerExtension extends Extension
         $this->remapParametersNamespaces($config, $container, [
             'form' => 'fos_oauth_server.authorize.form.%s',
         ]);
+    }
+
+    private function computeArraySupportedScopes(array $supportedScopes)
+    {
+        foreach ($supportedScopes as $scope) {
+            if (false !== mb_strpos($scope, ' ')) {
+                throw new InvalidConfigurationException('The array notation for supported_scopes should not contain spaces in array items. Either use full array notation or use the string notation for supported_scopes. See https://git.io/vx1X0 for more informations.');
+            }
+        }
+
+        return implode(' ', $supportedScopes);
     }
 }

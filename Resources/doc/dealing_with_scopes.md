@@ -18,8 +18,22 @@ To configure allowed scopes in your application, you have to edit your `app/conf
 fos_oauth_server:
     service:
         options:
+            supported_scopes:
+              - scope1
+              - scope2
+              - scope3
+              - scope4
+```
+
+If you have a short list of scopes, you can define them as a simple string:
+``` yaml
+# app/config/config.yml
+fos_oauth_server:
+    service:
+        options:
             supported_scopes: scope1 scope2
 ```
+
 
 Now, clients will be able to pass a `scope` parameter when they request an access token.
 

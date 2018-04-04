@@ -104,7 +104,7 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('options')
                                 ->useAttributeAsKey('key')
                                 ->treatNullLike([])
-                                ->prototype('scalar')->end()
+                                ->prototype('variable')->end()
                             ->end()
                         ->end()
                     ->end()

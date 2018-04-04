@@ -13,11 +13,25 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
+use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 
 class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
 {
+    private $container;
+
+    public function setUp()
+    {
+        $parameterBag = new ParameterBag();
+        $this->container = new ContainerBuilder($parameterBag);
+
+        parent::setUp();
+    }
+
     public function testLoadAuthorizeRouting()
     {
         $locator = new FileLocator();
@@ -38,5 +52,104 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         $tokenRoute = $collection->get('fos_oauth_server_token');
         $this->assertSame('/oauth/v2/token', $tokenRoute->getPath());
         $this->assertSame(['GET', 'POST'], $tokenRoute->getMethods());
+    }
+
+    public function testWithoutService()
+    {
+        $config = [
+            'db_driver' => 'orm',
+            'client_class' => 'dumb_class',
+            'access_token_class' => 'dumb_access_token_class',
+            'refresh_token_class' => 'dumb_refresh_token_class',
+            'auth_code_class' => 'dumb_auth_code_class',
+        ];
+        $instance = new FOSOAuthServerExtension();
+        $instance->load([$config], $this->container);
+
+        $this->assertSame(
+            $this->container->getParameter('fos_oauth_server.server.options'),
+            []
+        );
+    }
+
+    public function testStringSupportedScopes()
+    {
+        $scopes = 'scope1 scope2 scope3 scope4';
+
+        $config = [
+            'db_driver' => 'orm',
+            'client_class' => 'dumb_class',
+            'access_token_class' => 'dumb_access_token_class',
+            'refresh_token_class' => 'dumb_refresh_token_class',
+            'auth_code_class' => 'dumb_auth_code_class',
+            'service' => [
+                'options' => [
+                    'supported_scopes' => $scopes,
+                ],
+            ],
+        ];
+
+        $instance = new FOSOAuthServerExtension();
+        $instance->load([$config], $this->container);
+
+        $this->assertSame(
+            $this->container->getParameter('fos_oauth_server.server.options'),
+            [
+                'supported_scopes' => 'scope1 scope2 scope3 scope4',
+            ]
+        );
+    }
+
+    public function testArraySupportedScopes()
+    {
+        $scopes = ['scope1', 'scope2', 'scope3', 'scope4'];
+
+        $config = [
+            'db_driver' => 'orm',
+            'client_class' => 'dumb_class',
+            'access_token_class' => 'dumb_access_token_class',
+            'refresh_token_class' => 'dumb_refresh_token_class',
+            'auth_code_class' => 'dumb_auth_code_class',
+            'service' => [
+                'options' => [
+                    'supported_scopes' => $scopes,
+                    'enforce_redirect' => true,
+                ],
+            ],
+        ];
+        $instance = new FOSOAuthServerExtension();
+        $instance->load([$config], $this->container);
+
+        $this->assertSame(
+            $this->container->getParameter('fos_oauth_server.server.options'),
+            [
+                'supported_scopes' => 'scope1 scope2 scope3 scope4',
+                'enforce_redirect' => true,
+            ]
+        );
+    }
+
+    public function testArraySupportedScopesWithSpace()
+    {
+        $scopes = ['scope1 scope2', 'scope3', 'scope4'];
+
+        $config = [
+            'db_driver' => 'orm',
+            'client_class' => 'dumb_class',
+            'access_token_class' => 'dumb_access_token_class',
+            'refresh_token_class' => 'dumb_refresh_token_class',
+            'auth_code_class' => 'dumb_auth_code_class',
+            'service' => [
+                'options' => [
+                    'supported_scopes' => $scopes,
+                    'enforce_redirect' => true,
+                ],
+            ],
+        ];
+        $instance = new FOSOAuthServerExtension();
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The array notation for supported_scopes should not contain spaces in array items. Either use full array notation or use the string notation for supported_scopes. See https://git.io/vx1X0 for more informations.');
+        $instance->load([$config], $this->container);
     }
 }

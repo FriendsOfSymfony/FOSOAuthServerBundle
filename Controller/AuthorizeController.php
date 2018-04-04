@@ -249,7 +249,7 @@ class AuthorizeController implements ContainerAwareInterface
     }
 
     /**
-     * @return ClientInterface.
+     * @return ClientInterface
      */
     protected function getClient()
     {
