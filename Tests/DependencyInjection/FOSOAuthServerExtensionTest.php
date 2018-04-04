@@ -75,10 +75,5 @@ class FOSOAuthServerExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.auth_code_manager'));
         $this->assertSame('theAuthCodeManagerId', (string) $container->getAlias('fos_oauth_server.auth_code_manager'));
-//        $container->setAlias('fos_oauth_server.storage', $config['service']['storage']);
-//        $container->setAlias('fos_oauth_server.client_manager', $config['service']['client_manager']);
-//        $container->setAlias('fos_oauth_server.access_token_manager', $config['service']['access_token_manager']);
-//        $container->setAlias('fos_oauth_server.refresh_token_manager', $config['service']['refresh_token_manager']);
-//        $container->setAlias('fos_oauth_server.auth_code_manager', $config['service']['auth_code_manager']);
     }
 }
