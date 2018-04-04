@@ -1,0 +1,27 @@
+Custom db driver.
+=================
+
+The bundle provides drivers for Doctrine ORM, Doctrine MongoDB, and Propel libraries.
+Though sometimes you might want to use the bundle with a custom or in house written storage.
+For that the bundle has a custom storage. 
+Once set it makes manager options in fos_oauth_server.service section mandatory.  
+They have to be set.
+
+Here's an example of custom configuration:
+
+```yaml
+# config/packages/fos_oauth_server.yaml
+
+fos_oauth_server:
+  db_driver: custom
+  service:
+    user_provider: 'user_provider_manager_service_id'
+    client_manager: 'client_provider_manager_service_id'
+    access_token_manager: 'access_token_manager_service_id'
+    refresh_token_manager: 'refresh_token_manager_service_id'
+    auth_code_manager: 'auth_code_manager_service_id'
+
+```
+
+[Back to index](index.md)
+

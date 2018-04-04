@@ -39,23 +39,19 @@ class Configuration implements ConfigurationInterface
                         return $v;
                     }
 
-                    if (empty($v['service']['user_provider'])) {
-                        throw new \InvalidArgumentException('The service user_provider must be set explicitly for custom db_driver.');
-                    }
-
-                    if (empty($v['service']['client_manager'])) {
+                    if (empty($v['service']['client_manager']) || $v['service']['client_manager'] === 'fos_oauth_server.client_manager.default') {
                         throw new \InvalidArgumentException('The service client_manager must be set explicitly for custom db_driver.');
                     }
 
-                    if (empty($v['service']['access_token_manager'])) {
+                    if (empty($v['service']['access_token_manager']) || $v['service']['access_token_manager'] === 'fos_oauth_server.access_token_manager.default') {
                         throw new \InvalidArgumentException('The service access_token_manager must be set explicitly for custom db_driver.');
                     }
 
-                    if (empty($v['service']['refresh_token_manager'])) {
+                    if (empty($v['service']['refresh_token_manager']) || $v['service']['refresh_token_manager'] === 'fos_oauth_server.refresh_token_manager.default') {
                         throw new \InvalidArgumentException('The service refresh_token_manager must be set explicitly for custom db_driver.');
                     }
 
-                    if (empty($v['service']['auth_code_manager'])) {
+                    if (empty($v['service']['auth_code_manager']) || $v['service']['auth_code_manager'] === 'fos_oauth_server.auth_code_manager.default') {
                         throw new \InvalidArgumentException('The service auth_code_manager must be set explicitly for custom db_driver.');
                     }
 
