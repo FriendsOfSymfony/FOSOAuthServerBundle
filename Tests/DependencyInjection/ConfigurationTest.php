@@ -54,8 +54,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration = new Configuration();
         $processor = new Processor();
 
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid configuration for path "fos_oauth_server": The service client_manager must be set explicitly for custom db_driver.');
+        $this->setExpectedException(InvalidConfigurationException::class, 'Invalid configuration for path "fos_oauth_server": The service client_manager must be set explicitly for custom db_driver.');
 
         $processor->processConfiguration($configuration, [[
             'db_driver' => 'custom',
@@ -72,8 +71,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration = new Configuration();
         $processor = new Processor();
 
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid configuration for path "fos_oauth_server": The service access_token_manager must be set explicitly for custom db_driver.');
+        $this->setExpectedException(InvalidConfigurationException::class, 'Invalid configuration for path "fos_oauth_server": The service access_token_manager must be set explicitly for custom db_driver.');
 
         $processor->processConfiguration($configuration, [[
             'db_driver' => 'custom',
@@ -92,8 +90,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration = new Configuration();
         $processor = new Processor();
 
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid configuration for path "fos_oauth_server": The service refresh_token_manager must be set explicitly for custom db_driver.');
+        $this->setExpectedException(InvalidConfigurationException::class, 'Invalid configuration for path "fos_oauth_server": The service refresh_token_manager must be set explicitly for custom db_driver.');
 
         $processor->processConfiguration($configuration, [[
             'db_driver' => 'custom',
@@ -113,8 +110,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration = new Configuration();
         $processor = new Processor();
 
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid configuration for path "fos_oauth_server": The service auth_code_manager must be set explicitly for custom db_driver.');
+        $this->setExpectedException(InvalidConfigurationException::class, 'Invalid configuration for path "fos_oauth_server": The service auth_code_manager must be set explicitly for custom db_driver.');
 
         $processor->processConfiguration($configuration, [[
             'db_driver' => 'custom',
