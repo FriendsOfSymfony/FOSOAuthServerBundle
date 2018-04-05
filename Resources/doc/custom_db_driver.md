@@ -2,10 +2,9 @@ Custom db driver.
 =================
 
 The bundle provides drivers for Doctrine ORM, Doctrine MongoDB, and Propel libraries.
-Though sometimes you might want to use the bundle with a custom or in house written storage.
-For that the bundle has a custom storage. 
-Once set it makes manager options in fos_oauth_server.service section mandatory.  
-They have to be set.
+Though sometimes you might want to use the bundle with a custom or in-house written storage.
+For that, the bundle has support for custom storage. 
+Once set, setting manager options in fos_oauth_server.service section becomes mandatory.
 
 Here's an example of custom configuration:
 
