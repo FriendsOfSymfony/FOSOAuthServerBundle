@@ -80,7 +80,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
             'service' => [
-                'client_manager' => 'aClientManagerId'
+                'client_manager' => 'a_client_manager_id'
             ]
         ]]);
     }
@@ -99,7 +99,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
             'service' => [
-                'client_manager' => 'aClientManagerId',
+                'client_manager' => 'a_client_manager_id',
                 'access_token_manager' => 'anId',
             ]
         ]]);
@@ -119,7 +119,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
             'service' => [
-                'client_manager' => 'aClientManagerId',
+                'client_manager' => 'a_client_manager_id',
                 'access_token_manager' => 'anId',
                 'refresh_token_manager' => 'anId',
 
@@ -139,10 +139,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
             'service' => [
-                'client_manager' => 'aClientManagerId',
-                'access_token_manager' => 'anAccessTokenManagerId',
-                'refresh_token_manager' => 'aRefreshTokenManagerId',
-                'auth_code_manager' => 'anAuthCodeManagerId',
+                'client_manager' => 'a_client_manager_id',
+                'access_token_manager' => 'an_access_token_manager_id',
+                'refresh_token_manager' => 'a_refresh_token_manager_id',
+                'auth_code_manager' => 'an_auth_code_manager_id',
             ]
         ]]);
 
@@ -155,10 +155,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "service" => [
                 "storage" => "fos_oauth_server.storage.default",
                 "user_provider" => null,
-                "client_manager" => "aClientManagerId",
-                "access_token_manager" => "anAccessTokenManagerId",
-                "refresh_token_manager" => "aRefreshTokenManagerId",
-                "auth_code_manager" => "anAuthCodeManagerId",
+                "client_manager" => "a_client_manager_id",
+                "access_token_manager" => "an_access_token_manager_id",
+                "refresh_token_manager" => "a_refresh_token_manager_id",
+                "auth_code_manager" => "an_auth_code_manager_id",
             ],
         ], $config);
     }

@@ -106,10 +106,10 @@ class FOSOAuthServerExtensionTest extends \PHPUnit_Framework_TestCase
             "service" => [
                 "storage" => "fos_oauth_server.storage.default",
                 "user_provider" => null,
-                "client_manager" => "theClientManagerId",
-                "access_token_manager" => "theAccessTokenManagerId",
-                "refresh_token_manager" => "theRefreshTokenManagerId",
-                "auth_code_manager" => "theAuthCodeManagerId",
+                "client_manager" => "the_client_manager_id",
+                "access_token_manager" => "the_access_token_manager_id",
+                "refresh_token_manager" => "the_refresh_token_manager_id",
+                "auth_code_manager" => "the_auth_code_manager_id",
             ],
         ]], $container);
 
@@ -118,15 +118,15 @@ class FOSOAuthServerExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('fos_oauth_server.storage.default', (string) $container->getAlias('fos_oauth_server.storage'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.client_manager'));
-        $this->assertSame('theClientManagerId', (string) $container->getAlias('fos_oauth_server.client_manager'));
+        $this->assertSame('the_client_manager_id', (string) $container->getAlias('fos_oauth_server.client_manager'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.access_token_manager'));
-        $this->assertSame('theAccessTokenManagerId', (string) $container->getAlias('fos_oauth_server.access_token_manager'));
+        $this->assertSame('the_access_token_manager_id', (string) $container->getAlias('fos_oauth_server.access_token_manager'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.refresh_token_manager'));
-        $this->assertSame('theRefreshTokenManagerId', (string) $container->getAlias('fos_oauth_server.refresh_token_manager'));
+        $this->assertSame('the_refresh_token_manager_id', (string) $container->getAlias('fos_oauth_server.refresh_token_manager'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.auth_code_manager'));
-        $this->assertSame('theAuthCodeManagerId', (string) $container->getAlias('fos_oauth_server.auth_code_manager'));
+        $this->assertSame('the_auth_code_manager_id', (string) $container->getAlias('fos_oauth_server.auth_code_manager'));
     }
 }
