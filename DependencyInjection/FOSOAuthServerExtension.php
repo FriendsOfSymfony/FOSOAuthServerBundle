@@ -90,9 +90,11 @@ class FOSOAuthServerExtension extends Extension
             $ormEntityManagerDefinition->setFactory([new Reference('doctrine'), 'getManager']);
         }
 
-        if (!empty($config['authorize'])) {
-            $this->loadAuthorize($config['authorize'], $container, $loader);
+        if (empty($config['authorize'])) {
+            return;
         }
+
+        $this->loadAuthorize($config['authorize'], $container, $loader);
 
         // Authorize form factory definition
         // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
