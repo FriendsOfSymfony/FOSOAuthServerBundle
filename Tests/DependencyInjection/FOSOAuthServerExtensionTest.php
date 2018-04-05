@@ -14,10 +14,63 @@ namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 
 class FOSOAuthServerExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    public function testShouldImplementConfigurationInterface()
+    {
+        $rc = new \ReflectionClass(FOSOAuthServerExtension::class);
+
+        $this->assertTrue($rc->isSubclassOf(Extension::class));
+    }
+
+    public function testCouldBeConstructedWithoutAnyArguments()
+    {
+        new FOSOAuthServerExtension();
+    }
+
+    public function testShouldLoadAuthorizeRelatedServicesIfAuthorizationIsEnabled()
+    {
+        $container = new ContainerBuilder();
+
+        $extension = new FOSOAuthServerExtension();
+        $extension->load([[
+            'db_driver' => 'orm',
+            'client_class' => 'aClientClass',
+            'access_token_class' => 'anAccessTokenClass',
+            'refresh_token_class' => 'aRefreshTokenClass',
+            'auth_code_class' => 'anAuthCodeClass',
+            'authorize' => true,
+        ]], $container);
+
+        $this->assertTrue($container->hasDefinition('fos_oauth_server.authorize.form'));
+        $this->assertTrue($container->hasDefinition('fos_oauth_server.authorize.form.type'));
+        $this->assertTrue($container->hasDefinition('fos_oauth_server.authorize.form.handler.default'));
+        $this->assertTrue($container->hasDefinition('fos_oauth_server.controller.authorize'));
+    }
+
+    public function testShouldNotLoadAuthorizeRelatedServicesIfAuthorizationIsDisabled()
+    {
+        $container = new ContainerBuilder();
+
+        $extension = new FOSOAuthServerExtension();
+        $extension->load([[
+            'db_driver' => 'orm',
+            'client_class' => 'aClientClass',
+            'access_token_class' => 'anAccessTokenClass',
+            'refresh_token_class' => 'aRefreshTokenClass',
+            'auth_code_class' => 'anAuthCodeClass',
+            'authorize' => false,
+        ]], $container);
+
+        $this->assertFalse($container->hasDefinition('fos_oauth_server.authorize.form'));
+        $this->assertFalse($container->hasDefinition('fos_oauth_server.authorize.form.type'));
+        $this->assertFalse($container->hasDefinition('fos_oauth_server.authorize.form.handler.default'));
+        $this->assertFalse($container->hasDefinition('fos_oauth_server.controller.authorize'));
+    }
+
     public function testLoadAuthorizeRouting()
     {
         $locator = new FileLocator();
