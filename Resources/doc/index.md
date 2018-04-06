@@ -282,47 +282,54 @@ You now can run the following command to create the model:
 ``` php
 <?php
 
-// src/Acme/ApiBundle/Document/Client.php
+// src/AppBundle/Document/Client.php
 
-namespace Acme\ApiBundle\Document;
+namespace AppBundle\Document;
 
 use FOS\OAuthServerBundle\Document\Client as BaseClient;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
+/**
+ * @MongoDB\Document
+ */
 class Client extends BaseClient
 {
+    /**
+     * @MongoDB\Id
+     */
     protected $id;
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/Client.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\Client" db="acme" collection="oauthClient" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ``` php
 <?php
 
-// src/Acme/ApiBundle/Document/AuthCode.php
+// src/AppBundle/Document/AuthCode.php
 
-namespace Acme\ApiBundle\Document;
+namespace AppBundle\Document;
 
 use FOS\OAuthServerBundle\Document\AuthCode as BaseAuthCode;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @MongoDB\Document
+ */
 class AuthCode extends BaseAuthCode
 {
+    /**
+     * @MongoDB\Id
+     */
     protected $id;
+    /**
+     * @MongoDB\ReferenceOne(targetDocument="AppBundle\Document\Client")
+     */
     protected $client;
+    /**
+     * @MongoDB\ReferenceOne(targetDocument="AppBundle\Document\User")
+     */
+    protected $user;
 
     public function getClient()
     {
@@ -333,39 +340,54 @@ class AuthCode extends BaseAuthCode
     {
         $this->client = $client;
     }
+    /**
+     * @param UserInterface $user
+     */
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+    }
+    /**
+     * @return UserInterface
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/AuthCode.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\AuthCode" db="acme" collection="oauthAuthCode" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-        <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ``` php
 <?php
 
-// src/Acme/ApiBundle/Document/AccessToken.php
+// src/AppBundle/Document/AccessToken.php
 
-namespace Acme\ApiBundle\Document;
+<?php
+
+namespace AppBundle\Document;
 
 use FOS\OAuthServerBundle\Document\AccessToken as BaseAccessToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @MongoDB\Document
+ */
 class AccessToken extends BaseAccessToken
 {
+    /**
+     * @MongoDB\Id
+     */
     protected $id;
+    /**
+     * @MongoDB\ReferenceOne(targetDocument="AppBundle\Document\Client")
+     */
     protected $client;
+    /**
+     * @MongoDB\ReferenceOne(targetDocument="AppBundle\Document\User")
+     */
+    protected $user;
 
     public function getClient()
     {
@@ -376,39 +398,52 @@ class AccessToken extends BaseAccessToken
     {
         $this->client = $client;
     }
+    /**
+     * @param UserInterface $user
+     */
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+    }
+    /**
+     * @return UserInterface
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/AccessToken.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\AccessToken" db="acme" collection="oauthAccessToken" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-        <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ``` php
 <?php
 
-// src/Acme/ApiBundle/Document/RefreshToken.php
+// src/AppBundle/Document/RefreshToken.php
 
-namespace Acme\ApiBundle\Document;
+namespace AppBundle\Document;
 
 use FOS\OAuthServerBundle\Document\RefreshToken as BaseRefreshToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @MongoDB\Document
+ */
 class RefreshToken extends BaseRefreshToken
 {
+    /**
+     * @MongoDB\Id
+     */
     protected $id;
+    /**
+     * @MongoDB\ReferenceOne(targetDocument="AppBundle\Document\Client")
+     */
     protected $client;
+    /**
+     * @MongoDB\ReferenceOne(targetDocument="AppBundle\Document\User")
+     */
+    protected $user;
 
     public function getClient()
     {
@@ -419,23 +454,21 @@ class RefreshToken extends BaseRefreshToken
     {
         $this->client = $client;
     }
+    /**
+     * @param UserInterface $user
+     */
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+    }
+    /**
+     * @return UserInterface
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
-```
-
-``` xml
-<!-- src/Acme/ApiBundle/Resources/config/doctrine/RefreshToken.mongodb.xml -->
-
-<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
-
-    <document name="Acme\ApiBundle\Document\RefreshToken" db="acme" collection="oauthRefreshToken" customId="true">
-        <field fieldName="id" id="true" strategy="AUTO" />
-        <reference-one target-document="Acme\ApiBundle\Document\Client" field="client" />
-    </document>
-
-</doctrine-mongo-mapping>
 ```
 
 ### Step 4: Configure your application's security.yml
