@@ -194,13 +194,12 @@ class AuthorizeController implements ContainerAwareInterface
             return $this->processSuccess($user, $formHandler, $request);
         }
 
-        return $this->templating->renderResponse(
-            '@FOSOAuthServer/Authorize/authorize.html.'.$this->templateEngineType,
-            [
-                'form' => $form->createView(),
-                'client' => $this->getClient(),
-            ]
-        );
+        $data = [
+            'form' => $form->createView(),
+            'client' => $this->getClient(),
+        ];
+
+        return $this->renderAuthorize($data, $this->templating, $this->templateEngineType);
     }
 
     /**
@@ -273,6 +272,17 @@ class AuthorizeController implements ContainerAwareInterface
         }
 
         return $this->client;
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
+    protected function renderAuthorize(array $data, EngineInterface $engine, string $engineType): Response
+    {
+        return $engine->renderResponse(
+            '@FOSOAuthServer/Authorize/authorize.html.'.$engineType,
+            $data
+        );
     }
 
     /**
