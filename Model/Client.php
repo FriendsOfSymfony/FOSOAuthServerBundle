@@ -41,6 +41,11 @@ class Client implements ClientInterface
      */
     protected $allowedGrantTypes = array();
 
+    /**
+     * @var bool
+     */
+    protected $trusted = false;
+
     public function __construct()
     {
         $this->allowedGrantTypes[] = OAuth2::GRANT_TYPE_AUTH_CODE;
@@ -132,5 +137,21 @@ class Client implements ClientInterface
     public function getAllowedGrantTypes()
     {
         return $this->allowedGrantTypes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTrusted($trusted)
+    {
+        $this->trusted = $trusted;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTrusted()
+    {
+        return $this->trusted;
     }
 }

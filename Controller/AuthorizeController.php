@@ -159,12 +159,13 @@ class AuthorizeController
         $form = $this->authorizeForm;
         $formHandler = $this->authorizeFormHandler;
 
+        $client = $this->getClient();
         $event = $this->eventDispatcher->dispatch(
             OAuthEvent::PRE_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient())
+            new OAuthEvent($user, $client)
         );
 
-        if ($event->isAuthorizedClient()) {
+        if ($event->isAuthorizedClient() || $client->isTrusted()) {
             $scope = $request->get('scope', null);
 
             return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
