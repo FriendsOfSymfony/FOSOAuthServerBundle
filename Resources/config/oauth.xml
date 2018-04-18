@@ -23,7 +23,7 @@
             <argument>%fos_oauth_server.server.options%</argument>
         </service>
 
-        <service id="FOS\OAuthServerBundle\Controller\TokenController">
+        <service id="FOS\OAuthServerBundle\Controller\TokenController" class="FOS\OAuthServerBundle\Controller\TokenController">
             <argument type="service" id="fos_oauth_server.server" />
         </service>
 
