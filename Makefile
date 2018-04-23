@@ -6,7 +6,7 @@ ci: cs-full-check phpstan phpunit-coverage
 lint: cs-full-check phpstan
 
 phpstan:
-	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level 4 ."
+	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level 5 ."
 
 cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"
