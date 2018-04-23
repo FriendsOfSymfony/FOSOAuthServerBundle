@@ -14,12 +14,18 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Storage;
 
 use FOS\OAuthServerBundle\Model\AccessToken;
+use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCode;
+use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\Client;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshToken;
+use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 {
@@ -39,27 +45,27 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->clientManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\ClientManagerInterface')
+        $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->accessTokenManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\AccessTokenManagerInterface')
+        $this->accessTokenManager = $this->getMockBuilder(AccessTokenManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->refreshTokenManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface')
+        $this->refreshTokenManager = $this->getMockBuilder(RefreshTokenManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->authCodeManager = $this->getMockBuilder('FOS\OAuthServerBundle\Model\AuthCodeManagerInterface')
+        $this->authCodeManager = $this->getMockBuilder(AuthCodeManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->userProvider = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserProviderInterface')
+        $this->userProvider = $this->getMockBuilder(UserProviderInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->encoderFactory = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface')
+        $this->encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
