@@ -18,6 +18,7 @@ use FOS\OAuthServerBundle\Model\AuthCode;
 use FOS\OAuthServerBundle\Model\Client;
 use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class OAuthStorageTest extends \PHPUnit\Framework\TestCase
@@ -339,6 +340,13 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
     {
         $client = new Client();
 
+        $this->userProvider
+            ->expects(self::once())
+            ->method('loadUserByUsername')
+            ->with('Joe')
+            ->willThrowException(new AuthenticationException('No such user'))
+        ;
+
         $result = $this->storage->checkUserCredentials($client, 'Joe', 'baz');
 
         $this->assertFalse($result);
@@ -427,7 +435,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         $this->userProvider->expects($this->once())
             ->method('loadUserByUsername')
             ->with('Joe')
-            ->will($this->returnValue(null))
+            ->willThrowException(new AuthenticationException('No such user'))
         ;
 
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
