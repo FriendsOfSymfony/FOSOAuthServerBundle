@@ -13,3 +13,5 @@ parameters:
         # how to avoid excluding these?
         - '#Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::scalarNode()#'
         - '#Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::end()#'
+        # expected
+        - '#Parameter \#2 $requestStack of class FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler constructor expects Symfony\Component\HttpFoundation\Request|Symfony\Component\HttpFoundation\RequestStack|null, stdClass given.#'

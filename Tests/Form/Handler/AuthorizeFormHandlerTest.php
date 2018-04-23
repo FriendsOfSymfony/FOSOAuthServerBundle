@@ -29,29 +29,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|FormInterface
-     */
     protected $form;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Request|RequestStack
-     */
     protected $request;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
-     */
     protected $requestQuery;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
-     */
     protected $requestRequest;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface
-     */
     protected $container;
 
     /**
@@ -65,7 +50,6 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        /** @var \PHPUnit_Framework_MockObject_MockObject&Request $request */
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock()
