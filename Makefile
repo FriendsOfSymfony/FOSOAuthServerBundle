@@ -1,5 +1,5 @@
 QA_DOCKER_IMAGE=jakzal/phpqa:alpine
-QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" -w /project ${QA_DOCKER_IMAGE}
+QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" --user "$(shell id -u):$(shell id -g)" -w /project ${QA_DOCKER_IMAGE}
 
 dist: cs-full phpstan phpunit
 ci: cs-full-check phpstan phpunit-coverage
@@ -33,6 +33,11 @@ composer-install:
 phpunit:
 	vendor/bin/phpunit
 
-# TODO: output to COV
-phpunit-coverage:
-	phpdbg -qrr vendor/bin/phpunit --coverage-text
+phpunit-coverage: clean
+	phpdbg -qrr vendor/bin/phpunit --coverage-text  --coverage-clover=build/clover.xml --coverage-xml=build/coverage-xml --log-junit=build/phpunit.junit.xml
+
+infection: phpunit-coverage
+	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /usr/local/bin/infection"
+
+clean:
+	rm -rf build/*

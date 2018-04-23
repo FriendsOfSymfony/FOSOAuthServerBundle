@@ -1,0 +1,15 @@
+{
+    "timeout": 10,
+    "source": {
+        "directories": [
+            "."
+        ],
+        "exclude": [
+            "Tests",
+            "vendor"
+        ]
+    },
+    "logs": {
+        "text": "build/infection-log.txt"
+    }
+}
