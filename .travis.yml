@@ -19,16 +19,16 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION=2.8.*
     - php: 5.6
-      env: SYMFONY_VERSION=3.0.* COVERAGE=true
+      env: SYMFONY_VERSION=3.4.* COVERAGE=true
     # test the latest release (including beta releases)
     - php: 7.1
       env: SYMFONY_VERSION=2.8.* COVERAGE=true
     - php: 7.1
-      env: SYMFONY_VERSION=3.0.* COVERAGE=true
+      env: SYMFONY_VERSION=3.4.* COVERAGE=true
     - php: 7.2
       env: SYMFONY_VERSION=2.8.* COVERAGE=true
     - php: 7.2
-      env: SYMFONY_VERSION=3.0.* COVERAGE=true
+      env: SYMFONY_VERSION=3.4.* COVERAGE=true
     - php: 7.2
       env: DEPENDENCIES=beta
   allow_failures:

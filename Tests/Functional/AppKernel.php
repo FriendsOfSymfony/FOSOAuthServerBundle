@@ -21,6 +21,7 @@ class AppKernel extends Kernel
         $bundles = array(
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
+            new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
 
             new \FOS\OAuthServerBundle\Tests\Functional\TestBundle\TestBundle(),
