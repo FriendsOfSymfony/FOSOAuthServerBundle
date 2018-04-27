@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,7 +65,6 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->entityManager
-            ->expects($this->once())
             ->method('getRepository')
             ->with($this->className)
             ->willReturn($this->repository)
@@ -76,7 +76,6 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     public function testConstructWillSetParameters()
     {
         $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
@@ -227,5 +226,30 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->assertSame($randomResult, $this->instance->deleteExpired());
+    }
+
+    public function testExceptionWithObjectRepository()
+    {
+        $this->repository = $this->getMockBuilder(ObjectRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->entityManager = $this->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
+
+        $this->instance = new TokenManager($this->entityManager, $this->className);
+
+        $this->expectException(\RuntimeException::class);
+        $this->instance->findTokenBy([]);
     }
 }
