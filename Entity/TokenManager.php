@@ -90,6 +90,11 @@ class TokenManager extends BaseTokenManager
      */
     protected function getRepository(): EntityRepository
     {
-        return $this->em->getRepository($this->class);
+        $repository = $this->em->getRepository($this->class);
+        if(!($repository instanceof EntityRepository)){
+            throw new \RuntimeException('EntityRepository needed');
+        }
+
+        return $repository;
     }
 }
