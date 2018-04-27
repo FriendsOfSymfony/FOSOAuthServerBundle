@@ -18,8 +18,6 @@ class BootTest extends TestCase
      */
     public function testBoot($env)
     {
-        $this->markTestIncomplete('Issue with Stopwatch component');
-
         $kernel = $this->createKernel(array('env' => $env));
         $kernel->boot();
     }
