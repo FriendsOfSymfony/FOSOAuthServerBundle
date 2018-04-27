@@ -37,19 +37,6 @@ class TokenManager extends BaseTokenManager
     }
 
     /**
-     * retrocompatibility with old $repository property.
-     * @param $name
-     * @return mixed
-     */
-    public function __get($name)
-    {
-        if ('repository' === $name) {
-            return $this->getRepository();
-        }
-
-        return $this->$name;
-    }
-    /**
      * {@inheritdoc}
      */
     public function getClass()
