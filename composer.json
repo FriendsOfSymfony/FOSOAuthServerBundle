@@ -37,7 +37,7 @@
         "symfony/form": "~3.0|~4.0",
         "symfony/phpunit-bridge": "~3.0|~4.0",
         "symfony/templating": "~3.0|~4.0",
-        "symfony/twig-bundle": "~2.8|~3.0|^4.0",
+        "symfony/twig-bundle": "~3.0|^4.0",
         "symfony/yaml": "~3.0|~4.0",
         "willdurand/propel-typehintable-behavior": "~1.0"
     },

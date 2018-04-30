@@ -15,12 +15,10 @@ namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 
 class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
@@ -44,7 +42,14 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function testCouldBeConstructedWithoutAnyArguments()
     {
-        new FOSOAuthServerExtension();
+        try {
+            new FOSOAuthServerExtension();
+
+            // no exceptions were thrown
+            self::assertTrue(true);
+        } catch (\Exception $exception) {
+            $this->fail($exception->getMessage());
+        }
     }
 
     public function testShouldLoadAuthorizeRelatedServicesIfAuthorizationIsEnabled()
@@ -218,16 +223,15 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
             'access_token_class' => 'anAccessTokenClass',
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
-            "service" => [
-                "storage" => "fos_oauth_server.storage.default",
-                "user_provider" => null,
-                "client_manager" => "the_client_manager_id",
-                "access_token_manager" => "the_access_token_manager_id",
-                "refresh_token_manager" => "the_refresh_token_manager_id",
-                "auth_code_manager" => "the_auth_code_manager_id",
+            'service' => [
+                'storage' => 'fos_oauth_server.storage.default',
+                'user_provider' => null,
+                'client_manager' => 'the_client_manager_id',
+                'access_token_manager' => 'the_access_token_manager_id',
+                'refresh_token_manager' => 'the_refresh_token_manager_id',
+                'auth_code_manager' => 'the_auth_code_manager_id',
             ],
         ]], $container);
-
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.storage'));
         $this->assertSame('fos_oauth_server.storage.default', (string) $container->getAlias('fos_oauth_server.storage'));

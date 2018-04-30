@@ -42,15 +42,16 @@ class CreateClientCommandTest extends TestCase
         $application = new Application();
         $application->add($command);
 
-        $this->command = $application->find($command->getName());
+        /** @var CreateClientCommand $command */
+        $command = $application->find($command->getName());
+
+        $this->command = $command;
     }
 
     /**
      * @dataProvider clientProvider
      *
-     * @param string $client A fully qualified class name.
-     * @param mixed $clientManager
-     * @param mixed $client
+     * @param string $client a fully qualified class name
      */
     public function testItShouldCreateClient($client)
     {

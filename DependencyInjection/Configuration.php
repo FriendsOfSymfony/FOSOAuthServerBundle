@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->validate()
-                ->always(function($v) {
+                ->always(function ($v) {
                     if ('custom' !== $v['db_driver']) {
                         return $v;
                     }

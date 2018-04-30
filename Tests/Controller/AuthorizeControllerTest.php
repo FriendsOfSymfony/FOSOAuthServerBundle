@@ -244,9 +244,8 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->expectException(
-            AccessDeniedException::class);
-            $this->expectExceptionMessage('This user does not have access to this section.');
+        $this->expectException(AccessDeniedException::class);
+        $this->expectExceptionMessage('This user does not have access to this section.');
 
         $this->instance->authorizeAction($this->request);
     }

@@ -13,14 +13,10 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Security\EntryPoint;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\HttpFoundation\Request;
-use OAuth2\OAuth2AuthenticateException;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2AuthenticateException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 

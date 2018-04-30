@@ -20,10 +20,6 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,10 +39,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AuthorizeController
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
     /**
      * @var ClientInterface
      */
@@ -113,16 +105,17 @@ class AuthorizeController
      *
      * @todo This controller could be refactored to not rely on so many dependencies
      *
-     * @param RequestStack           $requestStack
-     * @param  Form                   $authorizeForm
-     * @param AuthorizeFormHandler   $authorizeFormHandler
-     * @param OAuth2                 $oAuth2Server
-     * @param EngineInterface        $templating
-     * @param TokenStorageInterface  $tokenStorage
-     * @param UrlGeneratorInterface  $router
-     * @param ClientManagerInterface $clientManager
-     * @param EventDispatcherInterface        $eventDispatcher* @param SessionInterface         $session
-     * @param string                 $templateEngineType
+     * @param RequestStack             $requestStack
+     * @param Form                     $authorizeForm
+     * @param AuthorizeFormHandler     $authorizeFormHandler
+     * @param OAuth2                   $oAuth2Server
+     * @param EngineInterface          $templating
+     * @param TokenStorageInterface    $tokenStorage
+     * @param UrlGeneratorInterface    $router
+     * @param ClientManagerInterface   $clientManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param SessionInterface         $session
+     * @param string                   $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
@@ -148,16 +141,6 @@ class AuthorizeController
         $this->clientManager = $clientManager;
         $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Sets the container.
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**

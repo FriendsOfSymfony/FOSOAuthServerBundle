@@ -22,8 +22,15 @@ class BootTest extends TestCase
      */
     public function testBoot($env)
     {
-        $kernel = static::createKernel(['env' => $env]);
-        $kernel->boot();
+        try {
+            $kernel = static::createKernel(['env' => $env]);
+            $kernel->boot();
+
+            // no exceptions were thrown
+            self::assertTrue(true);
+        } catch (\Exception $exception) {
+            $this->fail($exception->getMessage());
+        }
     }
 
     public function getTestBootData()
