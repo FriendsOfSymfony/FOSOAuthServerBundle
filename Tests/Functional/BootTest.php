@@ -18,12 +18,10 @@ class BootTest extends TestCase
     /**
      * @dataProvider getTestBootData
      *
-     * @param mixed $env
+     * @param string $env
      */
     public function testBoot($env)
     {
-        $this->markTestIncomplete('Issue with Stopwatch component');
-
         $kernel = static::createKernel(['env' => $env]);
         $kernel->boot();
     }

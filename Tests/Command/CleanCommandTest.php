@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Command;
 
 use FOS\OAuthServerBundle\Command\CleanCommand;
+use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
+use FOS\OAuthServerBundle\Model\TokenManagerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\Container;
 
 class CleanCommandTest extends \PHPUnit\Framework\TestCase
 {
@@ -26,27 +27,35 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
     private $command;
 
     /**
-     * @var Container
+     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
      */
-    private $container;
+    private $accessTokenManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
+     */
+    private $refreshTokenManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|AuthCodeManagerInterface
+     */
+    private $authCodeManager;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $command = new CleanCommand();
+        $this->accessTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->refreshTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->authCodeManager = $this->getMockBuilder(AuthCodeManagerInterface::class)->disableOriginalConstructor()->getMock();
+
+        $command = new CleanCommand($this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager);
 
         $application = new Application();
         $application->add($command);
 
-        $this->container = new Container();
-
-        /** @var CleanCommand $command */
-        $command = $application->find($command->getName());
-        $command->setContainer($this->container);
-
-        $this->command = $command;
+        $this->command = $application->find($command->getName());
     }
 
     /**
@@ -56,35 +65,28 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
      *
      * @param string $class a fully qualified class name
      */
-    public function testItShouldRemoveExpiredToken($class)
+    public function testItShouldRemoveExpiredToken()
     {
         $expiredAccessTokens = 5;
-        $accessTokenManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-        $accessTokenManager
+        $this->accessTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredAccessTokens))
         ;
 
         $expiredRefreshTokens = 183;
-        $refreshTokenManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-        $refreshTokenManager
+        $this->refreshTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredRefreshTokens))
         ;
 
         $expiredAuthCodes = 0;
-        $authCodeManager = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-        $authCodeManager
+        $this->authCodeManager
             ->expects($this->once())
             ->method('deleteExpired')
             ->will($this->returnValue($expiredAuthCodes))
         ;
-
-        $this->container->set('fos_oauth_server.access_token_manager', $accessTokenManager);
-        $this->container->set('fos_oauth_server.refresh_token_manager', $refreshTokenManager);
-        $this->container->set('fos_oauth_server.auth_code_manager', $authCodeManager);
 
         $tester = new CommandTester($this->command);
         $tester->execute(['command' => $this->command->getName()]);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,13 +21,24 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CreateClientCommand extends ContainerAwareCommand
+class CreateClientCommand extends Command
 {
+    private $clientManager;
+
+    public function __construct(ClientManagerInterface $clientManager)
+    {
+        parent::__construct();
+
+        $this->clientManager = $clientManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('fos:oauth-server:create-client')
             ->setDescription('Creates a new client')
@@ -63,18 +75,14 @@ EOT
 
         $io->title('Client Credentials');
 
-        // Get the client manager
-        /** @var ClientManagerInterface $clientManager */
-        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
-
         // Create a new client
-        $client = $clientManager->createClient();
+        $client = $this->clientManager->createClient();
 
         $client->setRedirectUris($input->getOption('redirect-uri'));
         $client->setAllowedGrantTypes($input->getOption('grant-type'));
 
         // Save the client
-        $clientManager->updateClient($client);
+        $this->clientManager->updateClient($client);
 
         // Give the credentials back to the user
         $headers = ['Client ID', 'Client Secret'];

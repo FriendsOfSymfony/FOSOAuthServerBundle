@@ -23,6 +23,8 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -39,7 +41,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Chris Jones <leeked@gmail.com>
  */
-class AuthorizeController implements ContainerAwareInterface
+class AuthorizeController
 {
     /**
      * @var ContainerInterface
@@ -107,25 +109,23 @@ class AuthorizeController implements ContainerAwareInterface
 
     /**
      * This controller had been made as a service due to support symfony 4 where all* services are private by default.
-     * Thus, there is considered a bad practice to fetch services directly from container.
+     * Thus, this is considered a bad practice to fetch services directly from container.
      *
-     * @todo This controller could be refactored to do not rely on so many dependencies
+     * @todo This controller could be refactored to not rely on so many dependencies
      *
-     * @param RequestStack             $requestStack
-     * @param SessionInterface         $session
-     * @param Form                     $authorizeForm
-     * @param AuthorizeFormHandler     $authorizeFormHandler
-     * @param OAuth2                   $oAuth2Server
-     * @param EngineInterface          $templating
-     * @param TokenStorageInterface    $tokenStorage
-     * @param UrlGeneratorInterface    $router
-     * @param ClientManagerInterface   $clientManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $templateEngineType
+     * @param RequestStack           $requestStack
+     * @param  Form                   $authorizeForm
+     * @param AuthorizeFormHandler   $authorizeFormHandler
+     * @param OAuth2                 $oAuth2Server
+     * @param EngineInterface        $templating
+     * @param TokenStorageInterface  $tokenStorage
+     * @param UrlGeneratorInterface  $router
+     * @param ClientManagerInterface $clientManager
+     * @param EventDispatcherInterface        $eventDispatcher* @param SessionInterface         $session
+     * @param string                 $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
-        SessionInterface $session,
         Form $authorizeForm,
         AuthorizeFormHandler $authorizeFormHandler,
         OAuth2 $oAuth2Server,
@@ -134,6 +134,7 @@ class AuthorizeController implements ContainerAwareInterface
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcherInterface $eventDispatcher,
+        SessionInterface $session = null,
         $templateEngineType = 'twig'
     ) {
         $this->requestStack = $requestStack;
@@ -170,7 +171,7 @@ class AuthorizeController implements ContainerAwareInterface
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        if (true === $this->session->get('_fos_oauth_server.ensure_logout')) {
+        if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
             $this->session->invalidate(600);
             $this->session->set('_fos_oauth_server.ensure_logout', true);
         }
@@ -211,7 +212,7 @@ class AuthorizeController implements ContainerAwareInterface
      */
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
     {
-        if (true === $this->session->get('_fos_oauth_server.ensure_logout')) {
+        if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
             $this->session->invalidate();
         }
