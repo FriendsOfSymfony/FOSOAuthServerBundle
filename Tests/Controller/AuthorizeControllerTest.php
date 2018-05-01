@@ -137,10 +137,6 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->session = $this->getMockBuilder(SessionInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
         $this->form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -173,11 +169,14 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $this->session = $this->getMockBuilder(SessionInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->templateEngineType = 'twig';
 
         $this->instance = new AuthorizeController(
             $this->requestStack,
-            $this->session,
             $this->form,
             $this->authorizeFormHandler,
             $this->oAuth2Server,
@@ -186,6 +185,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             $this->router,
             $this->clientManager,
             $this->eventDispatcher,
+            $this->session,
             $this->templateEngineType
         );
 

@@ -1,4 +1,7 @@
 framework:
+    templating:
+        engines: ["twig"]
+    form: ~
     secret: test
     router:
         resource: "%kernel.root_dir%/config/routing.yml"

@@ -27,6 +27,7 @@ use OAuth2\IOAuth2RefreshTokens;
 use OAuth2\Model\IOAuth2Client;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -253,7 +254,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders)
     {
         if (!isset($this->grantExtensions[$uri])) {
-            throw new OAuth2ServerException(OAuth2::HTTP_BAD_REQUEST, OAuth2::ERROR_UNSUPPORTED_GRANT_TYPE);
+            throw new OAuth2ServerException(Response::HTTP_BAD_REQUEST, OAuth2::ERROR_UNSUPPORTED_GRANT_TYPE);
         }
 
         $grantExtension = $this->grantExtensions[$uri];

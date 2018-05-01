@@ -36,7 +36,10 @@ class FOSOAuthServerExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load(sprintf('%s.xml', $config['db_driver']));
+
+        if ('custom' !== $config['db_driver']) {
+            $loader->load(sprintf('%s.xml', $config['db_driver']));
+        }
 
         foreach (['oauth', 'security'] as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
@@ -92,12 +95,12 @@ class FOSOAuthServerExtension extends Extension
 
         if (!empty($config['authorize'])) {
             $this->loadAuthorize($config['authorize'], $container, $loader);
-        }
 
-        // Authorize form factory definition
-        // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
-        $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
-        $authorizeFormDefinition->setFactory([new Reference('form.factory'), 'createNamed']);
+            // Authorize form factory definition
+            // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
+            $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
+            $authorizeFormDefinition->setFactory([new Reference('form.factory'), 'createNamed']);
+        }
     }
 
     /**
