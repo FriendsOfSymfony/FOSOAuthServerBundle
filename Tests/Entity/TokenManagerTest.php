@@ -60,20 +60,12 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
 
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with($this->className)
-            ->willReturn($this->repository)
-        ;
-
         $this->instance = new TokenManager($this->entityManager, $this->className);
     }
 
     public function testConstructWillSetParameters()
     {
         $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
@@ -114,6 +106,14 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->method('findOneBy')
             ->with($criteria)
             ->willReturn($randomResult)
+        ;
+
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
         ;
 
         $this->assertSame($randomResult, $this->instance->findTokenBy($criteria));
@@ -221,6 +221,14 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->method('execute')
             ->with()
             ->willReturn($randomResult)
+        ;
+
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
         ;
 
         $this->assertSame($randomResult, $this->instance->deleteExpired());

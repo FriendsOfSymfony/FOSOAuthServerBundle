@@ -37,7 +37,6 @@ class ClientManager extends BaseClientManager
     public function __construct(ObjectManager $em, $class)
     {
         $this->em = $em;
-        $this->repository = $em->getRepository($class);
         $this->class = $class;
     }
 
@@ -54,7 +53,7 @@ class ClientManager extends BaseClientManager
      */
     public function findClientBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->getRepository()->findOneBy($criteria);
     }
 
     /**
@@ -73,5 +72,17 @@ class ClientManager extends BaseClientManager
     {
         $this->em->remove($client);
         $this->em->flush();
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    private function getRepository()
+    {
+        if(is_null($this->repository))
+        {
+            $this->repository = $this->em->getRepository($this->class);
+        }
+        return $this->repository;
     }
 }

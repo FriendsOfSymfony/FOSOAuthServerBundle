@@ -37,7 +37,6 @@ class TokenManager extends BaseTokenManager
     public function __construct(ObjectManager $em, $class)
     {
         $this->em = $em;
-        $this->repository = $em->getRepository($class);
         $this->class = $class;
     }
 
@@ -54,7 +53,7 @@ class TokenManager extends BaseTokenManager
      */
     public function findTokenBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->getRepository()->findOneBy($criteria);
     }
 
     /**
@@ -80,12 +79,24 @@ class TokenManager extends BaseTokenManager
      */
     public function deleteExpired()
     {
-        $qb = $this->repository->createQueryBuilder('t');
+        $qb = $this->getRepository()->createQueryBuilder('t');
         $qb
             ->delete()
             ->where('t.expiresAt < ?1')
             ->setParameters(array(1 => time()));
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    private function getRepository()
+    {
+        if(is_null($this->repository))
+        {
+            $this->repository = $this->em->getRepository($this->class);
+        }
+        return $this->repository;
     }
 }
