@@ -79,7 +79,7 @@ class TokenManager extends BaseTokenManager
      */
     public function deleteExpired()
     {
-        $qb = $this->repository->createQueryBuilder('t');
+        $qb = $this->getRepository()->createQueryBuilder('t');
         $qb
             ->delete()
             ->where('t.expiresAt < ?1')
