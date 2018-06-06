@@ -46,6 +46,7 @@ class FOSOAuthServerExtension extends Extension
         }
 
         $container->setAlias('fos_oauth_server.storage', $config['service']['storage']);
+        $container->setAlias('fos_oauth_server.password_checker', $config['service']['password_checker']);
         $container->setAlias('fos_oauth_server.client_manager', $config['service']['client_manager']);
         $container->setAlias('fos_oauth_server.access_token_manager', $config['service']['access_token_manager']);
         $container->setAlias('fos_oauth_server.refresh_token_manager', $config['service']['refresh_token_manager']);
