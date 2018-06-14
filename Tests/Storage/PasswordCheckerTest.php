@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Storage;
 
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use FOS\OAuthServerBundle\Storage\PasswordChecker;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class PasswordCheckerTest extends \PHPUnit\Framework\TestCase
 {

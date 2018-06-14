@@ -18,7 +18,6 @@ use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
-use FOS\OAuthServerBundle\Storage\PasswordCheckerInterface;
 use OAuth2\IOAuth2GrantClient;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\IOAuth2GrantExtension;

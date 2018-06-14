@@ -18,10 +18,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 interface PasswordCheckerInterface
 {
     /**
-     * Validate the user's password matches
+     * Validate the user's password matches.
      *
-     * @param  UserInterface $user
-     * @param  string        $password
+     * @param UserInterface $user
+     * @param string        $password
+     *
      * @return bool
      */
     public function validate(UserInterface $user, $password): bool;
