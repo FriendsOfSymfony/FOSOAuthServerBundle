@@ -121,6 +121,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('storage')->defaultValue('fos_oauth_server.storage.default')->cannotBeEmpty()->end()
+                            ->scalarNode('password_checker')->defaultValue('fos_oauth_server.password_checker.default')->cannotBeEmpty()->end()
                             ->scalarNode('user_provider')->defaultNull()->end()
                             ->scalarNode('client_manager')->defaultValue('fos_oauth_server.client_manager.default')->end()
                             ->scalarNode('access_token_manager')->defaultValue('fos_oauth_server.access_token_manager.default')->end()

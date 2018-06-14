@@ -22,7 +22,7 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use FOS\OAuthServerBundle\Storage\PasswordCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -39,7 +39,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 
     protected $userProvider;
 
-    protected $encoderFactory;
+    protected $passwordChecker;
 
     protected $storage;
 
@@ -65,12 +65,12 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
+        $this->passwordChecker = $this->getMockBuilder(PasswordCheckerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
 
-        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
+        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->passwordChecker, $this->userProvider);
     }
 
     public function testGetClientReturnsClientWithGivenId()
@@ -365,20 +365,6 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $user->expects($this->once())
-            ->method('getPassword')->with()->will($this->returnValue('foo'));
-        $user->expects($this->once())
-            ->method('getSalt')->with()->will($this->returnValue('bar'));
-
-        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $encoder->expects($this->once())
-            ->method('isPasswordValid')
-            ->with('foo', 'baz', 'bar')
-            ->will($this->returnValue(true))
-        ;
 
         $this->userProvider->expects($this->once())
             ->method('loadUserByUsername')
@@ -386,10 +372,10 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($user))
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
-            ->with($user)
-            ->will($this->returnValue($encoder))
+        $this->passwordChecker->expects($this->once())
+            ->method('validate')
+            ->with($user, 'baz')
+            ->will($this->returnValue(true))
         ;
 
         $this->assertSame([
@@ -404,20 +390,6 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $user->expects($this->once())
-            ->method('getPassword')->with()->will($this->returnValue('foo'));
-        $user->expects($this->once())
-            ->method('getSalt')->with()->will($this->returnValue('bar'));
-
-        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $encoder->expects($this->once())
-            ->method('isPasswordValid')
-            ->with('foo', 'baz', 'bar')
-            ->will($this->returnValue(false))
-        ;
 
         $this->userProvider->expects($this->once())
             ->method('loadUserByUsername')
@@ -425,10 +397,10 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($user))
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
-            ->with($user)
-            ->will($this->returnValue($encoder))
+        $this->passwordChecker->expects($this->once())
+            ->method('validate')
+            ->with($user, 'baz')
+            ->will($this->returnValue(false))
         ;
 
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
