@@ -171,11 +171,11 @@ class AuthorizeController
         if ($event->isAuthorizedClient()) {
             $scope = $request->get('scope', null);
 
-			try {
-				return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
-			} catch (OAuth2ServerException $e) {
-				return $e->getHttpResponse();
-			}
+            try {
+                return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
+            } catch (OAuth2ServerException $e) {
+                return $e->getHttpResponse();
+            }
         }
 
         if (true === $formHandler->process()) {
@@ -217,7 +217,7 @@ class AuthorizeController
         try {
             return $this->oAuth2Server
                 ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope())
-            ;
+                ;
         } catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
