@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="fos_oauth_server.controller.introspection" class="FOS\OAuthServerBundle\Controller\IntrospectionController" public="true">
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="fos_oauth_server.access_token_manager" />
+            <argument type="service" id="fos_oauth_server.refresh_token_manager" />
+        </service>
+    </services>
+
+</container>
