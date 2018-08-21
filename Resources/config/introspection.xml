@@ -9,6 +9,8 @@
             <argument type="service" id="security.token_storage" />
             <argument type="service" id="fos_oauth_server.access_token_manager" />
             <argument type="service" id="fos_oauth_server.refresh_token_manager" />
+            <argument type="service" id="form.factory" />
+            <argument>%fos_oauth_server.introspection.allowed_clients%</argument>
         </service>
     </services>
 
