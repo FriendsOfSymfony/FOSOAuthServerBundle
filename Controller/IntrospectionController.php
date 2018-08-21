@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Controller;
 
+use FOS\OAuthServerBundle\Form\Model\Introspect;
+use FOS\OAuthServerBundle\Form\Type\IntrospectionFormType;
 use FOS\OAuthServerBundle\Model\AccessTokenInterface;
 use FOS\OAuthServerBundle\Model\RefreshTokenInterface;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use FOS\OAuthServerBundle\Model\TokenManagerInterface;
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class IntrospectionController
 {
@@ -38,21 +44,47 @@ class IntrospectionController
      */
     private $refreshTokenManager;
 
+    /**
+     * @var FormFactory
+     */
+    private $formFactory;
+
+    /**
+     * @var array
+     */
+    private $allowedIntrospectionClients;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         TokenManagerInterface $accessTokenManager,
-        TokenManagerInterface $refreshTokenManager
+        TokenManagerInterface $refreshTokenManager,
+        FormFactory $formFactory,
+        array $allowedIntrospectionClients
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->accessTokenManager = $accessTokenManager;
         $this->refreshTokenManager = $refreshTokenManager;
+        $this->formFactory = $formFactory;
+        $this->allowedIntrospectionClients = $allowedIntrospectionClients;
     }
 
     public function introspectAction(Request $request): JsonResponse
     {
-        // $clientToken = $this->tokenStorage->getToken(); → use in security
+        $clientToken = $this->tokenStorage->getToken(); // → use in security
 
-        // TODO security for this endpoint. Probably in the README documentation
+        if (!$clientToken instanceof OAuthToken) {
+            throw new AccessDeniedException('The introspect endpoint must be behind a secure firewall.');
+        }
+
+        $callerToken = $this->accessTokenManager->findTokenByToken($clientToken->getToken());
+
+        if (!$callerToken) {
+            throw new AccessDeniedException('The access token must have a valid token.');
+        }
+
+        if (!in_array($callerToken->getClientId(), $this->allowedIntrospectionClients)) {
+            throw new AccessDeniedException('This access token is not autorised to do introspection.');
+        }
 
         $token = $this->getToken($request);
 
@@ -79,8 +111,9 @@ class IntrospectionController
      */
     private function getToken(Request $request)
     {
-        $tokenTypeHint = $request->request->get('token_type_hint'); // TODO move in a form type ? can be `access_token`, `refresh_token` See https://tools.ietf.org/html/rfc7009#section-4.1.2
-        $tokenString = $request->request->get('token'); // TODO move in a form type ?
+        $formData = $this->processIntrospectionForm($request);
+        $tokenString = $formData->token;
+        $tokenTypeHint = $formData->token_type_hint;
 
         $tokenManagerList = [];
         if (!$tokenTypeHint || 'access_token' === $tokenTypeHint) {
@@ -124,5 +157,22 @@ class IntrospectionController
         }
 
         return $user->getUserName();
+    }
+
+    private function processIntrospectionForm(Request $request): Introspect
+    {
+        $formData = new Introspect();
+        $form = $this->formFactory->create(IntrospectionFormType::class, $formData);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            $errors = $form->getErrors();
+            if (count($errors) > 0) {
+                throw new BadRequestHttpException((string) $errors);
+            } else {
+                throw new BadRequestHttpException('Introspection endpoint needs to have at least a "token" form parameter');
+            }
+        }
+        return $form->getData();
     }
 }
