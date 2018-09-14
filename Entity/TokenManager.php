@@ -85,15 +85,9 @@ class TokenManager extends BaseTokenManager
         return $qb->getQuery()->execute();
     }
 
-    /**
-     * @return EntityRepository
-     */
-    protected function getRepository(): EntityRepository
+    private function getRepository(): EntityRepository
     {
         $repository = $this->em->getRepository($this->class);
-        if (!($repository instanceof EntityRepository)) {
-            throw new \RuntimeException('EntityRepository needed');
-        }
 
         return $repository;
     }
