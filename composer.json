@@ -48,6 +48,9 @@
         "symfony/form" : "Needed to be able to use the AuthorizeFormType",
         "symfony/console": "Needed to be able to use commands"
     },
+    "conflict": {
+        "doctrine/mongodb-odm": ">=2"
+    },
     "autoload": {
         "psr-4": { "FOS\\OAuthServerBundle\\": "" },
         "exclude-from-classmap": ["/Tests/"]
