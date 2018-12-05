@@ -29,10 +29,17 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        if (method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('fos_oauth_server');
 
-        /** @var ArrayNodeDefinition $rootNode */
-        $rootNode = $treeBuilder->root('fos_oauth_server');
+            /** @var ArrayNodeDefinition $rootNode */
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $treeBuilder = new TreeBuilder();
+
+            /** @var ArrayNodeDefinition $rootNode */
+            $rootNode = $treeBuilder->root('fos_oauth_server');
+        }
 
         $supportedDrivers = ['orm', 'mongodb', 'propel', 'custom'];
 
