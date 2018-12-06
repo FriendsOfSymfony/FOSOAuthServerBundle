@@ -28,6 +28,8 @@ matrix:
     - php: 7.2
       env: SYMFONY_VERSION=2.8.* COVERAGE=true
     - php: 7.2
+      env: SYMFONY_VERSION=4.2.* COVERAGE=true
+    - php: 7.2
       env: SYMFONY_VERSION=3.4.* COVERAGE=true
     - php: 7.2
       env: DEPENDENCIES=beta
