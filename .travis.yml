@@ -4,6 +4,7 @@ sudo: true
 php:
   - 7.1
   - 7.2
+  - 7.3
 
 service:
   - docker
@@ -17,6 +18,10 @@ matrix:
     - php: 7.2
       env: SYMFONY_VERSION=4.0.*
     - php: 7.2
+      env: SYMFONY_VERSION=4.0.* DEPENDENCIES=beta
+    - php: 7.3
+      env: SYMFONY_VERSION=4.0.*
+    - php: 7.3
       env: SYMFONY_VERSION=4.0.* DEPENDENCIES=beta
 
 cache:
