@@ -240,9 +240,7 @@ class AuthorizeController
             return $this->client;
         }
 
-        if (null === $request = $this->getCurrentRequest()) {
-            throw new NotFoundHttpException('Client not found.');
-        }
+        $request = $this->getCurrentRequest();
 
         if (null === $clientId = $request->get('client_id')) {
             $formData = $request->get($this->authorizeForm->getName(), []);
@@ -270,7 +268,7 @@ class AuthorizeController
     }
 
     /**
-     * @return null|Request
+     * @return Request
      */
     private function getCurrentRequest()
     {
