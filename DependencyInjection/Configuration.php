@@ -29,10 +29,14 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-
-        /** @var ArrayNodeDefinition $rootNode */
-        $rootNode = $treeBuilder->root('fos_oauth_server');
+        $treeBuilder = new TreeBuilder('fos_oauth_server');
+        if (\method_exists($treeBuilder, 'getRootNode')) {
+            /** @var ArrayNodeDefinition $rootNode */
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $treeBuilder->root('fos_oauth_server');
+        }
 
         $supportedDrivers = ['orm', 'mongodb', 'propel', 'custom'];
 
