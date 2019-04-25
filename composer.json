@@ -1,7 +1,7 @@
 {
-    "name": "friendsofsymfony/oauth-server-bundle",
+    "name": "klapaudius/oauth-server-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony2 OAuth Server Bundle",
+    "description": "Symfony4 OAuth Server Bundle",
     "keywords": ["oauth", "oauth2", "server"],
     "homepage": "http://friendsofsymfony.github.com",
     "license": "MIT",
