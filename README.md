@@ -10,7 +10,9 @@ The bulk of the documentation is stored in the `Resources/doc/index.md` file in 
 
 [Read the Documentation for master](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/master/Resources/doc/index.md)
 
+## Repository history
 
+This repository has been created to remove the deprecated warnings on Symfony 4.2 since several pull requests were not reviewed on FriendsOfSymfony/FOSOAuthServerBundle.
 ## License
 
 This bundle is under the MIT license. See the complete license in the bundle:
