@@ -29,8 +29,6 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-
         /** @var ArrayNodeDefinition $rootNode */
         $treeBuilder = new TreeBuilder('fos_oauth_server');
         if (\method_exists($treeBuilder, 'getRootNode')) {
