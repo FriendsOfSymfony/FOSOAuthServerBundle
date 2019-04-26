@@ -15,7 +15,6 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Serialization\Author;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
