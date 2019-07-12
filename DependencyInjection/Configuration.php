@@ -27,8 +27,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fos_oauth_server');
+        $treeBuilder = new TreeBuilder('fos_oauth_server');
+        $rootNode = $treeBuilder->getRootNode();
 
         $supportedDrivers = array('orm', 'mongodb', 'propel', 'custom');
 
