@@ -1,6 +1,4 @@
 framework:
-    templating:
-        engines: ["twig"]
     form: ~
     secret: test
     router:
