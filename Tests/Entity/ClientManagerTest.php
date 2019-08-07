@@ -86,16 +86,16 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         $criteria = [
             \random_bytes(5),
         ];
-        $randomResult = \random_bytes(5);
+        $client = $this->createMock(ClientInterface::class);
 
         $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($criteria)
-            ->willReturn($randomResult)
+            ->willReturn($client)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
+        $this->assertSame($client, $this->instance->findClientBy($criteria));
     }
 
     public function testUpdateClient()

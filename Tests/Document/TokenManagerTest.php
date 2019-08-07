@@ -19,6 +19,7 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
+use FOS\OAuthServerBundle\Model\TokenInterface;
 
 /**
  * @group time-sensitive
@@ -77,8 +78,8 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindTokenByToken()
     {
+        $token = $this->createMock(TokenInterface::class);
         $randomToken = \random_bytes(5);
-        $randomResult = \random_bytes(5);
 
         $this->repository
             ->expects($this->once())
@@ -86,10 +87,10 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->with([
                 'token' => $randomToken,
             ])
-            ->willReturn($randomResult)
+            ->willReturn($token)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
+        $this->assertSame($token, $this->instance->findTokenByToken($randomToken));
     }
 
     public function testUpdateTokenPersistsAndFlushes()
@@ -193,7 +194,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $data = [
-            'n' => \random_bytes(5),
+            'n' => \mt_rand(0, 10),
         ];
 
         $query

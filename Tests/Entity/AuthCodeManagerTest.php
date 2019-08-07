@@ -86,16 +86,16 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $criteria = [
             \random_bytes(10),
         ];
-        $randomResult = \random_bytes(10);
+        $authCode = $this->createMock(AuthCodeInterface::class);
 
         $repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with($criteria)
-            ->willReturn($randomResult)
+            ->willReturn($authCode)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
+        $this->assertSame($authCode, $this->instance->findAuthCodeBy($criteria));
     }
 
     public function testUpdateAuthCode()
@@ -148,7 +148,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testDeleteExpired()
     {
-        $randomResult = \random_bytes(10);
+        $randomResult = \mt_rand(0, 10);
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()

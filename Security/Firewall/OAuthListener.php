@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Security\Firewall;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
+use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -80,7 +81,8 @@ class OAuthListener implements ListenerInterface
                 return $event->setResponse($returnValue);
             }
         } catch (AuthenticationException $e) {
-            if (null !== $p = $e->getPrevious()) {
+            $p = $e->getPrevious();
+            if ($p instanceof OAuth2ServerException) {
                 $event->setResponse($p->getHttpResponse());
             }
         }

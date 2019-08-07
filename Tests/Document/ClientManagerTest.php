@@ -87,7 +87,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindClientBy()
     {
-        $randomResult = \random_bytes(5);
+        $client = $this->createMock(ClientInterface::class);
         $criteria = [
             \random_bytes(5),
         ];
@@ -96,10 +96,10 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('findOneBy')
             ->with($criteria)
-            ->willReturn($randomResult)
+            ->willReturn($client)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
+        $this->assertSame($client, $this->instance->findClientBy($criteria));
     }
 
     public function testUpdateClient()

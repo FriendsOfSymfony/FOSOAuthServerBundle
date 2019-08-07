@@ -45,7 +45,7 @@ class AuthorizeController
     private $client;
 
     /**
-     * @var SessionInterface
+     * @var SessionInterface|null
      */
     private $session;
 
@@ -114,7 +114,7 @@ class AuthorizeController
      * @param UrlGeneratorInterface    $router
      * @param ClientManagerInterface   $clientManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param SessionInterface         $session
+     * @param SessionInterface|null    $session
      * @param string                   $templateEngineType
      */
     public function __construct(

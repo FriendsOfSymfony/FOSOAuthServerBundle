@@ -19,3 +19,6 @@ parameters:
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children().#'
         # expected
         - '#Parameter \#2 $requestStack of class FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler constructor expects Symfony\Component\HttpFoundation\Request|Symfony\Component\HttpFoundation\RequestStack|null, stdClass given.#'
+        # Event dispatcher changes coming for Symfony 5
+        - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required.#'
+        - '#Parameter \#1 \$event of method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface\:\:dispatch\(\) expects object, string given\.#'

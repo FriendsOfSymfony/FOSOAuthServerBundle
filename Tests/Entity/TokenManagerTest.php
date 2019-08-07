@@ -106,7 +106,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindTokenBy()
     {
-        $randomResult = \random_bytes(5);
+        $token = $this->createMock(TokenInterface::class);
 
         $criteria = [
             \random_bytes(5),
@@ -116,10 +116,10 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('findOneBy')
             ->with($criteria)
-            ->willReturn($randomResult)
+            ->willReturn($token)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findTokenBy($criteria));
+        $this->assertSame($token, $this->instance->findTokenBy($criteria));
     }
 
     public function testUpdateToken()
@@ -172,7 +172,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testDeleteExpired()
     {
-        $randomResult = \random_bytes(10);
+        $randomResult = \mt_rand(0, 10);
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()

@@ -18,12 +18,14 @@ use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\TokenInterface;
 use OAuth2\IOAuth2GrantClient;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\IOAuth2GrantExtension;
 use OAuth2\IOAuth2GrantImplicit;
 use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2RefreshTokens;
+use OAuth2\Model\IOAuth2AccessToken;
 use OAuth2\Model\IOAuth2Client;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
@@ -118,6 +120,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $this->checkClientCredentials($client, $client_secret);
     }
 
+    /**
+     * @param string $token
+     *
+     * @return TokenInterface|IOAuth2AccessToken|null
+     */
     public function getAccessToken($token)
     {
         return $this->accessTokenManager->findTokenByToken($token);

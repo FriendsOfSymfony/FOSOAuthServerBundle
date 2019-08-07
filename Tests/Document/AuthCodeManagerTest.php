@@ -90,7 +90,8 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindAuthCodeBy()
     {
-        $randomResult = \random_bytes(10);
+        $authCode = $this->createMock(AuthCodeInterface::class);
+
         $criteria = [
             \random_bytes(10),
         ];
@@ -99,10 +100,10 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('findOneBy')
             ->with($criteria)
-            ->willReturn($randomResult)
+            ->willReturn($authCode)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
+        $this->assertSame($authCode, $this->instance->findAuthCodeBy($criteria));
     }
 
     public function testUpdateAuthCode()
@@ -203,7 +204,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $data = [
-            'n' => \random_bytes(10),
+            'n' => \mt_rand(0, 10),
         ];
 
         $query
