@@ -1,29 +1,49 @@
 language: php
 
 sudo: true
-php:
-  - 7.1
-  - 7.2
-  - 7.3
-  - 7.4snapshot
 
 service:
   - docker
   - mongodb
 
-matrix:
+jobs:
   allow_failures:
     - php: 7.4snapshot
-  fast_finish: true
+
   include:
-    - php: 7.1
+    # Smoke testing: run phpunit, phpstan and php-cs-fixer on latest stable PHP version
+    - stage: Smoke Testing
+      php: 7.3
+      env: check=phpunit
+    - Stage: Smoke Testing
+      php: 7.3
+      script: make cs-full-check
+      env: check=php-cs-fixer
+    - Stage: Smoke Testing
+      php: 7.3
+      script: make phpstan
+      env: check=phpstan
+
+    # Test other PHP versions
+    - stage: Test
+      php: 7.1
+    - stage: Test
+      php: 7.2
+    - stage: Test
+      php: 7.4snapshot
+
+    # Test against lowest set of dependencies
+    - stage: Test
+      php: 7.1
       env: COMPOSER_FLAGS=--prefer-lowest
-    - php: 7.3
+
+    # Test supported Symfony versions
+    - stage: Test
+      php: 7.3
       env: SYMFONY_VERSION=3.4.*
-    - php: 7.3
+    - stage: Test
+      php: 7.3
       env: SYMFONY_VERSION=4.3.*
-    - php: 7.3
-      env: SYMFONY_VERSION=4.3.* DEPENDENCIES=beta
 
 cache:
   directories:
@@ -38,4 +58,4 @@ before_script:
   - make composer-install
 
 script:
-  - make ci
+  - make phpunit-coverage
