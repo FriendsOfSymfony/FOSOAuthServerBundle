@@ -27,7 +27,7 @@ composer-config-beta:
 composer-install:
 	rm -f composer.lock && cp composer.json composer.json~
 	[[ -v SYMFONY_VERSION ]] && composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update || true
-	composer update --prefer-dist --no-interaction
+	composer update --prefer-dist --no-interaction ${COMPOSER_FLAGS}
 	mv composer.json~ composer.json
 
 phpunit:
