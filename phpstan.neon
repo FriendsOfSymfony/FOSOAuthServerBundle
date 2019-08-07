@@ -1,5 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
 parameters:
     autoload_files:
         - vendor/autoload.php
