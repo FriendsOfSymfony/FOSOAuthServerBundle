@@ -76,8 +76,8 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
      * @param AccessTokenManagerInterface  $accessTokenManager
      * @param RefreshTokenManagerInterface $refreshTokenManager
      * @param AuthCodeManagerInterface     $authCodeManager
-     * @param null|UserProviderInterface   $userProvider
-     * @param null|EncoderFactoryInterface $encoderFactory
+     * @param UserProviderInterface|null   $userProvider
+     * @param EncoderFactoryInterface|null $encoderFactory
      */
     public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
         RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,

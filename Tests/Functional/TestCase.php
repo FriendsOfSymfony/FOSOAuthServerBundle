@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 abstract class TestCase extends WebTestCase
 {
     /**
-     * @var null|KernelInterface
+     * @var KernelInterface|null
      */
     protected static $kernel;
 

@@ -61,7 +61,7 @@ class OAuthProvider implements AuthenticationProviderInterface
     /**
      * @param OAuthToken&TokenInterface $token
      *
-     * @return null|OAuthToken
+     * @return OAuthToken|null
      */
     public function authenticate(TokenInterface $token)
     {
