@@ -355,6 +355,13 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->form
             ->expects($this->once())
+            ->method('isSubmitted')
+            ->with()
+            ->willReturn(true)
+        ;
+
+        $this->form
+            ->expects($this->once())
             ->method('isValid')
             ->with()
             ->willReturn(false)
@@ -410,6 +417,13 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
             ->method('handleRequest')
             ->with($this->request)
             ->willReturn($this->form)
+        ;
+
+        $this->form
+            ->expects($this->once())
+            ->method('isSubmitted')
+            ->with()
+            ->willReturn(true)
         ;
 
         $this->form

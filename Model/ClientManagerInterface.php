@@ -26,14 +26,14 @@ interface ClientManagerInterface
     public function getClass();
 
     /**
-     * @return null|ClientInterface
+     * @return ClientInterface|null
      */
     public function findClientBy(array $criteria);
 
     /**
      * @param mixed $publicId
      *
-     * @return null|ClientInterface
+     * @return ClientInterface|null
      */
     public function findClientByPublicId($publicId);
 
