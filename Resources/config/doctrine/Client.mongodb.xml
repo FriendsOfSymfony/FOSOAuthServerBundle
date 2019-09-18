@@ -9,5 +9,6 @@
         <field name="redirectUris" fieldName="redirectUris" type="collection" />
         <field name="secret" fieldName="secret" type="string" />
         <field name="allowedGrantTypes" fieldName="allowedGrantTypes" type="collection" />
+        <field name="trusted" fieldName="trusted" type="boolean" />
     </mapped-superclass>
 </doctrine-mongo-mapping>

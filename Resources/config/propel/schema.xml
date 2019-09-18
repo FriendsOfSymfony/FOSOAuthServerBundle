@@ -6,6 +6,7 @@
         <column name="redirect_uris" type="array" required="true" />
         <column name="secret" type="varchar" required="true" />
         <column name="allowed_grant_types" type="array" required="true" />
+        <column name="trusted" type="boolean" required="true" />
 
         <behavior name="typehintable">
             <parameter name="redirect_uris" value="array" />

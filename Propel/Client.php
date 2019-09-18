@@ -27,6 +27,7 @@ class Client extends BaseClient implements ClientInterface
         ));
         $this->setRandomId(Random::generateToken());
         $this->setSecret(Random::generateToken());
+        $this->setTrusted(false);
     }
 
     /**
@@ -43,5 +44,13 @@ class Client extends BaseClient implements ClientInterface
     public function getPublicId()
     {
         return sprintf('%s_%s', $this->getId(), $this->getRandomId());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTrusted()
+    {
+        return $this->trusted;
     }
 }

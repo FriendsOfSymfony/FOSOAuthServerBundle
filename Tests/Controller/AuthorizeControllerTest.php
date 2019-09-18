@@ -372,6 +372,82 @@ class AuthorizeControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
+    public function testAuthorizeActionWithTrustedClientWillFinishClientAuthorization()
+    {
+        $token = $this->getMockBuilder(TokenInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->tokenStorage
+            ->expects($this->at(0))
+            ->method('getToken')
+            ->willReturn($token)
+        ;
+
+        $token
+            ->expects($this->at(0))
+            ->method('getUser')
+            ->willReturn($this->user)
+        ;
+
+        $this->session
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('_fos_oauth_server.ensure_logout')
+            ->willReturn(false)
+        ;
+
+        $propertyReflection = new \ReflectionProperty(AuthorizeController::class, 'client');
+        $propertyReflection->setAccessible(true);
+        $propertyReflection->setValue($this->instance, $this->client);
+
+        $this->eventDispatcher
+            ->expects($this->at(0))
+            ->method('dispatch')
+            ->with(OAuthEvent::PRE_AUTHORIZATION_PROCESS, new OAuthEvent($this->user, $this->client))
+            ->willReturn($this->event)
+        ;
+
+        $this->event
+            ->expects($this->at(0))
+            ->method('isAuthorizedClient')
+            ->with()
+            ->willReturn(false)
+        ;
+
+        $this->client
+            ->expects($this->at(0))
+            ->method('isTrusted')
+            ->with()
+            ->willReturn(true);
+
+        $randomScope = 'scope' . \random_bytes(10);
+
+        $this->request
+            ->expects($this->at(0))
+            ->method('get')
+            ->with('scope', null)
+            ->willReturn($randomScope)
+        ;
+
+        $response = new Response();
+
+        $this->oAuth2Server
+            ->expects($this->at(0))
+            ->method('finishClientAuthorization')
+            ->with(
+                true,
+                $this->user,
+                $this->request,
+                $randomScope
+            )
+            ->willReturn($response)
+        ;
+
+        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+    }
+
     public function testAuthorizeActionWillEnsureLogout()
     {
         $token = $this->getMockBuilder(TokenInterface::class)
