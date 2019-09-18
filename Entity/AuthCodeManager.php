@@ -52,7 +52,10 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     public function findAuthCodeBy(array $criteria)
     {
-        return $this->em->getRepository($this->class)->findOneBy($criteria);
+        /** @var AuthCodeInterface|null $authCode */
+        $authCode = $this->em->getRepository($this->class)->findOneBy($criteria);
+
+        return $authCode;
     }
 
     /**

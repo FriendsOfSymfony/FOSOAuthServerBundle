@@ -40,8 +40,8 @@ class AuthorizeFormHandler
     private $requestStack;
 
     /**
-     * @param FormInterface             $form
-     * @param Request|RequestStack|null $requestStack
+     * @param FormInterface                   $form
+     * @param mixed|Request|RequestStack|null $requestStack
      */
     public function __construct(FormInterface $form, $requestStack = null)
     {

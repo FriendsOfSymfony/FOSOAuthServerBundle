@@ -59,7 +59,10 @@ class ClientManager extends BaseClientManager
      */
     public function findClientBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        /** @var ClientInterface|null $client */
+        $client = $this->repository->findOneBy($criteria);
+
+        return $client;
     }
 
     /**

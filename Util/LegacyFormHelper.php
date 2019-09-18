@@ -48,6 +48,6 @@ final class LegacyFormHelper
 
     public static function isLegacy()
     {
-        return !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        return false;
     }
 }

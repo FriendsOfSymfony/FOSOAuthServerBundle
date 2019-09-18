@@ -71,6 +71,7 @@ class OAuthListener implements ListenerInterface
         $token->setToken($oauthToken);
 
         try {
+            /** @var TokenInterface|Response $returnValue */
             $returnValue = $this->authenticationManager->authenticate($token);
 
             if ($returnValue instanceof TokenInterface) {

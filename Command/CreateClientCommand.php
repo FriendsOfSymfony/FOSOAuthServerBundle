@@ -77,8 +77,13 @@ EOT
         // Create a new client
         $client = $this->clientManager->createClient();
 
-        $client->setRedirectUris($input->getOption('redirect-uri'));
-        $client->setAllowedGrantTypes($input->getOption('grant-type'));
+        /** @var string[] $redirectUris */
+        $redirectUris = $input->getOption('redirect-uri');
+        $client->setRedirectUris($redirectUris);
+
+        /** @var string[] $grantTypes */
+        $grantTypes = $input->getOption('grant-type');
+        $client->setAllowedGrantTypes($grantTypes);
 
         // Save the client
         $this->clientManager->updateClient($client);
