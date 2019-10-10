@@ -175,7 +175,7 @@ class AuthorizeController
         }
 
         return $this->templating->renderResponse(
-            'FOSOAuthServerBundle:Authorize:authorize.html.'.$this->templateEngineType,
+            '@FOSOAuthServer/Authorize/authorize.html.'.$this->templateEngineType,
             array(
                 'form'   => $form->createView(),
                 'client' => $this->getClient(),
