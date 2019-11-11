@@ -28,7 +28,7 @@ use Symfony\Component\Security\Http\Firewall\ListenerInterface;
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuthListener implements ListenerInterface
+class OAuthListener
 {
     /**
      * @var TokenStorageInterface
@@ -60,7 +60,7 @@ class OAuthListener implements ListenerInterface
     /**
      * @param GetResponseEvent $event the event
      */
-    public function handle(GetResponseEvent $event)
+    public function __invoke(GetResponseEvent $event)
     {
         if (null === $oauthToken = $this->serverService->getBearerToken($event->getRequest(), true)) {
             return;
