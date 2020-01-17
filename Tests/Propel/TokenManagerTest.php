@@ -24,11 +24,11 @@ use FOS\OAuthServerBundle\Propel\TokenManager;
  */
 class TokenManagerTest extends PropelTestCase
 {
-    const TOKEN_CLASS = 'FOS\OAuthServerBundle\Propel\RefreshToken';
+    const TOKEN_CLASS = Token::class;
 
     protected $manager;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
@@ -49,7 +49,7 @@ class TokenManagerTest extends PropelTestCase
 
     public function testUpdate()
     {
-        $token = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Token')
+        $token = $this->getMockBuilder(\FOS\OAuthServerBundle\Propel\Token::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;

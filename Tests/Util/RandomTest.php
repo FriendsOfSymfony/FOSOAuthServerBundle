@@ -15,17 +15,18 @@ namespace FOS\OAuthServerBundle\Tests\Util;
 
 use FOS\OAuthServerBundle\Util\Random;
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class RandomTest.
  *
  * @author Nikola Petkanski <nikola@petkanski.com
  */
-class RandomTest extends \PHPUnit\Framework\TestCase
+class RandomTest extends TestCase
 {
     use PHPMock;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
     }

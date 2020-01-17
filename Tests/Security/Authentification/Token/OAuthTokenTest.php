@@ -15,15 +15,16 @@ namespace FOS\OAuthServerBundle\Tests\Security\Authentification\Token;
 
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
+use PHPUnit\Framework\TestCase;
 
-class OAuthTokenTest extends \PHPUnit\Framework\TestCase
+class OAuthTokenTest extends TestCase
 {
     /**
      * @var OAuthToken
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->instance = new OAuthToken();
 

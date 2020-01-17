@@ -17,12 +17,13 @@ use FOS\OAuthServerBundle\Model\AccessToken;
 use FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class OAuthProviderTest extends \PHPUnit\Framework\TestCase
+class OAuthProviderTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|UserInterface
@@ -49,7 +50,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $userChecker;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()

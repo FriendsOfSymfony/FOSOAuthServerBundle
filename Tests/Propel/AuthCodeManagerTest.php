@@ -24,11 +24,11 @@ use FOS\OAuthServerBundle\Propel\AuthCodeQuery;
  */
 class AuthCodeManagerTest extends PropelTestCase
 {
-    const AUTH_CODE_CLASS = 'FOS\OAuthServerBundle\Propel\AuthCode';
+    public const AUTH_CODE_CLASS = AuthCode::class;
 
     protected $manager;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class AuthCodeManagerTest extends PropelTestCase
         AuthCodeQuery::create()->deleteAll();
     }
 
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertSame(self::AUTH_CODE_CLASS, $this->manager->getClass());
     }

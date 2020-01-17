@@ -19,11 +19,11 @@ use FOS\OAuthServerBundle\Propel\ClientQuery;
 
 class ClientManagerTest extends PropelTestCase
 {
-    const CLIENT_CLASS = 'FOS\OAuthServerBundle\Propel\Client';
+    const CLIENT_CLASS = Client::class;
 
     protected $manager;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 

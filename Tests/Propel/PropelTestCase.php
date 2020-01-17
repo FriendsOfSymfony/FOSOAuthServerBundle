@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Propel;
 
 use FOS\OAuthServerBundle\Tests\TestCase;
+use Propel;
 
 class PropelTestCase extends TestCase
 {
-    public function setUp()
+    public function setUp() : void
     {
-        if (!class_exists('\Propel')) {
+        if (!class_exists(Propel::class)) {
             $this->markTestSkipped('Propel is not installed.');
         }
     }

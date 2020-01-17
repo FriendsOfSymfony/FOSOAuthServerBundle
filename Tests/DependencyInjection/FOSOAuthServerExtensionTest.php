@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,11 +22,11 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 
-class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
+class FOSOAuthServerExtensionTest extends TestCase
 {
     private $container;
 
-    public function setUp()
+    public function setUp() : void
     {
         $parameterBag = new ParameterBag();
         $this->container = new ContainerBuilder($parameterBag);

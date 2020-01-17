@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group time-sensitive
@@ -28,7 +29,7 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
+class AuthCodeManagerTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
@@ -45,7 +46,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()

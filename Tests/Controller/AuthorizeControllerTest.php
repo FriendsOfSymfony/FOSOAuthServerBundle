@@ -19,6 +19,7 @@ use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
@@ -34,7 +35,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
+class AuthorizeControllerTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|RequestStack
@@ -131,7 +132,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
      */
     protected $formView;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()

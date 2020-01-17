@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
 use FOS\OAuthServerBundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-class ConfigurationTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends TestCase
 {
     public function testShouldImplementConfigurationInterface()
     {

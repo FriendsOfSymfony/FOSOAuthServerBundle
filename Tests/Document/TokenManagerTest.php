@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use Doctrine\MongoDB\Query\Query;
+use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group time-sensitive
@@ -27,7 +28,7 @@ use FOS\OAuthServerBundle\Document\TokenManager;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class TokenManagerTest extends \PHPUnit\Framework\TestCase
+class TokenManagerTest extends TestCase
 {
     /**
      * @var string
@@ -49,9 +50,9 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp() : void
     {
-        if (!class_exists('\Doctrine\ODM\MongoDB\DocumentManager')) {
+        if (!class_exists(DocumentManager::class)) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 

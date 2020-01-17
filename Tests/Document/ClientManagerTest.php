@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
@@ -45,9 +45,9 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp() : void
     {
-        if (!class_exists('\Doctrine\ODM\MongoDB\DocumentManager')) {
+        if (!class_exists(DocumentManager::class)) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 

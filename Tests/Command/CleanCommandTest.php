@@ -16,10 +16,11 @@ namespace FOS\OAuthServerBundle\Tests\Command;
 use FOS\OAuthServerBundle\Command\CleanCommand;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\TokenManagerInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CleanCommandTest extends \PHPUnit\Framework\TestCase
+class CleanCommandTest extends TestCase
 {
     /**
      * @var CleanCommand
@@ -44,7 +45,7 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->accessTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
         $this->refreshTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
@@ -70,21 +71,21 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
         $this->accessTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAccessTokens))
+            ->willReturn($expiredAccessTokens)
         ;
 
         $expiredRefreshTokens = 183;
         $this->refreshTokenManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredRefreshTokens))
+            ->willReturn($expiredRefreshTokens)
         ;
 
         $expiredAuthCodes = 0;
         $this->authCodeManager
             ->expects($this->once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAuthCodes))
+            ->willReturn($expiredAuthCodes)
         ;
 
         $tester = new CommandTester($this->command);
@@ -100,7 +101,7 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
     /**
      * Skip classes for deleting expired tokens that do not implement AuthCodeManagerInterface or TokenManagerInterface.
      */
-    public function testItShouldNotRemoveExpiredTokensForOtherClasses()
+    public function testItShouldNotRemoveExpiredTokensForOtherClasses(): void
     {
         $this->markTestIncomplete('Needs a better way of testing this');
 
