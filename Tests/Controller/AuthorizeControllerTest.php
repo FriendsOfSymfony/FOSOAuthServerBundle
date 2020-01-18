@@ -310,11 +310,11 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($this->formView)
         ;
 
-        $response = new Response();
+        $response = '';
 
         $this->templateEngine
             ->expects($this->at(0))
-            ->method('renderResponse')
+            ->method('render')
             ->with(
                 '@FOSOAuthServer/Authorize/authorize.html.twig',
                 [
@@ -469,11 +469,11 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($this->formView)
         ;
 
-        $response = new Response();
+        $response = '';
 
         $this->templateEngine
             ->expects($this->at(0))
-            ->method('renderResponse')
+            ->method('render')
             ->with(
                 '@FOSOAuthServer/Authorize/authorize.html.twig',
                 [
