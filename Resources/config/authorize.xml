@@ -28,7 +28,7 @@
             <argument type="service" id="fos_oauth_server.authorize.form" />
             <argument type="service" id="fos_oauth_server.authorize.form.handler" />
             <argument type="service" id="fos_oauth_server.server" />
-            <argument type="service" id="templating" />
+            <!-- <argument type="service" id="templating" /> -->
             <argument type="service" id="security.token_storage" />
             <argument type="service" id="router" />
             <argument type="service" id="fos_oauth_server.client_manager" />
