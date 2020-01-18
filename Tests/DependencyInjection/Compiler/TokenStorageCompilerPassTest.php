@@ -96,7 +96,6 @@ class TokenStorageCompilerPassTest extends TestCase
             ->willReturn(false)
         ;
         $this->markTestIncomplete('Find a graceful way to handle what happens when no token storage is available');
-//TODO: re-evaluate this test
 //        $this->expectException(LogicException::class);
 
 //        $authenticationListenerDefinition
