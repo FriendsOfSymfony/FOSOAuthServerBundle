@@ -16,6 +16,7 @@ namespace FOS\OAuthServerBundle\Tests\Command;
 use FOS\OAuthServerBundle\Command\CreateClientCommand;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use FOS\OAuthServerBundle\Document\Client;
@@ -28,7 +29,7 @@ class CreateClientCommandTest extends TestCase
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
+     * @var MockObject|ClientManagerInterface
      */
     private $clientManager;
 
@@ -37,7 +38,10 @@ class CreateClientCommandTest extends TestCase
      */
     protected function setUp() : void
     {
-        $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->clientManager =
+            $this->getMockBuilder(ClientManagerInterface::class)
+                ->disableOriginalConstructor()
+                ->getMock();
         $command = new CreateClientCommand($this->clientManager);
 
         $application = new Application();
@@ -54,7 +58,7 @@ class CreateClientCommandTest extends TestCase
      *
      * @param string $client a fully qualified class name
      */
-    public function testItShouldCreateClient($client)
+    public function testItShouldCreateClient($client): void
     {
         $this
             ->clientManager
@@ -80,8 +84,8 @@ class CreateClientCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertContains('Client ID', $output);
-        $this->assertContains('Client Secret', $output);
+        $this->assertStringContainsString('Client ID', $output);
+        $this->assertStringContainsString('Client Secret', $output);
     }
 
     /**
