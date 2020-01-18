@@ -28,8 +28,8 @@ class CleanCommand extends Command
     public function __construct(
         TokenManagerInterface $accessTokenManager,
         TokenManagerInterface $refreshTokenManager,
-        AuthCodeManagerInterface $authCodeManager)
-    {
+        AuthCodeManagerInterface $authCodeManager
+    ) {
         parent::__construct();
 
         $this->accessTokenManager = $accessTokenManager;
@@ -65,5 +65,6 @@ EOT
             $result = $service->deleteExpired();
             $output->writeln(sprintf('Removed <info>%d</info> items from <comment>%s</comment> storage.', $result, get_class($service)));
         }
+        return 0;
     }
 }

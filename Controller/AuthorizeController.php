@@ -19,7 +19,6 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +30,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Controller handling basic authorization.
@@ -143,9 +143,6 @@ class AuthorizeController
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * Authorize.
-     */
     public function authorizeAction(Request $request)
     {
         $user = $this->tokenStorage->getToken()->getUser();
@@ -164,8 +161,11 @@ class AuthorizeController
 
         /** @var OAuthEvent $event */
         $event = $this->eventDispatcher->dispatch(
-            OAuthEvent::PRE_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient())
+            new OAuthEvent(
+                $user,
+                $this->getClient()
+            ),
+            OAuthEvent::PRE_AUTHORIZATION_PROCESS
         );
 
         if ($event->isAuthorizedClient()) {
@@ -201,8 +201,8 @@ class AuthorizeController
         }
 
         $this->eventDispatcher->dispatch(
-            OAuthEvent::POST_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
+            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted()),
+            OAuthEvent::POST_AUTHORIZATION_PROCESS
         );
 
         $formName = $this->authorizeForm->getName();
@@ -261,9 +261,9 @@ class AuthorizeController
     /**
      * @throws \RuntimeException
      */
-    protected function renderAuthorize(array $data, EngineInterface $engine, string $engineType): Response
+    protected function renderAuthorize(array $data, EngineInterface $engine, string $engineType): string
     {
-        return $engine->renderResponse(
+        return $engine->render(
             '@FOSOAuthServer/Authorize/authorize.html.'.$engineType,
             $data
         );
