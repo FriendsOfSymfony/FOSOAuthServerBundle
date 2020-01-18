@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\TokenStorageCompilerPass;
+use LogicException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class TokenStorageCompilerPassTest.
@@ -32,7 +33,7 @@ class TokenStorageCompilerPassTest extends TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerBuilder
+     * @var MockObject|ContainerBuilder
      */
     protected $container;
 
@@ -96,15 +97,17 @@ class TokenStorageCompilerPassTest extends TestCase
             ->willReturn(false)
         ;
 
-        $authenticationListenerDefinition
-            ->expects($this->once())
-            ->method('replaceArgument')
-            ->with(
-                0,
-                new Reference('security.context')
-            )
-            ->willReturn(null)
-        ;
+        $this->expectException(LogicException::class);
+
+//        $authenticationListenerDefinition
+//            ->expects($this->once())
+//            ->method('replaceArgument')
+//            ->with(
+//                0,
+//                new Reference('security.context')
+//            )
+//            ->willReturn(null)
+//        ;
 
         $this->assertNull($this->instance->process($this->container));
     }

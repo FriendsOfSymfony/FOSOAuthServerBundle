@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\DependencyInjection\Compiler;
 
+use LogicException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Andras Ratz <ratz.andras86@gmail.com>
@@ -27,10 +27,11 @@ class TokenStorageCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('fos_oauth_server.security.authentication.listener');
+        $container->getDefinition('fos_oauth_server.security.authentication.listener');
 
         if ($container->hasDefinition('security.token_storage') === false) {
-            $definition->replaceArgument(0, new Reference('security.context'));
+            //$definition->replaceArgument(0, new Reference('security.context'));
+            throw new LogicException('The service security.token_storage doesn\'t exist');
         }
     }
 }
