@@ -17,6 +17,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Class ClientManagerTest.
@@ -26,7 +27,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 class ClientManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     * @var MockObject|DocumentManager
      */
     protected $documentManager;
 
@@ -36,7 +37,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     * @var MockObject|DocumentRepository
      */
     protected $repository;
 
@@ -73,19 +74,19 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
+        self::assertSame($this->documentManager, $this->instance->getDocumentManager());
+        self::assertSame($this->repository, $this->instance->getRepository());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindClientBy()
+    public function testFindClientBy(): void
     {
         $randomResult = \random_bytes(5);
         $criteria = [
@@ -99,7 +100,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
+        self::assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
 
     public function testUpdateClient()

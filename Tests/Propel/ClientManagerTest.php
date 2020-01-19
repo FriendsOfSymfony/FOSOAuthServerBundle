@@ -33,7 +33,7 @@ class ClientManagerTest extends PropelTestCase
 
     public function testConstruct()
     {
-        $this->assertSame(self::CLIENT_CLASS, $this->manager->getClass());
+        self::assertSame(self::CLIENT_CLASS, $this->manager->getClass());
     }
 
     public function testCreateClass()
@@ -43,7 +43,7 @@ class ClientManagerTest extends PropelTestCase
 
     public function testUpdate()
     {
-        $client = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Client')
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -57,7 +57,8 @@ class ClientManagerTest extends PropelTestCase
 
     public function testDelete()
     {
-        $client = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Client')
+        /** @var Client $client */
+        $client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -94,7 +95,7 @@ class ClientManagerTest extends PropelTestCase
         $return = $this->manager->findClientBy(['id' => '1', 'randomId' => '2345']);
 
         $this->assertNotNull($return);
-        $this->assertSame($client, $return);
+        self::assertSame($client, $return);
     }
 
     public function testFindClientByPublicId()
@@ -103,7 +104,7 @@ class ClientManagerTest extends PropelTestCase
         $return = $this->manager->findClientByPublicId('1_12345');
 
         $this->assertNotNull($return);
-        $this->assertSame($client, $return);
+        self::assertSame($client, $return);
     }
 
     public function testFindClientByPublicIdReturnsNullIfNotFound()

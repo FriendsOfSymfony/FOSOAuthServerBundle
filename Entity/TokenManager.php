@@ -94,4 +94,14 @@ class TokenManager extends BaseTokenManager
 
         return $qb->getQuery()->execute();
     }
+
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->em;
+    }
+
+    public function getRepository(): EntityRepository
+    {
+        return $this->repository;
+    }
 }

@@ -100,8 +100,8 @@ class FOSOAuthServerExtensionTest extends TestCase
 
         $collection = $loader->load(__DIR__.'/../../Resources/config/routing/authorize.xml');
         $authorizeRoute = $collection->get('fos_oauth_server_authorize');
-        $this->assertSame('/oauth/v2/auth', $authorizeRoute->getPath());
-        $this->assertSame(['GET', 'POST'], $authorizeRoute->getMethods());
+        self::assertSame('/oauth/v2/auth', $authorizeRoute->getPath());
+        self::assertSame(['GET', 'POST'], $authorizeRoute->getMethods());
     }
 
     public function testLoadTokenRouting()
@@ -111,8 +111,8 @@ class FOSOAuthServerExtensionTest extends TestCase
 
         $collection = $loader->load(__DIR__.'/../../Resources/config/routing/token.xml');
         $tokenRoute = $collection->get('fos_oauth_server_token');
-        $this->assertSame('/oauth/v2/token', $tokenRoute->getPath());
-        $this->assertSame(['GET', 'POST'], $tokenRoute->getMethods());
+        self::assertSame('/oauth/v2/token', $tokenRoute->getPath());
+        self::assertSame(['GET', 'POST'], $tokenRoute->getMethods());
     }
 
     public function testWithoutService()
@@ -127,7 +127,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         $instance = new FOSOAuthServerExtension();
         $instance->load([$config], $this->container);
 
-        $this->assertSame(
+        self::assertSame(
             $this->container->getParameter('fos_oauth_server.server.options'),
             []
         );
@@ -153,7 +153,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         $instance = new FOSOAuthServerExtension();
         $instance->load([$config], $this->container);
 
-        $this->assertSame(
+        self::assertSame(
             $this->container->getParameter('fos_oauth_server.server.options'),
             [
                 'supported_scopes' => 'scope1 scope2 scope3 scope4',
@@ -181,7 +181,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         $instance = new FOSOAuthServerExtension();
         $instance->load([$config], $this->container);
 
-        $this->assertSame(
+        self::assertSame(
             $this->container->getParameter('fos_oauth_server.server.options'),
             [
                 'supported_scopes' => 'scope1 scope2 scope3 scope4',
@@ -235,18 +235,18 @@ class FOSOAuthServerExtensionTest extends TestCase
         ]], $container);
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.storage'));
-        $this->assertSame('fos_oauth_server.storage.default', (string) $container->getAlias('fos_oauth_server.storage'));
+        self::assertSame('fos_oauth_server.storage.default', (string) $container->getAlias('fos_oauth_server.storage'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.client_manager'));
-        $this->assertSame('the_client_manager_id', (string) $container->getAlias('fos_oauth_server.client_manager'));
+        self::assertSame('the_client_manager_id', (string) $container->getAlias('fos_oauth_server.client_manager'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.access_token_manager'));
-        $this->assertSame('the_access_token_manager_id', (string) $container->getAlias('fos_oauth_server.access_token_manager'));
+        self::assertSame('the_access_token_manager_id', (string) $container->getAlias('fos_oauth_server.access_token_manager'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.refresh_token_manager'));
-        $this->assertSame('the_refresh_token_manager_id', (string) $container->getAlias('fos_oauth_server.refresh_token_manager'));
+        self::assertSame('the_refresh_token_manager_id', (string) $container->getAlias('fos_oauth_server.refresh_token_manager'));
 
         $this->assertTrue($container->hasAlias('fos_oauth_server.auth_code_manager'));
-        $this->assertSame('the_auth_code_manager_id', (string) $container->getAlias('fos_oauth_server.auth_code_manager'));
+        self::assertSame('the_auth_code_manager_id', (string) $container->getAlias('fos_oauth_server.auth_code_manager'));
     }
 }

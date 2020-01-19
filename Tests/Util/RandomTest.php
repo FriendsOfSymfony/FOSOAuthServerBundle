@@ -58,6 +58,6 @@ class RandomTest extends TestCase
             ->willReturn($baseConvertResult)
         ;
 
-        $this->assertSame($baseConvertResult, Random::generateToken());
+        self::assertSame($baseConvertResult, Random::generateToken());
     }
 }

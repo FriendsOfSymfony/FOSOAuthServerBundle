@@ -39,6 +39,11 @@ class AuthCodeManager extends BaseAuthCodeManager
         $this->class = $class;
     }
 
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->em;
+    }
+
     /**
      * {@inheritdoc}
      */

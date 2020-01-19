@@ -93,13 +93,13 @@ class OAuthProviderTest extends TestCase
 
         $result = $this->provider->authenticate($token);
 
-        $this->assertSame($this->user, $result->getUser());
-        $this->assertSame($token->getToken(), $result->getToken());
+        self::assertSame($this->user, $result->getUser());
+        self::assertSame($token->getToken(), $result->getToken());
         $this->assertTrue($result->isAuthenticated());
         $this->assertCount(1, $result->getRoleNames());
 
         $roles = $result->getRoleNames();
-        $this->assertSame('ROLE_USER', $roles[0]);
+        self::assertSame('ROLE_USER', $roles[0]);
     }
 
     public function testAuthenticateReturnsTokenIfValidEvenIfNullData(): void
@@ -144,9 +144,9 @@ class OAuthProviderTest extends TestCase
         $roles = $result->getRoleNames();
         $this->assertCount(2, $roles);
         //$this->assertInstanceOf(\Symfony\Component\Security\Core\Role::class, $roles[0]);
-        $this->assertSame('ROLE_FOO', $roles[0]);
+        self::assertSame('ROLE_FOO', $roles[0]);
         //$this->assertInstanceOf(Role::class, $roles[1]);
-        $this->assertSame('ROLE_BAR', $roles[1]);
+        self::assertSame('ROLE_BAR', $roles[1]);
     }
 
     public function testAuthenticateWithNullScope(): void

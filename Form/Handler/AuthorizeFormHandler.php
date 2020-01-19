@@ -137,4 +137,14 @@ class AuthorizeFormHandler
 
         return $this->requestStack->getCurrentRequest();
     }
+
+    public function getForm(): FormInterface
+    {
+        return $this->form;
+    }
+
+    public function getRequest()
+    {
+        return $this->requestStack;
+    }
 }

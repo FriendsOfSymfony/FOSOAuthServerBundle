@@ -28,15 +28,15 @@ class TokenTest extends PropelTestCase
      * @param mixed $expiresAt
      * @param mixed $expect
      */
-    public function testHasExpired($expiresAt, $expect)
+    public function testHasExpired($expiresAt, $expect): void
     {
         $token = new Token();
         $token->setExpiresAt($expiresAt);
 
-        $this->assertSame($expect, $token->hasExpired());
+        self::assertSame($expect, $token->hasExpired());
     }
 
-    public static function getTestHasExpiredData()
+    public static function getTestHasExpiredData(): array
     {
         return [
             [time() + 60, false],
@@ -45,19 +45,19 @@ class TokenTest extends PropelTestCase
         ];
     }
 
-    public function testExpiresIn()
+    public function testExpiresIn(): void
     {
         $token = new Token();
 
-        $this->assertSame(PHP_INT_MAX, $token->getExpiresIn());
+        self::assertSame(PHP_INT_MAX, $token->getExpiresIn());
     }
 
-    public function testExpiresInWithExpiresAt()
+    public function testExpiresInWithExpiresAt(): void
     {
         $token = new Token();
         $token->setExpiresAt(time() + 60);
 
-        $this->assertSame(60, $token->getExpiresIn());
+        self::assertSame(60, $token->getExpiresIn());
     }
 }
 

@@ -325,7 +325,7 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($response)
         ;
 
-        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+        self::assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
     public function testAuthorizeActionWillFinishClientAuthorization(): void
@@ -395,7 +395,7 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($response)
         ;
 
-        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+        self::assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
     public function testAuthorizeActionWillEnsureLogout(): void
@@ -484,7 +484,7 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($response)
         ;
 
-        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+        self::assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
     public function testAuthorizeActionWillProcessAuthorizationForm(): void
@@ -594,6 +594,6 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($response)
         ;
 
-        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+        self::assertSame($response, $this->instance->authorizeAction($this->request));
     }
 }

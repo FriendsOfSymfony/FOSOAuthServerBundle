@@ -31,7 +31,7 @@ class OAuthTokenTest extends TestCase
         parent::setUp();
     }
 
-    public function testSetTokenWillSetToken()
+    public function testSetTokenWillSetToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -39,10 +39,10 @@ class OAuthTokenTest extends TestCase
         ;
 
         $this->assertNull($this->instance->setToken($token));
-        $this->assertAttributeSame($token, 'token', $this->instance);
+        self::assertSame($token, $this->instance->getToken());
     }
 
-    public function testGetTokenWillReturnToken()
+    public function testGetTokenWillReturnToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -51,10 +51,10 @@ class OAuthTokenTest extends TestCase
 
         $this->assertNull($this->instance->getToken());
         $this->assertNull($this->instance->setToken($token));
-        $this->assertSame($token, $this->instance->getToken());
+        self::assertSame($token, $this->instance->getToken());
     }
 
-    public function testGetCredentialsWillReturnToken()
+    public function testGetCredentialsWillReturnToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -63,6 +63,6 @@ class OAuthTokenTest extends TestCase
 
         $this->assertNull($this->instance->getCredentials());
         $this->assertNull($this->instance->setToken($token));
-        $this->assertSame($token, $this->instance->getCredentials());
+        self::assertSame($token, $this->instance->getCredentials());
     }
 }

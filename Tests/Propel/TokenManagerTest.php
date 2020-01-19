@@ -38,7 +38,7 @@ class TokenManagerTest extends PropelTestCase
 
     public function testConstruct()
     {
-        $this->assertSame(self::TOKEN_CLASS, $this->manager->getClass());
+        self::assertSame(self::TOKEN_CLASS, $this->manager->getClass());
     }
 
     public function testCreateClass()
@@ -100,7 +100,7 @@ class TokenManagerTest extends PropelTestCase
         $return = $this->manager->findTokenBy(['token' => '12345']);
 
         $this->assertNotNull($return);
-        $this->assertSame($token, $return);
+        self::assertSame($token, $return);
     }
 
     public function testFindTokenByToken()
@@ -109,7 +109,7 @@ class TokenManagerTest extends PropelTestCase
         $return = $this->manager->findTokenByToken('12345');
 
         $this->assertNotNull($return);
-        $this->assertSame($token, $return);
+        self::assertSame($token, $return);
     }
 
     public function testFindTokenByTokenReturnsNullIfNotFound()
@@ -124,11 +124,11 @@ class TokenManagerTest extends PropelTestCase
         $a1 = $this->createToken('12345', time() + 100);
         $a2 = $this->createToken('67890', time() - 100);
 
-        $this->assertSame(2, TokenQuery::create()->count());
+        self::assertSame(2, TokenQuery::create()->count());
 
         $nb = $this->manager->deleteExpired();
 
-        $this->assertSame(1, $nb);
+        self::assertSame(1, $nb);
         $this->assertTrue($a1->equals(TokenQuery::create()->findOne()));
     }
 

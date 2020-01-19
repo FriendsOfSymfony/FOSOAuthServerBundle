@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 class ClientManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     protected $entityManager;
 
@@ -37,7 +38,7 @@ class ClientManagerTest extends TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
+     * @var MockObject|EntityRepository
      */
     protected $repository;
 
@@ -70,19 +71,19 @@ class ClientManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
+        self::assertSame($this->entityManager, $this->instance->getEntityManager());
+        self::assertSame($this->repository, $this->instance->getRepository());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindClientBy()
+    public function testFindClientBy(): void
     {
         $criteria = [
             \random_bytes(5),
@@ -96,10 +97,10 @@ class ClientManagerTest extends TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
+        self::assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
 
-    public function testUpdateClient()
+    public function testUpdateClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()

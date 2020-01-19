@@ -95,10 +95,10 @@ class OAuthStorageTest extends TestCase
             ->willReturn($client)
         ;
 
-        $this->assertSame($client, $this->storage->getClient('123_abc'));
+        self::assertSame($client, $this->storage->getClient('123_abc'));
     }
 
-    public function testGetClientReturnsNullIfNotExists()
+    public function testGetClientReturnsNullIfNotExists(): void
     {
         $client = new Client();
 
@@ -111,9 +111,9 @@ class OAuthStorageTest extends TestCase
         $this->assertNull($this->storage->getClient('123_abc'));
     }
 
-    public function testCheckClientCredentialsThrowsIfInvalidClientClass()
+    public function testCheckClientCredentialsThrowsIfInvalidClientClass(): void
     {
-        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+        $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -122,7 +122,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->checkClientCredentials($client, 'dummy');
     }
 
-    public function testCheckClientCredentialsReturnsTrueOnValidCredentials()
+    public function testCheckClientCredentialsReturnsTrueOnValidCredentials(): void
     {
         $client = new Client();
         $client->setSecret('dummy');
@@ -130,7 +130,7 @@ class OAuthStorageTest extends TestCase
         $this->assertTrue($this->storage->checkClientCredentials($client, 'dummy'));
     }
 
-    public function testCheckClientCredentialsReturnsFalseOnValidCredentials()
+    public function testCheckClientCredentialsReturnsFalseOnValidCredentials(): void
     {
         $client = new Client();
         $client->setSecret('dummy');
@@ -138,7 +138,7 @@ class OAuthStorageTest extends TestCase
         $this->assertFalse($this->storage->checkClientCredentials($client, 'passe'));
     }
 
-    public function testGetAccessTokenReturnsAccessTokenWithGivenId()
+    public function testGetAccessTokenReturnsAccessTokenWithGivenId(): void
     {
         $token = new AccessToken();
 
@@ -148,10 +148,10 @@ class OAuthStorageTest extends TestCase
             ->willReturn($token)
         ;
 
-        $this->assertSame($token, $this->storage->getAccessToken('123_abc'));
+        self::assertSame($token, $this->storage->getAccessToken('123_abc'));
     }
 
-    public function testGetAccessTokenReturnsNullIfNotExists()
+    public function testGetAccessTokenReturnsNullIfNotExists(): void
     {
         $token = new AccessToken();
 
@@ -164,9 +164,9 @@ class OAuthStorageTest extends TestCase
         $this->assertNull($this->storage->getAccessToken('123_abc'));
     }
 
-    public function testCreateAccessTokenThrowsOnInvalidClientClass()
+    public function testCreateAccessTokenThrowsOnInvalidClientClass(): void
     {
-        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+        $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -175,7 +175,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->createAccessToken('foo', $client, new User(42), 1, 'foo bar');
     }
 
-    public function testCreateAccessToken()
+    public function testCreateAccessToken(): void
     {
         $savedToken = null;
 
@@ -196,17 +196,17 @@ class OAuthStorageTest extends TestCase
 
         $token = $this->storage->createAccessToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertSame($token, $savedToken);
+        self::assertSame($token, $savedToken);
 
-        $this->assertSame('foo', $token->getToken());
-        $this->assertSame($client, $token->getClient());
-        $this->assertSame($user, $token->getData());
-        $this->assertSame($user, $token->getUser());
-        $this->assertSame(1, $token->getExpiresAt());
-        $this->assertSame('foo bar', $token->getScope());
+        self::assertSame('foo', $token->getToken());
+        self::assertSame($client, $token->getClient());
+        self::assertSame($user, $token->getData());
+        self::assertSame($user, $token->getUser());
+        self::assertSame(1, $token->getExpiresAt());
+        self::assertSame('foo bar', $token->getScope());
     }
 
-    public function testCreateAccessTokenWithoutUser()
+    public function testCreateAccessTokenWithoutUser(): void
     {
         $savedToken = null;
 
@@ -227,10 +227,10 @@ class OAuthStorageTest extends TestCase
 
         $token = $this->storage->createAccessToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertSame($token, $savedToken);
+        self::assertSame($token, $savedToken);
     }
 
-    public function testGetRefreshTokenReturnsRefreshTokenWithGivenId()
+    public function testGetRefreshTokenReturnsRefreshTokenWithGivenId(): void
     {
         $token = new RefreshToken();
 
@@ -240,7 +240,7 @@ class OAuthStorageTest extends TestCase
             ->willReturn($token)
         ;
 
-        $this->assertSame($token, $this->storage->getRefreshToken('123_abc'));
+        self::assertSame($token, $this->storage->getRefreshToken('123_abc'));
     }
 
     public function testGetRefreshTokenReturnsNullIfNotExists()
@@ -254,7 +254,7 @@ class OAuthStorageTest extends TestCase
         $this->assertNull($this->storage->getRefreshToken('123_abc'));
     }
 
-    public function testCreateRefreshTokenThrowsOnInvalidClientClass()
+    public function testCreateRefreshTokenThrowsOnInvalidClientClass(): void
     {
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
@@ -265,7 +265,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->createRefreshToken('foo', $client, 42, 1, 'foo bar');
     }
 
-    public function testCreateRefreshToken()
+    public function testCreateRefreshToken(): void
     {
         $savedToken = null;
 
@@ -286,17 +286,17 @@ class OAuthStorageTest extends TestCase
 
         $token = $this->storage->createRefreshToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertSame($token, $savedToken);
+        self::assertSame($token, $savedToken);
 
-        $this->assertSame('foo', $token->getToken());
-        $this->assertSame($client, $token->getClient());
-        $this->assertSame($user, $token->getData());
-        $this->assertSame($user, $token->getUser());
-        $this->assertSame(1, $token->getExpiresAt());
-        $this->assertSame('foo bar', $token->getScope());
+        self::assertSame('foo', $token->getToken());
+        self::assertSame($client, $token->getClient());
+        self::assertSame($user, $token->getData());
+        self::assertSame($user, $token->getUser());
+        self::assertSame(1, $token->getExpiresAt());
+        self::assertSame('foo bar', $token->getScope());
     }
 
-    public function testCreateRefreshTokenWithoutUser()
+    public function testCreateRefreshTokenWithoutUser(): void
     {
         $savedToken = null;
 
@@ -317,7 +317,7 @@ class OAuthStorageTest extends TestCase
 
         $token = $this->storage->createRefreshToken('foo', $client, $user, 1, 'foo bar');
 
-        $this->assertSame($token, $savedToken);
+        self::assertSame($token, $savedToken);
     }
 
     public function testCheckRestrictedGrantTypeThrowsOnInvalidClientClass(): void
@@ -332,7 +332,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->checkRestrictedGrantType($client, 'foo');
     }
 
-    public function testCheckRestrictedGrantType()
+    public function testCheckRestrictedGrantType(): void
     {
         $client = new Client();
         $client->setAllowedGrantTypes(['foo', 'bar']);
@@ -342,7 +342,7 @@ class OAuthStorageTest extends TestCase
         $this->assertFalse($this->storage->checkRestrictedGrantType($client, 'baz'));
     }
 
-    public function testCheckUserCredentialsThrowsOnInvalidClientClass()
+    public function testCheckUserCredentialsThrowsOnInvalidClientClass(): void
     {
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
@@ -354,7 +354,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->checkUserCredentials($client, 'Joe', 'baz');
     }
 
-    public function testCheckUserCredentialsCatchesAuthenticationExceptions()
+    public function testCheckUserCredentialsCatchesAuthenticationExceptions(): void
     {
         $client = new Client();
 
@@ -370,7 +370,7 @@ class OAuthStorageTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function testCheckUserCredentialsReturnsTrueOnValidCredentials()
+    public function testCheckUserCredentialsReturnsTrueOnValidCredentials(): void
     {
         $client = new Client();
         $user = $this->getMockBuilder(UserInterface::class)
@@ -404,7 +404,7 @@ class OAuthStorageTest extends TestCase
             ->willReturn($encoder)
         ;
 
-        $this->assertSame([
+        self::assertSame([
             'data' => $user,
         ], $this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
@@ -446,7 +446,7 @@ class OAuthStorageTest extends TestCase
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
 
-    public function testCheckUserCredentialsReturnsFalseIfUserNotExist()
+    public function testCheckUserCredentialsReturnsFalseIfUserNotExist(): void
     {
         $client = new Client();
 
@@ -459,9 +459,9 @@ class OAuthStorageTest extends TestCase
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
 
-    public function testCreateAuthCodeThrowsOnInvalidClientClass()
+    public function testCreateAuthCodeThrowsOnInvalidClientClass(): void
     {
-        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+        $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -470,7 +470,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->createAuthCode('foo', $client, 42, 'http://www.example.com/', 1, 'foo bar');
     }
 
-    public function testCreateAuthCode()
+    public function testCreateAuthCode(): void
     {
         $savedCode = null;
 
@@ -491,17 +491,17 @@ class OAuthStorageTest extends TestCase
 
         $code = $this->storage->createAuthCode('foo', $client, $user, 'http://www.example.com/', 1, 'foo bar');
 
-        $this->assertSame($code, $savedCode);
+        self::assertSame($code, $savedCode);
 
-        $this->assertSame('foo', $code->getToken());
-        $this->assertSame($client, $code->getClient());
-        $this->assertSame($user, $code->getData());
-        $this->assertSame($user, $code->getUser());
-        $this->assertSame(1, $code->getExpiresAt());
-        $this->assertSame('foo bar', $code->getScope());
+        self::assertSame('foo', $code->getToken());
+        self::assertSame($client, $code->getClient());
+        self::assertSame($user, $code->getData());
+        self::assertSame($user, $code->getUser());
+        self::assertSame(1, $code->getExpiresAt());
+        self::assertSame('foo bar', $code->getScope());
     }
 
-    public function testGetAuthCodeReturnsAuthCodeWithGivenId()
+    public function testGetAuthCodeReturnsAuthCodeWithGivenId(): void
     {
         $code = new AuthCode();
 
@@ -511,10 +511,10 @@ class OAuthStorageTest extends TestCase
             ->willReturn($code)
         ;
 
-        $this->assertSame($code, $this->storage->getAuthCode('123_abc'));
+        self::assertSame($code, $this->storage->getAuthCode('123_abc'));
     }
 
-    public function testGetAuthCodeReturnsNullIfNotExists()
+    public function testGetAuthCodeReturnsNullIfNotExists(): void
     {
         $this->authCodeManager->expects($this->once())
             ->method('findAuthCodeByToken')
@@ -525,7 +525,7 @@ class OAuthStorageTest extends TestCase
         $this->assertNull($this->storage->getAuthCode('123_abc'));
     }
 
-    public function testValidGrantExtension()
+    public function testValidGrantExtension(): void
     {
         $grantExtension = $this->getMockBuilder(GrantExtensionInterface::class)
             ->disableOriginalConstructor()
@@ -552,7 +552,7 @@ class OAuthStorageTest extends TestCase
         );
     }
 
-    public function testInvalidGrantExtension()
+    public function testInvalidGrantExtension(): void
     {
         $this->expectException(\OAuth2\OAuth2ServerException::class);
 
@@ -563,7 +563,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/bar', [], []);
     }
 
-    public function testDoubleSetGrantExtension()
+    public function testDoubleSetGrantExtension(): void
     {
         $grantExtension = $this->getMockBuilder(GrantExtensionInterface::class)
             ->disableOriginalConstructor()
@@ -581,10 +581,10 @@ class OAuthStorageTest extends TestCase
         $grantExtensionsProperty->setAccessible(true);
         $grantExtensions = $grantExtensionsProperty->getValue($this->storage);
 
-        $this->assertSame($grantExtension2, $grantExtensions[$uri]);
+        self::assertSame($grantExtension2, $grantExtensions[$uri]);
     }
 
-    public function testMarkAuthCodeAsUsedIfAuthCodeFound()
+    public function testMarkAuthCodeAsUsedIfAuthCodeFound(): void
     {
         $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
@@ -606,7 +606,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->markAuthCodeAsUsed('123_abc');
     }
 
-    public function testMarkAuthCodeAsUsedIfAuthCodeNotFound()
+    public function testMarkAuthCodeAsUsedIfAuthCodeNotFound(): void
     {
         $this->authCodeManager->expects($this->atLeastOnce())
             ->method('findAuthCodeByToken')

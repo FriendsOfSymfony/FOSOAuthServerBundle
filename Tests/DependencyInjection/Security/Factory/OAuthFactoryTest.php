@@ -55,12 +55,12 @@ class OAuthFactoryTest extends TestCase
 
     public function testGetPosition()
     {
-        $this->assertSame('pre_auth', $this->instance->getPosition());
+        self::assertSame('pre_auth', $this->instance->getPosition());
     }
 
     public function testGetKey()
     {
-        $this->assertSame('fos_oauth', $this->instance->getKey());
+        self::assertSame('fos_oauth', $this->instance->getKey());
     }
 
     public function testCreate()
@@ -130,7 +130,7 @@ class OAuthFactoryTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertSame([
+        self::assertSame([
             'security.authentication.provider.fos_oauth_server.'.$id,
             'security.authentication.listener.fos_oauth_server.'.$id,
             'fos_oauth_server.security.entry_point',
@@ -182,7 +182,7 @@ class OAuthFactoryTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertSame([
+        self::assertSame([
             'security.authentication.provider.fos_oauth_server.'.$id,
             'security.authentication.listener.fos_oauth_server.'.$id,
             'fos_oauth_server.security.entry_point',

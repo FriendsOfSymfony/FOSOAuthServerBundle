@@ -81,13 +81,13 @@ class AuthCodeManagerTest extends TestCase
 
     public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
+        self::assertSame($this->documentManager, $this->instance->getDocumentManager());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
     public function testGetClassWillReturnClassName(): void
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
     public function testFindAuthCodeBy(): void
@@ -104,7 +104,7 @@ class AuthCodeManagerTest extends TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
+        self::assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
     }
 
     public function testUpdateAuthCode(): void
@@ -218,6 +218,6 @@ class AuthCodeManagerTest extends TestCase
             ->willReturn($data)
         ;
 
-        $this->assertSame($data['n'], $this->instance->deleteExpired());
+        self::assertSame($data['n'], $this->instance->deleteExpired());
     }
 }

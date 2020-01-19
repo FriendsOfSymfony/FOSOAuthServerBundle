@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 
@@ -44,6 +44,16 @@ class ClientManager extends BaseClientManager
         $this->dm = $dm;
         $this->repository = $repository;
         $this->class = $class;
+    }
+
+    public function getRepository(): DocumentRepository
+    {
+        return $this->repository;
+    }
+
+    public function getDocumentManager(): DocumentManager
+    {
+        return $this->dm;
     }
 
     /**

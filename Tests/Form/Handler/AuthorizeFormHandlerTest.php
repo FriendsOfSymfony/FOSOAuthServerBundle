@@ -15,7 +15,10 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionException;
+use ReflectionMethod;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -24,6 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AuthorizeFormHandlerTest extends TestCase
 {
+    /** @var MockObject | FormInterface */
     protected $form;
 
     protected $request;
@@ -32,6 +36,7 @@ class AuthorizeFormHandlerTest extends TestCase
 
     protected $requestRequest;
 
+    /** @var MockObject | ContainerInterface */
     protected $container;
 
     /**
@@ -82,8 +87,7 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->instance = new AuthorizeFormHandler($this->form, $request);
 
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame($request, 'requestStack', $this->instance);
+        $this->assertAttributesWereSet($request);
     }
 
     public function testConstructWillAcceptRequestStackObjectAsRequest()
@@ -95,19 +99,16 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame($requestStack, 'requestStack', $this->instance);
+        $this->assertAttributesWereSet($requestStack);
     }
 
     public function testConstructWillAcceptNullAsRequest()
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame(null, 'requestStack', $this->instance);
+        $this->assertAttributesWereSet(null);
 
         $this->instance = new AuthorizeFormHandler($this->form);
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame(null, 'requestStack', $this->instance);
+        $this->assertAttributesWereSet(null);
     }
 
     public function testConstructWillThrowException()
@@ -135,7 +136,7 @@ class AuthorizeFormHandlerTest extends TestCase
             ->willReturn($data)
         ;
 
-        $this->assertSame($data->accepted, $this->instance->isAccepted());
+        self::assertSame($data->accepted, $this->instance->isAccepted());
     }
 
     public function testIsRejectedWillNegateAcceptedValueFromFormData()
@@ -171,13 +172,13 @@ class AuthorizeFormHandlerTest extends TestCase
             ->willReturn($data)
         ;
 
-        $this->assertSame($data->scope, $this->instance->getScope());
+        self::assertSame($data->scope, $this->instance->getScope());
     }
 
     public function testGetCurrentRequestWillReturnRequestObject()
     {
         $method = $this->getReflectionMethod('getCurrentRequest');
-        $this->assertSame($this->request, $method->invoke($this->instance));
+        self::assertSame($this->request, $method->invoke($this->instance));
     }
 
     public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack()
@@ -198,7 +199,7 @@ class AuthorizeFormHandlerTest extends TestCase
         ;
 
         $method = $this->getReflectionMethod('getCurrentRequest');
-        $this->assertSame($request, $method->invoke($this->instance));
+        self::assertSame($request, $method->invoke($this->instance));
     }
 
     public function testGetCurrentRequestWillReturnRequestServiceFromContainerIfNoneIsSet()
@@ -216,7 +217,7 @@ class AuthorizeFormHandlerTest extends TestCase
         ;
 
         $method = $this->getReflectionMethod('getCurrentRequest');
-        $this->assertSame($randomData, $method->invoke($this->instance));
+        self::assertSame($randomData, $method->invoke($this->instance));
     }
 
     /**
@@ -252,7 +253,7 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->assertNull($method->invoke($this->instance));
 
-        $this->assertSame($expectedSuperGlobalValue, $_GET);
+        self::assertSame($expectedSuperGlobalValue, $_GET);
     }
 
     public function testProcessWillReturnFalseIfRequestIsNull()
@@ -436,7 +437,7 @@ class AuthorizeFormHandlerTest extends TestCase
             ->willReturn($formData)
         ;
 
-        $this->assertSame([], $_GET);
+        self::assertSame([], $_GET);
 
         $expectedSuperGlobalValue = [
             'client_id' => $query->client_id,
@@ -448,20 +449,30 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->assertTrue($this->instance->process());
 
-        $this->assertSame($expectedSuperGlobalValue, $_GET);
+        self::assertSame($expectedSuperGlobalValue, $_GET);
     }
 
+
     /**
-     * @param string $methodName
-     *
-     * @return \ReflectionMethod
+     * @param $methodName
+     * @return ReflectionMethod
+     * @throws ReflectionException
      */
-    protected function getReflectionMethod($methodName)
+    protected function getReflectionMethod($methodName): ReflectionMethod
     {
         $reflectionObject = new \ReflectionObject($this->instance);
         $reflectionMethod = $reflectionObject->getMethod($methodName);
         $reflectionMethod->setAccessible(true);
 
         return $reflectionMethod;
+    }
+
+    /**
+     * @param MockObject $request
+     */
+    private function assertAttributesWereSet(?MockObject $request): void
+    {
+        self::assertSame($this->form, $this->instance->getForm());
+        self::assertSame($request, $this->instance->getRequest());
     }
 }

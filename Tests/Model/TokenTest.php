@@ -35,7 +35,7 @@ class TokenTest extends TestCase
         $token = new Token();
         $token->setExpiresAt($expiresAt);
 
-        $this->assertSame($expect, $token->hasExpired());
+        self::assertSame($expect, $token->hasExpired());
     }
 
     public static function getTestHasExpiredData()
@@ -51,7 +51,7 @@ class TokenTest extends TestCase
     {
         $token = new Token();
 
-        $this->assertSame(PHP_INT_MAX, $token->getExpiresIn());
+        self::assertSame(PHP_INT_MAX, $token->getExpiresIn());
     }
 
     public function testExpiresInWithExpiresAt()
@@ -59,6 +59,6 @@ class TokenTest extends TestCase
         $token = new Token();
         $token->setExpiresAt(time() + 60);
 
-        $this->assertSame(60, $token->getExpiresIn());
+        self::assertSame(60, $token->getExpiresIn());
     }
 }

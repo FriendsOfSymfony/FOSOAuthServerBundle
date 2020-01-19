@@ -90,7 +90,7 @@ class TokenManagerTest extends TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
+        self::assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
     public function testUpdateTokenPersistsAndFlushes()
@@ -117,7 +117,7 @@ class TokenManagerTest extends TestCase
 
     public function testGetClass()
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
     public function testDeleteToken()
@@ -204,6 +204,6 @@ class TokenManagerTest extends TestCase
             ->willReturn($data)
         ;
 
-        $this->assertSame($data['n'], $this->instance->deleteExpired());
+        self::assertSame($data['n'], $this->instance->deleteExpired());
     }
 }

@@ -16,6 +16,7 @@ namespace FOS\OAuthServerBundle\Tests\Form\Type;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
 use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 use FOS\OAuthServerBundle\Util\LegacyFormHelper;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -42,7 +43,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
         $this->instance = new AuthorizeFormType();
     }
 
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $accepted = true;
         $formData = [
@@ -55,13 +56,13 @@ class AuthorizeFormTypeTest extends TypeTestCase
 
         $authorize = new Authorize($accepted, $formData);
 
-        $form = $this->factory->create(LegacyFormHelper::getType('FOS\OAuthServerBundle\Form\Type\AuthorizeFormType'), $authorize);
+        $form = $this->factory->create(LegacyFormHelper::getType(AuthorizeFormType::class), $authorize);
 
         $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
-        $this->assertSame($authorize, $form->getData());
-        $this->assertSame($accepted, $authorize->accepted);
+        self::assertSame($authorize, $form->getData());
+        self::assertSame($accepted, $authorize->accepted);
 
         $view = $form->createView();
         $children = $view->children;
@@ -71,9 +72,9 @@ class AuthorizeFormTypeTest extends TypeTestCase
         }
     }
 
-    public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver()
+    public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|OptionsResolver $resolver */
+        /** @var MockObject|OptionsResolver $resolver */
         $resolver = $this->getMockBuilder(OptionsResolver::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -83,7 +84,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
             ->expects($this->once())
             ->method('setDefaults')
             ->with([
-                'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
+                'data_class' => Authorize::class,
             ])
             ->willReturn($resolver)
         ;
@@ -91,14 +92,14 @@ class AuthorizeFormTypeTest extends TypeTestCase
         $this->assertNull($this->instance->configureOptions($resolver));
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
-        $this->assertSame('fos_oauth_server_authorize', $this->instance->getName());
+        self::assertSame('fos_oauth_server_authorize', $this->instance->getName());
     }
 
-    public function testGetBlockPrefix()
+    public function testGetBlockPrefix(): void
     {
-        $this->assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
+        self::assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
     }
 
     protected function getTypes()

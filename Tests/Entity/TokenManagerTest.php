@@ -74,14 +74,14 @@ class TokenManagerTest extends TestCase
         $this->instance = new TokenManager($this->entityManager, $this->className);
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
+        self::assertSame($this->entityManager, $this->instance->getEntityManager());
+        self::assertSame($this->repository, $this->instance->getRepository());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = new AccessToken();
 
@@ -102,7 +102,7 @@ class TokenManagerTest extends TestCase
 
     public function testGetClass()
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
     public function testFindTokenBy()
@@ -120,7 +120,7 @@ class TokenManagerTest extends TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findTokenBy($criteria));
+        self::assertSame($randomResult, $this->instance->findTokenBy($criteria));
     }
 
     public function testUpdateToken()
@@ -227,6 +227,6 @@ class TokenManagerTest extends TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->deleteExpired());
+        self::assertSame($randomResult, $this->instance->deleteExpired());
     }
 }

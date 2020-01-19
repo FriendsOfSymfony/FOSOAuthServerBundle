@@ -80,7 +80,7 @@ class CreateClientCommandTest extends TestCase
             ],
         ]);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
+        self::assertSame(0, $commandTester->getStatusCode());
 
         $output = $commandTester->getDisplay();
 
