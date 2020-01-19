@@ -82,7 +82,7 @@ class OAuthFactoryTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->assertNull($this->instance->addConfiguration($nodeDefinition));
+        self::assertNull($this->instance->addConfiguration($nodeDefinition));
     }
 
     protected function useDefinitionDecorator()

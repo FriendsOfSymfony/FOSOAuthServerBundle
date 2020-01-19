@@ -38,7 +38,7 @@ class ClientManagerTest extends PropelTestCase
 
     public function testCreateClass()
     {
-        $this->assertInstanceOf(self::CLIENT_CLASS, $this->manager->createClient());
+        self::assertInstanceOf(self::CLIENT_CLASS, $this->manager->createClient());
     }
 
     public function testUpdate()
@@ -74,19 +74,19 @@ class ClientManagerTest extends PropelTestCase
     {
         $client = $this->manager->findClientBy(['id' => '1', 'randomId' => '2345']);
 
-        $this->assertNull($client);
+        self::assertNull($client);
     }
 
     public function testFindClientWithInvalidCriteria()
     {
         $client = $this->manager->findClientBy(['randomId' => '2345']);
-        $this->assertNull($client);
+        self::assertNull($client);
 
         $client = $this->manager->findClientBy(['id' => '2345']);
-        $this->assertNull($client);
+        self::assertNull($client);
 
         $client = $this->manager->findClientBy(['foo' => '2345']);
-        $this->assertNull($client);
+        self::assertNull($client);
     }
 
     public function testFindClient()
@@ -94,7 +94,7 @@ class ClientManagerTest extends PropelTestCase
         $client = $this->createClient('2345');
         $return = $this->manager->findClientBy(['id' => '1', 'randomId' => '2345']);
 
-        $this->assertNotNull($return);
+        self::assertNotNull($return);
         self::assertSame($client, $return);
     }
 
@@ -103,7 +103,7 @@ class ClientManagerTest extends PropelTestCase
         $client = $this->createClient('12345');
         $return = $this->manager->findClientByPublicId('1_12345');
 
-        $this->assertNotNull($return);
+        self::assertNotNull($return);
         self::assertSame($client, $return);
     }
 
@@ -111,20 +111,20 @@ class ClientManagerTest extends PropelTestCase
     {
         $return = $this->manager->findClientByPublicId('1_12345');
 
-        $this->assertNull($return);
+        self::assertNull($return);
     }
 
     public function testFindClientByPublicIdReturnsNullIfInvalidPublicId()
     {
         $return = $this->manager->findClientByPublicId('1');
-        $this->assertNull($return);
+        self::assertNull($return);
 
         $return = $this->manager->findClientByPublicId('');
-        $this->assertNull($return);
+        self::assertNull($return);
 
         // invalid type
         // $return = $this->manager->findClientByPublicId(null);
-        // $this->assertNull($return);
+        // self::assertNull($return);
     }
 
     protected function createClient($randomId)

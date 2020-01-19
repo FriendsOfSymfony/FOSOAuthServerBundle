@@ -156,8 +156,8 @@ class AuthorizeFormHandlerTest extends TestCase
             )
         ;
 
-        $this->assertTrue($this->instance->isRejected());
-        $this->assertFalse($this->instance->isRejected());
+        self::assertTrue($this->instance->isRejected());
+        self::assertFalse($this->instance->isRejected());
     }
 
     public function testGetScopeWillProxyValueToFormData()
@@ -251,7 +251,7 @@ class AuthorizeFormHandlerTest extends TestCase
             'scope' => $data->scope,
         ];
 
-        $this->assertNull($method->invoke($this->instance));
+        self::assertNull($method->invoke($this->instance));
 
         self::assertSame($expectedSuperGlobalValue, $_GET);
     }
@@ -268,7 +268,7 @@ class AuthorizeFormHandlerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertFalse($this->instance->process());
+        self::assertFalse($this->instance->process());
     }
 
     public function testProcessWillSetFormData()
@@ -302,7 +302,7 @@ class AuthorizeFormHandlerTest extends TestCase
             ->willReturn($this->form)
         ;
 
-        $this->assertFalse($this->instance->process());
+        self::assertFalse($this->instance->process());
     }
 
     public function testProcessWillHandleRequestOnPost()
@@ -364,7 +364,7 @@ class AuthorizeFormHandlerTest extends TestCase
             ->willReturn(false)
         ;
 
-        $this->assertFalse($this->instance->process());
+        self::assertFalse($this->instance->process());
     }
 
     public function testProcessWillHandleRequestOnPostAndWillProcessDataIfFormIsValid()
@@ -447,7 +447,7 @@ class AuthorizeFormHandlerTest extends TestCase
             'scope' => $query->scope,
         ];
 
-        $this->assertTrue($this->instance->process());
+        self::assertTrue($this->instance->process());
 
         self::assertSame($expectedSuperGlobalValue, $_GET);
     }

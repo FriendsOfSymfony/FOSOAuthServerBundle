@@ -61,7 +61,7 @@ class RequestStackCompilerPassTest extends TestCase
             ->willReturn(true)
         ;
 
-        $this->assertNull($this->instance->process($this->container));
+        self::assertNull($this->instance->process($this->container));
     }
 
     public function testProcess()
@@ -97,6 +97,6 @@ class RequestStackCompilerPassTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->process($this->container));
+        self::assertNull($this->instance->process($this->container));
     }
 }

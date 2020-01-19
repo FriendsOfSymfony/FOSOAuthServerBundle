@@ -60,7 +60,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
         self::assertSame($authorize, $form->getData());
         self::assertSame($accepted, $authorize->accepted);
 
@@ -68,7 +68,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            self::assertArrayHasKey($key, $children);
         }
     }
 
@@ -89,7 +89,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
             ->willReturn($resolver)
         ;
 
-        $this->assertNull($this->instance->configureOptions($resolver));
+        self::assertNull($this->instance->configureOptions($resolver));
     }
 
     public function testGetName(): void

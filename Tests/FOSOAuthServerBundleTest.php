@@ -76,6 +76,6 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
             )
         ;
 
-        $this->assertNull($bundle->build($containerBuilder));
+        self::assertNull($bundle->build($containerBuilder));
     }
 }

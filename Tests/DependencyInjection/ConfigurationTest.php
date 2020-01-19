@@ -30,7 +30,7 @@ class ConfigurationTest extends TestCase
     {
         $rc = new ReflectionClass(Configuration::class);
 
-        $this->assertTrue($rc->implementsInterface(ConfigurationInterface::class));
+        self::assertTrue($rc->implementsInterface(ConfigurationInterface::class));
     }
 
     public function testCouldBeConstructedWithoutAnyArguments(): void

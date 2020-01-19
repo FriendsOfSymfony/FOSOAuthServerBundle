@@ -112,7 +112,7 @@ class TokenManagerTest extends TestCase
             ->with()
         ;
 
-        $this->assertNull($this->instance->updateToken($token));
+        self::assertNull($this->instance->updateToken($token));
     }
 
     public function testGetClass()
@@ -141,7 +141,7 @@ class TokenManagerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteToken($token));
+        self::assertNull($this->instance->deleteToken($token));
     }
 
     public function testDeleteExpired()

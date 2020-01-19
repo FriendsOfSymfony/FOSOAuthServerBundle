@@ -44,7 +44,7 @@ class TokenManagerTest extends PropelTestCase
     public function testCreateClass()
     {
         $this->manager = new TokenManager('Token');
-        $this->assertInstanceOf('Token', $this->manager->createToken());
+        self::assertInstanceOf('Token', $this->manager->createToken());
     }
 
     public function testUpdate()
@@ -79,19 +79,19 @@ class TokenManagerTest extends PropelTestCase
     {
         $token = $this->manager->findTokenBy(['token' => '12345']);
 
-        $this->assertNull($token);
+        self::assertNull($token);
     }
 
     public function testFindTokenWithInvalidData()
     {
         $token = $this->manager->findTokenBy(['foo' => '12345']);
-        $this->assertNull($token);
+        self::assertNull($token);
 
         $token = $this->manager->findTokenBy([]);
-        $this->assertNull($token);
+        self::assertNull($token);
 
         $token = $this->manager->findTokenBy(['token']);
-        $this->assertNull($token);
+        self::assertNull($token);
     }
 
     public function testFindToken()
@@ -99,7 +99,7 @@ class TokenManagerTest extends PropelTestCase
         $token = $this->createToken('12345');
         $return = $this->manager->findTokenBy(['token' => '12345']);
 
-        $this->assertNotNull($return);
+        self::assertNotNull($return);
         self::assertSame($token, $return);
     }
 
@@ -108,7 +108,7 @@ class TokenManagerTest extends PropelTestCase
         $token = $this->createToken('12345');
         $return = $this->manager->findTokenByToken('12345');
 
-        $this->assertNotNull($return);
+        self::assertNotNull($return);
         self::assertSame($token, $return);
     }
 
@@ -116,7 +116,7 @@ class TokenManagerTest extends PropelTestCase
     {
         $return = $this->manager->findTokenByToken('12345');
 
-        $this->assertNull($return);
+        self::assertNull($return);
     }
 
     public function testDeleteExpired()
@@ -129,7 +129,7 @@ class TokenManagerTest extends PropelTestCase
         $nb = $this->manager->deleteExpired();
 
         self::assertSame(1, $nb);
-        $this->assertTrue($a1->equals(TokenQuery::create()->findOne()));
+        self::assertTrue($a1->equals(TokenQuery::create()->findOne()));
     }
 
     protected function createToken($tokenString, $expiresAt = false)

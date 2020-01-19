@@ -94,7 +94,7 @@ class OAuthListenerTest extends TestCase
         /** @var OAuthToken $token */
         $token = $listener->handle($this->event);
 
-        $this->assertInstanceOf(OAuthToken::class, $token);
+        self::assertInstanceOf(OAuthToken::class, $token);
         self::assertSame('a-token', $token->getToken());
     }
 

@@ -95,8 +95,8 @@ class OAuthProviderTest extends TestCase
 
         self::assertSame($this->user, $result->getUser());
         self::assertSame($token->getToken(), $result->getToken());
-        $this->assertTrue($result->isAuthenticated());
-        $this->assertCount(1, $result->getRoleNames());
+        self::assertTrue($result->isAuthenticated());
+        self::assertCount(1, $result->getRoleNames());
 
         $roles = $result->getRoleNames();
         self::assertSame('ROLE_USER', $roles[0]);
@@ -117,9 +117,9 @@ class OAuthProviderTest extends TestCase
 
         $result = $this->provider->authenticate($token);
 
-        $this->assertNull($result->getUser());
-        $this->assertTrue($result->isAuthenticated());
-        $this->assertCount(0, $result->getRoleNames());
+        self::assertNull($result->getUser());
+        self::assertTrue($result->isAuthenticated());
+        self::assertCount(0, $result->getRoleNames());
     }
 
     public function testAuthenticateTransformsScopesAsRoles(): void
@@ -138,14 +138,14 @@ class OAuthProviderTest extends TestCase
 
         $result = $this->provider->authenticate($token);
 
-        $this->assertNull($result->getUser());
-        $this->assertTrue($result->isAuthenticated());
+        self::assertNull($result->getUser());
+        self::assertTrue($result->isAuthenticated());
 
         $roles = $result->getRoleNames();
-        $this->assertCount(2, $roles);
-        //$this->assertInstanceOf(\Symfony\Component\Security\Core\Role::class, $roles[0]);
+        self::assertCount(2, $roles);
+        //self::assertInstanceOf(\Symfony\Component\Security\Core\Role::class, $roles[0]);
         self::assertSame('ROLE_FOO', $roles[0]);
-        //$this->assertInstanceOf(Role::class, $roles[1]);
+        //self::assertInstanceOf(Role::class, $roles[1]);
         self::assertSame('ROLE_BAR', $roles[1]);
     }
 
@@ -167,11 +167,11 @@ class OAuthProviderTest extends TestCase
 
         $result = $this->provider->authenticate($token);
 
-        $this->assertNull($result->getUser());
-        $this->assertTrue($result->isAuthenticated());
+        self::assertNull($result->getUser());
+        self::assertTrue($result->isAuthenticated());
 
         $roles = $result->getRoleNames();
-        $this->assertCount(0, $roles);
+        self::assertCount(0, $roles);
     }
 
     public function testAuthenticateWithEmptyScope(): void
@@ -190,10 +190,10 @@ class OAuthProviderTest extends TestCase
 
         $result = $this->provider->authenticate($token);
 
-        $this->assertNull($result->getUser());
-        $this->assertTrue($result->isAuthenticated());
+        self::assertNull($result->getUser());
+        self::assertTrue($result->isAuthenticated());
 
         $roles = $result->getRoleNames();
-        $this->assertCount(0, $roles);
+        self::assertCount(0, $roles);
     }
 }

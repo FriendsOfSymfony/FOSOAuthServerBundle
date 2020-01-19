@@ -38,7 +38,7 @@ class OAuthTokenTest extends TestCase
             ->getMock()
         ;
 
-        $this->assertNull($this->instance->setToken($token));
+        self::assertNull($this->instance->setToken($token));
         self::assertSame($token, $this->instance->getToken());
     }
 
@@ -49,8 +49,8 @@ class OAuthTokenTest extends TestCase
             ->getMock()
         ;
 
-        $this->assertNull($this->instance->getToken());
-        $this->assertNull($this->instance->setToken($token));
+        self::assertNull($this->instance->getToken());
+        self::assertNull($this->instance->setToken($token));
         self::assertSame($token, $this->instance->getToken());
     }
 
@@ -61,8 +61,8 @@ class OAuthTokenTest extends TestCase
             ->getMock()
         ;
 
-        $this->assertNull($this->instance->getCredentials());
-        $this->assertNull($this->instance->setToken($token));
+        self::assertNull($this->instance->getCredentials());
+        self::assertNull($this->instance->setToken($token));
         self::assertSame($token, $this->instance->getCredentials());
     }
 }

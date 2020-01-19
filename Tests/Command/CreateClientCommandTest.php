@@ -84,8 +84,8 @@ class CreateClientCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertStringContainsString('Client ID', $output);
-        $this->assertStringContainsString('Client Secret', $output);
+        self::assertStringContainsString('Client ID', $output);
+        self::assertStringContainsString('Client Secret', $output);
     }
 
     /**

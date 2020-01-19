@@ -129,7 +129,7 @@ class AuthCodeManagerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->updateAuthCode($authCode));
+        self::assertNull($this->instance->updateAuthCode($authCode));
     }
 
     public function testDeleteAuthCode(): void
@@ -154,7 +154,7 @@ class AuthCodeManagerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteAuthCode($authCode));
+        self::assertNull($this->instance->deleteAuthCode($authCode));
     }
 
     public function testDeleteExpired(): void

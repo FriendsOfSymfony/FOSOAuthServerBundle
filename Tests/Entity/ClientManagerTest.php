@@ -121,7 +121,7 @@ class ClientManagerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->updateClient($client));
+        self::assertNull($this->instance->updateClient($client));
     }
 
     public function testDeleteClient()
@@ -145,6 +145,6 @@ class ClientManagerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteClient($client));
+        self::assertNull($this->instance->deleteClient($client));
     }
 }

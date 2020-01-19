@@ -108,7 +108,7 @@ class OAuthStorageTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->storage->getClient('123_abc'));
+        self::assertNull($this->storage->getClient('123_abc'));
     }
 
     public function testCheckClientCredentialsThrowsIfInvalidClientClass(): void
@@ -127,7 +127,7 @@ class OAuthStorageTest extends TestCase
         $client = new Client();
         $client->setSecret('dummy');
 
-        $this->assertTrue($this->storage->checkClientCredentials($client, 'dummy'));
+        self::assertTrue($this->storage->checkClientCredentials($client, 'dummy'));
     }
 
     public function testCheckClientCredentialsReturnsFalseOnValidCredentials(): void
@@ -135,7 +135,7 @@ class OAuthStorageTest extends TestCase
         $client = new Client();
         $client->setSecret('dummy');
 
-        $this->assertFalse($this->storage->checkClientCredentials($client, 'passe'));
+        self::assertFalse($this->storage->checkClientCredentials($client, 'passe'));
     }
 
     public function testGetAccessTokenReturnsAccessTokenWithGivenId(): void
@@ -161,7 +161,7 @@ class OAuthStorageTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->storage->getAccessToken('123_abc'));
+        self::assertNull($this->storage->getAccessToken('123_abc'));
     }
 
     public function testCreateAccessTokenThrowsOnInvalidClientClass(): void
@@ -251,7 +251,7 @@ class OAuthStorageTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->storage->getRefreshToken('123_abc'));
+        self::assertNull($this->storage->getRefreshToken('123_abc'));
     }
 
     public function testCreateRefreshTokenThrowsOnInvalidClientClass(): void
@@ -337,9 +337,9 @@ class OAuthStorageTest extends TestCase
         $client = new Client();
         $client->setAllowedGrantTypes(['foo', 'bar']);
 
-        $this->assertTrue($this->storage->checkRestrictedGrantType($client, 'foo'));
-        $this->assertTrue($this->storage->checkRestrictedGrantType($client, 'bar'));
-        $this->assertFalse($this->storage->checkRestrictedGrantType($client, 'baz'));
+        self::assertTrue($this->storage->checkRestrictedGrantType($client, 'foo'));
+        self::assertTrue($this->storage->checkRestrictedGrantType($client, 'bar'));
+        self::assertFalse($this->storage->checkRestrictedGrantType($client, 'baz'));
     }
 
     public function testCheckUserCredentialsThrowsOnInvalidClientClass(): void
@@ -367,7 +367,7 @@ class OAuthStorageTest extends TestCase
 
         $result = $this->storage->checkUserCredentials($client, 'Joe', 'baz');
 
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     public function testCheckUserCredentialsReturnsTrueOnValidCredentials(): void
@@ -443,7 +443,7 @@ class OAuthStorageTest extends TestCase
             ->willReturn($encoder)
         ;
 
-        $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
+        self::assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
 
     public function testCheckUserCredentialsReturnsFalseIfUserNotExist(): void
@@ -456,7 +456,7 @@ class OAuthStorageTest extends TestCase
             ->willThrowException(new AuthenticationException('No such user'))
         ;
 
-        $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
+        self::assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
     }
 
     public function testCreateAuthCodeThrowsOnInvalidClientClass(): void
@@ -522,7 +522,7 @@ class OAuthStorageTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->storage->getAuthCode('123_abc'));
+        self::assertNull($this->storage->getAuthCode('123_abc'));
     }
 
     public function testValidGrantExtension(): void
@@ -542,7 +542,7 @@ class OAuthStorageTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->assertTrue(
+        self::assertTrue(
             $this->storage->checkGrantExtension(
                 $client,
                 'https://friendsofsymfony.com/grants/foo',

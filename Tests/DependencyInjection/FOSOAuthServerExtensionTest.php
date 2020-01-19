@@ -38,7 +38,7 @@ class FOSOAuthServerExtensionTest extends TestCase
     {
         $rc = new \ReflectionClass(FOSOAuthServerExtension::class);
 
-        $this->assertTrue($rc->isSubclassOf(Extension::class));
+        self::assertTrue($rc->isSubclassOf(Extension::class));
     }
 
     public function testCouldBeConstructedWithoutAnyArguments()
@@ -67,10 +67,10 @@ class FOSOAuthServerExtensionTest extends TestCase
             'authorize' => true,
         ]], $container);
 
-        $this->assertTrue($container->hasDefinition('fos_oauth_server.authorize.form'));
-        $this->assertTrue($container->hasDefinition('fos_oauth_server.authorize.form.type'));
-        $this->assertTrue($container->hasDefinition('fos_oauth_server.authorize.form.handler.default'));
-        $this->assertTrue($container->hasDefinition('fos_oauth_server.controller.authorize'));
+        self::assertTrue($container->hasDefinition('fos_oauth_server.authorize.form'));
+        self::assertTrue($container->hasDefinition('fos_oauth_server.authorize.form.type'));
+        self::assertTrue($container->hasDefinition('fos_oauth_server.authorize.form.handler.default'));
+        self::assertTrue($container->hasDefinition('fos_oauth_server.controller.authorize'));
     }
 
     public function testShouldNotLoadAuthorizeRelatedServicesIfAuthorizationIsDisabled()
@@ -87,10 +87,10 @@ class FOSOAuthServerExtensionTest extends TestCase
             'authorize' => false,
         ]], $container);
 
-        $this->assertFalse($container->hasDefinition('fos_oauth_server.authorize.form'));
-        $this->assertFalse($container->hasDefinition('fos_oauth_server.authorize.form.type'));
-        $this->assertFalse($container->hasDefinition('fos_oauth_server.authorize.form.handler.default'));
-        $this->assertFalse($container->hasDefinition('fos_oauth_server.controller.authorize'));
+        self::assertFalse($container->hasDefinition('fos_oauth_server.authorize.form'));
+        self::assertFalse($container->hasDefinition('fos_oauth_server.authorize.form.type'));
+        self::assertFalse($container->hasDefinition('fos_oauth_server.authorize.form.handler.default'));
+        self::assertFalse($container->hasDefinition('fos_oauth_server.controller.authorize'));
     }
 
     public function testLoadAuthorizeRouting()
@@ -234,19 +234,19 @@ class FOSOAuthServerExtensionTest extends TestCase
             ],
         ]], $container);
 
-        $this->assertTrue($container->hasAlias('fos_oauth_server.storage'));
+        self::assertTrue($container->hasAlias('fos_oauth_server.storage'));
         self::assertSame('fos_oauth_server.storage.default', (string) $container->getAlias('fos_oauth_server.storage'));
 
-        $this->assertTrue($container->hasAlias('fos_oauth_server.client_manager'));
+        self::assertTrue($container->hasAlias('fos_oauth_server.client_manager'));
         self::assertSame('the_client_manager_id', (string) $container->getAlias('fos_oauth_server.client_manager'));
 
-        $this->assertTrue($container->hasAlias('fos_oauth_server.access_token_manager'));
+        self::assertTrue($container->hasAlias('fos_oauth_server.access_token_manager'));
         self::assertSame('the_access_token_manager_id', (string) $container->getAlias('fos_oauth_server.access_token_manager'));
 
-        $this->assertTrue($container->hasAlias('fos_oauth_server.refresh_token_manager'));
+        self::assertTrue($container->hasAlias('fos_oauth_server.refresh_token_manager'));
         self::assertSame('the_refresh_token_manager_id', (string) $container->getAlias('fos_oauth_server.refresh_token_manager'));
 
-        $this->assertTrue($container->hasAlias('fos_oauth_server.auth_code_manager'));
+        self::assertTrue($container->hasAlias('fos_oauth_server.auth_code_manager'));
         self::assertSame('the_auth_code_manager_id', (string) $container->getAlias('fos_oauth_server.auth_code_manager'));
     }
 }
