@@ -32,12 +32,12 @@ use PHPUnit\Framework\TestCase;
 class AuthCodeManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     * @var MockObject|DocumentManager
      */
     protected $documentManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     * @var MockObject|DocumentRepository
      */
     protected $repository;
 
@@ -92,7 +92,7 @@ class AuthCodeManagerTest extends TestCase
 
     public function testFindAuthCodeBy(): void
     {
-        $randomResult = \random_bytes(10);
+        $randomResult = new \stdClass();
         $criteria = [
             \random_bytes(10),
         ];

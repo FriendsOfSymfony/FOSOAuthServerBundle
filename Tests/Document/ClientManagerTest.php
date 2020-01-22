@@ -88,7 +88,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindClientBy(): void
     {
-        $randomResult = \random_bytes(5);
+        $randomResult = new \stdClass();
         $criteria = [
             \random_bytes(5),
         ];

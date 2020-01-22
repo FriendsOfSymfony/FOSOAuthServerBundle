@@ -19,6 +19,8 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
+use FOS\OAuthServerBundle\Model\TokenInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,12 +38,12 @@ class TokenManagerTest extends TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     * @var MockObject|DocumentManager
      */
     protected $documentManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     * @var MockObject|DocumentRepository
      */
     protected $repository;
 
@@ -79,7 +81,7 @@ class TokenManagerTest extends TestCase
     public function testFindTokenByToken()
     {
         $randomToken = \random_bytes(5);
-        $randomResult = \random_bytes(5);
+        $randomResult = new \stdClass();
 
         $this->repository
             ->expects($this->once())
@@ -95,6 +97,7 @@ class TokenManagerTest extends TestCase
 
     public function testUpdateTokenPersistsAndFlushes()
     {
+        /** @var TokenInterface $token */
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -122,6 +125,7 @@ class TokenManagerTest extends TestCase
 
     public function testDeleteToken()
     {
+        /** @var TokenInterface $token */
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()
             ->getMock()
