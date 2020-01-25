@@ -25,13 +25,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class OAuthListenerTest extends TestCase
 {
+    /** @var MockObject | OAuth2 */
     protected $serverService;
 
+    /** @var MockObject | AuthenticationManagerInterface */
     protected $authManager;
 
-    /** @var MockObject  */
+    /** @var MockObject | TokenStorageInterface */
     protected $securityContext;
 
+    /** @var MockObject | RequestEvent */
     protected $event;
 
     public function setUp() : void
@@ -47,20 +50,11 @@ class OAuthListenerTest extends TestCase
             ->getMock()
         ;
 
-        if (interface_exists(TokenStorageInterface::class)) {
-            $this->securityContext = $this
-                ->getMockBuilder(TokenStorageInterface::class)
-                ->disableOriginalConstructor()
-                ->getMock()
-            ;
-        } else {
-            $this->securityContext = $this->getMockBuilder(
-                'Symfony\Component\Security\Core\SecurityContextInterface'
-            )
-                ->disableOriginalConstructor()
-                ->getMock()
-            ;
-        }
+        $this->securityContext = $this
+            ->getMockBuilder(TokenStorageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->event = $this
             ->getMockBuilder(RequestEvent::class)
