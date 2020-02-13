@@ -33,7 +33,6 @@ class Configuration implements ConfigurationInterface
 
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
-        //$treeBuilder->root('fos_oauth_server');
 
         $supportedDrivers = ['orm', 'mongodb', 'propel', 'custom'];
 
@@ -82,7 +81,6 @@ class Configuration implements ConfigurationInterface
 
         $this->addAuthorizeSection($rootNode);
         $this->addServiceSection($rootNode);
-        $this->addTemplateSection($rootNode);
 
         return $treeBuilder;
     }
@@ -133,20 +131,6 @@ class Configuration implements ConfigurationInterface
                                 ->prototype('variable')->end()
                             ->end()
                         ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
-
-    private function addTemplateSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->arrayNode('template')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('engine')->defaultValue('twig')->end()
                     ->end()
                 ->end()
             ->end()

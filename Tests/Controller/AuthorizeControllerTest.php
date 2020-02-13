@@ -22,7 +22,6 @@ use OAuth2\OAuth2;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
@@ -36,6 +35,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Environment;
 
 class AuthorizeControllerTest extends TestCase
 {
@@ -65,9 +65,9 @@ class AuthorizeControllerTest extends TestCase
     protected $oAuth2Server;
 
     /**
-     * @var MockObject|EngineInterface
+     * @var MockObject|Environment
      */
-    protected $templateEngine;
+    protected $twig;
 
     /**
      * @var MockObject|TokenStorageInterface
@@ -88,11 +88,6 @@ class AuthorizeControllerTest extends TestCase
      * @var MockObject|EventDispatcherInterface
      */
     protected $eventDispatcher;
-
-    /**
-     * @var string
-     */
-    protected $templateEngineType;
 
     /**
      * @var AuthorizeController
@@ -152,7 +147,7 @@ class AuthorizeControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->templateEngine = $this->getMockBuilder(EngineInterface::class)
+        $this->twig = $this->getMockBuilder(Environment::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -176,20 +171,18 @@ class AuthorizeControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->templateEngineType = 'twig';
 
         $this->instance = new AuthorizeController(
             $this->requestStack,
             $this->form,
             $this->authorizeFormHandler,
             $this->oAuth2Server,
-            $this->templateEngine,
+            $this->twig,
             $this->tokenStorage,
             $this->router,
             $this->clientManager,
             $this->eventDispatcher,
-            $this->session,
-            $this->templateEngineType
+            $this->session
         );
 
         /** @var MockObject&Request $request */
@@ -312,7 +305,7 @@ class AuthorizeControllerTest extends TestCase
 
         $response = '';
 
-        $this->templateEngine
+        $this->twig
             ->expects($this->at(0))
             ->method('render')
             ->with(
@@ -471,7 +464,7 @@ class AuthorizeControllerTest extends TestCase
 
         $response = '';
 
-        $this->templateEngine
+        $this->twig
             ->expects($this->at(0))
             ->method('render')
             ->with(
