@@ -32,7 +32,7 @@ class OAuthListenerTest extends TestCase
     protected $authManager;
 
     /** @var MockObject | TokenStorageInterface */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /** @var MockObject | RequestEvent */
     protected $event;
@@ -50,7 +50,7 @@ class OAuthListenerTest extends TestCase
             ->getMock()
         ;
 
-        $this->securityContext = $this
+        $this->tokenStorage = $this
             ->getMockBuilder(TokenStorageInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -65,7 +65,7 @@ class OAuthListenerTest extends TestCase
 
     public function testHandle()
     {
-        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
@@ -76,25 +76,27 @@ class OAuthListenerTest extends TestCase
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
+            ->with($this->isInstanceOf(OAuthToken::class))
             ->will($this->returnArgument(0))
         ;
 
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->once())
             ->method('setToken')
-            ->will($this->returnArgument(0))
+            ->with($this->callback(function($value) {
+                return $value instanceof OAuthToken
+                    && $value->getToken() === 'a-token'
+                ;
+            }))
         ;
 
-        /** @var OAuthToken $token */
-        $token = $listener->handle($this->event);
-
-        self::assertInstanceOf(OAuthToken::class, $token);
-        self::assertSame('a-token', $token->getToken());
+        // no return, trigger the expectations
+        $listener->handle($this->event);
     }
 
     public function testHandleResponse()
     {
-        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
@@ -110,10 +112,11 @@ class OAuthListenerTest extends TestCase
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
+            ->with($this->isInstanceOf(OAuthToken::class))
             ->willReturn($response)
         ;
 
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->never())
             ->method('setToken')
         ;
@@ -121,11 +124,10 @@ class OAuthListenerTest extends TestCase
         $this->event
             ->expects($this->once())
             ->method('setResponse')
-            ->will($this->returnArgument(0))
+            ->with($this->equalTo($response))
         ;
 
-        $ret = $listener->handle($this->event);
-
-        self::assertSame($response, $ret);
+        // no return, trigger the expectations
+        $listener->handle($this->event);
     }
 }
