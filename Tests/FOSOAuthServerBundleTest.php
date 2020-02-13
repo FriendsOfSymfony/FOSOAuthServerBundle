@@ -66,7 +66,6 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
             ->method('addCompilerPass')
             ->withConsecutive(
                 [new Compiler\GrantExtensionsCompilerPass()],
-                [new Compiler\TokenStorageCompilerPass()],
                 [new Compiler\RequestStackCompilerPass()]
             )
             ->willReturnOnConsecutiveCalls(

@@ -33,6 +33,7 @@
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/mongodb-odm": "^2.0",
         "doctrine/orm": "^2.7",
+        "ext-pdo_sqlite": "*",
         "phing/phing": "^2.16",
         "php-mock/php-mock-phpunit": "^2.5",
         "phpstan/phpstan": "^0.12.5",
@@ -44,7 +45,6 @@
         "symfony/console": "^5.0",
         "symfony/form": "^5.0",
         "symfony/phpunit-bridge": "^5.0",
-        "symfony/templating": "^5.0",
         "symfony/twig-bundle": "^5.0",
         "symfony/yaml": "^5.0",
         "willdurand/propel-typehintable-behavior": "^1.0"

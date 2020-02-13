@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * Controller handling basic authorization.
@@ -65,9 +65,9 @@ class AuthorizeController
     private $oAuth2Server;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templating;
+    private $twig;
 
     /**
      * @var RequestStack
@@ -90,11 +90,6 @@ class AuthorizeController
     private $clientManager;
 
     /**
-     * @var string
-     */
-    private $templateEngineType;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -109,37 +104,34 @@ class AuthorizeController
      * @param Form                     $authorizeForm
      * @param AuthorizeFormHandler     $authorizeFormHandler
      * @param OAuth2                   $oAuth2Server
-     * @param EngineInterface          $templating
+     * @param Environment              $twig
      * @param TokenStorageInterface    $tokenStorage
      * @param UrlGeneratorInterface    $router
      * @param ClientManagerInterface   $clientManager
      * @param EventDispatcherInterface $eventDispatcher
      * @param SessionInterface         $session
-     * @param string                   $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
         Form $authorizeForm,
         AuthorizeFormHandler $authorizeFormHandler,
         OAuth2 $oAuth2Server,
-        EngineInterface $templating,
+        Environment $twig,
         TokenStorageInterface $tokenStorage,
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcherInterface $eventDispatcher,
-        SessionInterface $session = null,
-        $templateEngineType = 'twig'
+        SessionInterface $session = null
     ) {
         $this->requestStack = $requestStack;
         $this->session = $session;
         $this->authorizeForm = $authorizeForm;
         $this->authorizeFormHandler = $authorizeFormHandler;
         $this->oAuth2Server = $oAuth2Server;
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
         $this->clientManager = $clientManager;
-        $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -183,7 +175,10 @@ class AuthorizeController
             'client' => $this->getClient(),
         ];
 
-        return $this->renderAuthorize($data, $this->templating, $this->templateEngineType);
+        return $this->twig->render(
+            '@FOSOAuthServer/Authorize/authorize.html.twig',
+            $data
+        );
     }
 
     /**
@@ -256,17 +251,6 @@ class AuthorizeController
         }
 
         return $this->client;
-    }
-
-    /**
-     * @throws \RuntimeException
-     */
-    protected function renderAuthorize(array $data, EngineInterface $engine, string $engineType): string
-    {
-        return $engine->render(
-            '@FOSOAuthServer/Authorize/authorize.html.'.$engineType,
-            $data
-        );
     }
 
     /**

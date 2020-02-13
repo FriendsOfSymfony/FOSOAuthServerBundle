@@ -65,12 +65,9 @@ class OAuthListener
         $this->handle($event);
     }
 
-    public function handle(RequestEvent $event)
+    public function handle(RequestEvent $event): void
     {
-        //TODO - This method needs to be re-examined for inconsistent return types
-
         if (null === $oauthToken = $this->serverService->getBearerToken($event->getRequest(), true)) {
-            //return;
             throw new LogicException('Token for event was null');
         }
 
@@ -78,14 +75,15 @@ class OAuthListener
         $token->setToken($oauthToken);
 
         try {
-            $returnValue = $this->authenticationManager->authenticate($token);
+            $authenticateResult = $this->authenticationManager->authenticate($token);
 
-            if ($returnValue instanceof TokenInterface) {
-                return $this->tokenStorage->setToken($returnValue);
-            }
+            if ($authenticateResult instanceof TokenInterface) {
 
-            if ($returnValue instanceof Response) {
-                return $event->setResponse($returnValue);
+                $this->tokenStorage->setToken($authenticateResult);
+
+            } elseif ($authenticateResult instanceof Response) {
+
+                $event->setResponse($authenticateResult);
             }
         } catch (AuthenticationException $e) {
             if (null !== $p = $e->getPrevious()) {
