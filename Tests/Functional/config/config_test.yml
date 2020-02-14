@@ -1,0 +1,25 @@
+imports:
+    - { resource: config.yml }
+
+fos_oauth_server:
+    db_driver: custom
+    service:
+        client_manager: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Manager\ClientManager
+        access_token_manager: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Manager\AccessTokenManager
+        refresh_token_manager: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Manager\RefreshTokenManager
+        auth_code_manager: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Manager\AuthCodeManager
+        user_provider: security.user.provider.concrete.main
+
+    client_class:        FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\Client
+    access_token_class:  FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\AccessToken
+    refresh_token_class: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\RefreshToken
+    auth_code_class:     FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity\AuthCode
+
+services:
+    # autowiring
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    FOS\OAuthServerBundle\Tests\Functional\TestBundle\:
+        resource: '%kernel.project_dir%/Tests/Functional/TestBundle/*'
+        exclude: '%kernel.project_dir%/Tests/Functional/TestBundle/Entity'

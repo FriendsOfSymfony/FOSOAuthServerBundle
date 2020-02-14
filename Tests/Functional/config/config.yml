@@ -1,10 +1,18 @@
 framework:
     form: ~
     secret: test
+    test: true
     router:
-        resource: "%kernel.project_dir%/config/routing.yml"
+        resource: "%kernel.project_dir%/Tests/Functional/config/routing.yml"
 
 fos_oauth_server:
+
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
 
 security:
     role_hierarchy:

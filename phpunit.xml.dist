@@ -6,6 +6,10 @@
         </testsuite>
     </testsuites>
 
+    <php>
+        <env name="KERNEL_CLASS" value="\FOS\OAuthServerBundle\Tests\Functional\AppKernel" />
+    </php>
+
     <filter>
         <whitelist>
             <directory>./</directory>

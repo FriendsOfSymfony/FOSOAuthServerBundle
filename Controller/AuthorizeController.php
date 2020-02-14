@@ -167,9 +167,9 @@ class AuthorizeController
             'client' => $this->getClient(),
         ];
 
-        return $this->twig->render(
-            '@FOSOAuthServer/Authorize/authorize.html.twig',
-            $data
+        return new Response(
+            $this->twig->render('@FOSOAuthServer/Authorize/authorize.html.twig', $data),
+            Response::HTTP_OK
         );
     }
 
