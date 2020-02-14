@@ -85,6 +85,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
             ->method('setDefaults')
             ->with([
                 'data_class' => Authorize::class,
+                'validation_groups' => [],
             ])
             ->willReturn($resolver)
         ;

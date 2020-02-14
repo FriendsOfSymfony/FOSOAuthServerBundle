@@ -21,12 +21,12 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = [
+            new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            new \FOS\OAuthServerBundle\Tests\Functional\TestBundle\TestBundle(),
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new \Symfony\Bundle\MonologBundle\MonologBundle(),
             new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
-            new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-
-            new \FOS\OAuthServerBundle\Tests\Functional\TestBundle\TestBundle(),
         ];
 
         if ('orm' === $this->getEnvironment()) {

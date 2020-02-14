@@ -1,5 +1,6 @@
 phpunit.xml
 Tests/autoload.php
+var/
 vendor/
 Propel/om/
 Propel/map/

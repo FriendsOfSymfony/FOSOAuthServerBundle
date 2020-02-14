@@ -20,6 +20,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -46,7 +47,7 @@ class OAuthFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->definitionDecoratorClass = 'Symfony\Component\DependencyInjection\DefinitionDecorator';
+        $this->definitionDecoratorClass = DefinitionDecorator::class;
         $this->childDefinitionClass = ChildDefinition::class;
 
         $this->instance = new OAuthFactory();
@@ -64,19 +65,6 @@ class OAuthFactoryTest extends TestCase
         self::assertSame('fos_oauth', $this->instance->getKey());
     }
 
-    public function testCreate(): void
-    {
-        if (class_exists($this->childDefinitionClass)) {
-            return $this->useChildDefinition();
-        }
-
-        if (class_exists($this->definitionDecoratorClass)) {
-            return $this->useDefinitionDecorator();
-        }
-
-        throw new Exception('Neither DefinitionDecorator nor ChildDefinition exist');
-    }
-
     public function testAddConfigurationDoesNothing(): void
     {
         $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
@@ -84,6 +72,17 @@ class OAuthFactoryTest extends TestCase
             ->getMock()
         ;
         self::assertNull($this->instance->addConfiguration($nodeDefinition));
+    }
+
+    public function testCreate(): void
+    {
+        if (class_exists($this->childDefinitionClass)) {
+            $this->useChildDefinition();
+        } elseif (class_exists($this->definitionDecoratorClass)) {
+            $this->useDefinitionDecorator();
+        } else {
+            throw new Exception('Neither DefinitionDecorator nor ChildDefinition exist');
+        }
     }
 
     protected function useDefinitionDecorator(): void

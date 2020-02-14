@@ -221,106 +221,6 @@ class AuthorizeControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function testAuthorizeActionWillThrowAccessDeniedException(): void
-    {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->tokenStorage
-            ->expects($this->at(0))
-            ->method('getToken')
-            ->willReturn($token)
-        ;
-
-        $token
-            ->expects($this->at(0))
-            ->method('getUser')
-            ->willReturn(null)
-        ;
-
-        $this->expectException(AccessDeniedException::class);
-        $this->expectExceptionMessage('This user does not have access to this section.');
-
-        $this->instance->authorizeAction($this->request);
-    }
-
-    public function testAuthorizeActionWillRenderTemplate(): void
-    {
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->tokenStorage
-            ->expects($this->at(0))
-            ->method('getToken')
-            ->willReturn($token)
-        ;
-
-        $token
-            ->expects($this->at(0))
-            ->method('getUser')
-            ->willReturn($this->user)
-        ;
-
-        $this->session
-            ->expects($this->at(0))
-            ->method('get')
-            ->with('_fos_oauth_server.ensure_logout')
-            ->willReturn(false)
-        ;
-
-        $propertyReflection = new ReflectionProperty(AuthorizeController::class, 'client');
-        $propertyReflection->setAccessible(true);
-        $propertyReflection->setValue($this->instance, $this->client);
-
-        $this->eventDispatcher
-            ->expects($this->at(0))
-            ->method('dispatch')
-            ->with(new OAuthEvent($this->user, $this->client), OAuthEvent::PRE_AUTHORIZATION_PROCESS)
-            ->willReturn($this->event)
-        ;
-
-        $this->event
-            ->expects($this->at(0))
-            ->method('isAuthorizedClient')
-            ->with()
-            ->willReturn(false)
-        ;
-
-        $this->authorizeFormHandler
-            ->expects($this->at(0))
-            ->method('process')
-            ->with()
-            ->willReturn(false)
-        ;
-
-        $this->form
-            ->expects($this->at(0))
-            ->method('createView')
-            ->willReturn($this->formView)
-        ;
-
-        $response = '';
-
-        $this->twig
-            ->expects($this->at(0))
-            ->method('render')
-            ->with(
-                '@FOSOAuthServer/Authorize/authorize.html.twig',
-                [
-                    'form' => $this->formView,
-                    'client' => $this->client,
-                ]
-            )
-            ->willReturn($response)
-        ;
-
-        self::assertSame($response, $this->instance->authorizeAction($this->request));
-    }
-
     public function testAuthorizeActionWillFinishClientAuthorization(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
@@ -462,8 +362,6 @@ class AuthorizeControllerTest extends TestCase
             ->willReturn($this->formView)
         ;
 
-        $response = '';
-
         $this->twig
             ->expects($this->at(0))
             ->method('render')
@@ -474,10 +372,12 @@ class AuthorizeControllerTest extends TestCase
                     'client' => $this->client,
                 ]
             )
-            ->willReturn($response)
+            ->willReturn('')
         ;
 
-        self::assertSame($response, $this->instance->authorizeAction($this->request));
+        $response = $this->instance->authorizeAction($this->request);
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame('', $response->getContent());
     }
 
     public function testAuthorizeActionWillProcessAuthorizationForm(): void
