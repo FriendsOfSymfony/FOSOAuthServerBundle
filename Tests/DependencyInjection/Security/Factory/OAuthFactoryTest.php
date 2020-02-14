@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Security\Factory;
 
+use Exception;
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -53,17 +54,17 @@ class OAuthFactoryTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetPosition()
+    public function testGetPosition(): void
     {
         self::assertSame('pre_auth', $this->instance->getPosition());
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         self::assertSame('fos_oauth', $this->instance->getKey());
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         if (class_exists($this->childDefinitionClass)) {
             return $this->useChildDefinition();
@@ -73,10 +74,10 @@ class OAuthFactoryTest extends TestCase
             return $this->useDefinitionDecorator();
         }
 
-        throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
+        throw new Exception('Neither DefinitionDecorator nor ChildDefinition exist');
     }
 
-    public function testAddConfigurationDoesNothing()
+    public function testAddConfigurationDoesNothing(): void
     {
         $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
             ->disableOriginalConstructor()
@@ -85,7 +86,7 @@ class OAuthFactoryTest extends TestCase
         self::assertNull($this->instance->addConfiguration($nodeDefinition));
     }
 
-    protected function useDefinitionDecorator()
+    protected function useDefinitionDecorator(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -137,7 +138,7 @@ class OAuthFactoryTest extends TestCase
         ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
     }
 
-    protected function useChildDefinition()
+    protected function useChildDefinition(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()

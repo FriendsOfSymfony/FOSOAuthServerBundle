@@ -17,6 +17,7 @@ use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityF
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 
 /**
  * OAuthFactory class.
@@ -28,11 +29,11 @@ class OAuthFactory implements SecurityFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
+    public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint): array
     {
         // NOTE: done like this to avoid PHPStan complaining about a missing class for both Symfony v3 and Symfony v4
         $definitionDecorator = 'Symfony\\Component\\DependencyInjection\\DefinitionDecorator';
-        $childDefinition = 'Symfony\\Component\\DependencyInjection\\ChildDefinition';
+        $childDefinition = ChildDefinition::class;
         $definitionClass = $childDefinition;
         if (class_exists($definitionDecorator)) {
             $definitionClass = $definitionDecorator;
@@ -45,7 +46,10 @@ class OAuthFactory implements SecurityFactoryInterface
         ;
 
         $listenerId = 'security.authentication.listener.fos_oauth_server.'.$id;
-        $container->setDefinition($listenerId, new $definitionClass('fos_oauth_server.security.authentication.listener'));
+        $container->setDefinition(
+            $listenerId,
+            new $definitionClass('fos_oauth_server.security.authentication.listener')
+        );
 
         return [$providerId, $listenerId, 'fos_oauth_server.security.entry_point'];
     }
@@ -53,7 +57,7 @@ class OAuthFactory implements SecurityFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPosition()
+    public function getPosition(): string
     {
         return 'pre_auth';
     }
@@ -61,7 +65,7 @@ class OAuthFactory implements SecurityFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return 'fos_oauth';
     }
@@ -69,7 +73,7 @@ class OAuthFactory implements SecurityFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addConfiguration(NodeDefinition $node)
+    public function addConfiguration(NodeDefinition $node): void
     {
     }
 }

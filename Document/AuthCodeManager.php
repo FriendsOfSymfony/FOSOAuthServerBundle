@@ -54,7 +54,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -70,7 +70,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function updateAuthCode(AuthCodeInterface $authCode)
+    public function updateAuthCode(AuthCodeInterface $authCode): void
     {
         $this->dm->persist($authCode);
         $this->dm->flush();
@@ -79,7 +79,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteAuthCode(AuthCodeInterface $authCode)
+    public function deleteAuthCode(AuthCodeInterface $authCode): void
     {
         $this->dm->remove($authCode);
         $this->dm->flush();

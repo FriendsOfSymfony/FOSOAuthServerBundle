@@ -59,7 +59,7 @@ class ClientManager extends BaseClientManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -75,7 +75,7 @@ class ClientManager extends BaseClientManager
     /**
      * {@inheritdoc}
      */
-    public function updateClient(ClientInterface $client)
+    public function updateClient(ClientInterface $client): void
     {
         $this->dm->persist($client);
         $this->dm->flush();
@@ -84,7 +84,7 @@ class ClientManager extends BaseClientManager
     /**
      * {@inheritdoc}
      */
-    public function deleteClient(ClientInterface $client)
+    public function deleteClient(ClientInterface $client): void
     {
         $this->dm->remove($client);
         $this->dm->flush();

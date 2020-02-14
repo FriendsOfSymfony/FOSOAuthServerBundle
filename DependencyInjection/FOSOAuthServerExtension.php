@@ -163,7 +163,7 @@ class FOSOAuthServerExtension extends Extension
     {
         foreach ($supportedScopes as $scope) {
             if (false !== mb_strpos($scope, ' ')) {
-                throw new InvalidConfigurationException('The array notation for supported_scopes should not contain spaces in array items. Either use full array notation or use the string notation for supported_scopes. See https://git.io/vx1X0 for more informations.');
+                throw new InvalidConfigurationException('The array notation for supported_scopes should not contain spaces in array items. Either use full array notation or use the string notation for supported_scopes. See https://git.io/vx1X0 for more information.');
             }
         }
 

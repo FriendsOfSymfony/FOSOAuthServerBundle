@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
+use Exception;
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -34,26 +36,26 @@ class FOSOAuthServerExtensionTest extends TestCase
         parent::setUp();
     }
 
-    public function testShouldImplementConfigurationInterface()
+    public function testShouldImplementConfigurationInterface(): void
     {
-        $rc = new \ReflectionClass(FOSOAuthServerExtension::class);
+        $rc = new ReflectionClass(FOSOAuthServerExtension::class);
 
         self::assertTrue($rc->isSubclassOf(Extension::class));
     }
 
-    public function testCouldBeConstructedWithoutAnyArguments()
+    public function testCouldBeConstructedWithoutAnyArguments(): void
     {
         try {
             new FOSOAuthServerExtension();
 
             // no exceptions were thrown
             self::assertTrue(true);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->fail($exception->getMessage());
         }
     }
 
-    public function testShouldLoadAuthorizeRelatedServicesIfAuthorizationIsEnabled()
+    public function testShouldLoadAuthorizeRelatedServicesIfAuthorizationIsEnabled(): void
     {
         $container = new ContainerBuilder();
 
@@ -73,7 +75,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition('fos_oauth_server.controller.authorize'));
     }
 
-    public function testShouldNotLoadAuthorizeRelatedServicesIfAuthorizationIsDisabled()
+    public function testShouldNotLoadAuthorizeRelatedServicesIfAuthorizationIsDisabled(): void
     {
         $container = new ContainerBuilder();
 
@@ -93,7 +95,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         self::assertFalse($container->hasDefinition('fos_oauth_server.controller.authorize'));
     }
 
-    public function testLoadAuthorizeRouting()
+    public function testLoadAuthorizeRouting(): void
     {
         $locator = new FileLocator();
         $loader = new XmlFileLoader($locator);
@@ -104,7 +106,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         self::assertSame(['GET', 'POST'], $authorizeRoute->getMethods());
     }
 
-    public function testLoadTokenRouting()
+    public function testLoadTokenRouting(): void
     {
         $locator = new FileLocator();
         $loader = new XmlFileLoader($locator);
@@ -115,7 +117,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         self::assertSame(['GET', 'POST'], $tokenRoute->getMethods());
     }
 
-    public function testWithoutService()
+    public function testWithoutService(): void
     {
         $config = [
             'db_driver' => 'orm',
@@ -133,7 +135,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         );
     }
 
-    public function testStringSupportedScopes()
+    public function testStringSupportedScopes(): void
     {
         $scopes = 'scope1 scope2 scope3 scope4';
 
@@ -161,7 +163,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         );
     }
 
-    public function testArraySupportedScopes()
+    public function testArraySupportedScopes(): void
     {
         $scopes = ['scope1', 'scope2', 'scope3', 'scope4'];
 
@@ -190,7 +192,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         );
     }
 
-    public function testArraySupportedScopesWithSpace()
+    public function testArraySupportedScopesWithSpace(): void
     {
         $scopes = ['scope1 scope2', 'scope3', 'scope4'];
 
@@ -210,11 +212,16 @@ class FOSOAuthServerExtensionTest extends TestCase
         $instance = new FOSOAuthServerExtension();
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The array notation for supported_scopes should not contain spaces in array items. Either use full array notation or use the string notation for supported_scopes. See https://git.io/vx1X0 for more informations.');
+        $this->expectExceptionMessage(
+            'The array notation '
+            . 'for supported_scopes should not contain spaces in array items.'
+            . ' Either use full array notation or use the string notation for supported_scopes. '
+            . 'See https://git.io/vx1X0 for more information.'
+        );
         $instance->load([$config], $this->container);
     }
 
-    public function testShouldAliasServivesWhenCustomDriverIsUsed()
+    public function testShouldAliasServivesWhenCustomDriverIsUsed(): void
     {
         $container = new ContainerBuilder();
         $extension = new FOSOAuthServerExtension();
@@ -241,12 +248,21 @@ class FOSOAuthServerExtensionTest extends TestCase
         self::assertSame('the_client_manager_id', (string) $container->getAlias('fos_oauth_server.client_manager'));
 
         self::assertTrue($container->hasAlias('fos_oauth_server.access_token_manager'));
-        self::assertSame('the_access_token_manager_id', (string) $container->getAlias('fos_oauth_server.access_token_manager'));
+        self::assertSame(
+            'the_access_token_manager_id',
+            (string) $container->getAlias('fos_oauth_server.access_token_manager')
+        );
 
         self::assertTrue($container->hasAlias('fos_oauth_server.refresh_token_manager'));
-        self::assertSame('the_refresh_token_manager_id', (string) $container->getAlias('fos_oauth_server.refresh_token_manager'));
+        self::assertSame(
+            'the_refresh_token_manager_id',
+            (string) $container->getAlias('fos_oauth_server.refresh_token_manager')
+        );
 
         self::assertTrue($container->hasAlias('fos_oauth_server.auth_code_manager'));
-        self::assertSame('the_auth_code_manager_id', (string) $container->getAlias('fos_oauth_server.auth_code_manager'));
+        self::assertSame(
+            'the_auth_code_manager_id',
+            (string) $container->getAlias('fos_oauth_server.auth_code_manager')
+        );
     }
 }
