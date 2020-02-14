@@ -34,7 +34,7 @@ class RandomTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testGenerateTokenWillUseRandomBytesIfAvailable()
+    public function testGenerateTokenWillUseRandomBytesIfAvailable(): void
     {
         $hashResult = \random_bytes(32);
 

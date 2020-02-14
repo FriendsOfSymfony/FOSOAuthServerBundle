@@ -19,6 +19,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -172,11 +173,11 @@ class AuthorizeController
         );
     }
 
-    /**
-     * @return Response
-     */
-    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
-    {
+    protected function processSuccess(
+        UserInterface $user,
+        AuthorizeFormHandler $formHandler,
+        Request $request
+    ): ?Response {
         if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
             $this->session->invalidate();
@@ -203,18 +204,13 @@ class AuthorizeController
 
     /**
      * Generate the redirection url when the authorize is completed.
-     *
-     * @return string
      */
-    protected function getRedirectionUrl(UserInterface $user)
+    protected function getRedirectionUrl(UserInterface $user): string
     {
         return $this->router->generate('fos_oauth_server_profile_show');
     }
 
-    /**
-     * @return ClientInterface
-     */
-    protected function getClient()
+    protected function getClient(): ClientInterface
     {
         if (null !== $this->client) {
             return $this->client;
@@ -226,7 +222,7 @@ class AuthorizeController
 
         if (null === $clientId = $request->get('client_id')) {
             $formData = $request->get($this->authorizeForm->getName(), []);
-            $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
+            $clientId = $formData['client_id'] ?? null;
         }
 
         $this->client = $this->clientManager->findClientByPublicId($clientId);
@@ -238,14 +234,11 @@ class AuthorizeController
         return $this->client;
     }
 
-    /**
-     * @return Request|null
-     */
-    private function getCurrentRequest()
+    private function getCurrentRequest(): ?Request
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
-            throw new \RuntimeException('No current request.');
+            throw new RuntimeException('No current request.');
         }
 
         return $request;

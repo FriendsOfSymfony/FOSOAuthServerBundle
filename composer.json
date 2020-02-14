@@ -29,14 +29,15 @@
         "friendsofsymfony/oauth2-php": "dev-symfony-5"
     },
     "require-dev": {
+        "ext-pdo_sqlite": "*",
         "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/mongodb-odm": "^2.0",
         "doctrine/orm": "^2.7",
-        "ext-pdo_sqlite": "*",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "phing/phing": "^2.16",
         "php-mock/php-mock-phpunit": "^2.5",
-        "phpstan/phpstan": "^0.12.5",
+        "phpstan/phpstan": "^0.12.10",
         "phpstan/phpstan-phpunit": "^0.12.6",
         "phpunit/phpunit": "^8.5",
         "propel/propel1": "^1.7",
@@ -56,6 +57,11 @@
         "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces",
         "symfony/form" : "Needed to be able to use the AuthorizeFormType",
         "symfony/console": "Needed to be able to use commands"
+    },
+    "scripts": {
+        "lint": "./vendor/bin/php-cs-fixer fix .",
+        "test": "./vendor/bin/phpunit",
+        "phpstan": "./vendor/bin/phpstan analyse --configuration phpstan.neon --level 6 ."
     },
     "autoload": {
         "psr-4": { "FOS\\OAuthServerBundle\\": "" },
