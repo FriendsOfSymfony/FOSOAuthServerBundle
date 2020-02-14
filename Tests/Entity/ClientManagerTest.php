@@ -47,7 +47,7 @@ class ClientManagerTest extends TestCase
      */
     protected $instance;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()

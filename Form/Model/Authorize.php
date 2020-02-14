@@ -48,10 +48,6 @@ class Authorize
      */
     public $scope;
 
-    /**
-     * @param bool  $accepted
-     * @param array $query
-     */
     public function __construct(bool $accepted, array $query = [])
     {
         foreach ($query as $key => $value) {

@@ -52,7 +52,7 @@ class TokenManagerTest extends TestCase
      */
     protected $instance;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->className = AccessToken::class;
         $this->repository = $this->getMockBuilder(EntityRepository::class)

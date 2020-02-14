@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Event;
 
 use FOS\OAuthServerBundle\Model\ClientInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class OAuthEvent extends Event
 {
@@ -38,9 +38,7 @@ class OAuthEvent extends Event
     private $isAuthorizedClient;
 
     /**
-     * @param UserInterface   $user
-     * @param ClientInterface $client
-     * @param bool            $isAuthorizedClient
+     * @param bool $isAuthorizedClient
      */
     public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false)
     {
@@ -49,9 +47,6 @@ class OAuthEvent extends Event
         $this->isAuthorizedClient = $isAuthorizedClient;
     }
 
-    /**
-     * @return UserInterface
-     */
     public function getUser(): UserInterface
     {
         return $this->user;
@@ -65,17 +60,11 @@ class OAuthEvent extends Event
         $this->isAuthorizedClient = $isAuthorizedClient;
     }
 
-    /**
-     * @return bool
-     */
     public function isAuthorizedClient(): bool
     {
         return $this->isAuthorizedClient;
     }
 
-    /**
-     * @return ClientInterface
-     */
     public function getClient(): ClientInterface
     {
         return $this->client;

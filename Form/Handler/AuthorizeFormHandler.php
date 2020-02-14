@@ -40,7 +40,6 @@ class AuthorizeFormHandler
     private $requestStack;
 
     /**
-     * @param FormInterface        $form
      * @param Request|RequestStack $requestStack
      */
     public function __construct(FormInterface $form, $requestStack = null)
@@ -108,6 +107,16 @@ class AuthorizeFormHandler
         return $this->form->getData()->scope;
     }
 
+    public function getForm(): FormInterface
+    {
+        return $this->form;
+    }
+
+    public function getRequest()
+    {
+        return $this->requestStack;
+    }
+
     /**
      * Put form data in $_GET so that OAuth2 library will call Request::createFromGlobals().
      *
@@ -136,15 +145,5 @@ class AuthorizeFormHandler
         }
 
         return $this->requestStack->getCurrentRequest();
-    }
-
-    public function getForm(): FormInterface
-    {
-        return $this->form;
-    }
-
-    public function getRequest()
-    {
-        return $this->requestStack;
     }
 }

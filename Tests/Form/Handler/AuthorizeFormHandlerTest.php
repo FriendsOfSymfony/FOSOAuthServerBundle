@@ -44,7 +44,7 @@ class AuthorizeFormHandlerTest extends TestCase
      */
     protected $instance;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->form = $this->getMockBuilder(FormInterface::class)
             ->disableOriginalConstructor()
@@ -452,10 +452,9 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertSame($expectedSuperGlobalValue, $_GET);
     }
 
-
     /**
      * @param $methodName
-     * @return ReflectionMethod
+     *
      * @throws ReflectionException
      */
     protected function getReflectionMethod($methodName): ReflectionMethod

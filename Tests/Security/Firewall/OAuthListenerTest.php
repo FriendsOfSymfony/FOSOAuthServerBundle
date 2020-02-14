@@ -37,7 +37,7 @@ class OAuthListenerTest extends TestCase
     /** @var MockObject | RequestEvent */
     protected $event;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
@@ -83,7 +83,7 @@ class OAuthListenerTest extends TestCase
         $this->tokenStorage
             ->expects($this->once())
             ->method('setToken')
-            ->with($this->callback(function($value) {
+            ->with($this->callback(function ($value) {
                 return $value instanceof OAuthToken
                     && $value->getToken() === 'a-token'
                 ;

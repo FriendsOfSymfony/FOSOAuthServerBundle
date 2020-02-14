@@ -26,7 +26,7 @@ class FOSOAuthServerExtensionTest extends TestCase
 {
     private $container;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $parameterBag = new ParameterBag();
         $this->container = new ContainerBuilder($parameterBag);

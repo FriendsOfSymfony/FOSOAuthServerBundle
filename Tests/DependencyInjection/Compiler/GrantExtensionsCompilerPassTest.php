@@ -34,7 +34,7 @@ class GrantExtensionsCompilerPassTest extends TestCase
      */
     protected $instance;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->instance = new GrantExtensionsCompilerPass();
 

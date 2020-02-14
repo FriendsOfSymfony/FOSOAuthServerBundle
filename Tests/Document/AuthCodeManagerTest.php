@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ORM\AbstractQuery;
 use FOS\OAuthServerBundle\Document\AuthCodeManager;
@@ -51,7 +51,7 @@ class AuthCodeManagerTest extends TestCase
      */
     protected $instance;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         if (!class_exists(DocumentManager::class)) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');

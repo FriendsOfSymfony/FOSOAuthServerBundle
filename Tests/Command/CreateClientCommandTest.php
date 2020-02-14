@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Command;
 
 use FOS\OAuthServerBundle\Command\CreateClientCommand;
+use FOS\OAuthServerBundle\Document\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use FOS\OAuthServerBundle\Document\Client;
 
 class CreateClientCommandTest extends TestCase
 {
@@ -36,12 +36,13 @@ class CreateClientCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->clientManager =
             $this->getMockBuilder(ClientManagerInterface::class)
                 ->disableOriginalConstructor()
-                ->getMock();
+                ->getMock()
+            ;
         $command = new CreateClientCommand($this->clientManager);
 
         $application = new Application();
@@ -88,9 +89,6 @@ class CreateClientCommandTest extends TestCase
         self::assertStringContainsString('Client Secret', $output);
     }
 
-    /**
-     * @return array
-     */
     public function clientProvider(): array
     {
         return [

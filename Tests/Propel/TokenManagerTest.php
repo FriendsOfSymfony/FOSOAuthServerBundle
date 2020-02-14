@@ -28,7 +28,7 @@ class TokenManagerTest extends PropelTestCase
 
     protected $manager;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 

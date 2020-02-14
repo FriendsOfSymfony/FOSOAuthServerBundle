@@ -50,7 +50,7 @@ class OAuthProviderTest extends TestCase
      */
     protected $userChecker;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()

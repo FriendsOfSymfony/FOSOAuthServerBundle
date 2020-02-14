@@ -18,7 +18,7 @@ use Propel;
 
 class PropelTestCase extends TestCase
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         if (!class_exists(Propel::class)) {
             $this->markTestSkipped('Propel is not installed.');

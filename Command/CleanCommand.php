@@ -65,6 +65,7 @@ EOT
             $result = $service->deleteExpired();
             $output->writeln(sprintf('Removed <info>%d</info> items from <comment>%s</comment> storage.', $result, get_class($service)));
         }
+
         return 0;
     }
 }

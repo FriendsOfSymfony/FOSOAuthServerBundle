@@ -26,7 +26,7 @@ class RandomTest extends TestCase
 {
     use PHPMock;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
     }

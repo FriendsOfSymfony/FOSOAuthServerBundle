@@ -16,21 +16,21 @@ namespace FOS\OAuthServerBundle\Tests\Storage;
 use FOS\OAuthServerBundle\Model\AccessToken;
 use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
 use FOS\OAuthServerBundle\Model\AuthCode;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
+use FOS\OAuthServerBundle\Storage\GrantExtensionInterface;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
+use OAuth2\Model\IOAuth2Client;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use OAuth2\Model\IOAuth2Client;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use FOS\OAuthServerBundle\Storage\GrantExtensionInterface;
-use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 
 class OAuthStorageTest extends TestCase
 {
@@ -48,7 +48,7 @@ class OAuthStorageTest extends TestCase
 
     protected $storage;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)
             ->disableOriginalConstructor()

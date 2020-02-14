@@ -46,7 +46,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         if (!class_exists(DocumentManager::class)) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');

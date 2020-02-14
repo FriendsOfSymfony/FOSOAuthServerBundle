@@ -20,17 +20,17 @@ use Symfony\Component\HttpKernel\KernelInterface;
 abstract class TestCase extends WebTestCase
 {
     /**
-     * @var null|KernelInterface
+     * @var KernelInterface|null
      */
     protected static $kernel;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $fs = new Filesystem();
         $fs->remove(sys_get_temp_dir().'/FOSOAuthServerBundle/');
     }
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         static::$kernel = null;
     }

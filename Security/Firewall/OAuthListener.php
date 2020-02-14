@@ -48,7 +48,6 @@ class OAuthListener
     /**
      * @param TokenStorageInterface          $tokenStorage          the token storage
      * @param AuthenticationManagerInterface $authenticationManager the authentication manager
-     * @param OAuth2                         $serverService
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -78,11 +77,8 @@ class OAuthListener
             $authenticateResult = $this->authenticationManager->authenticate($token);
 
             if ($authenticateResult instanceof TokenInterface) {
-
                 $this->tokenStorage->setToken($authenticateResult);
-
             } elseif ($authenticateResult instanceof Response) {
-
                 $event->setResponse($authenticateResult);
             }
         } catch (AuthenticationException $e) {
