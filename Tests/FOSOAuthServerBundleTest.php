@@ -22,12 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    public function testConstruction()
+    public function testConstruction(): void
     {
         $bundle = new FOSOAuthServerBundle();
 
