@@ -66,7 +66,7 @@ class CleanCommandTest extends TestCase
     /**
      * Delete expired tokens for provided classes.
      */
-    public function testItShouldRemoveExpiredToken()
+    public function testItShouldRemoveExpiredToken(): void
     {
         $expiredAccessTokens = 5;
         $this->accessTokenManager
