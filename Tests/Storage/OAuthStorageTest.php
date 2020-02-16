@@ -37,13 +37,13 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthStorageTest extends TestCase
 {
-    /** @var ClientManagerInterface | MockObject  */
+    /** @var ClientManagerInterface | MockObject */
     protected $clientManager;
 
     /** @var AccessTokenManagerInterface | MockObject */
     protected $accessTokenManager;
 
-    /** @var RefreshTokenManagerInterface | MockObject  */
+    /** @var RefreshTokenManagerInterface | MockObject */
     protected $refreshTokenManager;
 
     /** @var AuthCodeManagerInterface | MockObject */
@@ -121,7 +121,7 @@ class OAuthStorageTest extends TestCase
 
     public function testCheckClientCredentialsThrowsIfInvalidClientClass(): void
     {
-        /** @var IOAuth2Client  $client */
+        /** @var IOAuth2Client $client */
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()

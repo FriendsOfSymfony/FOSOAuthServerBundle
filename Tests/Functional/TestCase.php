@@ -17,7 +17,6 @@ use LogicException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class TestCase extends WebTestCase
 {
@@ -51,21 +50,21 @@ abstract class TestCase extends WebTestCase
 
         if ('' === $responseContent && '' === $content) {
             $this->assertTrue(true);
+
             return;
         }
 
         if ('' === $responseContent) {
             $this->fail(sprintf('Response content is empty, expected "%s".', $content));
         } elseif ('' === $content) {
-
             // this differs from assertStringContainsString, which does not
             // fail on an empty string expectation
-            $this->fail($fullFailOutput || strlen($responseContent) < 100
+            $this->fail($fullFailOutput || mb_strlen($responseContent) < 100
                 ? sprintf('Failed asserting that response "%s" is empty.', $responseContent)
                 : sprintf(
                     'Failed asserting that response "%s ... %s" is empty.',
-                    substr($responseContent, 0, 40),
-                    substr($responseContent, strlen($responseContent) - 40)
+                    mb_substr($responseContent, 0, 40),
+                    mb_substr($responseContent, mb_strlen($responseContent) - 40)
                 )
             );
         }
@@ -73,12 +72,12 @@ abstract class TestCase extends WebTestCase
         // not using assertStringContainsString to avoid full HTML doc in the
         // fail message
         if (mb_strpos($responseContent, $content) === false) {
-            $this->fail($fullFailOutput || strlen($responseContent) < 100
+            $this->fail($fullFailOutput || mb_strlen($responseContent) < 100
                 ? sprintf('Failed asserting that response "%s" contains "%s".', $responseContent, $content)
                 : sprintf(
                     'Failed asserting that response "%s ... %s" contains "%s".',
-                    substr($responseContent, 0, 40),
-                    substr($responseContent, strlen($responseContent) - 40),
+                    mb_substr($responseContent, 0, 40),
+                    mb_substr($responseContent, mb_strlen($responseContent) - 40),
                     $content
                 )
             );

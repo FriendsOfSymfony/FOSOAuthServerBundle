@@ -214,9 +214,9 @@ class FOSOAuthServerExtensionTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(
             'The array notation '
-            . 'for supported_scopes should not contain spaces in array items.'
-            . ' Either use full array notation or use the string notation for supported_scopes. '
-            . 'See https://git.io/vx1X0 for more information.'
+            .'for supported_scopes should not contain spaces in array items.'
+            .' Either use full array notation or use the string notation for supported_scopes. '
+            .'See https://git.io/vx1X0 for more information.'
         );
         $instance->load([$config], $this->container);
     }

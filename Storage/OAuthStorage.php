@@ -35,14 +35,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class OAuthStorage implements
-    IOAuth2RefreshTokens,
-    IOAuth2GrantUser,
-    IOAuth2GrantCode,
-    IOAuth2GrantImplicit,
-    IOAuth2GrantClient,
-    IOAuth2GrantExtension,
-    GrantExtensionDispatcherInterface
+class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode, IOAuth2GrantImplicit, IOAuth2GrantClient, IOAuth2GrantExtension, GrantExtensionDispatcherInterface
 {
     /**
      * @var ClientManagerInterface

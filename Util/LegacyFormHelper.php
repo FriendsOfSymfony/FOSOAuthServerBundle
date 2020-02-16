@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Util;
 
+use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 use InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 
 /**
  * @internal
@@ -24,7 +24,7 @@ use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
  */
 final class LegacyFormHelper
 {
-    /** @var array  */
+    /** @var array */
     private static $map = [
         HiddenType::class => 'hidden',
         AuthorizeFormType::class => 'fos_oauth_server_authorize',
@@ -45,13 +45,7 @@ final class LegacyFormHelper
         }
 
         if (!isset(self::$map[$class])) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Form type with class "%s" can not be found. '
-                    . 'Please check for typos or add it to the map in LegacyFormHelper',
-                    $class
-                )
-            );
+            throw new InvalidArgumentException(sprintf('Form type with class "%s" can not be found. '.'Please check for typos or add it to the map in LegacyFormHelper', $class));
         }
 
         return self::$map[$class];

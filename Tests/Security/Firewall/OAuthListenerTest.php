@@ -63,7 +63,7 @@ class OAuthListenerTest extends TestCase
         ;
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 
@@ -94,7 +94,7 @@ class OAuthListenerTest extends TestCase
         $listener->handle($this->event);
     }
 
-    public function testHandleResponse()
+    public function testHandleResponse(): void
     {
         $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 

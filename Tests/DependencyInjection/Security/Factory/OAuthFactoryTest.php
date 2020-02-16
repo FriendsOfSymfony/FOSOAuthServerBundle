@@ -68,7 +68,7 @@ class OAuthFactoryTest extends TestCase
 
     public function testCreate(): void
     {
-            $this->useChildDefinition();
+        $this->useChildDefinition();
     }
 
     private function useChildDefinition(): void
