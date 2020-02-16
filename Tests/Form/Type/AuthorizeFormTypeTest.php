@@ -17,6 +17,7 @@ use FOS\OAuthServerBundle\Form\Model\Authorize;
 use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -103,7 +104,10 @@ class AuthorizeFormTypeTest extends TypeTestCase
         self::assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
     }
 
-    protected function getTypes()
+    /**
+     * @return array<AbstractType>
+     */
+    protected function getTypes(): array
     {
         return  [
             new AuthorizeFormType(),
