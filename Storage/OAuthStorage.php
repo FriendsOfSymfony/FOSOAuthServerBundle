@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Storage;
 
 use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
@@ -196,8 +197,14 @@ class OAuthStorage implements
     /**
      * {@inheritdoc}
      */
-    public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = null)
-    {
+    public function createAuthCode(
+        $code,
+        IOAuth2Client $client,
+        $data,
+        $redirect_uri,
+        $expires,
+        $scope = null
+    ): AuthCodeInterface {
         if (!$client instanceof ClientInterface) {
             throw new InvalidArgumentException('Client has to implement the ClientInterface');
         }

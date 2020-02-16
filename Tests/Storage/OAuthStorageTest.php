@@ -25,7 +25,10 @@ use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Storage\GrantExtensionInterface;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
 use OAuth2\Model\IOAuth2Client;
+use OAuth2\OAuth2ServerException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -34,18 +37,25 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthStorageTest extends TestCase
 {
+    /** @var ClientManagerInterface | MockObject  */
     protected $clientManager;
 
+    /** @var AccessTokenManagerInterface | MockObject */
     protected $accessTokenManager;
 
+    /** @var RefreshTokenManagerInterface | MockObject  */
     protected $refreshTokenManager;
 
+    /** @var AuthCodeManagerInterface | MockObject */
     protected $authCodeManager;
 
+    /** @var UserProviderInterface | MockObject */
     protected $userProvider;
 
+    /** @var EncoderFactoryInterface | MockObject */
     protected $encoderFactory;
 
+    /** @var OAuthStorage */
     protected $storage;
 
     public function setUp(): void
@@ -100,8 +110,6 @@ class OAuthStorageTest extends TestCase
 
     public function testGetClientReturnsNullIfNotExists(): void
     {
-        $client = new Client();
-
         $this->clientManager->expects($this->once())
             ->method('findClientByPublicId')
             ->with('123_abc')
@@ -113,6 +121,7 @@ class OAuthStorageTest extends TestCase
 
     public function testCheckClientCredentialsThrowsIfInvalidClientClass(): void
     {
+        /** @var IOAuth2Client  $client */
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -153,8 +162,6 @@ class OAuthStorageTest extends TestCase
 
     public function testGetAccessTokenReturnsNullIfNotExists(): void
     {
-        $token = new AccessToken();
-
         $this->accessTokenManager->expects($this->once())
             ->method('findTokenByToken')
             ->with('123_abc')
@@ -166,6 +173,7 @@ class OAuthStorageTest extends TestCase
 
     public function testCreateAccessTokenThrowsOnInvalidClientClass(): void
     {
+        /** @var IOAuth2Client $client */
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -243,7 +251,7 @@ class OAuthStorageTest extends TestCase
         self::assertSame($token, $this->storage->getRefreshToken('123_abc'));
     }
 
-    public function testGetRefreshTokenReturnsNullIfNotExists()
+    public function testGetRefreshTokenReturnsNullIfNotExists(): void
     {
         $this->refreshTokenManager->expects($this->once())
             ->method('findTokenByToken')
@@ -322,6 +330,7 @@ class OAuthStorageTest extends TestCase
 
     public function testCheckRestrictedGrantTypeThrowsOnInvalidClientClass(): void
     {
+        /** @var IOAuth2Client $client */
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -344,6 +353,7 @@ class OAuthStorageTest extends TestCase
 
     public function testCheckUserCredentialsThrowsOnInvalidClientClass(): void
     {
+        /** @var IOAuth2Client $client */
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -481,7 +491,7 @@ class OAuthStorageTest extends TestCase
         ;
         $this->authCodeManager->expects($this->once())
             ->method('updateAuthCode')
-            ->willReturnCallback(function ($code) use (&$savedCode) {
+            ->willReturnCallback(static function ($code) use (&$savedCode) {
                 $savedCode = $code;
             })
         ;
@@ -494,6 +504,7 @@ class OAuthStorageTest extends TestCase
         self::assertSame($code, $savedCode);
 
         self::assertSame('foo', $code->getToken());
+        //TODO getClient doesn't exist on $code AuthCodeInterface - not sure what to do here
         self::assertSame($client, $code->getClient());
         self::assertSame($user, $code->getData());
         self::assertSame($user, $code->getUser());
@@ -554,7 +565,7 @@ class OAuthStorageTest extends TestCase
 
     public function testInvalidGrantExtension(): void
     {
-        $this->expectException(\OAuth2\OAuth2ServerException::class);
+        $this->expectException(OAuth2ServerException::class);
 
         $client = $this->getMockBuilder(IOAuth2Client::class)
             ->disableOriginalConstructor()
@@ -576,7 +587,7 @@ class OAuthStorageTest extends TestCase
         $this->storage->setGrantExtension($uri = 'https://friendsofsymfony.com/grants/foo', $grantExtension);
         $this->storage->setGrantExtension($uri, $grantExtension2);
 
-        $storageClass = new \ReflectionClass(get_class($this->storage));
+        $storageClass = new ReflectionClass(get_class($this->storage));
         $grantExtensionsProperty = $storageClass->getProperty('grantExtensions');
         $grantExtensionsProperty->setAccessible(true);
         $grantExtensions = $grantExtensionsProperty->getValue($this->storage);
@@ -624,31 +635,35 @@ class OAuthStorageTest extends TestCase
 
 class User implements UserInterface
 {
+    /** @var int */
     private $username;
 
-    public function __construct($username)
+    public function __construct(int $username)
     {
         $this->username = $username;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
+        return [];
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
+        return '';
     }
 
-    public function getSalt()
+    public function getSalt(): string
     {
+        return '';
     }
 
-    public function getUsername()
+    public function getUsername(): int
     {
         return $this->username;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }
