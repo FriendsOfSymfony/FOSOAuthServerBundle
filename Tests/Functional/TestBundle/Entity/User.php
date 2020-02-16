@@ -38,31 +38,32 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword($password)
+    public function setPassword($password): void
     {
         $this->password = $password;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
+        return '';
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->getId();
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }
