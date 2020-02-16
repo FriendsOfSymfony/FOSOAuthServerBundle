@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Loader\XmlFileLoader;
 
 class FOSOAuthServerExtensionTest extends TestCase
 {
+    /** @var ContainerBuilder */
     private $container;
 
     public function setUp(): void
@@ -221,7 +222,7 @@ class FOSOAuthServerExtensionTest extends TestCase
         $instance->load([$config], $this->container);
     }
 
-    public function testShouldAliasServivesWhenCustomDriverIsUsed(): void
+    public function testShouldAliasServicesWhenCustomDriverIsUsed(): void
     {
         $container = new ContainerBuilder();
         $extension = new FOSOAuthServerExtension();
