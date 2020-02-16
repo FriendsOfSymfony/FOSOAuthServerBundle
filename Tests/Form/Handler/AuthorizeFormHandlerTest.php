@@ -15,10 +15,14 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use function random_bytes;
 use ReflectionException;
 use ReflectionMethod;
+use ReflectionObject;
+use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -27,16 +31,19 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AuthorizeFormHandlerTest extends TestCase
 {
-    /** @var MockObject | FormInterface */
+    /** @var FormInterface | MockObject */
     protected $form;
 
+    /** @var Request | MockObject */
     protected $request;
 
+    /** @var ParameterBag | MockObject */
     protected $requestQuery;
 
+    /** @var ParameterBag | MockObject */
     protected $requestRequest;
 
-    /** @var MockObject | ContainerInterface */
+    /** @var ContainerInterface | MockObject */
     protected $container;
 
     /**
@@ -78,7 +85,7 @@ class AuthorizeFormHandlerTest extends TestCase
         parent::setUp();
     }
 
-    public function testConstructWillAcceptRequestObjectAsRequest()
+    public function testConstructWillAcceptRequestObjectAsRequest(): void
     {
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -87,10 +94,10 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->instance = new AuthorizeFormHandler($this->form, $request);
 
-        self::assertAttributesWereSet($request);
+        $this->assertAttributesWereSet($request);
     }
 
-    public function testConstructWillAcceptRequestStackObjectAsRequest()
+    public function testConstructWillAcceptRequestStackObjectAsRequest(): void
     {
         $requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
@@ -99,35 +106,35 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
-        self::assertAttributesWereSet($requestStack);
+        $this->assertAttributesWereSet($requestStack);
     }
 
     public function testConstructWillAcceptNullAsRequest()
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
-        self::assertAttributesWereSet(null);
+        $this->assertAttributesWereSet(null);
 
         $this->instance = new AuthorizeFormHandler($this->form);
-        self::assertAttributesWereSet(null);
+        $this->assertAttributesWereSet(null);
     }
 
-    public function testConstructWillThrowException()
+    public function testConstructWillThrowException(): void
     {
         $exceptionMessage = sprintf(
             'Argument 2 of %s must be an instanceof RequestStack or Request',
             AuthorizeFormHandler::class
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($exceptionMessage);
 
-        new AuthorizeFormHandler($this->form, new \stdClass());
+        new AuthorizeFormHandler($this->form, new stdClass());
     }
 
-    public function testIsAcceptedWillProxyValueToFormData()
+    public function testIsAcceptedWillProxyValueToFormData(): void
     {
-        $data = new \stdClass();
-        $data->accepted = \random_bytes(10);
+        $data = new stdClass();
+        $data->accepted = random_bytes(10);
 
         $this->form
             ->expects($this->once())
@@ -139,12 +146,12 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertSame($data->accepted, $this->instance->isAccepted());
     }
 
-    public function testIsRejectedWillNegateAcceptedValueFromFormData()
+    public function testIsRejectedWillNegateAcceptedValueFromFormData(): void
     {
-        $dataWithAcceptedValueFalse = new \stdClass();
+        $dataWithAcceptedValueFalse = new stdClass();
         $dataWithAcceptedValueFalse->accepted = false;
 
-        $dataWithAcceptedValueTrue = new \stdClass();
+        $dataWithAcceptedValueTrue = new stdClass();
         $dataWithAcceptedValueTrue->accepted = true;
 
         $this->form
@@ -160,10 +167,10 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertFalse($this->instance->isRejected());
     }
 
-    public function testGetScopeWillProxyValueToFormData()
+    public function testGetScopeWillProxyValueToFormData(): void
     {
-        $data = new \stdClass();
-        $data->scope = \random_bytes(10);
+        $data = new stdClass();
+        $data->scope = random_bytes(10);
 
         $this->form
             ->expects($this->once())
@@ -175,13 +182,13 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertSame($data->scope, $this->instance->getScope());
     }
 
-    public function testGetCurrentRequestWillReturnRequestObject()
+    public function testGetCurrentRequestWillReturnRequestObject(): void
     {
         $method = $this->getReflectionMethod('getCurrentRequest');
         self::assertSame($this->request, $method->invoke($this->instance));
     }
 
-    public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack()
+    public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack(): void
     {
         $requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
@@ -189,7 +196,7 @@ class AuthorizeFormHandlerTest extends TestCase
         ;
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
-        $request = new \stdClass();
+        $request = new stdClass();
 
         $requestStack
             ->expects($this->once())
@@ -202,12 +209,12 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertSame($request, $method->invoke($this->instance));
     }
 
-    public function testGetCurrentRequestWillReturnRequestServiceFromContainerIfNoneIsSet()
+    public function testGetCurrentRequestWillReturnRequestServiceFromContainerIfNoneIsSet(): void
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->instance->setContainer($this->container);
 
-        $randomData = \random_bytes(10);
+        $randomData = random_bytes(10);
 
         $this->container
             ->expects($this->at(0))
@@ -223,16 +230,16 @@ class AuthorizeFormHandlerTest extends TestCase
     /**
      * @TODO Fix this behavior. This method MUST not modify $_GET.
      */
-    public function testOnSuccessWillReplaceGETSuperGlobal()
+    public function testOnSuccessWillReplaceGETSuperGlobal(): void
     {
         $method = $this->getReflectionMethod('onSuccess');
 
-        $data = new \stdClass();
-        $data->client_id = \random_bytes(10);
-        $data->response_type = \random_bytes(10);
-        $data->redirect_uri = \random_bytes(10);
-        $data->state = \random_bytes(10);
-        $data->scope = \random_bytes(10);
+        $data = new stdClass();
+        $data->client_id = random_bytes(10);
+        $data->response_type = random_bytes(10);
+        $data->redirect_uri = random_bytes(10);
+        $data->state = random_bytes(10);
+        $data->scope = random_bytes(10);
 
         $this->form
             ->expects($this->exactly(5))
@@ -256,7 +263,7 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertSame($expectedSuperGlobalValue, $_GET);
     }
 
-    public function testProcessWillReturnFalseIfRequestIsNull()
+    public function testProcessWillReturnFalseIfRequestIsNull(): void
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->instance->setContainer($this->container);
@@ -271,7 +278,7 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertFalse($this->instance->process());
     }
 
-    public function testProcessWillSetFormData()
+    public function testProcessWillSetFormData(): void
     {
         $this->requestRequest
             ->expects($this->once())
@@ -281,8 +288,8 @@ class AuthorizeFormHandlerTest extends TestCase
         ;
 
         $dataMock = [
-            \random_bytes(10),
-            \random_bytes(10),
+            random_bytes(10),
+            random_bytes(10),
         ];
 
         $this->requestQuery
@@ -305,7 +312,7 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertFalse($this->instance->process());
     }
 
-    public function testProcessWillHandleRequestOnPost()
+    public function testProcessWillHandleRequestOnPost(): void
     {
         $this->requestRequest
             ->expects($this->once())
@@ -315,8 +322,8 @@ class AuthorizeFormHandlerTest extends TestCase
         ;
 
         $dataMock = [
-            \random_bytes(10),
-            \random_bytes(10),
+            random_bytes(10),
+            random_bytes(10),
         ];
 
         $this->requestQuery
@@ -367,7 +374,7 @@ class AuthorizeFormHandlerTest extends TestCase
         self::assertFalse($this->instance->process());
     }
 
-    public function testProcessWillHandleRequestOnPostAndWillProcessDataIfFormIsValid()
+    public function testProcessWillHandleRequestOnPostAndWillProcessDataIfFormIsValid(): void
     {
         $this->requestRequest
             ->expects($this->once())
@@ -376,12 +383,12 @@ class AuthorizeFormHandlerTest extends TestCase
             ->willReturn(true)
         ;
 
-        $query = new \stdClass();
-        $query->client_id = \random_bytes(10);
-        $query->response_type = \random_bytes(10);
-        $query->redirect_uri = \random_bytes(10);
-        $query->state = \random_bytes(10);
-        $query->scope = \random_bytes(10);
+        $query = new stdClass();
+        $query->client_id = random_bytes(10);
+        $query->response_type = random_bytes(10);
+        $query->redirect_uri = random_bytes(10);
+        $query->state = random_bytes(10);
+        $query->scope = random_bytes(10);
 
         $this->requestQuery
             ->expects($this->once())
@@ -453,13 +460,11 @@ class AuthorizeFormHandlerTest extends TestCase
     }
 
     /**
-     * @param $methodName
-     *
      * @throws ReflectionException
      */
-    protected function getReflectionMethod($methodName): ReflectionMethod
+    protected function getReflectionMethod(string $methodName): ReflectionMethod
     {
-        $reflectionObject = new \ReflectionObject($this->instance);
+        $reflectionObject = new ReflectionObject($this->instance);
         $reflectionMethod = $reflectionObject->getMethod($methodName);
         $reflectionMethod->setAccessible(true);
 
