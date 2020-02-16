@@ -30,7 +30,7 @@ class TokenTest extends TestCase
      * @param mixed $expiresAt
      * @param mixed $expect
      */
-    public function testHasExpired($expiresAt, $expect)
+    public function testHasExpired($expiresAt, $expect): void
     {
         $token = new Token();
         $token->setExpiresAt($expiresAt);
@@ -38,7 +38,7 @@ class TokenTest extends TestCase
         self::assertSame($expect, $token->hasExpired());
     }
 
-    public static function getTestHasExpiredData()
+    public static function getTestHasExpiredData(): array
     {
         return [
             [time() + 60, false],
@@ -47,14 +47,14 @@ class TokenTest extends TestCase
         ];
     }
 
-    public function testExpiresIn()
+    public function testExpiresIn(): void
     {
         $token = new Token();
 
         self::assertSame(PHP_INT_MAX, $token->getExpiresIn());
     }
 
-    public function testExpiresInWithExpiresAt()
+    public function testExpiresInWithExpiresAt(): void
     {
         $token = new Token();
         $token->setExpiresAt(time() + 60);
