@@ -21,7 +21,9 @@ use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use function random_bytes;
 
 /**
  * @group time-sensitive
@@ -33,12 +35,12 @@ use PHPUnit\Framework\TestCase;
 class TokenManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
+     * @var MockObject|EntityRepository
      */
     protected $repository;
 
@@ -100,17 +102,17 @@ class TokenManagerTest extends TestCase
         self::assertNull($this->instance->updateToken($token));
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindTokenBy()
+    public function testFindTokenBy(): void
     {
-        $randomResult = \random_bytes(5);
+        $randomResult = random_bytes(5);
 
         $criteria = [
-            \random_bytes(5),
+            random_bytes(5),
         ];
 
         $this->repository
@@ -123,8 +125,9 @@ class TokenManagerTest extends TestCase
         self::assertSame($randomResult, $this->instance->findTokenBy($criteria));
     }
 
-    public function testUpdateToken()
+    public function testUpdateToken(): void
     {
+        /** @var TokenInterface $token */
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -147,8 +150,9 @@ class TokenManagerTest extends TestCase
         self::assertNull($this->instance->updateToken($token));
     }
 
-    public function testDeleteToken()
+    public function testDeleteToken(): void
     {
+        /** @var TokenInterface $token */
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -171,9 +175,9 @@ class TokenManagerTest extends TestCase
         self::assertNull($this->instance->deleteToken($token));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
-        $randomResult = \random_bytes(10);
+        $randomResult = random_bytes(10);
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
