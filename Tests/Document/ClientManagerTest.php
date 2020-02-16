@@ -18,13 +18,16 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use function random_bytes;
+use stdClass;
 
 /**
  * Class ClientManagerTest.
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class ClientManagerTest extends \PHPUnit\Framework\TestCase
+class ClientManagerTest extends TestCase
 {
     /**
      * @var MockObject|DocumentManager
@@ -60,7 +63,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'RandomClassName'.\random_bytes(5);
+        $this->className = 'RandomClassName'.random_bytes(5);
 
         $this->documentManager
             ->expects($this->once())
@@ -88,9 +91,9 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindClientBy(): void
     {
-        $randomResult = new \stdClass();
+        $randomResult = new stdClass();
         $criteria = [
-            \random_bytes(5),
+            random_bytes(5),
         ];
 
         $this->repository
@@ -103,7 +106,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         self::assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
 
-    public function testUpdateClient()
+    public function testUpdateClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
@@ -127,7 +130,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         self::assertNull($this->instance->updateClient($client));
     }
 
-    public function testDeleteClient()
+    public function testDeleteClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
