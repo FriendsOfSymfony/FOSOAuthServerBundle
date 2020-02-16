@@ -58,7 +58,7 @@ class ClientManagerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'RandomClassName'. random_bytes(5);
+        $this->className = 'RandomClassName'.random_bytes(5);
 
         $this->entityManager
             ->expects($this->once())

@@ -22,6 +22,8 @@ use FOS\OAuthServerBundle\Document\TokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use function random_bytes;
+use stdClass;
 
 /**
  * @group time-sensitive
@@ -78,10 +80,10 @@ class TokenManagerTest extends TestCase
         $this->instance = new TokenManager($this->documentManager, $this->className);
     }
 
-    public function testFindTokenByToken()
+    public function testFindTokenByToken(): void
     {
-        $randomToken = \random_bytes(5);
-        $randomResult = new \stdClass();
+        $randomToken = random_bytes(5);
+        $randomResult = new stdClass();
 
         $this->repository
             ->expects($this->once())
@@ -95,7 +97,7 @@ class TokenManagerTest extends TestCase
         self::assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         /** @var TokenInterface $token */
         $token = $this->getMockBuilder(AccessToken::class)
@@ -118,12 +120,12 @@ class TokenManagerTest extends TestCase
         self::assertNull($this->instance->updateToken($token));
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testDeleteToken()
+    public function testDeleteToken(): void
     {
         /** @var TokenInterface $token */
         $token = $this->getMockBuilder(AccessToken::class)
@@ -148,7 +150,7 @@ class TokenManagerTest extends TestCase
         self::assertNull($this->instance->deleteToken($token));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $queryBuilder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -198,7 +200,7 @@ class TokenManagerTest extends TestCase
         ;
 
         $data = [
-            'n' => \random_bytes(5),
+            'n' => random_bytes(5),
         ];
 
         $query
