@@ -23,6 +23,7 @@ use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 class Client extends BaseClient
 {
     /**
+     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
