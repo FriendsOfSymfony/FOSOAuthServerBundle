@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Util;
 
 use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 use InvalidArgumentException;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
@@ -24,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
  */
 final class LegacyFormHelper
 {
-    /** @var array */
+    /** @var array<string> */
     private static $map = [
         HiddenType::class => 'hidden',
         AuthorizeFormType::class => 'fos_oauth_server_authorize',
@@ -53,6 +54,6 @@ final class LegacyFormHelper
 
     public static function isLegacy(): bool
     {
-        return !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        return !method_exists(AbstractType::class, 'getBlockPrefix');
     }
 }
