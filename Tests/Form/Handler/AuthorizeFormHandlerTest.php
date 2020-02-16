@@ -87,7 +87,7 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->instance = new AuthorizeFormHandler($this->form, $request);
 
-        $this->assertAttributesWereSet($request);
+        self::assertAttributesWereSet($request);
     }
 
     public function testConstructWillAcceptRequestStackObjectAsRequest()
@@ -99,16 +99,16 @@ class AuthorizeFormHandlerTest extends TestCase
 
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
-        $this->assertAttributesWereSet($requestStack);
+        self::assertAttributesWereSet($requestStack);
     }
 
     public function testConstructWillAcceptNullAsRequest()
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
-        $this->assertAttributesWereSet(null);
+        self::assertAttributesWereSet(null);
 
         $this->instance = new AuthorizeFormHandler($this->form);
-        $this->assertAttributesWereSet(null);
+        self::assertAttributesWereSet(null);
     }
 
     public function testConstructWillThrowException()
