@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\RequestStackCompilerPass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -32,7 +33,7 @@ class RequestStackCompilerPassTest extends TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerBuilder
+     * @var MockObject|ContainerBuilder
      */
     protected $container;
 
@@ -52,7 +53,7 @@ class RequestStackCompilerPassTest extends TestCase
         parent::setUp();
     }
 
-    public function testProcessWithoutRequestStackDoesNothing()
+    public function testProcessWithoutRequestStackDoesNothing(): void
     {
         $this->container
             ->expects($this->once())
@@ -64,7 +65,7 @@ class RequestStackCompilerPassTest extends TestCase
         self::assertNull($this->instance->process($this->container));
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $this->container
             ->expects($this->once())
