@@ -19,6 +19,7 @@ use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use function random_bytes;
 
 /**
  * Class ClientManagerTest.
@@ -57,7 +58,7 @@ class ClientManagerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'RandomClassName'.\random_bytes(5);
+        $this->className = 'RandomClassName'. random_bytes(5);
 
         $this->entityManager
             ->expects($this->once())
@@ -86,9 +87,9 @@ class ClientManagerTest extends TestCase
     public function testFindClientBy(): void
     {
         $criteria = [
-            \random_bytes(5),
+            random_bytes(5),
         ];
-        $randomResult = \random_bytes(5);
+        $randomResult = random_bytes(5);
 
         $this->repository
             ->expects($this->once())
@@ -124,7 +125,7 @@ class ClientManagerTest extends TestCase
         self::assertNull($this->instance->updateClient($client));
     }
 
-    public function testDeleteClient()
+    public function testDeleteClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
