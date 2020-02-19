@@ -14,16 +14,11 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Query\Builder;
-use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
-use FOS\OAuthServerBundle\Model\TokenInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use function random_bytes;
-use stdClass;
 
 /**
  * @group time-sensitive

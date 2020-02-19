@@ -14,11 +14,8 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
-use Doctrine\ORM\AbstractQuery;
 use FOS\OAuthServerBundle\Document\AuthCodeManager;
-use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 

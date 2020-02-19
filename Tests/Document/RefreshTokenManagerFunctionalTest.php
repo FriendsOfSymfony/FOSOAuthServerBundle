@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use FOS\OAuthServerBundle\Document\TokenManager;
 use FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\RefreshToken;
 use FOS\OAuthServerBundle\Tests\Functional\TestCase;
 

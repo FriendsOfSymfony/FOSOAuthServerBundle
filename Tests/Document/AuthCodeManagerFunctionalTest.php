@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use FOS\OAuthServerBundle\Document\AuthCodeManager;
 use FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\AuthCode;
 use FOS\OAuthServerBundle\Tests\Functional\TestCase;
 
