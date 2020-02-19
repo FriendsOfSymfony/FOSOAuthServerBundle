@@ -67,7 +67,7 @@ class OAuthListener
     public function handle(RequestEvent $event): void
     {
         if (null === $oauthToken = $this->serverService->getBearerToken($event->getRequest(), true)) {
-            throw new LogicException('Token for event was null');
+            return;
         }
 
         $token = new OAuthToken();
