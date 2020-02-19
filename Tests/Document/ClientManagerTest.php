@@ -17,8 +17,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use function random_bytes;
 use stdClass;
 
@@ -79,8 +79,8 @@ class ClientManagerTest extends TestCase
 
     public function testConstructWillSetParameters(): void
     {
-        self::assertSame($this->documentManager, $this->instance->getDocumentManager());
-        self::assertSame($this->repository, $this->instance->getRepository());
+        self::assertObjectPropertySame($this->documentManager, $this->instance, 'dm');
+        self::assertObjectPropertySame($this->repository, $this->instance, 'repository');
         self::assertSame($this->className, $this->instance->getClass());
     }
 

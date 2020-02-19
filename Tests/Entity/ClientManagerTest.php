@@ -17,8 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use function random_bytes;
 
 /**
@@ -74,8 +74,8 @@ class ClientManagerTest extends TestCase
 
     public function testConstructWillSetParameters(): void
     {
-        self::assertSame($this->entityManager, $this->instance->getEntityManager());
-        self::assertSame($this->repository, $this->instance->getRepository());
+        self::assertObjectPropertySame($this->entityManager, $this->instance, 'em');
+        self::assertObjectPropertySame($this->repository, $this->instance, 'repository');
         self::assertSame($this->className, $this->instance->getClass());
     }
 

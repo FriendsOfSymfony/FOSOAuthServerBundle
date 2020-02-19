@@ -19,8 +19,8 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ORM\AbstractQuery;
 use FOS\OAuthServerBundle\Document\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @group time-sensitive
@@ -81,7 +81,7 @@ class AuthCodeManagerTest extends TestCase
 
     public function testConstructWillSetParameters(): void
     {
-        self::assertSame($this->documentManager, $this->instance->getDocumentManager());
+        self::assertObjectPropertySame($this->documentManager, $this->instance, 'dm');
         self::assertSame($this->className, $this->instance->getClass());
     }
 

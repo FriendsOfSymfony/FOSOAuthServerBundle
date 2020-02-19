@@ -46,16 +46,6 @@ class ClientManager extends BaseClientManager
         $this->class = $class;
     }
 
-    public function getRepository(): DocumentRepository
-    {
-        return $this->repository;
-    }
-
-    public function getDocumentManager(): DocumentManager
-    {
-        return $this->dm;
-    }
-
     /**
      * {@inheritdoc}
      */

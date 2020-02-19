@@ -20,8 +20,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @group time-sensitive
@@ -62,7 +62,7 @@ class AuthCodeManagerTest extends TestCase
 
     public function testConstructWillSetParameters(): void
     {
-        self::assertSame($this->entityManager, $this->instance->getEntityManager());
+        self::assertObjectPropertySame($this->entityManager, $this->instance, 'em');
         self::assertSame($this->className, $this->instance->getClass());
     }
 

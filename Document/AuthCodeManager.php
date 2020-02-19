@@ -46,11 +46,6 @@ class AuthCodeManager extends BaseAuthCodeManager
         $this->class = $class;
     }
 
-    public function getDocumentManager(): DocumentManager
-    {
-        return $this->dm;
-    }
-
     /**
      * {@inheritdoc}
      */

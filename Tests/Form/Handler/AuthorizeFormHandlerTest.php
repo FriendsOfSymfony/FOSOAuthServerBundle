@@ -15,9 +15,9 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use FOS\OAuthServerBundle\Tests\TestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use function random_bytes;
 use ReflectionException;
 use ReflectionMethod;
@@ -476,7 +476,7 @@ class AuthorizeFormHandlerTest extends TestCase
      */
     private function assertAttributesWereSet(?MockObject $request): void
     {
-        self::assertSame($this->form, $this->instance->getForm());
-        self::assertSame($request, $this->instance->getRequest());
+        self::assertObjectPropertySame($this->form, $this->instance, 'form');
+        self::assertObjectPropertySame($request, $this->instance, 'requestStack');
     }
 }
