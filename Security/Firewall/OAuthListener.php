@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Security\Firewall;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
-use LogicException;
 use OAuth2\OAuth2;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -67,7 +66,7 @@ class OAuthListener
     public function handle(RequestEvent $event): void
     {
         if (null === $oauthToken = $this->serverService->getBearerToken($event->getRequest(), true)) {
-            throw new LogicException('Token for event was null');
+            return;
         }
 
         $token = new OAuthToken();
