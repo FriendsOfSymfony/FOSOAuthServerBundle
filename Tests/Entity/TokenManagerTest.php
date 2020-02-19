@@ -21,8 +21,8 @@ use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use function random_bytes;
 
 /**
@@ -78,8 +78,8 @@ class TokenManagerTest extends TestCase
 
     public function testConstructWillSetParameters(): void
     {
-        self::assertSame($this->entityManager, $this->instance->getEntityManager());
-        self::assertSame($this->repository, $this->instance->getRepository());
+        self::assertObjectPropertySame($this->entityManager, $this->instance, 'em');
+        self::assertObjectPropertySame($this->repository, $this->instance, 'repository');
         self::assertSame($this->className, $this->instance->getClass());
     }
 

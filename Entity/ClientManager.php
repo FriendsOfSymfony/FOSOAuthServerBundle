@@ -79,14 +79,4 @@ class ClientManager extends BaseClientManager
         $this->em->remove($client);
         $this->em->flush();
     }
-
-    public function getEntityManager(): EntityManagerInterface
-    {
-        return $this->em;
-    }
-
-    public function getRepository(): EntityRepository
-    {
-        return $this->repository;
-    }
 }
