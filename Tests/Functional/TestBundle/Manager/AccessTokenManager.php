@@ -68,7 +68,9 @@ class AccessTokenManager extends TokenManager implements AccessTokenManagerInter
     /**
      * {@inheritdoc}
      */
-    public function deleteExpired(): void
+    public function deleteExpired(): int
     {
+        // return a count as if entities deleted
+        return 1;
     }
 }
