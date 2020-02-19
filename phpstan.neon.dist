@@ -19,3 +19,4 @@ parameters:
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children().#'
         # expected
         - '#Parameter \#2 $requestStack of class FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler constructor expects Symfony\Component\HttpFoundation\Request|Symfony\Component\HttpFoundation\RequestStack|null, stdClass given.#'
+    level: 6

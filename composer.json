@@ -64,7 +64,7 @@
     "scripts": {
         "lint": "./vendor/bin/php-cs-fixer fix .",
         "test": "./vendor/bin/phpunit",
-        "phpstan": "./vendor/bin/phpstan analyse --configuration phpstan.neon --level 6 ."
+        "phpstan": "./vendor/bin/phpstan analyse ."
     },
     "autoload": {
         "psr-4": { "FOS\\OAuthServerBundle\\": "" },
