@@ -31,6 +31,8 @@ class AppKernel extends Kernel
 
         if ('orm' === $this->getEnvironment()) {
             $bundles[] = new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
+        } elseif ('odm' === $this->getEnvironment()) {
+            $bundles[] = new \Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle();
         }
 
         return $bundles;
