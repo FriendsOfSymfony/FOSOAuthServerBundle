@@ -130,4 +130,30 @@ class OAuthListenerTest extends TestCase
         // no return, trigger the expectations
         $listener->handle($this->event);
     }
+
+    public function testHandleAnonymousAuthentication(): void
+    {
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
+
+        $this->serverService
+            ->expects($this->once())
+            ->method('getBearerToken')
+            ->willReturn(null)
+        ;
+
+        $this->tokenStorage
+            ->expects($this->never())
+            ->method('setToken')
+        ;
+
+	    $this->event
+		    ->expects($this->never())
+		    ->method('setResponse')
+	    ;
+
+        // no return, trigger the expectations
+        $listener->handle($this->event);
+
+	    $this->assertNull($this->tokenStorage->getToken());
+    }
 }
