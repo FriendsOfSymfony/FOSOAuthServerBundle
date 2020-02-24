@@ -1,3 +1,4 @@
+phpstan.neon
 phpunit.xml
 Tests/autoload.php
 var/

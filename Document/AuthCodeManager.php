@@ -83,8 +83,9 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteExpired()
+    public function deleteExpired(): int
     {
+        /** @var \MongoDB\Driver\WriteResult */
         $result = $this
             ->repository
             ->createQueryBuilder()
@@ -94,6 +95,6 @@ class AuthCodeManager extends BaseAuthCodeManager
             ->execute()
         ;
 
-        return $result['n'];
+        return $result->getDeletedCount();
     }
 }

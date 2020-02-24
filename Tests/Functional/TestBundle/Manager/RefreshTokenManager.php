@@ -68,7 +68,9 @@ class RefreshTokenManager extends TokenManager implements RefreshTokenManagerInt
     /**
      * {@inheritdoc}
      */
-    public function deleteExpired(): void
+    public function deleteExpired(): int
     {
+        // return a count as if entities deleted
+        return 1;
     }
 }

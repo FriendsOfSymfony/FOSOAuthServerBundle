@@ -25,7 +25,7 @@ class BootTest extends TestCase
     public function testBoot($env): void
     {
         try {
-            $kernel = static::createKernel(['env' => $env]);
+            $kernel = static::createKernel(['environment' => $env]);
             $kernel->boot();
 
             // no exceptions were thrown
@@ -38,7 +38,8 @@ class BootTest extends TestCase
     public function getTestBootData(): array
     {
         return [
-            ['orm'],
+            'booting the kernel with SQL configurations' => ['env' => 'orm'],
+            'booting the kernel with Mongo configurations' => ['env' => 'odm'],
         ];
     }
 }

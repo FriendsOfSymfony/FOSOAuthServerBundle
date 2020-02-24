@@ -53,7 +53,7 @@ class AuthCodeManagerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'TestClassName'.\random_bytes(5);
+        $this->className = 'TestClassName';
 
         $this->instance = new AuthCodeManager($this->entityManager, $this->className);
 

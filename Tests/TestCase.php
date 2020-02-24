@@ -22,8 +22,6 @@ class TestCase extends BaseTestCase
      * Assert sameness to the value of an object's private or protected member.
      *
      * @param mixed $expected
-     * @param object $object
-     * @param string $property
      */
     protected static function assertObjectPropertySame($expected, object $object, string $property): void
     {
@@ -32,9 +30,6 @@ class TestCase extends BaseTestCase
 
     /**
      * Get the value of an object's private or protected member.
-     *
-     * @param object $object
-     * @param string $property
      *
      * @return mixed
      */
