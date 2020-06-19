@@ -2,9 +2,9 @@
 <doctrine-mapping>
 
     <mapped-superclass name="FOS\OAuthServerBundle\Document\Client">
-        <field name="randomId" fieldName="randomId" type="string" />
-        <field name="redirectUris" fieldName="redirectUris" type="mixed" />
-        <field name="secret" fieldName="secret" type="string" />
-        <field name="allowedGrantTypes" fieldName="allowedGrantTypes" type="mixed" />
+        <field name="randomId" field-name="randomId" type="string" />
+        <field name="redirectUris" field-name="redirectUris" type="mixed" />
+        <field name="secret" field-name="secret" type="string" />
+        <field name="allowedGrantTypes" field-name="allowedGrantTypes" type="mixed" />
     </mapped-superclass>
 </doctrine-mapping>
