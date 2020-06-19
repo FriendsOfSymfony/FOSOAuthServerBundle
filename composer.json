@@ -1,5 +1,5 @@
 {
-    "name": "Cast1el/oauth-server-bundle",
+    "name": "cast1el/oauth-server-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2 OAuth Server Bundle",
     "keywords": ["oauth", "oauth2", "server"],
