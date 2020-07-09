@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Controller;
 
-use FOS\OAuthServerBundle\Event\OAuthEvent;
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +29,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Environment;
 
 /**
  * Controller handling basic authorization.
@@ -65,7 +64,7 @@ class AuthorizeController
     private $oAuth2Server;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
     private $templating;
 
@@ -109,7 +108,7 @@ class AuthorizeController
      * @param Form                     $authorizeForm
      * @param AuthorizeFormHandler     $authorizeFormHandler
      * @param OAuth2                   $oAuth2Server
-     * @param EngineInterface          $templating
+     * @param Environment          $templating
      * @param TokenStorageInterface    $tokenStorage
      * @param UrlGeneratorInterface    $router
      * @param ClientManagerInterface   $clientManager
@@ -122,7 +121,7 @@ class AuthorizeController
         Form $authorizeForm,
         AuthorizeFormHandler $authorizeFormHandler,
         OAuth2 $oAuth2Server,
-        EngineInterface $templating,
+        Environment $templating,
         TokenStorageInterface $tokenStorage,
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
@@ -162,7 +161,9 @@ class AuthorizeController
         $form = $this->authorizeForm;
         $formHandler = $this->authorizeFormHandler;
 
+
         /** @var OAuthEvent $event */
+        /*
         $event = $this->eventDispatcher->dispatch(
             OAuthEvent::PRE_AUTHORIZATION_PROCESS,
             new OAuthEvent($user, $this->getClient())
@@ -173,6 +174,7 @@ class AuthorizeController
 
             return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
         }
+        */
 
         if (true === $formHandler->process()) {
             return $this->processSuccess($user, $formHandler, $request);
@@ -200,10 +202,10 @@ class AuthorizeController
             $this->session->invalidate();
         }
 
-        $this->eventDispatcher->dispatch(
+        /*$this->eventDispatcher->dispatch(
             OAuthEvent::POST_AUTHORIZATION_PROCESS,
             new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
-        );
+        );*/
 
         $formName = $this->authorizeForm->getName();
         if (!$request->query->all() && $request->request->has($formName)) {
@@ -261,9 +263,9 @@ class AuthorizeController
     /**
      * @throws \RuntimeException
      */
-    protected function renderAuthorize(array $data, EngineInterface $engine, string $engineType): Response
+    protected function renderAuthorize(array $data, Environment $engine, string $engineType)
     {
-        return $engine->renderResponse(
+        return $engine->render(
             '@FOSOAuthServer/Authorize/authorize.html.'.$engineType,
             $data
         );
