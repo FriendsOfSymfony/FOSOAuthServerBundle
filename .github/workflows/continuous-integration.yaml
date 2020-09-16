@@ -13,13 +13,17 @@ jobs:
         with:
           php-version: '7.4'
           extensions: 'json, mbstring, tokenizer'
-          tools: 'php-cs-fixer:2.16.4'
+          tools: 'composer-normalize, php-cs-fixer:2.16.4'
         env:
           update: true
 
       - name: 'Display tools versions'
         run: |
+          composer-normalize --version
           php-cs-fixer --version
 
       - name: 'Check coding style'
         run: 'php-cs-fixer fix --diff --dry-run --using-cache=false'
+
+      - name: 'Check composer.json normalization'
+        run: 'composer-normalize --diff --dry-run --no-update-lock'
