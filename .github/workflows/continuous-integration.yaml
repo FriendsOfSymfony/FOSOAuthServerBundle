@@ -18,4 +18,4 @@ jobs:
           update: true
 
       - name: 'Check coding style'
-        run: 'php-cs-fixer fix --diff --dry-run --format=checkstyle | cs2pr'
+        run: 'php-cs-fixer fix --diff --dry-run --using-cache=false --format=checkstyle | cs2pr'
