@@ -59,11 +59,13 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ([$this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager] as $service) {
             $result = $service->deleteExpired();
             $output->writeln(sprintf('Removed <info>%d</info> items from <comment>%s</comment> storage.', $result, get_class($service)));
         }
+
+        return 0;
     }
 }
