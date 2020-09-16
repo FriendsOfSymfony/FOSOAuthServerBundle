@@ -15,7 +15,6 @@ namespace FOS\OAuthServerBundle\Tests\Form\Type;
 
 use FOS\OAuthServerBundle\Form\Model\Authorize;
 use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
-use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -55,7 +54,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
 
         $authorize = new Authorize($accepted, $formData);
 
-        $form = $this->factory->create(LegacyFormHelper::getType('FOS\OAuthServerBundle\Form\Type\AuthorizeFormType'), $authorize);
+        $form = $this->factory->create('FOS\OAuthServerBundle\Form\Type\AuthorizeFormType', $authorize);
 
         $form->submit($formData);
 

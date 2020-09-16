@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Form\Type;
 
-use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,13 +25,11 @@ class AuthorizeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $hiddenType = LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType');
-
-        $builder->add('client_id', $hiddenType);
-        $builder->add('response_type', $hiddenType);
-        $builder->add('redirect_uri', $hiddenType);
-        $builder->add('state', $hiddenType);
-        $builder->add('scope', $hiddenType);
+        $builder->add('client_id', HiddenType::class);
+        $builder->add('response_type', HiddenType::class);
+        $builder->add('redirect_uri', HiddenType::class);
+        $builder->add('state', HiddenType::class);
+        $builder->add('scope', HiddenType::class);
     }
 
     /**
