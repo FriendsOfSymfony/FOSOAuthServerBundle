@@ -17,21 +17,27 @@ use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use FOS\OAuthServerBundle\Security\Firewall\OAuthListener;
 use FOS\OAuthServerBundle\Tests\TestCase;
 use OAuth2\OAuth2;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class OAuthListenerTest extends TestCase
 {
+    /** @var MockObject | OAuth2 */
     protected $serverService;
 
+    /** @var MockObject | AuthenticationManagerInterface */
     protected $authManager;
 
-    protected $securityContext;
+    /** @var MockObject | TokenStorageInterface */
+    protected $tokenStorage;
 
+    /** @var MockObject | RequestEvent */
     protected $event;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
@@ -44,63 +50,58 @@ class OAuthListenerTest extends TestCase
             ->getMock()
         ;
 
-        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
-            $this->securityContext = $this
-                ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
-                ->disableOriginalConstructor()
-                ->getMock()
-            ;
-        } else {
-            $this->securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
-                ->disableOriginalConstructor()
-                ->getMock()
-            ;
-        }
+        $this->tokenStorage = $this
+            ->getMockBuilder(TokenStorageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $this->event = $this
-            ->getMockBuilder(GetResponseEvent::class)
+            ->getMockBuilder(RequestEvent::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
-        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'))
+            ->willReturn('a-token')
         ;
 
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
+            ->with($this->isInstanceOf(OAuthToken::class))
             ->will($this->returnArgument(0))
         ;
 
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->once())
             ->method('setToken')
-            ->will($this->returnArgument(0))
+            ->with($this->callback(function ($value) {
+                return $value instanceof OAuthToken
+                    && $value->getToken() === 'a-token'
+                ;
+            }))
         ;
 
-        /** @var OAuthToken $token */
-        $token = $listener->handle($this->event);
-
-        $this->assertInstanceOf(OAuthToken::class, $token);
-        $this->assertSame('a-token', $token->getToken());
+        // no return, trigger the expectations
+        $listener->handle($this->event);
     }
 
-    public function testHandleResponse()
+    public function testHandleResponse(): void
     {
-        $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
 
         $this->serverService
             ->expects($this->once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'))
+            ->willReturn('a-token')
         ;
 
         $response = $this->getMockBuilder(Response::class)
@@ -111,10 +112,11 @@ class OAuthListenerTest extends TestCase
         $this->authManager
             ->expects($this->once())
             ->method('authenticate')
-            ->will($this->returnValue($response))
+            ->with($this->isInstanceOf(OAuthToken::class))
+            ->willReturn($response)
         ;
 
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->never())
             ->method('setToken')
         ;
@@ -122,11 +124,36 @@ class OAuthListenerTest extends TestCase
         $this->event
             ->expects($this->once())
             ->method('setResponse')
-            ->will($this->returnArgument(0))
+            ->with($this->equalTo($response))
         ;
 
-        $ret = $listener->handle($this->event);
+        // no return, trigger the expectations
+        $listener->handle($this->event);
+    }
 
-        $this->assertSame($response, $ret);
+    public function testHandleAnonymousAuthentication(): void
+    {
+        $listener = new OAuthListener($this->tokenStorage, $this->authManager, $this->serverService);
+
+        $this->serverService
+            ->expects($this->once())
+            ->method('getBearerToken')
+            ->willReturn(null)
+        ;
+
+        $this->tokenStorage
+            ->expects($this->never())
+            ->method('setToken')
+        ;
+
+	    $this->event
+		    ->expects($this->never())
+		    ->method('setResponse')
+	    ;
+
+        // no return, trigger the expectations
+        $listener->handle($this->event);
+
+	    $this->assertNull($this->tokenStorage->getToken());
     }
 }

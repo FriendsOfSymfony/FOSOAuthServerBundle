@@ -24,11 +24,11 @@ use FOS\OAuthServerBundle\Propel\TokenManager;
  */
 class TokenManagerTest extends PropelTestCase
 {
-    const TOKEN_CLASS = 'FOS\OAuthServerBundle\Propel\RefreshToken';
+    const TOKEN_CLASS = Token::class;
 
     protected $manager;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -38,18 +38,18 @@ class TokenManagerTest extends PropelTestCase
 
     public function testConstruct()
     {
-        $this->assertSame(self::TOKEN_CLASS, $this->manager->getClass());
+        self::assertSame(self::TOKEN_CLASS, $this->manager->getClass());
     }
 
     public function testCreateClass()
     {
         $this->manager = new TokenManager('Token');
-        $this->assertInstanceOf('Token', $this->manager->createToken());
+        self::assertInstanceOf('Token', $this->manager->createToken());
     }
 
     public function testUpdate()
     {
-        $token = $this->getMockBuilder('FOS\OAuthServerBundle\Propel\Token')
+        $token = $this->getMockBuilder(\FOS\OAuthServerBundle\Propel\Token::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -79,19 +79,19 @@ class TokenManagerTest extends PropelTestCase
     {
         $token = $this->manager->findTokenBy(['token' => '12345']);
 
-        $this->assertNull($token);
+        self::assertNull($token);
     }
 
     public function testFindTokenWithInvalidData()
     {
         $token = $this->manager->findTokenBy(['foo' => '12345']);
-        $this->assertNull($token);
+        self::assertNull($token);
 
         $token = $this->manager->findTokenBy([]);
-        $this->assertNull($token);
+        self::assertNull($token);
 
         $token = $this->manager->findTokenBy(['token']);
-        $this->assertNull($token);
+        self::assertNull($token);
     }
 
     public function testFindToken()
@@ -99,8 +99,8 @@ class TokenManagerTest extends PropelTestCase
         $token = $this->createToken('12345');
         $return = $this->manager->findTokenBy(['token' => '12345']);
 
-        $this->assertNotNull($return);
-        $this->assertSame($token, $return);
+        self::assertNotNull($return);
+        self::assertSame($token, $return);
     }
 
     public function testFindTokenByToken()
@@ -108,15 +108,15 @@ class TokenManagerTest extends PropelTestCase
         $token = $this->createToken('12345');
         $return = $this->manager->findTokenByToken('12345');
 
-        $this->assertNotNull($return);
-        $this->assertSame($token, $return);
+        self::assertNotNull($return);
+        self::assertSame($token, $return);
     }
 
     public function testFindTokenByTokenReturnsNullIfNotFound()
     {
         $return = $this->manager->findTokenByToken('12345');
 
-        $this->assertNull($return);
+        self::assertNull($return);
     }
 
     public function testDeleteExpired()
@@ -124,12 +124,12 @@ class TokenManagerTest extends PropelTestCase
         $a1 = $this->createToken('12345', time() + 100);
         $a2 = $this->createToken('67890', time() - 100);
 
-        $this->assertSame(2, TokenQuery::create()->count());
+        self::assertSame(2, TokenQuery::create()->count());
 
         $nb = $this->manager->deleteExpired();
 
-        $this->assertSame(1, $nb);
-        $this->assertTrue($a1->equals(TokenQuery::create()->findOne()));
+        self::assertSame(1, $nb);
+        self::assertTrue($a1->equals(TokenQuery::create()->findOne()));
     }
 
     protected function createToken($tokenString, $expiresAt = false)

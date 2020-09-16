@@ -20,6 +20,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @group time-sensitive
@@ -28,10 +30,10 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
+class AuthCodeManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     protected $entityManager;
 
@@ -45,31 +47,31 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'TestClassName'.\random_bytes(5);
+        $this->className = 'TestClassName';
 
         $this->instance = new AuthCodeManager($this->entityManager, $this->className);
 
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
+        self::assertObjectPropertySame($this->entityManager, $this->instance, 'em');
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testGetClassWillReturnClassName()
+    public function testGetClassWillReturnClassName(): void
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindAuthCodeBy()
+    public function testFindAuthCodeBy(): void
     {
         $repository = $this->getMockBuilder(ObjectRepository::class)
             ->disableOriginalConstructor()
@@ -95,10 +97,10 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
+        self::assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
     }
 
-    public function testUpdateAuthCode()
+    public function testUpdateAuthCode(): void
     {
         $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
@@ -119,10 +121,10 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->updateAuthCode($authCode));
+        self::assertNull($this->instance->updateAuthCode($authCode));
     }
 
-    public function testDeleteAuthCode()
+    public function testDeleteAuthCode(): void
     {
         $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
@@ -143,10 +145,10 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteAuthCode($authCode));
+        self::assertNull($this->instance->deleteAuthCode($authCode));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $randomResult = \random_bytes(10);
 
@@ -214,6 +216,6 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->deleteExpired());
+        self::assertSame($randomResult, $this->instance->deleteExpired());
     }
 }

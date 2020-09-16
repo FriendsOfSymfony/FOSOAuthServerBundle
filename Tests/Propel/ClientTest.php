@@ -22,28 +22,28 @@ class ClientTest extends PropelTestCase
     {
         $client = new Client();
 
-        $this->assertNotNull($client->getRandomId());
-        $this->assertNotNull($client->getSecret());
+        self::assertNotNull($client->getRandomId());
+        self::assertNotNull($client->getSecret());
 
         $types = $client->getAllowedGrantTypes();
-        $this->assertCount(1, $types);
-        $this->assertSame(OAuth2::GRANT_TYPE_AUTH_CODE, $types[0]);
+        self::assertCount(1, $types);
+        self::assertSame(OAuth2::GRANT_TYPE_AUTH_CODE, $types[0]);
     }
 
-    public function testCheckSecretWithInvalidArgument()
+    public function testCheckSecretWithInvalidArgument(): void
     {
         $client = new Client();
 
-        $this->assertFalse($client->checkSecret('foo'));
-        $this->assertFalse($client->checkSecret(''));
-        $this->assertFalse($client->checkSecret(null));
+        self::assertFalse($client->checkSecret('foo'));
+        self::assertFalse($client->checkSecret(''));
+        self::assertFalse($client->checkSecret(null));
     }
 
-    public function testCheckSecret()
+    public function testCheckSecret(): void
     {
         $client = new Client();
         $client->setSecret('foo');
 
-        $this->assertTrue($client->checkSecret('foo'));
+        self::assertTrue($client->checkSecret('foo'));
     }
 }

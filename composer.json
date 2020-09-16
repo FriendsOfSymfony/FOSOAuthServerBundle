@@ -15,31 +15,43 @@
             "homepage": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/contributors"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/elchris/oauth2-php"
+        }
+    ],
     "require": {
-        "php": "^7.1",
-        "friendsofsymfony/oauth2-php": "~1.1",
-        "symfony/dependency-injection": "~3.0|~4.0",
-        "symfony/framework-bundle": "~3.0|~4.0",
-        "symfony/security-bundle": "~3.0|~4.0"
+        "php": ">=7.2",
+        "symfony/dependency-injection": "^4.4|^5.0",
+        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/security-bundle": "^4.4|^5.0",
+        "friendsofsymfony/oauth2-php": "dev-symfony-5"
     },
     "require-dev": {
-        "doctrine/doctrine-bundle": "~1.0",
-        "doctrine/mongodb-odm": "~1.0",
-        "doctrine/orm": "~2.2",
-        "phing/phing": "~2.4",
-        "php-mock/php-mock-phpunit": "~1.0|~2.0",
-        "phpstan/phpstan-phpunit": "~0.9",
-        "phpstan/phpstan-shim": "~0.9",
-        "phpunit/phpunit": "~5.0|~6.0",
-        "propel/propel1": "~1.6",
-        "symfony/class-loader": "~3.0|~4.0",
-        "symfony/console": "~3.0|~4.0",
-        "symfony/form": "~3.0|~4.0",
-        "symfony/phpunit-bridge": "~3.0|~4.0",
-        "symfony/templating": "~3.0|~4.0",
-        "symfony/twig-bundle": "~3.0|^4.0",
-        "symfony/yaml": "~3.0|~4.0",
-        "willdurand/propel-typehintable-behavior": "~1.0"
+        "ext-pdo_sqlite": "*",
+        "ext-mongodb": "*",
+        "dms/phpunit-arraysubset-asserts": "^0.1.0",
+        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/mongodb-odm-bundle": "^4.1",
+        "doctrine/orm": "^2.7",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phing/phing": "^2.16",
+        "php-mock/php-mock-phpunit": "^2.6",
+        "phpstan/phpstan": "^0.12.10",
+        "phpstan/phpstan-phpunit": "^0.12.6",
+        "phpunit/phpunit": "^8.5",
+        "propel/propel1": "^1.7",
+        "roave/security-advisories": "dev-master",
+        "symfony/browser-kit": "^5.0",
+        "symfony/class-loader": "^3.4",
+        "symfony/console": "^5.0",
+        "symfony/form": "^5.0",
+        "symfony/monolog-bundle": "^3.5",
+        "symfony/phpunit-bridge": "^5.0",
+        "symfony/twig-bundle": "^5.0",
+        "symfony/yaml": "^5.0",
+        "willdurand/propel-typehintable-behavior": "^1.0"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
@@ -48,6 +60,11 @@
         "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces",
         "symfony/form" : "Needed to be able to use the AuthorizeFormType",
         "symfony/console": "Needed to be able to use commands"
+    },
+    "scripts": {
+        "lint": "./vendor/bin/php-cs-fixer fix .",
+        "test": "./vendor/bin/phpunit",
+        "phpstan": "./vendor/bin/phpstan analyse ."
     },
     "autoload": {
         "psr-4": { "FOS\\OAuthServerBundle\\": "" },
@@ -59,6 +76,9 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"
+        },
+        "symfony": {
+            "require": "4.4.*|5.0.*"
         }
     }
 }

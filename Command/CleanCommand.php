@@ -21,15 +21,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanCommand extends Command
 {
+    /** @var TokenManagerInterface */
     private $accessTokenManager;
+
+    /** @var TokenManagerInterface */
     private $refreshTokenManager;
+
+    /** @var AuthCodeManagerInterface */
     private $authCodeManager;
 
     public function __construct(
         TokenManagerInterface $accessTokenManager,
         TokenManagerInterface $refreshTokenManager,
-        AuthCodeManagerInterface $authCodeManager)
-    {
+        AuthCodeManagerInterface $authCodeManager
+    ) {
         parent::__construct();
 
         $this->accessTokenManager = $accessTokenManager;
@@ -40,7 +45,7 @@ class CleanCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -63,7 +68,15 @@ EOT
     {
         foreach ([$this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager] as $service) {
             $result = $service->deleteExpired();
-            $output->writeln(sprintf('Removed <info>%d</info> items from <comment>%s</comment> storage.', $result, get_class($service)));
+            $output->writeln(
+                sprintf(
+                    'Removed <info>%d</info> items from <comment>%s</comment> storage.',
+                    $result,
+                    get_class($service)
+                )
+            );
         }
+
+        return 0;
     }
 }

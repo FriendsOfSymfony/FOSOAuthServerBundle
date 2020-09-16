@@ -13,33 +13,42 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Exception;
 use FOS\OAuthServerBundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-class ConfigurationTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends TestCase
 {
-    public function testShouldImplementConfigurationInterface()
-    {
-        $rc = new \ReflectionClass(Configuration::class);
+    use ArraySubsetAsserts;
 
-        $this->assertTrue($rc->implementsInterface(ConfigurationInterface::class));
+    public function testShouldImplementConfigurationInterface(): void
+    {
+        $rc = new ReflectionClass(Configuration::class);
+
+        self::assertTrue($rc->implementsInterface(ConfigurationInterface::class));
     }
 
-    public function testCouldBeConstructedWithoutAnyArguments()
+    public function testCouldBeConstructedWithoutAnyArguments(): void
     {
         try {
             new Configuration();
 
             // no exceptions were thrown
             self::assertTrue(true);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->fail($exception->getMessage());
         }
     }
 
-    public function testShouldNotMandatoryServiceIfNotCustomDriverIsUsed()
+    /**
+     * @throws Exception
+     */
+    public function testShouldNotMandatoryServiceIfNotCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -52,7 +61,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
             'auth_code_class' => 'anAuthCodeClass',
         ]]);
 
-        $this->assertArraySubset([
+        self::assertArraySubset([
             'db_driver' => 'orm',
             'client_class' => 'aClientClass',
             'access_token_class' => 'anAccessTokenClass',
@@ -69,7 +78,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ], $config);
     }
 
-    public function testShouldMakeClientManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeClientManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -86,7 +95,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldMakeAccessTokenManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeAccessTokenManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -106,7 +115,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldMakeRefreshTokenManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeRefreshTokenManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -127,7 +136,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldMakeAuthCodeManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeAuthCodeManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -149,7 +158,10 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldLoadCustomDriverConfig()
+    /**
+     * @throws Exception
+     */
+    public function testShouldLoadCustomDriverConfig(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -168,7 +180,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
             ],
         ]]);
 
-        $this->assertArraySubset([
+        self::assertArraySubset([
             'db_driver' => 'custom',
             'client_class' => 'aClientClass',
             'access_token_class' => 'anAccessTokenClass',

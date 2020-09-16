@@ -41,6 +41,7 @@ class AuthorizeFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
+            'validation_groups' => [],
         ]);
     }
 

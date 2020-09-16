@@ -1,0 +1,38 @@
+imports:
+    - { resource: config.yml }
+
+doctrine_mongodb:
+    connections:
+        default:
+            server: mongodb://localhost:27017
+            options: {}
+    document_managers:
+        default:
+            mappings:
+                TestBundle:
+                    type: annotation
+                    dir: '%kernel.project_dir%/Tests/Functional/TestBundle/Document'
+                    prefix: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\
+                    is_bundle: false
+
+fos_oauth_server:
+    db_driver: mongodb
+    service:
+        user_provider: security.user.provider.concrete.main
+
+    client_class:        FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\Client
+    access_token_class:  FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\AccessToken
+    refresh_token_class: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\RefreshToken
+    auth_code_class:     FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\AuthCode
+
+security:
+    encoders:
+        FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\User: plaintext
+
+    providers:
+        main:
+            mongodb: { class: FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\User, property: id }
+
+services:
+    doctrine.odm.mongodb.document_manager:
+        alias: 'doctrine_mongodb.odm.default_document_manager'

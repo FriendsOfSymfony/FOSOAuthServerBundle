@@ -50,8 +50,6 @@ fos_oauth_server:
 
             # Enforce state to be passed in authorization (see RFC 6749, section 10.12)
             #enforce_state: true or false
-    template:
-        engine:                 twig
 ```
 
 [Back to index](index.md)

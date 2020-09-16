@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
@@ -49,7 +49,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -65,7 +65,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function updateAuthCode(AuthCodeInterface $authCode)
+    public function updateAuthCode(AuthCodeInterface $authCode): void
     {
         $this->dm->persist($authCode);
         $this->dm->flush();
@@ -74,7 +74,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteAuthCode(AuthCodeInterface $authCode)
+    public function deleteAuthCode(AuthCodeInterface $authCode): void
     {
         $this->dm->remove($authCode);
         $this->dm->flush();
@@ -83,8 +83,9 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteExpired()
+    public function deleteExpired(): int
     {
+        /** @var \MongoDB\Driver\WriteResult */
         $result = $this
             ->repository
             ->createQueryBuilder()
@@ -94,6 +95,6 @@ class AuthCodeManager extends BaseAuthCodeManager
             ->execute()
         ;
 
-        return $result['n'];
+        return $result->getDeletedCount();
     }
 }

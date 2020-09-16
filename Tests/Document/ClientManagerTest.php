@@ -14,19 +14,23 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use function random_bytes;
+use stdClass;
 
 /**
  * Class ClientManagerTest.
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class ClientManagerTest extends \PHPUnit\Framework\TestCase
+class ClientManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     * @var MockObject|DocumentManager
      */
     protected $documentManager;
 
@@ -36,7 +40,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     * @var MockObject|DocumentRepository
      */
     protected $repository;
 
@@ -45,9 +49,9 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
-        if (!class_exists('\Doctrine\ODM\MongoDB\DocumentManager')) {
+        if (!class_exists(DocumentManager::class)) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
         }
 
@@ -59,7 +63,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'RandomClassName'.\random_bytes(5);
+        $this->className = 'RandomClassName'.random_bytes(5);
 
         $this->documentManager
             ->expects($this->once())
@@ -73,23 +77,23 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
+        self::assertObjectPropertySame($this->documentManager, $this->instance, 'dm');
+        self::assertObjectPropertySame($this->repository, $this->instance, 'repository');
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindClientBy()
+    public function testFindClientBy(): void
     {
-        $randomResult = \random_bytes(5);
+        $randomResult = new stdClass();
         $criteria = [
-            \random_bytes(5),
+            random_bytes(5),
         ];
 
         $this->repository
@@ -99,10 +103,10 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
+        self::assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
 
-    public function testUpdateClient()
+    public function testUpdateClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
@@ -123,10 +127,10 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->updateClient($client));
+        self::assertNull($this->instance->updateClient($client));
     }
 
-    public function testDeleteClient()
+    public function testDeleteClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
@@ -147,6 +151,6 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteClient($client));
+        self::assertNull($this->instance->deleteClient($client));
     }
 }

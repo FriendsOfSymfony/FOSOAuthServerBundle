@@ -40,7 +40,6 @@ class AuthorizeFormHandler
     private $requestStack;
 
     /**
-     * @param FormInterface        $form
      * @param Request|RequestStack $requestStack
      */
     public function __construct(FormInterface $form, $requestStack = null)
@@ -94,7 +93,7 @@ class AuthorizeFormHandler
         }
 
         $this->form->handleRequest($request);
-        if (!$this->form->isValid()) {
+        if ($this->form->isSubmitted() && $this->form->isValid() === false) {
             return false;
         }
 

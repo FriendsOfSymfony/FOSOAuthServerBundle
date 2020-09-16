@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Event;
 
 use FOS\OAuthServerBundle\Model\ClientInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class OAuthEvent extends Event
 {
-    const PRE_AUTHORIZATION_PROCESS = 'fos_oauth_server.pre_authorization_process';
-
-    const POST_AUTHORIZATION_PROCESS = 'fos_oauth_server.post_authorization_process';
+    public const PRE_AUTHORIZATION_PROCESS = 'fos_oauth_server.pre_authorization_process';
+    public const POST_AUTHORIZATION_PROCESS = 'fos_oauth_server.post_authorization_process';
 
     /**
      * @var UserInterface
@@ -39,9 +38,7 @@ class OAuthEvent extends Event
     private $isAuthorizedClient;
 
     /**
-     * @param UserInterface   $user
-     * @param ClientInterface $client
-     * @param bool            $isAuthorizedClient
+     * @param bool $isAuthorizedClient
      */
     public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false)
     {
@@ -50,10 +47,7 @@ class OAuthEvent extends Event
         $this->isAuthorizedClient = $isAuthorizedClient;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
@@ -61,23 +55,17 @@ class OAuthEvent extends Event
     /**
      * @param bool $isAuthorizedClient
      */
-    public function setAuthorizedClient($isAuthorizedClient)
+    public function setAuthorizedClient($isAuthorizedClient): void
     {
         $this->isAuthorizedClient = $isAuthorizedClient;
     }
 
-    /**
-     * @return bool
-     */
-    public function isAuthorizedClient()
+    public function isAuthorizedClient(): bool
     {
         return $this->isAuthorizedClient;
     }
 
-    /**
-     * @return ClientInterface
-     */
-    public function getClient()
+    public function getClient(): ClientInterface
     {
         return $this->client;
     }

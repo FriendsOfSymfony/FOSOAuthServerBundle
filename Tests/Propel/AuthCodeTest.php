@@ -33,7 +33,7 @@ class AuthCodeTest extends PropelTestCase
         $token = new AuthCode();
         $token->setExpiresAt($expiresAt);
 
-        $this->assertSame($expect, $token->hasExpired());
+        self::assertSame($expect, $token->hasExpired());
     }
 
     public static function getTestHasExpiredData()
@@ -49,7 +49,7 @@ class AuthCodeTest extends PropelTestCase
     {
         $token = new AuthCode();
 
-        $this->assertSame(PHP_INT_MAX, $token->getExpiresIn());
+        self::assertSame(PHP_INT_MAX, $token->getExpiresIn());
     }
 
     public function testExpiresInWithExpiresAt()
@@ -57,6 +57,6 @@ class AuthCodeTest extends PropelTestCase
         $token = new AuthCode();
         $token->setExpiresAt(time() + 60);
 
-        $this->assertSame(60, $token->getExpiresIn());
+        self::assertSame(60, $token->getExpiresIn());
     }
 }

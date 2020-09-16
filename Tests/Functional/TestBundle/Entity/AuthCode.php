@@ -15,6 +15,8 @@ namespace FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -23,6 +25,7 @@ use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 class AuthCode extends BaseAuthCode
 {
     /**
+     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -30,12 +33,14 @@ class AuthCode extends BaseAuthCode
     protected $id;
 
     /**
+     * @var ClientInterface
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
      */
     protected $client;
 
     /**
+     * @var UserInterface
      * @ORM\ManyToOne(targetEntity="User")
      */
     protected $user;

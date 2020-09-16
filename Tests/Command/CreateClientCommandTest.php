@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Command;
 
 use FOS\OAuthServerBundle\Command\CreateClientCommand;
+use FOS\OAuthServerBundle\Document\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -27,16 +29,20 @@ class CreateClientCommandTest extends TestCase
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
+     * @var MockObject|ClientManagerInterface
      */
     private $clientManager;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->clientManager =
+            $this->getMockBuilder(ClientManagerInterface::class)
+                ->disableOriginalConstructor()
+                ->getMock()
+            ;
         $command = new CreateClientCommand($this->clientManager);
 
         $application = new Application();
@@ -53,13 +59,12 @@ class CreateClientCommandTest extends TestCase
      *
      * @param string $client a fully qualified class name
      */
-    public function testItShouldCreateClient($client)
+    public function testItShouldCreateClient($client): void
     {
         $this
             ->clientManager
-            ->expects($this->any())
             ->method('createClient')
-            ->will($this->returnValue(new $client()))
+            ->willReturn(new $client())
         ;
 
         $commandTester = new CommandTester($this->command);
@@ -76,24 +81,21 @@ class CreateClientCommandTest extends TestCase
             ],
         ]);
 
-        $this->assertSame(0, $commandTester->getStatusCode());
+        self::assertSame(0, $commandTester->getStatusCode());
 
         $output = $commandTester->getDisplay();
 
-        $this->assertContains('Client ID', $output);
-        $this->assertContains('Client Secret', $output);
+        self::assertStringContainsString('Client ID', $output);
+        self::assertStringContainsString('Client Secret', $output);
     }
 
-    /**
-     * @return array
-     */
-    public function clientProvider()
+    public function clientProvider(): array
     {
         return [
-            ['FOS\OAuthServerBundle\Document\Client'],
-            ['FOS\OAuthServerBundle\Entity\Client'],
-            ['FOS\OAuthServerBundle\Model\Client'],
-            ['FOS\OAuthServerBundle\Propel\Client'],
+            [Client::class],
+            [\FOS\OAuthServerBundle\Entity\Client::class],
+            [\FOS\OAuthServerBundle\Model\Client::class],
+            [\FOS\OAuthServerBundle\Propel\Client::class],
         ];
     }
 }

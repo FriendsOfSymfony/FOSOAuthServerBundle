@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\GrantExtensionsCompilerPass;
 use FOS\OAuthServerBundle\Storage\GrantExtensionDispatcherInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -26,21 +27,21 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
+class GrantExtensionsCompilerPassTest extends TestCase
 {
     /**
      * @var GrantExtensionsCompilerPass
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->instance = new GrantExtensionsCompilerPass();
 
         parent::setUp();
     }
 
-    public function testProcessWillNotDoAnythingIfTheStorageDoesNotImplementOurInterface()
+    public function testProcessWillNotDoAnythingIfTheStorageDoesNotImplementOurInterface(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -90,10 +91,10 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
             ->willReturn($resolvedClassName)
         ;
 
-        $this->assertNull($this->instance->process($container));
+        self::assertNull($this->instance->process($container));
     }
 
-    public function testProcessWillFailIfUriIsEmpty()
+    public function testProcessWillFailIfUriIsEmpty(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -194,10 +195,10 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($exceptionMessage);
 
-        $this->assertNull($this->instance->process($container));
+        self::assertNull($this->instance->process($container));
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -296,6 +297,6 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertNull($this->instance->process($container));
+        self::assertNull($this->instance->process($container));
     }
 }

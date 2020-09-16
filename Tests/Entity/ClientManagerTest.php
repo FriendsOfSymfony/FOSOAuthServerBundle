@@ -17,16 +17,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use function random_bytes;
 
 /**
  * Class ClientManagerTest.
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class ClientManagerTest extends \PHPUnit\Framework\TestCase
+class ClientManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     protected $entityManager;
 
@@ -36,7 +39,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
+     * @var MockObject|EntityRepository
      */
     protected $repository;
 
@@ -45,7 +48,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
@@ -55,7 +58,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->className = 'RandomClassName'.\random_bytes(5);
+        $this->className = 'RandomClassName'.random_bytes(5);
 
         $this->entityManager
             ->expects($this->once())
@@ -69,24 +72,24 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
+        self::assertObjectPropertySame($this->entityManager, $this->instance, 'em');
+        self::assertObjectPropertySame($this->repository, $this->instance, 'repository');
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
-        $this->assertSame($this->className, $this->instance->getClass());
+        self::assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindClientBy()
+    public function testFindClientBy(): void
     {
         $criteria = [
-            \random_bytes(5),
+            random_bytes(5),
         ];
-        $randomResult = \random_bytes(5);
+        $randomResult = random_bytes(5);
 
         $this->repository
             ->expects($this->once())
@@ -95,10 +98,10 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($randomResult)
         ;
 
-        $this->assertSame($randomResult, $this->instance->findClientBy($criteria));
+        self::assertSame($randomResult, $this->instance->findClientBy($criteria));
     }
 
-    public function testUpdateClient()
+    public function testUpdateClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
@@ -119,10 +122,10 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->updateClient($client));
+        self::assertNull($this->instance->updateClient($client));
     }
 
-    public function testDeleteClient()
+    public function testDeleteClient(): void
     {
         $client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
@@ -143,6 +146,6 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->assertNull($this->instance->deleteClient($client));
+        self::assertNull($this->instance->deleteClient($client));
     }
 }

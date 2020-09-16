@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Util;
 
+use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
+use InvalidArgumentException;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
 /**
  * @internal
  *
@@ -20,9 +25,10 @@ namespace FOS\OAuthServerBundle\Util;
  */
 final class LegacyFormHelper
 {
+    /** @var array<string> */
     private static $map = [
-        'Symfony\Component\Form\Extension\Core\Type\HiddenType' => 'hidden',
-        'FOS\OAuthServerBundle\Form\Type\AuthorizeFormType' => 'fos_oauth_server_authorize',
+        HiddenType::class => 'hidden',
+        AuthorizeFormType::class => 'fos_oauth_server_authorize',
     ];
 
     private function __construct()
@@ -33,21 +39,21 @@ final class LegacyFormHelper
     {
     }
 
-    public static function getType($class)
+    public static function getType(string $class)
     {
         if (!self::isLegacy()) {
             return $class;
         }
 
         if (!isset(self::$map[$class])) {
-            throw new \InvalidArgumentException(sprintf('Form type with class "%s" can not be found. Please check for typos or add it to the map in LegacyFormHelper', $class));
+            throw new InvalidArgumentException(sprintf('Form type with class "%s" can not be found. '.'Please check for typos or add it to the map in LegacyFormHelper', $class));
         }
 
         return self::$map[$class];
     }
 
-    public static function isLegacy()
+    public static function isLegacy(): bool
     {
-        return !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        return !method_exists(AbstractType::class, 'getBlockPrefix');
     }
 }

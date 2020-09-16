@@ -21,16 +21,18 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = [
+            new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            new \FOS\OAuthServerBundle\Tests\Functional\TestBundle\TestBundle(),
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new \Symfony\Bundle\MonologBundle\MonologBundle(),
             new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
-            new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-
-            new \FOS\OAuthServerBundle\Tests\Functional\TestBundle\TestBundle(),
         ];
 
         if ('orm' === $this->getEnvironment()) {
             $bundles[] = new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
+        } elseif ('odm' === $this->getEnvironment()) {
+            $bundles[] = new \Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle();
         }
 
         return $bundles;
@@ -41,7 +43,7 @@ class AppKernel extends Kernel
         return sys_get_temp_dir().'/FOSOAuthServerBundle/';
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }

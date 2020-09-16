@@ -16,21 +16,17 @@ namespace FOS\OAuthServerBundle\Tests;
 use FOS\OAuthServerBundle\DependencyInjection\Compiler;
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
 use FOS\OAuthServerBundle\FOSOAuthServerBundle;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    public function testConstruction()
+    public function testConstruction(): void
     {
         $bundle = new FOSOAuthServerBundle();
 
-        /** @var ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject $containerBuilder */
+        /** @var ContainerBuilder|MockObject $containerBuilder */
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
             ->setMethods([
@@ -40,7 +36,7 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        /** @var SecurityExtension|\PHPUnit_Framework_MockObject_MockObject $securityExtension */
+        /** @var SecurityExtension|MockObject $securityExtension */
         $securityExtension = $this->getMockBuilder(SecurityExtension::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -64,9 +60,8 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
             ->expects($this->at(1))
             ->method('addCompilerPass')
             ->withConsecutive(
-                new Compiler\GrantExtensionsCompilerPass(),
-                new Compiler\TokenStorageCompilerPass(),
-                new Compiler\RequestStackCompilerPass()
+                [new Compiler\GrantExtensionsCompilerPass()],
+                [new Compiler\RequestStackCompilerPass()]
             )
             ->willReturnOnConsecutiveCalls(
                 $containerBuilder,
@@ -75,6 +70,6 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
             )
         ;
 
-        $this->assertNull($bundle->build($containerBuilder));
+        self::assertNull($bundle->build($containerBuilder));
     }
 }

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Security\Factory;
 
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -24,7 +26,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
+class OAuthFactoryTest extends TestCase
 {
     /**
      * @var OAuthFactory
@@ -34,108 +36,42 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @var string
      */
-    protected $definitionDecoratorClass;
-
-    /**
-     * @var string
-     */
     protected $childDefinitionClass;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->definitionDecoratorClass = 'Symfony\Component\DependencyInjection\DefinitionDecorator';
-        $this->childDefinitionClass = 'Symfony\Component\DependencyInjection\ChildDefinition';
+        $this->childDefinitionClass = ChildDefinition::class;
 
         $this->instance = new OAuthFactory();
 
         parent::setUp();
     }
 
-    public function testGetPosition()
+    public function testGetPosition(): void
     {
-        $this->assertSame('pre_auth', $this->instance->getPosition());
+        self::assertSame('pre_auth', $this->instance->getPosition());
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
-        $this->assertSame('fos_oauth', $this->instance->getKey());
+        self::assertSame('fos_oauth', $this->instance->getKey());
     }
 
-    public function testCreate()
-    {
-        if (class_exists($this->childDefinitionClass)) {
-            return $this->useChildDefinition();
-        }
-
-        if (class_exists($this->definitionDecoratorClass)) {
-            return $this->useDefinitionDecorator();
-        }
-
-        throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
-    }
-
-    public function testAddConfigurationDoesNothing()
+    public function testAddConfigurationDoesNothing(): void
     {
         $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->assertNull($this->instance->addConfiguration($nodeDefinition));
+        self::assertNull($this->instance->addConfiguration($nodeDefinition));
     }
 
-    protected function useDefinitionDecorator()
+    public function testCreate(): void
     {
-        $container = $this->getMockBuilder(ContainerBuilder::class)
-            ->disableOriginalConstructor()
-            ->setMethods([
-                'setDefinition',
-            ])
-            ->getMock()
-        ;
-        $id = '12';
-        $config = [];
-        $userProvider = 'mock.user.provider.service';
-        $defaultEntryPoint = '';
-
-        $definition = $this->getMockBuilder(Definition::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $container
-            ->expects($this->exactly(2))
-            ->method('setDefinition')
-            ->withConsecutive(
-                [
-                    'security.authentication.provider.fos_oauth_server.'.$id,
-                    new $this->definitionDecoratorClass('fos_oauth_server.security.authentication.provider'),
-                ],
-                [
-                    'security.authentication.listener.fos_oauth_server.'.$id,
-                    new $this->definitionDecoratorClass('fos_oauth_server.security.authentication.listener'),
-                ]
-            )
-            ->willReturnOnConsecutiveCalls(
-                $definition,
-                null
-            )
-        ;
-
-        $definition
-            ->expects($this->once())
-            ->method('replaceArgument')
-            ->with(0, new Reference($userProvider))
-            ->willReturn(null)
-        ;
-
-        $this->assertSame([
-            'security.authentication.provider.fos_oauth_server.'.$id,
-            'security.authentication.listener.fos_oauth_server.'.$id,
-            'fos_oauth_server.security.entry_point',
-        ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
+        $this->useChildDefinition();
     }
 
-    protected function useChildDefinition()
+    private function useChildDefinition(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -180,7 +116,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
             ->willReturn(null)
         ;
 
-        $this->assertSame([
+        self::assertSame([
             'security.authentication.provider.fos_oauth_server.'.$id,
             'security.authentication.listener.fos_oauth_server.'.$id,
             'fos_oauth_server.security.entry_point',

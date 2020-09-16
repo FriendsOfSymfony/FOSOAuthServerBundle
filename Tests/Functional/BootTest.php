@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Functional;
 
+use Exception;
+
 class BootTest extends TestCase
 {
     /**
@@ -20,23 +22,24 @@ class BootTest extends TestCase
      *
      * @param string $env
      */
-    public function testBoot($env)
+    public function testBoot($env): void
     {
         try {
-            $kernel = static::createKernel(['env' => $env]);
+            $kernel = static::createKernel(['environment' => $env]);
             $kernel->boot();
 
             // no exceptions were thrown
             self::assertTrue(true);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->fail($exception->getMessage());
         }
     }
 
-    public function getTestBootData()
+    public function getTestBootData(): array
     {
         return [
-            ['orm'],
+            'booting the kernel with SQL configurations' => ['env' => 'orm'],
+            'booting the kernel with Mongo configurations' => ['env' => 'odm'],
         ];
     }
 }

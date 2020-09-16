@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\DependencyInjection\Compiler;
 
+use FOS\OAuthServerBundle\Storage\GrantExtensionDispatcherInterface;
+use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -23,12 +25,12 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class GrantExtensionsCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $storageDefinition = $container->findDefinition('fos_oauth_server.storage');
         $className = $container->getParameterBag()->resolveValue($storageDefinition->getClass());
-        $storageClass = new \ReflectionClass($className);
-        if (!$storageClass->implementsInterface('FOS\OAuthServerBundle\Storage\GrantExtensionDispatcherInterface')) {
+        $storageClass = new ReflectionClass($className);
+        if (!$storageClass->implementsInterface(GrantExtensionDispatcherInterface::class)) {
             return;
         }
 

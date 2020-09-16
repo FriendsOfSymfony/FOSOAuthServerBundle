@@ -1,7 +1,10 @@
+phpstan.neon
 phpunit.xml
 Tests/autoload.php
+var/
 vendor/
 Propel/om/
 Propel/map/
 composer.lock
 .php_cs.cache
+.phpunit.result.cache

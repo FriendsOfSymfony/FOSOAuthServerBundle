@@ -44,14 +44,8 @@ interface ClientInterface extends IOAuth2Client
      */
     public function getSecret();
 
-    /**
-     * @param array $redirectUris
-     */
     public function setRedirectUris(array $redirectUris);
 
-    /**
-     * @param array $grantTypes
-     */
     public function setAllowedGrantTypes(array $grantTypes);
 
     /**

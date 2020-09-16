@@ -13,6 +13,32 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests;
 
-class TestCase extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase as BaseTestCase;
+use ReflectionClass;
+
+class TestCase extends BaseTestCase
 {
+    /**
+     * Assert sameness to the value of an object's private or protected member.
+     *
+     * @param mixed $expected
+     */
+    protected static function assertObjectPropertySame($expected, object $object, string $property): void
+    {
+        self::assertSame($expected, self::getProtectedMemberValue($object, $property));
+    }
+
+    /**
+     * Get the value of an object's private or protected member.
+     *
+     * @return mixed
+     */
+    protected static function getProtectedMemberValue(object $object, string $property)
+    {
+        $reflectionClass = new ReflectionClass($object);
+        $reflectionProperty = $reflectionClass->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+
+        return $reflectionProperty->getValue($object);
+    }
 }
