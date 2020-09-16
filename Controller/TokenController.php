@@ -25,17 +25,12 @@ class TokenController
      */
     protected $server;
 
-    /**
-     * @param OAuth2 $server
-     */
     public function __construct(OAuth2 $server)
     {
         $this->server = $server;
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function tokenAction(Request $request)

@@ -48,7 +48,6 @@ class OAuthListener implements ListenerInterface
     /**
      * @param TokenStorageInterface          $tokenStorage          the token storage
      * @param AuthenticationManagerInterface $authenticationManager the authentication manager
-     * @param OAuth2                         $serverService
      */
     public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager, OAuth2 $serverService)
     {
