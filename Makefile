@@ -2,7 +2,7 @@ QA_DOCKER_IMAGE=jakzal/phpqa:alpine
 QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" -w /project ${QA_DOCKER_IMAGE}
 
 dist: cs-full phpstan phpunit
-ci: cs-full-check phpstan phpunit-coverage
+ci: phpstan phpunit-coverage
 lint: cs-full-check phpstan
 
 phpstan:
