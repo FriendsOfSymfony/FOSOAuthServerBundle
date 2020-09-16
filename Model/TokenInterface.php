@@ -38,9 +38,6 @@ interface TokenInterface extends IOAuth2Token
      */
     public function setScope($scope);
 
-    /**
-     * @param UserInterface $user
-     */
     public function setUser(UserInterface $user);
 
     /**
@@ -48,8 +45,5 @@ interface TokenInterface extends IOAuth2Token
      */
     public function getUser();
 
-    /**
-     * @param ClientInterface $client
-     */
     public function setClient(ClientInterface $client);
 }

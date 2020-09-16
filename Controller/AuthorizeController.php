@@ -105,17 +105,8 @@ class AuthorizeController
      *
      * @todo This controller could be refactored to not rely on so many dependencies
      *
-     * @param RequestStack             $requestStack
-     * @param Form                     $authorizeForm
-     * @param AuthorizeFormHandler     $authorizeFormHandler
-     * @param OAuth2                   $oAuth2Server
-     * @param EngineInterface          $templating
-     * @param TokenStorageInterface    $tokenStorage
-     * @param UrlGeneratorInterface    $router
-     * @param ClientManagerInterface   $clientManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param SessionInterface         $session
-     * @param string                   $templateEngineType
+     * @param SessionInterface $session
+     * @param string           $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
@@ -187,10 +178,6 @@ class AuthorizeController
     }
 
     /**
-     * @param UserInterface        $user
-     * @param AuthorizeFormHandler $formHandler
-     * @param Request              $request
-     *
      * @return Response
      */
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
@@ -221,8 +208,6 @@ class AuthorizeController
 
     /**
      * Generate the redirection url when the authorize is completed.
-     *
-     * @param UserInterface $user
      *
      * @return string
      */
@@ -270,7 +255,7 @@ class AuthorizeController
     }
 
     /**
-     * @return null|Request
+     * @return Request|null
      */
     private function getCurrentRequest()
     {
