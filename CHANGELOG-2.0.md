@@ -6,6 +6,7 @@ This changelog references the relevant changes done in 6.0 versions.
 ### 2.0.0-ALPHA1 (unreleased)
 
 * Added `NL` translations [[#631](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/631)]
+* Dropped support for Symfony versions anterior to `4.4` [[#648](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/648)]
 * Fixed form submission/validation [[#643](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/643)]
 
 ### 2.0.0-ALPHA0 (2018-05-01)
