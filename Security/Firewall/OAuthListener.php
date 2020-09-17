@@ -21,14 +21,13 @@ use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterfac
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
 /**
  * OAuthListener class.
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuthListener implements ListenerInterface
+class OAuthListener
 {
     /**
      * @var TokenStorageInterface
@@ -59,7 +58,7 @@ class OAuthListener implements ListenerInterface
     /**
      * @param GetResponseEvent $event the event
      */
-    public function handle(GetResponseEvent $event)
+    public function __invoke(GetResponseEvent $event)
     {
         if (null === $oauthToken = $this->serverService->getBearerToken($event->getRequest(), true)) {
             return;

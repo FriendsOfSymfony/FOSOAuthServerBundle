@@ -87,7 +87,7 @@ class OAuthListenerTest extends TestCase
         ;
 
         /** @var OAuthToken $token */
-        $token = $listener->handle($this->event);
+        $token = $listener($this->event);
 
         $this->assertInstanceOf(OAuthToken::class, $token);
         $this->assertSame('a-token', $token->getToken());
@@ -125,7 +125,7 @@ class OAuthListenerTest extends TestCase
             ->will($this->returnArgument(0))
         ;
 
-        $ret = $listener->handle($this->event);
+        $ret = $listener($this->event);
 
         $this->assertSame($response, $ret);
     }
