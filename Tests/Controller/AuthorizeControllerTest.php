@@ -19,7 +19,6 @@ use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
@@ -33,6 +32,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Environment as TwigEnvironment;
 
 class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
 {
@@ -62,14 +62,14 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $oAuth2Server;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EngineInterface
-     */
-    protected $templateEngine;
-
-    /**
      * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface
      */
     protected $tokenStorage;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|TwigEnvironment
+     */
+    protected $twig;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|UrlGeneratorInterface
@@ -85,11 +85,6 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject|EventDispatcherInterface
      */
     protected $eventDispatcher;
-
-    /**
-     * @var string
-     */
-    protected $templateEngineType;
 
     /**
      * @var AuthorizeController
@@ -149,11 +144,11 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->templateEngine = $this->getMockBuilder(EngineInterface::class)
+        $this->tokenStorage = $this->getMockBuilder(TokenStorageInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->tokenStorage = $this->getMockBuilder(TokenStorageInterface::class)
+        $this->twig = $this->getMockBuilder(TwigEnvironment::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -173,20 +168,18 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->templateEngineType = 'twig';
 
         $this->instance = new AuthorizeController(
             $this->requestStack,
             $this->form,
             $this->authorizeFormHandler,
             $this->oAuth2Server,
-            $this->templateEngine,
             $this->tokenStorage,
             $this->router,
             $this->clientManager,
             $this->eventDispatcher,
-            $this->session,
-            $this->templateEngineType
+            $this->twig,
+            $this->session
         );
 
         /** @var \PHPUnit_Framework_MockObject_MockObject&Request $request */
@@ -307,11 +300,9 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->formView)
         ;
 
-        $response = new Response();
-
-        $this->templateEngine
-            ->expects($this->at(0))
-            ->method('renderResponse')
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
             ->with(
                 '@FOSOAuthServer/Authorize/authorize.html.twig',
                 [
@@ -319,10 +310,10 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
                     'client' => $this->client,
                 ]
             )
-            ->willReturn($response)
+            ->willReturn($responseBody = 'response')
         ;
 
-        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+        $this->assertSame($responseBody, $this->instance->authorizeAction($this->request)->getContent());
     }
 
     public function testAuthorizeActionWillFinishClientAuthorization()
@@ -466,11 +457,9 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->formView)
         ;
 
-        $response = new Response();
-
-        $this->templateEngine
-            ->expects($this->at(0))
-            ->method('renderResponse')
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
             ->with(
                 '@FOSOAuthServer/Authorize/authorize.html.twig',
                 [
@@ -478,10 +467,10 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
                     'client' => $this->client,
                 ]
             )
-            ->willReturn($response)
+            ->willReturn($responseBody = 'response')
         ;
 
-        $this->assertSame($response, $this->instance->authorizeAction($this->request));
+        $this->assertSame($responseBody, $this->instance->authorizeAction($this->request)->getContent());
     }
 
     public function testAuthorizeActionWillProcessAuthorizationForm()

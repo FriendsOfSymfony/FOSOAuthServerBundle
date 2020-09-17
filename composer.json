@@ -24,7 +24,8 @@
         "friendsofsymfony/oauth2-php": "~1.1",
         "symfony/dependency-injection": "^4.4",
         "symfony/framework-bundle": "^4.4",
-        "symfony/security-bundle": "^4.4"
+        "symfony/security-bundle": "^4.4",
+        "symfony/twig-bundle": "^4.4"
     },
     "conflict": {
         "twig/twig": "<1.40 || >=2.0,<2.9"
@@ -43,8 +44,6 @@
         "symfony/console": "~3.0 || ~4.0",
         "symfony/form": "~3.0 || ~4.0",
         "symfony/phpunit-bridge": "~3.0 || ~4.0",
-        "symfony/templating": "~3.0 || ~4.0",
-        "symfony/twig-bundle": "~3.0 || ^4.0",
         "symfony/yaml": "~3.0 || ~4.0",
         "willdurand/propel-typehintable-behavior": "~1.0"
     },
