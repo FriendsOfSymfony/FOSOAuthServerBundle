@@ -16,7 +16,7 @@ namespace FOS\OAuthServerBundle\Security\Firewall;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -55,10 +55,7 @@ class OAuthListener
         $this->serverService = $serverService;
     }
 
-    /**
-     * @param GetResponseEvent $event the event
-     */
-    public function __invoke(GetResponseEvent $event)
+    public function __invoke(RequestEvent $event)
     {
         if (null === $oauthToken = $this->serverService->getBearerToken($event->getRequest(), true)) {
             return;
