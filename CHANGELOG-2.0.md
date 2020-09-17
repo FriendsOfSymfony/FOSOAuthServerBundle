@@ -10,6 +10,8 @@ This changelog references the relevant changes done in 6.0 versions.
 * Dropped support for PHP 7.1 [[#651](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/651)]
 * Dropped support for Symfony versions anterior to `4.4` [[#648](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/648)]
 * Fixed form submission/validation [[#643](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/643)]
+* **[BC break]** Changed signature of method `FOS\OAuthServerBundle\Controller\AuthorizeController::renderAuthorize()` [[#653](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/653)]
+* **[BC break]** Removed support for templating engine [[#653](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/653)]
 
 ### 2.0.0-ALPHA0 (2018-05-01)
 
