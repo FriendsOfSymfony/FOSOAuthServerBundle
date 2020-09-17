@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "friendsofsymfony/oauth2-php": "~1.1",
         "symfony/dependency-injection": "^4.4",
         "symfony/framework-bundle": "^4.4",
