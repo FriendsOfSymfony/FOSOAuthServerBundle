@@ -26,6 +26,9 @@
         "symfony/framework-bundle": "^4.4",
         "symfony/security-bundle": "^4.4"
     },
+    "conflict": {
+        "twig/twig": "<1.40 || >=2.0,<2.9"
+    },
     "require-dev": {
         "doctrine/doctrine-bundle": "~1.0",
         "doctrine/mongodb-odm": "~1.0",
