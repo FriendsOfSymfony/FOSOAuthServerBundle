@@ -1,10 +1,12 @@
 framework:
-    templating:
-        engines: ["twig"]
     form: ~
     secret: test
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
+
+twig:
+    exception_controller: null
+    strict_variables: '%kernel.debug%'
 
 fos_oauth_server:
 
