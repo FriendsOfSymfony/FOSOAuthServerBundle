@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Controller;
 
 use FOS\OAuthServerBundle\Controller\AuthorizeController;
-use FOS\OAuthServerBundle\Event\OAuthEvent;
+use FOS\OAuthServerBundle\Event\PostAuthorizationEvent;
+use FOS\OAuthServerBundle\Event\PreAuthorizationEvent;
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
@@ -117,9 +118,14 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $client;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|OAuthEvent
+     * @var \PHPUnit_Framework_MockObject_MockObject|PreAuthorizationEvent
      */
-    protected $event;
+    protected $preAuthorizationEvent;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|PostAuthorizationEvent
+     */
+    protected $postAuthorizationEvent;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|FormView
@@ -206,7 +212,11 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->event = $this->getMockBuilder(OAuthEvent::class)
+        $this->preAuthorizationEvent = $this->getMockBuilder(PreAuthorizationEvent::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->postAuthorizationEvent = $this->getMockBuilder(PostAuthorizationEvent::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -274,16 +284,15 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $propertyReflection->setValue($this->instance, $this->client);
 
         $this->eventDispatcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('dispatch')
-            ->with(OAuthEvent::PRE_AUTHORIZATION_PROCESS, new OAuthEvent($this->user, $this->client))
-            ->willReturn($this->event)
+            ->with(new PreAuthorizationEvent($this->user, $this->client))
+            ->willReturn($this->preAuthorizationEvent)
         ;
 
-        $this->event
-            ->expects($this->at(0))
+        $this->preAuthorizationEvent
+            ->expects($this->once())
             ->method('isAuthorizedClient')
-            ->with()
             ->willReturn(false)
         ;
 
@@ -347,16 +356,15 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $propertyReflection->setValue($this->instance, $this->client);
 
         $this->eventDispatcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('dispatch')
-            ->with(OAuthEvent::PRE_AUTHORIZATION_PROCESS, new OAuthEvent($this->user, $this->client))
-            ->willReturn($this->event)
+            ->with(new PreAuthorizationEvent($this->user, $this->client))
+            ->willReturn($this->preAuthorizationEvent)
         ;
 
-        $this->event
-            ->expects($this->at(0))
+        $this->preAuthorizationEvent
+            ->expects($this->once())
             ->method('isAuthorizedClient')
-            ->with()
             ->willReturn(true)
         ;
 
@@ -431,16 +439,15 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $propertyReflection->setValue($this->instance, $this->client);
 
         $this->eventDispatcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('dispatch')
-            ->with(OAuthEvent::PRE_AUTHORIZATION_PROCESS, new OAuthEvent($this->user, $this->client))
-            ->willReturn($this->event)
+            ->with(new PreAuthorizationEvent($this->user, $this->client))
+            ->willReturn($this->preAuthorizationEvent)
         ;
 
-        $this->event
-            ->expects($this->at(0))
+        $this->preAuthorizationEvent
+            ->expects($this->once())
             ->method('isAuthorizedClient')
-            ->with()
             ->willReturn(false)
         ;
 
@@ -506,11 +513,11 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $this->eventDispatcher
             ->expects($this->at(0))
             ->method('dispatch')
-            ->with(OAuthEvent::PRE_AUTHORIZATION_PROCESS, new OAuthEvent($this->user, $this->client))
-            ->willReturn($this->event)
+            ->with(new PreAuthorizationEvent($this->user, $this->client))
+            ->willReturn($this->preAuthorizationEvent)
         ;
 
-        $this->event
+        $this->preAuthorizationEvent
             ->expects($this->once())
             ->method('isAuthorizedClient')
             ->willReturn(false)
@@ -531,10 +538,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $this->eventDispatcher
             ->expects($this->at(1))
             ->method('dispatch')
-            ->with(
-                OAuthEvent::POST_AUTHORIZATION_PROCESS,
-                new OAuthEvent($this->user, $this->client, true)
-            )
+            ->with(new PostAuthorizationEvent($this->user, $this->client, true))
         ;
 
         $formName = 'formName'.\random_bytes(10);
