@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Controller;
 
-use FOS\OAuthServerBundle\Event\OAuthEvent;
+use FOS\OAuthServerBundle\Event\PostAuthorizationEvent;
+use FOS\OAuthServerBundle\Event\PreAuthorizationEvent;
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
@@ -145,11 +146,8 @@ class AuthorizeController
         $form = $this->authorizeForm;
         $formHandler = $this->authorizeFormHandler;
 
-        /** @var OAuthEvent $event */
-        $event = $this->eventDispatcher->dispatch(
-            OAuthEvent::PRE_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient())
-        );
+        /** @var PreAuthorizationEvent $event */
+        $event = $this->eventDispatcher->dispatch(new PreAuthorizationEvent($user, $this->getClient()));
 
         if ($event->isAuthorizedClient()) {
             $scope = $request->get('scope', null);
@@ -177,10 +175,7 @@ class AuthorizeController
             $this->session->invalidate();
         }
 
-        $this->eventDispatcher->dispatch(
-            OAuthEvent::POST_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
-        );
+        $this->eventDispatcher->dispatch(new PostAuthorizationEvent($user, $this->getClient(), $formHandler->isAccepted()));
 
         $formName = $this->authorizeForm->getName();
         if (!$request->query->all() && $request->request->has($formName)) {

@@ -11,6 +11,9 @@ This changelog references the relevant changes done in 6.0 versions.
 * Dropped support for Symfony versions anterior to `4.4` [[#648](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/648)]
 * Fixed form submission/validation [[#643](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/643)]
 * **[BC break]** Changed signature of method `FOS\OAuthServerBundle\Controller\AuthorizeController::renderAuthorize()` [[#653](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/653)]
+* **[BC break]** Removed class `FOS\OAuthServerBundle\Event\OAuthEvent`, use dedicated event classes instead: [[#655](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/655)]
+    - `OAuthEvent::PRE_AUTHORIZATION_PROCESS` => `FOS\OAuthServerBundle\Event\PreAuthorizationEvent`
+    - `OAuthEvent::POST_AUTHORIZATION_PROCESS` => `FOS\OAuthServerBundle\Event\PostAuthorizationEvent`
 * **[BC break]** Removed support for templating engine [[#653](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/653)]
 
 ### 2.0.0-ALPHA0 (2018-05-01)
