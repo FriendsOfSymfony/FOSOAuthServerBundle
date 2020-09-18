@@ -1,4 +1,4 @@
-{{ form_start(form, {'method': 'POST', 'action': path('fos_oauth_server_authorize'), 'label_attr': {'class': 'fos_oauth_server_authorize'} }) }}
+{{ form_start(form, {method: 'POST', action: path('fos_oauth_server_authorize'), label_attr: {class: 'fos_oauth_server_authorize'} }) }}
     <input type="submit" name="accepted" value="{{ 'authorize.accept'|trans({}, 'FOSOAuthServerBundle') }}" />
     <input type="submit" name="rejected" value="{{ 'authorize.reject'|trans({}, 'FOSOAuthServerBundle') }}" />
 
