@@ -1,5 +1,5 @@
-{% extends "@FOSOAuthServer/layout.html.twig" %}
+{% extends '@FOSOAuthServer/layout.html.twig' %}
 
 {% block fos_oauth_server_content %}
-{% include "@FOSOAuthServer/Authorize/authorize_content.html.twig" %}
+{{ include('@FOSOAuthServer/Authorize/authorize_content.html.twig') }}
 {% endblock fos_oauth_server_content %}
