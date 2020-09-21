@@ -26,23 +26,13 @@ class ClientManager extends BaseClientManager
     protected $em;
 
     /**
-     * @var EntityRepository
-     */
-    protected $repository;
-
-    /**
      * @var string
      */
     protected $class;
 
     public function __construct(EntityManagerInterface $em, $class)
     {
-        // NOTE: bug in Doctrine, hinting EntityRepository|ObjectRepository when only EntityRepository is expected
-        /** @var EntityRepository $repository */
-        $repository = $em->getRepository($class);
-
         $this->em = $em;
-        $this->repository = $repository;
         $this->class = $class;
     }
 
@@ -59,7 +49,7 @@ class ClientManager extends BaseClientManager
      */
     public function findClientBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->getRepository()->findOneBy($criteria);
     }
 
     /**
@@ -78,5 +68,12 @@ class ClientManager extends BaseClientManager
     {
         $this->em->remove($client);
         $this->em->flush();
+    }
+
+    private function getRepository(): EntityRepository
+    {
+        $repository = $this->em->getRepository($this->class);
+
+        return $repository;
     }
 }

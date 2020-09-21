@@ -15,12 +15,12 @@ namespace FOS\OAuthServerBundle\Tests\Entity;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @group time-sensitive
@@ -32,12 +32,12 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
 class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject
      */
     protected $entityManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
+     * @var MockObject
      */
     protected $repository;
 
@@ -64,7 +64,6 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->entityManager
-            ->expects($this->once())
             ->method('getRepository')
             ->with($this->className)
             ->willReturn($this->repository)
@@ -76,7 +75,6 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     public function testConstructWillSetParameters()
     {
         $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
