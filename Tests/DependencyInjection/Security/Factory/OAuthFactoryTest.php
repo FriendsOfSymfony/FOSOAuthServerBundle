@@ -88,10 +88,22 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ;
 
         $definition
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('replaceArgument')
-            ->with(0, new Reference($userProvider))
-            ->willReturn(null)
+            ->withConsecutive(
+                [
+                    0,
+                    new Reference($userProvider),
+                ],
+                [
+                    2,
+                    new Reference('security.user_checker.'.$id),
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $definition,
+                $definition
+            )
         ;
 
         $this->assertSame([
