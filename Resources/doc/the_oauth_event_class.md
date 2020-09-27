@@ -27,7 +27,7 @@ use FOS\OAuthServerBundle\Event\PreAuthorizationEvent;
 
 class OAuthEventListener
 {
-    public function onPreAuthorizationProcess(PreAuthorizationEvent $event)
+    public function onPreAuthorization(PreAuthorizationEvent $event)
     {
         if ($user = $this->getUser($event)) {
             $event->setAuthorizedClient(
@@ -36,7 +36,7 @@ class OAuthEventListener
         }
     }
 
-    public function onPostAuthorizationProcess(PostAuthorizationEvent $event)
+    public function onPostAuthorization(PostAuthorizationEvent $event)
     {
         if ($event->isAuthorizedClient()) {
             if (null !== $client = $event->getClient()) {
@@ -67,8 +67,8 @@ services:
     oauth_event_listener:
         class:  Acme\DemoBundle\EventListener\OAuthEventListener
         tags:
-            - { name: kernel.event_listener, event: FOS\OAuthServerBundle\Event\PreAuthorizationEvent, method: onPreAuthorizationProcess }
-            - { name: kernel.event_listener, event: FOS\OAuthServerBundle\Event\PostAuthorizationEvent, method: onPostAuthorizationProcess }
+            - { name: kernel.event_listener, event: FOS\OAuthServerBundle\Event\PreAuthorizationEvent, method: onPreAuthorization }
+            - { name: kernel.event_listener, event: FOS\OAuthServerBundle\Event\PostAuthorizationEvent, method: onPostAuthorization }
 ```
 
 
@@ -84,16 +84,16 @@ class OAuthEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            PreAuthorizationEvent::class  => 'onPreAuthorizationProcess',
-            PostAuthorizationEvent::class => 'onPostAuthorizationProcess',
+            PreAuthorizationEvent::class  => 'onPreAuthorization',
+            PostAuthorizationEvent::class => 'onPostAuthorization',
         ];
     }
 
-    public function onPreAuthorizationProcess(PreAuthorizationEvent $event)
+    public function onPreAuthorization(PreAuthorizationEvent $event)
     {
     }
 
-    public function onPostAuthorizationProcess(PostAuthorizationEvent $event)
+    public function onPostAuthorization(PostAuthorizationEvent $event)
     {
     }
 }
