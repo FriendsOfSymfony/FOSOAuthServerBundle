@@ -1,7 +1,7 @@
-The OAuthEvent class
+OAuth Events
 ====================
 
-When a user accepts to share his data with a client, it's a nice idea to save this state.
+When a user accepts to share their data with a client, it's a nice idea to save this state.
 By default, the FOSOAuthServerBundle will always show the authorization page to the user
 when an access token is asked. As an access token has a lifetime, it can be annoying for your
 users to always accept a client.
@@ -10,7 +10,7 @@ Thanks to the [Event Dispatcher](http://symfony.com/doc/current/components/event
 you can listen before, and after the authorization form process. So, you can save the user's choice,
 and even bypass the authorization process. Let's look at an example.
 
-Assuming we have a _Many to Many_ relation between clients, and users. An `OAuthEvent` contains
+Assuming we have a _Many to Many_ relation between clients, and users. A `PreAuthorizationEvent` or `PostAuthorizationEvent` contains
 a `ClientInterface` instance, a `UserInterface` instance (coming from the [Security Component](http://symfony.com/doc/current/book/security.html)),
 and a flag to determine whether the client has been accepted, or not.
 
@@ -21,11 +21,13 @@ The following class shows a Propel implementation of a basic listener:
 
 namespace Acme\DemoBundle\EventListener;
 
-use FOS\OAuthServerBundle\Event\OAuthEvent;
+use FOS\OAuthServerBundle\Event\AbstractAuthorizationEvent;
+use FOS\OAuthServerBundle\Event\PostAuthorizationEvent;
+use FOS\OAuthServerBundle\Event\PreAuthorizationEvent;
 
 class OAuthEventListener
 {
-    public function onPreAuthorizationProcess(OAuthEvent $event)
+    public function onPreAuthorization(PreAuthorizationEvent $event)
     {
         if ($user = $this->getUser($event)) {
             $event->setAuthorizedClient(
@@ -34,7 +36,7 @@ class OAuthEventListener
         }
     }
 
-    public function onPostAuthorizationProcess(OAuthEvent $event)
+    public function onPostAuthorization(PostAuthorizationEvent $event)
     {
         if ($event->isAuthorizedClient()) {
             if (null !== $client = $event->getClient()) {
@@ -45,7 +47,7 @@ class OAuthEventListener
         }
     }
 
-    protected function getUser(OAuthEvent $event)
+    protected function getUser(AbstractAuthorizationEvent $event)
     {
         return UserQuery::create()
             ->filterByUsername($event->getUser()->getUsername())
@@ -65,12 +67,39 @@ services:
     oauth_event_listener:
         class:  Acme\DemoBundle\EventListener\OAuthEventListener
         tags:
-            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
-            - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }
+            - { name: kernel.event_listener, event: FOS\OAuthServerBundle\Event\PreAuthorizationEvent, method: onPreAuthorization }
+            - { name: kernel.event_listener, event: FOS\OAuthServerBundle\Event\PostAuthorizationEvent, method: onPostAuthorization }
 ```
 
 
-### Next?
+## Using a Symfony EventSubscriber
+
+The name of the event for Symfony's purposes is just the class name of the event class.
+
+```php
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class OAuthEventListener implements EventSubscriberInterface
+{
+    public static function getSubscribedEvents()
+    {
+        return [
+            PreAuthorizationEvent::class  => 'onPreAuthorization',
+            PostAuthorizationEvent::class => 'onPostAuthorization',
+        ];
+    }
+
+    public function onPreAuthorization(PreAuthorizationEvent $event)
+    {
+    }
+
+    public function onPostAuthorization(PostAuthorizationEvent $event)
+    {
+    }
+}
+```
+
+## Next?
 
 You can build a panel for your users displaying this list. If they remove an entry from this list,
 then the authorization page will be displayed to the user like the first time. And, if the user
