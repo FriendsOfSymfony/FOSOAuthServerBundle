@@ -18,10 +18,10 @@
     "require": {
         "php": "^7.1",
         "friendsofsymfony/oauth2-php": "~1.1",
-        "symfony/dependency-injection": "~3.0|~4.0|~5.0",
-        "symfony/framework-bundle": "~3.0|~4.0|~5.0",
-        "symfony/security-bundle": "~3.0|~4.0|~5.0",
-        "symfony/twig-bundle": "~3.0|^4.0|~5.0"
+        "symfony/dependency-injection": "~5.0",
+        "symfony/framework-bundle": "~5.0",
+        "symfony/security-bundle": "~5.0",
+        "symfony/twig-bundle": "~5.0"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "~1.0",
@@ -33,12 +33,12 @@
         "phpstan/phpstan-shim": "~0.9",
         "phpunit/phpunit": "~5.0|~6.0",
         "propel/propel1": "~1.6",
-        "symfony/class-loader": "~3.0|~4.0|~5.0",
-        "symfony/console": "~3.0|~4.0|~5.0",
-        "symfony/form": "~3.0|~4.0|~5.0",
-        "symfony/phpunit-bridge": "~3.0|~4.0|~5.0",
-        "symfony/templating": "~3.0|~4.0|~5.0",
-        "symfony/yaml": "~3.0|~4.0|~5.0",
+        "symfony/class-loader": "~5.0",
+        "symfony/console": "~5.0",
+        "symfony/form": "~5.0",
+        "symfony/phpunit-bridge": "~5.0",
+        "symfony/templating": "~5.0",
+        "symfony/yaml": "~5.0",
         "willdurand/propel-typehintable-behavior": "~1.0"
     },
     "suggest": {
