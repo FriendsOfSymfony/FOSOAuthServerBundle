@@ -26,6 +26,7 @@ class FOSOAuthServerExtension extends Extension
 {
     /**
      * {@inheritdoc}
+     * @return void
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -109,6 +110,9 @@ class FOSOAuthServerExtension extends Extension
         return 'fos_oauth_server';
     }
 
+    /**
+     * @return void
+     */
     protected function remapParameters(array $config, ContainerBuilder $container, array $map)
     {
         foreach ($map as $name => $paramName) {
@@ -118,6 +122,9 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
+    /**
+     * @return void
+     */
     protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces)
     {
         foreach ($namespaces as $ns => $map) {
@@ -140,6 +147,9 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
+    /**
+     * @return void
+     */
     protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
         $loader->load('authorize.xml');
@@ -157,6 +167,9 @@ class FOSOAuthServerExtension extends Extension
         ]);
     }
 
+    /**
+     * @return string
+     */
     private function computeArraySupportedScopes(array $supportedScopes)
     {
         foreach ($supportedScopes as $scope) {

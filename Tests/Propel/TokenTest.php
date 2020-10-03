@@ -45,14 +45,14 @@ class TokenTest extends PropelTestCase
         ];
     }
 
-    public function testExpiresIn()
+    public function testExpiresIn(): void
     {
         $token = new Token();
 
         $this->assertSame(PHP_INT_MAX, $token->getExpiresIn());
     }
 
-    public function testExpiresInWithExpiresAt()
+    public function testExpiresInWithExpiresAt(): void
     {
         $token = new Token();
         $token->setExpiresAt(time() + 60);

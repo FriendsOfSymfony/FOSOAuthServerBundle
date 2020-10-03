@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class GrantExtensionsCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $storageDefinition = $container->findDefinition('fos_oauth_server.storage');
         $className = $container->getParameterBag()->resolveValue($storageDefinition->getClass());

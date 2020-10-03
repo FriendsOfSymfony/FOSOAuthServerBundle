@@ -25,15 +25,17 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var ?int
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string")
+     * @var ?string
      */
     protected $password;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -43,18 +45,19 @@ class User implements UserInterface
         return ['ROLE_USER'];
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword($password)
+    public function setPassword(?string $password): void
     {
         $this->password = $password;
     }
 
     public function getSalt()
     {
+        return null;
     }
 
     public function getUsername()
@@ -62,7 +65,7 @@ class User implements UserInterface
         return $this->getId();
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }

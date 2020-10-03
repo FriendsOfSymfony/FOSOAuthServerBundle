@@ -20,6 +20,7 @@ interface TokenInterface extends IOAuth2Token
 {
     /**
      * @param int $timestamp
+     * @return void
      */
     public function setExpiresAt($timestamp);
 
@@ -30,14 +31,19 @@ interface TokenInterface extends IOAuth2Token
 
     /**
      * @param string $token
+     * @return void
      */
     public function setToken($token);
 
     /**
      * @param string $scope
+     * @return void
      */
     public function setScope($scope);
 
+    /**
+     * @return void
+     */
     public function setUser(UserInterface $user);
 
     /**
@@ -45,5 +51,8 @@ interface TokenInterface extends IOAuth2Token
      */
     public function getUser();
 
+    /**
+     * @return void
+     */
     public function setClient(ClientInterface $client);
 }

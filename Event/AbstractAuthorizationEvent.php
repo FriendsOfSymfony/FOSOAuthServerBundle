@@ -46,7 +46,7 @@ class AbstractAuthorizationEvent extends Event
         return $this->user;
     }
 
-    public function setAuthorizedClient(bool $authorized)
+    public function setAuthorizedClient(bool $authorized): void
     {
         $this->isAuthorizedClient = $authorized;
     }

@@ -57,7 +57,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function updateAuthCode(AuthCodeInterface $authCode)
+    public function updateAuthCode(AuthCodeInterface $authCode): void
     {
         $this->em->persist($authCode);
         $this->em->flush();
@@ -66,7 +66,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteAuthCode(AuthCodeInterface $authCode)
+    public function deleteAuthCode(AuthCodeInterface $authCode): void
     {
         $this->em->remove($authCode);
         $this->em->flush();

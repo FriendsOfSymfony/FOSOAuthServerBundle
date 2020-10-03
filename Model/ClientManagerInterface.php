@@ -26,6 +26,7 @@ interface ClientManagerInterface
     public function getClass();
 
     /**
+     * @param array<mixed> $criteria
      * @return ClientInterface|null
      */
     public function findClientBy(array $criteria);
@@ -37,7 +38,13 @@ interface ClientManagerInterface
      */
     public function findClientByPublicId($publicId);
 
+    /**
+     * @return void
+     */
     public function updateClient(ClientInterface $client);
 
+    /**
+     * @return void
+     */
     public function deleteClient(ClientInterface $client);
 }

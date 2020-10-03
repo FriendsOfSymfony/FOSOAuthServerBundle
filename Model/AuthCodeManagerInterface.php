@@ -35,6 +35,7 @@ interface AuthCodeManagerInterface
     /**
      * Retrieve an auth code using a set of criteria.
      *
+     * @param array<mixed> $criteria
      * @return AuthCodeInterface|null
      */
     public function findAuthCodeBy(array $criteria);
@@ -51,12 +52,12 @@ interface AuthCodeManagerInterface
     /**
      * Update a given auth code.
      */
-    public function updateAuthCode(AuthCodeInterface $authCode);
+    public function updateAuthCode(AuthCodeInterface $authCode): void;
 
     /**
      * Delete a given auth code.
      */
-    public function deleteAuthCode(AuthCodeInterface $authCode);
+    public function deleteAuthCode(AuthCodeInterface $authCode): void;
 
     /**
      * Delete expired auth codes.

@@ -31,11 +31,11 @@ class RequestStackCompilerPassTest extends \PHPUnit\Framework\TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerBuilder
+     * @var \PHPUnit\Framework\MockObject\MockObject|ContainerBuilder
      */
     protected $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -51,7 +51,7 @@ class RequestStackCompilerPassTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testProcessWithoutRequestStackDoesNothing()
+    public function testProcessWithoutRequestStackDoesNothing(): void
     {
         $this->container
             ->expects($this->once())
@@ -63,7 +63,7 @@ class RequestStackCompilerPassTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->process($this->container));
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $this->container
             ->expects($this->once())

@@ -26,11 +26,11 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstruction()
+    public function testConstruction(): void
     {
         $bundle = new FOSOAuthServerBundle();
 
-        /** @var ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject $containerBuilder */
+        /** @var ContainerBuilder|\PHPUnit\Framework\MockObject\MockObject $containerBuilder */
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
             ->setMethods([
@@ -40,7 +40,7 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        /** @var SecurityExtension|\PHPUnit_Framework_MockObject_MockObject $securityExtension */
+        /** @var SecurityExtension|\PHPUnit\Framework\MockObject\MockObject $securityExtension */
         $securityExtension = $this->getMockBuilder(SecurityExtension::class)
             ->disableOriginalConstructor()
             ->getMock()

@@ -19,6 +19,7 @@ interface ClientInterface extends IOAuth2Client
 {
     /**
      * @param string $random
+     * @return void
      */
     public function setRandomId($random);
 
@@ -29,6 +30,7 @@ interface ClientInterface extends IOAuth2Client
 
     /**
      * @param string $secret
+     * @return void
      */
     public function setSecret($secret);
 
@@ -44,12 +46,20 @@ interface ClientInterface extends IOAuth2Client
      */
     public function getSecret();
 
+    /**
+     * @param array<string> $redirectUris
+     * @return void
+     */
     public function setRedirectUris(array $redirectUris);
 
+    /**
+     * @param array<string> $grantTypes
+     * @return void
+     */
     public function setAllowedGrantTypes(array $grantTypes);
 
     /**
-     * @return array
+     * @return array<string>
      */
     public function getAllowedGrantTypes();
 }

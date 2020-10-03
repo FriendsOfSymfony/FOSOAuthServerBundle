@@ -35,12 +35,12 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     * @var \PHPUnit\Framework\MockObject\MockObject|DocumentManager
      */
     protected $documentManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     * @var \PHPUnit\Framework\MockObject\MockObject|DocumentRepository
      */
     protected $repository;
 
@@ -49,7 +49,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('\Doctrine\ODM\MongoDB\DocumentManager')) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
@@ -75,7 +75,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->instance = new TokenManager($this->documentManager, $this->className);
     }
 
-    public function testFindTokenByToken()
+    public function testFindTokenByToken(): void
     {
         $randomToken = \random_bytes(5);
         $randomResult = \random_bytes(5);
@@ -92,7 +92,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()
@@ -114,12 +114,12 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->updateToken($token));
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testDeleteToken()
+    public function testDeleteToken(): void
     {
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()
@@ -143,7 +143,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->deleteToken($token));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $queryBuilder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()

@@ -38,52 +38,52 @@ use Twig\Environment as TwigEnvironment;
 class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|RequestStack
+     * @var \PHPUnit\Framework\MockObject\MockObject|RequestStack
      */
     protected $requestStack;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|SessionInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|SessionInterface
      */
     protected $session;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Form
+     * @var \PHPUnit\Framework\MockObject\MockObject|Form
      */
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AuthorizeFormHandler
+     * @var \PHPUnit\Framework\MockObject\MockObject|AuthorizeFormHandler
      */
     protected $authorizeFormHandler;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|OAuth2
+     * @var \PHPUnit\Framework\MockObject\MockObject|OAuth2
      */
     protected $oAuth2Server;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TokenStorageInterface
      */
     protected $tokenStorage;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TwigEnvironment
+     * @var \PHPUnit\Framework\MockObject\MockObject|TwigEnvironment
      */
     protected $twig;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UrlGeneratorInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|UrlGeneratorInterface
      */
     protected $router;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|ClientManagerInterface
      */
     protected $clientManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventDispatcherInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -93,46 +93,46 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Request
+     * @var \PHPUnit\Framework\MockObject\MockObject|Request
      */
     protected $request;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     * @var \PHPUnit\Framework\MockObject\MockObject|ParameterBag
      */
     protected $requestQuery;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     * @var \PHPUnit\Framework\MockObject\MockObject|ParameterBag
      */
     protected $requestRequest;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UserInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|UserInterface
      */
     protected $user;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|ClientInterface
      */
     protected $client;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|PreAuthorizationEvent
+     * @var \PHPUnit\Framework\MockObject\MockObject|PreAuthorizationEvent
      */
     protected $preAuthorizationEvent;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|PostAuthorizationEvent
+     * @var \PHPUnit\Framework\MockObject\MockObject|PostAuthorizationEvent
      */
     protected $postAuthorizationEvent;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|FormView
+     * @var \PHPUnit\Framework\MockObject\MockObject|FormView
      */
     protected $formView;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
@@ -188,7 +188,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             $this->session
         );
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject&Request $request */
+        /** @var \PHPUnit\Framework\MockObject\MockObject&Request $request */
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -228,7 +228,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testAuthorizeActionWillThrowAccessDeniedException()
+    public function testAuthorizeActionWillThrowAccessDeniedException(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -253,7 +253,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $this->instance->authorizeAction($this->request);
     }
 
-    public function testAuthorizeActionWillRenderTemplate()
+    public function testAuthorizeActionWillRenderTemplate(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -325,7 +325,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($responseBody, $this->instance->authorizeAction($this->request)->getContent());
     }
 
-    public function testAuthorizeActionWillFinishClientAuthorization()
+    public function testAuthorizeActionWillFinishClientAuthorization(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -394,7 +394,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
-    public function testAuthorizeActionWillEnsureLogout()
+    public function testAuthorizeActionWillEnsureLogout(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -480,7 +480,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($responseBody, $this->instance->authorizeAction($this->request)->getContent());
     }
 
-    public function testAuthorizeActionWillProcessAuthorizationForm()
+    public function testAuthorizeActionWillProcessAuthorizationForm(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()

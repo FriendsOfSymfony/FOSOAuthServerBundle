@@ -18,5 +18,8 @@ namespace FOS\OAuthServerBundle\Storage;
  */
 interface GrantExtensionDispatcherInterface
 {
-    public function setGrantExtension($uri, GrantExtensionInterface $grantExtension);
+    /**
+     * @param string $uri
+     */
+    public function setGrantExtension($uri, GrantExtensionInterface $grantExtension): void;
 }
