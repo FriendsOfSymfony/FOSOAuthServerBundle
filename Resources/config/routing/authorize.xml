@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="fos_oauth_server_authorize" path="/oauth/v2/auth" methods="GET POST">
-        <default key="_controller">fos_oauth_server.controller.authorize:authorizeAction</default>
+        <default key="_controller">fos_oauth_server.controller.authorize::authorizeAction</default>
     </route>
 
 </routes>
