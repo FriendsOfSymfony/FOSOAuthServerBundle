@@ -36,6 +36,7 @@ interface AuthCodeManagerInterface
      * Retrieve an auth code using a set of criteria.
      *
      * @param array<mixed> $criteria
+     *
      * @return AuthCodeInterface|null
      */
     public function findAuthCodeBy(array $criteria);

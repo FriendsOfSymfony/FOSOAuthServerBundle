@@ -65,7 +65,8 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     protected $encoderFactory;
 
     /**
-     * Map of URIs to grant extensions
+     * Map of URIs to grant extensions.
+     *
      * @var array<string,GrantExtensionInterface>
      */
     protected $grantExtensions;
@@ -117,6 +118,11 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     }
 
     /**
+     * @param mixed      $tokenString
+     * @param mixed      $data
+     * @param mixed      $expires
+     * @param mixed|null $scope
+     *
      * @return \FOS\OAuthServerBundle\Model\TokenInterface
      */
     public function createAccessToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
@@ -181,6 +187,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
 
     /**
      * {@inheritdoc}
+     *
      * @return \FOS\OAuthServerBundle\Model\AuthCodeInterface
      */
     public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = null)

@@ -27,6 +27,7 @@ interface ClientManagerInterface
 
     /**
      * @param array<mixed> $criteria
+     *
      * @return ClientInterface|null
      */
     public function findClientBy(array $criteria);

@@ -28,7 +28,9 @@ class OAuthFactory implements SecurityFactoryInterface
 {
     /**
      * {@inheritdoc}
+     *
      * @param mixed $config
+     *
      * @return array<string>
      */
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
@@ -64,6 +66,7 @@ class OAuthFactory implements SecurityFactoryInterface
 
     /**
      * {@inheritdoc}
+     *
      * @return void
      */
     public function addConfiguration(NodeDefinition $node)

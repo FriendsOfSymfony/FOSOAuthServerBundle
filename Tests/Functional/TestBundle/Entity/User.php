@@ -25,12 +25,14 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      * @var ?int
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @var ?string
      */
     protected $password;
