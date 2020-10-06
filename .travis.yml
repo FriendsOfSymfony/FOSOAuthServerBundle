@@ -1,14 +1,13 @@
 language: php
 
-sudo: true
 php:
   - 7.2
 
-service:
+services:
   - docker
   - mongodb
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - php: 7.2
