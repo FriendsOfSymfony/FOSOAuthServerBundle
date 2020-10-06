@@ -29,18 +29,33 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var ClientManagerInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $clientManager;
-
+    /**
+     * @var AccessTokenManagerInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $accessTokenManager;
-
+    /**
+     * @var RefreshTokenManagerInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $refreshTokenManager;
-
+    /**
+     * @var AuthCodeManagerInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $authCodeManager;
-
+    /**
+     * @var UserProviderInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $userProvider;
-
+    /**
+     * @var EncoderFactoryInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $encoderFactory;
-
+    /**
+     * @var OAuthStorage
+     */
     protected $storage;
 
     public function setUp()
@@ -605,8 +620,14 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 
 class User implements UserInterface
 {
+    /**
+     * @var string|int
+     */
     private $username;
 
+    /**
+     * @param string|int $username
+     */
     public function __construct($username)
     {
         $this->username = $username;
@@ -614,22 +635,28 @@ class User implements UserInterface
 
     public function getRoles()
     {
+        return [];
     }
 
     public function getPassword()
     {
+        return null;
     }
 
     public function getSalt()
     {
+        return null;
     }
 
+    /**
+     * @return string|int
+     */
     public function getUsername()
     {
         return $this->username;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }

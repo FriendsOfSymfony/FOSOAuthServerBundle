@@ -100,6 +100,9 @@ class AuthorizeFormTypeTest extends TypeTestCase
         $this->assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
     }
 
+    /**
+     * @return array<object>
+     */
     protected function getTypes()
     {
         return  [

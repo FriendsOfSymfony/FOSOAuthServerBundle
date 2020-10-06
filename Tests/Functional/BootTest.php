@@ -33,6 +33,9 @@ class BootTest extends TestCase
         }
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getTestBootData()
     {
         return [

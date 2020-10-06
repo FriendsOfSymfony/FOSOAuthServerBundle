@@ -38,6 +38,9 @@ class TokenTest extends TestCase
         $this->assertSame($expect, $token->hasExpired());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public static function getTestHasExpiredData()
     {
         return [

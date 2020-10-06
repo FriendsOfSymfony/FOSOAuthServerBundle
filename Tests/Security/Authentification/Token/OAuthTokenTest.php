@@ -38,7 +38,7 @@ class OAuthTokenTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->assertNull($this->instance->setToken($token));
-        $this->assertAttributeSame($token, 'token', $this->instance);
+        $this->assertSame($token, $this->instance->getToken());
     }
 
     public function testGetTokenWillReturnToken()
