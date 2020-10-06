@@ -32,12 +32,12 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
 class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
+     * @var \PHPUnit\Framework\MockObject\MockObject|EntityRepository
      */
     protected $repository;
 
@@ -51,7 +51,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->className = AccessToken::class;
         $this->repository = $this->getMockBuilder(EntityRepository::class)
@@ -73,14 +73,14 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->instance = new TokenManager($this->entityManager, $this->className);
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
         $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
         $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = new AccessToken();
 
@@ -99,12 +99,12 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->updateToken($token));
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindTokenBy()
+    public function testFindTokenBy(): void
     {
         $randomResult = \random_bytes(5);
 
@@ -122,7 +122,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($randomResult, $this->instance->findTokenBy($criteria));
     }
 
-    public function testUpdateToken()
+    public function testUpdateToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -146,7 +146,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->updateToken($token));
     }
 
-    public function testDeleteToken()
+    public function testDeleteToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -170,7 +170,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->deleteToken($token));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $randomResult = \random_bytes(10);
 

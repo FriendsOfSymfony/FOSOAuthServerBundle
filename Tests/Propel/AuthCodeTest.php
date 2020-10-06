@@ -28,7 +28,7 @@ class AuthCodeTest extends PropelTestCase
      * @param mixed $expiresAt
      * @param mixed $expect
      */
-    public function testHasExpired($expiresAt, $expect)
+    public function testHasExpired($expiresAt, $expect): void
     {
         $token = new AuthCode();
         $token->setExpiresAt($expiresAt);
@@ -45,14 +45,14 @@ class AuthCodeTest extends PropelTestCase
         ];
     }
 
-    public function testExpiresIn()
+    public function testExpiresIn(): void
     {
         $token = new AuthCode();
 
         $this->assertSame(PHP_INT_MAX, $token->getExpiresIn());
     }
 
-    public function testExpiresInWithExpiresAt()
+    public function testExpiresInWithExpiresAt(): void
     {
         $token = new AuthCode();
         $token->setExpiresAt(time() + 60);

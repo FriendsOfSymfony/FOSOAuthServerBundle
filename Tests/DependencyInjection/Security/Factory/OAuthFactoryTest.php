@@ -32,24 +32,24 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->instance = new OAuthFactory();
 
         parent::setUp();
     }
 
-    public function testGetPosition()
+    public function testGetPosition(): void
     {
         $this->assertSame('pre_auth', $this->instance->getPosition());
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         $this->assertSame('fos_oauth', $this->instance->getKey());
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -113,7 +113,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
     }
 
-    public function testAddConfigurationDoesNothing()
+    public function testAddConfigurationDoesNothing(): void
     {
         $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
             ->disableOriginalConstructor()
