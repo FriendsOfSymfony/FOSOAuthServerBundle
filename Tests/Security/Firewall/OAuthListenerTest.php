@@ -23,12 +23,24 @@ use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterfac
 
 class OAuthListenerTest extends TestCase
 {
+    /**
+     * @var OAuth2&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $serverService;
 
+    /**
+     * @var AuthenticationManagerInterface&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $authManager;
 
+    /**
+     * @var mixed&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $securityContext;
 
+    /**
+     * @var RequestEvent&\PHPUnit\Framework\MockObject\MockObject
+     */
     protected $event;
 
     public function setUp()

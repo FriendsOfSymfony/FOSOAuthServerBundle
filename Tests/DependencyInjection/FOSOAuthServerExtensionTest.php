@@ -23,6 +23,9 @@ use Symfony\Component\Routing\Loader\XmlFileLoader;
 
 class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var ContainerBuilder
+     */
     private $container;
 
     public function setUp()
