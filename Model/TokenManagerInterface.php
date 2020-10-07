@@ -32,6 +32,8 @@ interface TokenManagerInterface
     /**
      * Retrieve a token using a set of criteria.
      *
+     * @param array<mixed> $criteria
+     *
      * @return TokenInterface|null
      */
     public function findTokenBy(array $criteria);
@@ -49,6 +51,8 @@ interface TokenManagerInterface
      * Save or update a given token.
      *
      * @param TokenInterface $token the token to save or update
+     *
+     * @return void
      */
     public function updateToken(TokenInterface $token);
 
@@ -56,6 +60,8 @@ interface TokenManagerInterface
      * Delete a given token.
      *
      * @param TokenInterface $token the token to delete
+     *
+     * @return void
      */
     public function deleteToken(TokenInterface $token);
 

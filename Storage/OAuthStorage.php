@@ -65,7 +65,9 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     protected $encoderFactory;
 
     /**
-     * @var array [uri] => GrantExtensionInterface
+     * Map of URIs to grant extensions.
+     *
+     * @var array<string,GrantExtensionInterface>
      */
     protected $grantExtensions;
 
@@ -86,7 +88,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function setGrantExtension($uri, GrantExtensionInterface $grantExtension)
+    public function setGrantExtension($uri, GrantExtensionInterface $grantExtension): void
     {
         $this->grantExtensions[$uri] = $grantExtension;
     }
@@ -115,6 +117,14 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $this->accessTokenManager->findTokenByToken($token);
     }
 
+    /**
+     * @param mixed      $tokenString
+     * @param mixed      $data
+     * @param mixed      $expires
+     * @param mixed|null $scope
+     *
+     * @return \FOS\OAuthServerBundle\Model\TokenInterface
+     */
     public function createAccessToken($tokenString, IOAuth2Client $client, $data, $expires, $scope = null)
     {
         if (!$client instanceof ClientInterface) {
@@ -177,6 +187,8 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
 
     /**
      * {@inheritdoc}
+     *
+     * @return \FOS\OAuthServerBundle\Model\AuthCodeInterface
      */
     public function createAuthCode($code, IOAuth2Client $client, $data, $redirect_uri, $expires, $scope = null)
     {

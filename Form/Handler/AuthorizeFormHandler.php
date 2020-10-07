@@ -57,16 +57,22 @@ class AuthorizeFormHandler
      *
      * @param ContainerInterface|null $container A ContainerInterface instance or null
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
+    /**
+     * @return bool
+     */
     public function isAccepted()
     {
         return $this->form->getData()->accepted;
     }
 
+    /**
+     * @return bool
+     */
     public function isRejected()
     {
         return !$this->form->getData()->accepted;
@@ -112,7 +118,7 @@ class AuthorizeFormHandler
      * @todo finishClientAuthorization() is a bit odd since it accepts $data
      *       but then proceeds to ignore it and forces everything to be in $request->query
      */
-    protected function onSuccess()
+    protected function onSuccess(): void
     {
         $_GET = [
             'client_id' => $this->form->getData()->client_id,
@@ -123,6 +129,9 @@ class AuthorizeFormHandler
         ];
     }
 
+    /**
+     * @return ?Request
+     */
     private function getCurrentRequest()
     {
         if (null === $this->requestStack) {

@@ -35,7 +35,7 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     protected $class;
 
-    public function __construct(DocumentManager $dm, $class)
+    public function __construct(DocumentManager $dm, string $class)
     {
         // NOTE: bug in Doctrine, hinting DocumentRepository|ObjectRepository when only DocumentRepository is expected
         /** @var DocumentRepository $repository */
@@ -65,7 +65,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function updateAuthCode(AuthCodeInterface $authCode)
+    public function updateAuthCode(AuthCodeInterface $authCode): void
     {
         $this->dm->persist($authCode);
         $this->dm->flush();
@@ -74,7 +74,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteAuthCode(AuthCodeInterface $authCode)
+    public function deleteAuthCode(AuthCodeInterface $authCode): void
     {
         $this->dm->remove($authCode);
         $this->dm->flush();

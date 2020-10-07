@@ -22,6 +22,9 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 
 class OAuthEntryPoint implements AuthenticationEntryPointInterface
 {
+    /**
+     * @var OAuth2
+     */
     protected $serverService;
 
     public function __construct(OAuth2 $serverService)

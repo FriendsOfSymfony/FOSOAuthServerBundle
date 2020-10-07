@@ -35,7 +35,7 @@ class TokenManager extends BaseTokenManager
      */
     protected $class;
 
-    public function __construct(EntityManagerInterface $em, $class)
+    public function __construct(EntityManagerInterface $em, string $class)
     {
         // NOTE: bug in Doctrine, hinting EntityRepository|ObjectRepository when only EntityRepository is expected
         /** @var EntityRepository $repository */

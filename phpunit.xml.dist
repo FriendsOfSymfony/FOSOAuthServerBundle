@@ -2,7 +2,17 @@
 <phpunit bootstrap="Tests/bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="FOSOAuthServerBundle Test Suite">
-            <directory suffix="Test.php">./Tests</directory>
+            <directory suffix="Test.php">Tests/Command</directory>
+            <directory suffix="Test.php">Tests/Controller</directory>
+            <directory suffix="Test.php">Tests/DependencyInjection</directory>
+            <directory suffix="Test.php">Tests/Document</directory>
+            <directory suffix="Test.php">Tests/Entity</directory>
+            <directory suffix="Test.php">Tests/Form</directory>
+            <directory suffix="Test.php">Tests/Functional</directory>
+            <directory suffix="Test.php">Tests/Model</directory>
+            <directory suffix="Test.php">Tests/Security</directory>
+            <directory suffix="Test.php">Tests/Storage</directory>
+            <directory suffix="Test.php">Tests/Util</directory>
         </testsuite>
     </testsuites>
 

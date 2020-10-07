@@ -20,6 +20,9 @@ namespace FOS\OAuthServerBundle\Util;
  */
 class Random
 {
+    /**
+     * @return string
+     */
     public static function generateToken()
     {
         $bytes = random_bytes(32);

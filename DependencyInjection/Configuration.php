@@ -26,6 +26,8 @@ class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @return TreeBuilder
      */
     public function getConfigTreeBuilder()
     {
@@ -83,7 +85,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addAuthorizeSection(ArrayNodeDefinition $node)
+    private function addAuthorizeSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -109,7 +111,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addServiceSection(ArrayNodeDefinition $node)
+    private function addServiceSection(ArrayNodeDefinition $node): void
     {
         $node
             ->addDefaultsIfNotSet()

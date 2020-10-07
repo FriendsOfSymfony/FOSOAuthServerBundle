@@ -130,7 +130,7 @@ class AuthorizeController
     /**
      * Authorize.
      */
-    public function authorizeAction(Request $request)
+    public function authorizeAction(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -228,6 +228,9 @@ class AuthorizeController
         return $this->client;
     }
 
+    /**
+     * @param array<mixed> $context
+     */
     protected function renderAuthorize(array $context): Response
     {
         return new Response(
@@ -235,10 +238,7 @@ class AuthorizeController
         );
     }
 
-    /**
-     * @return Request|null
-     */
-    private function getCurrentRequest()
+    private function getCurrentRequest(): Request
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {

@@ -35,7 +35,7 @@ class TokenManager extends BaseTokenManager
      */
     protected $class;
 
-    public function __construct(DocumentManager $dm, $class)
+    public function __construct(DocumentManager $dm, string $class)
     {
         // NOTE: bug in Doctrine, hinting DocumentRepository|ObjectRepository when only DocumentRepository is expected
         /** @var DocumentRepository $repository */
