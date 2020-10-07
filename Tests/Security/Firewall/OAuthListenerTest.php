@@ -43,7 +43,7 @@ class OAuthListenerTest extends TestCase
      */
     protected $event;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
@@ -76,7 +76,7 @@ class OAuthListenerTest extends TestCase
         ;
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 
@@ -105,7 +105,7 @@ class OAuthListenerTest extends TestCase
         $this->assertSame('a-token', $token->getToken());
     }
 
-    public function testHandleResponse()
+    public function testHandleResponse(): void
     {
         $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 

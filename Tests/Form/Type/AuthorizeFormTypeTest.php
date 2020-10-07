@@ -41,7 +41,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
         $this->instance = new AuthorizeFormType();
     }
 
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $accepted = true;
         $formData = [
@@ -70,9 +70,9 @@ class AuthorizeFormTypeTest extends TypeTestCase
         }
     }
 
-    public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver()
+    public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|OptionsResolver $resolver */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|OptionsResolver $resolver */
         $resolver = $this->getMockBuilder(OptionsResolver::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -90,12 +90,12 @@ class AuthorizeFormTypeTest extends TypeTestCase
         $this->assertNull($this->instance->configureOptions($resolver));
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('fos_oauth_server_authorize', $this->instance->getName());
     }
 
-    public function testGetBlockPrefix()
+    public function testGetBlockPrefix(): void
     {
         $this->assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
     }

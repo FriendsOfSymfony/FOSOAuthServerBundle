@@ -18,7 +18,7 @@ use OAuth2\OAuth2;
 
 class ClientTest extends PropelTestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $client = new Client();
 
@@ -30,7 +30,7 @@ class ClientTest extends PropelTestCase
         $this->assertSame(OAuth2::GRANT_TYPE_AUTH_CODE, $types[0]);
     }
 
-    public function testCheckSecretWithInvalidArgument()
+    public function testCheckSecretWithInvalidArgument(): void
     {
         $client = new Client();
 
@@ -39,7 +39,7 @@ class ClientTest extends PropelTestCase
         $this->assertFalse($client->checkSecret(null));
     }
 
-    public function testCheckSecret()
+    public function testCheckSecret(): void
     {
         $client = new Client();
         $client->setSecret('foo');

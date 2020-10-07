@@ -23,14 +23,14 @@ class OAuthTokenTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->instance = new OAuthToken();
 
         parent::setUp();
     }
 
-    public function testSetTokenWillSetToken()
+    public function testSetTokenWillSetToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -41,7 +41,7 @@ class OAuthTokenTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($token, $this->instance->getToken());
     }
 
-    public function testGetTokenWillReturnToken()
+    public function testGetTokenWillReturnToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -53,7 +53,7 @@ class OAuthTokenTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($token, $this->instance->getToken());
     }
 
-    public function testGetCredentialsWillReturnToken()
+    public function testGetCredentialsWillReturnToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()

@@ -27,17 +27,17 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TokenManagerInterface
      */
     private $accessTokenManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TokenManagerInterface
      */
     private $refreshTokenManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AuthCodeManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|AuthCodeManagerInterface
      */
     private $authCodeManager;
 
@@ -64,7 +64,7 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
     /**
      * Delete expired tokens for provided classes.
      */
-    public function testItShouldRemoveExpiredToken()
+    public function testItShouldRemoveExpiredToken(): void
     {
         $expiredAccessTokens = 5;
         $this->accessTokenManager
@@ -100,7 +100,7 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
     /**
      * Skip classes for deleting expired tokens that do not implement AuthCodeManagerInterface or TokenManagerInterface.
      */
-    public function testItShouldNotRemoveExpiredTokensForOtherClasses()
+    public function testItShouldNotRemoveExpiredTokensForOtherClasses(): void
     {
         $this->markTestIncomplete('Needs a better way of testing this');
 

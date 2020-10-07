@@ -25,7 +25,7 @@ class RandomTest extends \PHPUnit\Framework\TestCase
 {
     use PHPMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -33,7 +33,7 @@ class RandomTest extends \PHPUnit\Framework\TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testGenerateTokenWillUseRandomBytesIfAvailable()
+    public function testGenerateTokenWillUseRandomBytesIfAvailable(): void
     {
         $hashResult = \random_bytes(32);
 

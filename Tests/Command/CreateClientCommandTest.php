@@ -27,7 +27,7 @@ class CreateClientCommandTest extends TestCase
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|ClientManagerInterface
      */
     private $clientManager;
 
@@ -53,7 +53,7 @@ class CreateClientCommandTest extends TestCase
      *
      * @param string $client a fully qualified class name
      */
-    public function testItShouldCreateClient($client)
+    public function testItShouldCreateClient($client): void
     {
         $this
             ->clientManager

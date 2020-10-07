@@ -20,7 +20,7 @@ class BootTest extends TestCase
      *
      * @param string $env
      */
-    public function testBoot($env)
+    public function testBoot($env): void
     {
         try {
             $kernel = static::createKernel(['env' => $env]);
