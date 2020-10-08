@@ -21,6 +21,7 @@ use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use FOS\OAuthServerBundle\Tests\CustomAssertions;
 
 /**
  * @group time-sensitive
@@ -31,6 +32,8 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
  */
 class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
+    use CustomAssertions;
+
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|EntityManagerInterface
      */
