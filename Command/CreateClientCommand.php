@@ -22,6 +22,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CreateClientCommand extends Command
 {
+    protected static $defaultName = 'fos:oauth-server:create-client';
+
     private $clientManager;
 
     public function __construct(ClientManagerInterface $clientManager)
@@ -39,7 +41,7 @@ class CreateClientCommand extends Command
         parent::configure();
 
         $this
-            ->setName('fos:oauth-server:create-client')
+            ->setName(self::$defaultName)
             ->setDescription('Creates a new client')
             ->addOption(
                 'redirect-uri',

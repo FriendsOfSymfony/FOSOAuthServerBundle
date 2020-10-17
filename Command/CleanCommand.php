@@ -21,6 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanCommand extends Command
 {
+
+    protected static $defaultName = 'fos:oauth-server:clean';
+
     private $accessTokenManager;
     private $refreshTokenManager;
     private $authCodeManager;
@@ -45,7 +48,7 @@ class CleanCommand extends Command
         parent::configure();
 
         $this
-            ->setName('fos:oauth-server:clean')
+            ->setName(self::$defaultName)
             ->setDescription('Clean expired tokens')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command will remove expired OAuth2 tokens.
