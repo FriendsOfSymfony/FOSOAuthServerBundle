@@ -21,7 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanCommand extends Command
 {
-
     protected static $defaultName = 'fos:oauth-server:clean';
 
     private $accessTokenManager;
@@ -31,8 +30,8 @@ class CleanCommand extends Command
     public function __construct(
         TokenManagerInterface $accessTokenManager,
         TokenManagerInterface $refreshTokenManager,
-        AuthCodeManagerInterface $authCodeManager)
-    {
+        AuthCodeManagerInterface $authCodeManager
+    ) {
         parent::__construct();
 
         $this->accessTokenManager = $accessTokenManager;
