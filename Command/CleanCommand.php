@@ -47,7 +47,6 @@ class CleanCommand extends Command
         parent::configure();
 
         $this
-            ->setName(self::$defaultName)
             ->setDescription('Clean expired tokens')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command will remove expired OAuth2 tokens.

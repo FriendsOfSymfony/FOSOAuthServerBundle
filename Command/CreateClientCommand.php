@@ -41,7 +41,6 @@ class CreateClientCommand extends Command
         parent::configure();
 
         $this
-            ->setName(self::$defaultName)
             ->setDescription('Creates a new client')
             ->addOption(
                 'redirect-uri',
