@@ -195,9 +195,13 @@ class AuthorizeController
      * Generate the redirection url when the authorize is completed.
      *
      * @return string
+     *
+     * @deprecated since 1.6, to be removed in 2.0
      */
     protected function getRedirectionUrl(UserInterface $user)
     {
+        @trigger_error(sprintf('%s() is deprecated since version 1.6 and will be removed in 2.0', __METHOD__));
+
         return $this->router->generate('fos_oauth_server_profile_show');
     }
 
