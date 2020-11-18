@@ -22,11 +22,11 @@ if (file_exists($file = __DIR__.'/../vendor/propel/propel1/generator/lib/util/Pr
 \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
 
 // Generate Propel base classes on the fly
-if (class_exists('TypehintableBehavior')) {
-    $class = new \ReflectionClass('TypehintableBehavior');
-    $builder = new \PropelQuickBuilder();
-    $builder->getConfig()->setBuildProperty('behavior.typehintable.class', $class->getFileName());
-    $builder->setSchema(file_get_contents(__DIR__.'/../Resources/config/propel/schema.xml'));
-    $builder->setClassTargets(['tablemap', 'peer', 'object', 'query', 'peerstub']);
-    $builder->build();
-}
+//if (class_exists('TypehintableBehavior')) {
+//    $class = new \ReflectionClass('TypehintableBehavior');
+//    $builder = new \PropelQuickBuilder();
+//    $builder->getConfig()->setBuildProperty('behavior.typehintable.class', $class->getFileName());
+//    $builder->setSchema(file_get_contents(__DIR__.'/../Resources/config/propel/schema.xml'));
+//    $builder->setClassTargets(['tablemap', 'peer', 'object', 'query', 'peerstub']);
+//    $builder->build();
+//}
