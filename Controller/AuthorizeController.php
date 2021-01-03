@@ -18,6 +18,7 @@ use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
+use OAuth2\OAuth2RedirectException;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
@@ -31,6 +32,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Controller handling basic authorization.
@@ -109,8 +113,7 @@ class AuthorizeController
      * @param UrlGeneratorInterface    $router
      * @param ClientManagerInterface   $clientManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param SessionInterface         $session
-     * @param string                   $templateEngineType
+     * @param SessionInterface|null    $session
      */
     public function __construct(
         RequestStack $requestStack,
@@ -133,14 +136,16 @@ class AuthorizeController
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
         $this->clientManager = $clientManager;
-        $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * Authorize.
+     * @param Request $request
+     * @return Response
+     * @throws OAuth2RedirectException
      */
-    public function authorizeAction(Request $request)
+    public function authorizeAction(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -158,12 +163,12 @@ class AuthorizeController
 
         /** @var OAuthEvent $event */
         $event = $this->eventDispatcher->dispatch(
-            OAuthEvent::PRE_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient())
+            new OAuthEvent($user, $this->getClient()),
+            OAuthEvent::PRE_AUTHORIZATION_PROCESS
         );
 
         if ($event->isAuthorizedClient()) {
-            $scope = $request->get('scope', null);
+            $scope = $request->get('scope' );
 
             return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
         }
@@ -187,7 +192,7 @@ class AuthorizeController
      *
      * @return Response
      */
-    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
+    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request): Response
     {
         if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
@@ -195,8 +200,8 @@ class AuthorizeController
         }
 
         $this->eventDispatcher->dispatch(
-            OAuthEvent::POST_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted())
+            new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted()),
+            OAuthEvent::POST_AUTHORIZATION_PROCESS
         );
 
         $formName = $this->authorizeForm->getName();
@@ -207,7 +212,7 @@ class AuthorizeController
         try {
             return $this->oAuth2Server
                 ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope())
-            ;
+                ;
         } catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
@@ -253,11 +258,15 @@ class AuthorizeController
     }
 
     /**
-     * @throws \RuntimeException
+     * @param array $data
+     * @return Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     protected function renderAuthorize(array $data): Response
     {
-        $respone = $engine->twig->renderResponse(
+        $response = $this->twig->render(
             '@FOSOAuthServer/Authorize/authorize.html.twig',
             $data
         );
