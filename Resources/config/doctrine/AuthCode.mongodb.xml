@@ -5,9 +5,9 @@
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
     <mapped-superclass name="FOS\OAuthServerBundle\Document\AuthCode">
-        <field name="token" fieldName="token" type="string" unique="true" />
-        <field name="redirectUri" fieldName="redirectUri" type="string" />
-        <field name="expiresAt" fieldName="expiresAt" type="int" nullable="true" />
-        <field name="scope" fieldName="scope" type="string" nullable="true" />
+        <field name="token" type="string" unique="true" />
+        <field name="redirectUri" type="string" />
+        <field name="expiresAt" type="int" nullable="true" />
+        <field name="scope" type="string" nullable="true" />
     </mapped-superclass>
 </doctrine-mongo-mapping>
