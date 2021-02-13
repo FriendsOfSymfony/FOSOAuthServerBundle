@@ -1,18 +1,19 @@
 {
-    "name": "friendsofsymfony/oauth-server-bundle",
+    "name": "vijklimenko/oauth-server-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2 OAuth Server Bundle",
     "keywords": [
         "oauth",
         "oauth2",
-        "server"
+        "server",
+        "symfon5.1"
     ],
     "homepage": "http://friendsofsymfony.github.com",
     "license": "MIT",
     "authors": [
         {
-            "name": "Arnaud Le Blanc",
-            "email": "arnaud.lb@gmail.com"
+            "name": "Vitalii Klimenko",
+            "email": "vij.klimenko@gmail.com"
         },
         {
             "name": "FriendsOfSymfony Community",
