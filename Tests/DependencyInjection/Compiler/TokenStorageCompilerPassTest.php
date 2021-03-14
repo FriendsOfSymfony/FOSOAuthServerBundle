@@ -3,6 +3,7 @@
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\TokenStorageCompilerPass;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -12,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @package FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class TokenStorageCompilerPassTest extends \PHPUnit_Framework_TestCase
+class TokenStorageCompilerPassTest extends TestCase
 {
     /**
      * @var TokenStorageCompilerPass
@@ -20,11 +21,11 @@ class TokenStorageCompilerPassTest extends \PHPUnit_Framework_TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerBuilder
+     * @var \\PHPUnit\Framework\MockObject\MockObject|ContainerBuilder
      */
     protected $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()

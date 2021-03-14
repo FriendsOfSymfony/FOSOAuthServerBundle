@@ -5,7 +5,7 @@ All available configuration options are listed below with their default values.
 
 ``` yaml
 fos_oauth_server:
-    db_driver:                  ~ # Required. Available: mongodb, orm, propel
+    db_driver:                  ~ # Required. Available: orm
     client_class:               ~ # Required
     access_token_class:         ~ # Required
     refresh_token_class:        ~ # Required

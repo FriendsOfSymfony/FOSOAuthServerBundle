@@ -11,98 +11,94 @@
 
 namespace FOS\OAuthServerBundle\Tests\Form\Type;
 
-use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
-use FOS\OAuthServerBundle\Util\LegacyFormHelper;
-use Symfony\Component\Form\Test\TypeTestCase;
+use FOS\OAuthServerBundle\Form\Type\AuthorizeFormType;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AuthorizeFormTypeTest extends TypeTestCase
 {
-    /**
-     * @var AuthorizeFormType
-     */
-    protected $instance;
+    protected AuthorizeFormType $instance;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addTypes($this->getTypes())
-            ->getFormFactory()
-        ;
+            ->getFormFactory();
 
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
 
         $this->instance = new AuthorizeFormType();
     }
 
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $accepted = 'true';
         $formData = array(
-            'client_id'     => '1',
+            'client_id' => '1',
             'response_type' => 'code',
-            'redirect_uri'  => 'http:\\localhost\test.php',
-            'state'         => 'testState',
-            'scope'         => 'testScope',
+            'redirect_uri' => 'http:\\localhost\test.php',
+            'state' => 'testState',
+            'scope' => 'testScope',
         );
 
         $authorize = new Authorize($accepted, $formData);
 
-        $form = $this->factory->create(LegacyFormHelper::getType('FOS\OAuthServerBundle\Form\Type\AuthorizeFormType'), $authorize);
+        $form = $this->factory->create(AuthorizeFormType::class, $authorize);
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($authorize, $form->getData());
-        $this->assertEquals((bool) $accepted, $authorize->accepted);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($authorize, $form->getData());
+        self::assertEquals((bool)$accepted, $authorize->accepted);
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            self::assertArrayHasKey($key, $children);
         }
     }
 
-    public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver()
+    public function testConfigureOptionsWillSetDefaultsOnTheOptionsResolver(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|OptionsResolver $resolver */
+        /** @var MockObject|OptionsResolver $resolver */
         $resolver = $this->getMockBuilder(OptionsResolver::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $resolver
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setDefaults')
-            ->with([
-                'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
-            ])
-            ->willReturn($resolver)
-        ;
+            ->with(
+                [
+                    'data_class' => Authorize::class,
+                ]
+            )
+            ->willReturn($resolver);
 
-        $this->assertNull($this->instance->configureOptions($resolver));
+        $this->instance->configureOptions($resolver);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
-        $this->assertSame('fos_oauth_server_authorize', $this->instance->getName());
+        self::assertSame('fos_oauth_server_authorize', $this->instance->getName());
     }
 
-    public function testGetBlockPrefix()
+    public function testGetBlockPrefix(): void
     {
-        $this->assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
+        self::assertSame('fos_oauth_server_authorize', $this->instance->getBlockPrefix());
     }
 
-    protected function getTypes()
+    protected function getTypes(): array
     {
-        return  array(
+        return [
             new AuthorizeFormType(),
-        );
+        ];
     }
 }

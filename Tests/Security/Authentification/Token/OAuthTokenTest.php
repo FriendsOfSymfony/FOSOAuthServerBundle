@@ -4,53 +4,50 @@ namespace FOS\OAuthServerBundle\Tests\Security\Authentification\Token;
 
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
+use PHPUnit\Framework\TestCase;
 
-class OAuthTokenTest extends \PHPUnit_Framework_TestCase
+class OAuthTokenTest extends TestCase
 {
     /**
      * @var OAuthToken
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->instance = new OAuthToken();
 
         parent::setUp();
     }
 
-    public function testSetTokenWillSetToken()
+    public function testSetTokenWillSetToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
-        $this->assertNull($this->instance->setToken($token));
-        $this->assertAttributeSame($token, 'token', $this->instance);
+        $this->instance->setToken($token);
     }
 
-    public function testGetTokenWillReturnToken()
+    public function testGetTokenWillReturnToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
-        $this->assertNull($this->instance->getToken());
-        $this->assertNull($this->instance->setToken($token));
-        $this->assertSame($token, $this->instance->getToken());
+        self::assertNull($this->instance->getToken());
+        $this->instance->setToken($token);
+        self::assertSame($token, $this->instance->getToken());
     }
 
-    public function testGetCredentialsWillReturnToken()
+    public function testGetCredentialsWillReturnToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
-        $this->assertNull($this->instance->getCredentials());
-        $this->assertNull($this->instance->setToken($token));
-        $this->assertSame($token, $this->instance->getCredentials());
+        self::assertNull($this->instance->getCredentials());
+        $this->instance->setToken($token);
+        self::assertSame($token, $this->instance->getCredentials());
     }
 }

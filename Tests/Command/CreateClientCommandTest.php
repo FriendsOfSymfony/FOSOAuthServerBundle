@@ -12,6 +12,7 @@
 namespace FOS\OAuthServerBundle\Tests\Command;
 
 use FOS\OAuthServerBundle\Command\CreateClientCommand;
+use FOS\OAuthServerBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Tests\TestCase;
 use Symfony\Component\Console\Application;
@@ -25,14 +26,14 @@ class CreateClientCommandTest extends TestCase
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
+     * @var \\PHPUnit\Framework\MockObject\MockObject|ClientManagerInterface
      */
     private $clientManager;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)->disableOriginalConstructor()->getMock();
         $command = new CreateClientCommand($this->clientManager);
@@ -45,48 +46,42 @@ class CreateClientCommandTest extends TestCase
 
     /**
      * @dataProvider clientProvider
-     *
-     * @param string $client A fully qualified class name.
      */
-    public function testItShouldCreateClient($client)
+    public function testItShouldCreateClient(string $client): void
     {
         $this->clientManager
-            ->expects($this->any())
             ->method('createClient')
-            ->will($this->returnValue(new $client));
+            ->willReturn(new $client);
 
         $commandTester = new CommandTester($this->command);
 
-        $commandTester->execute([
-            'command' => $this->command->getName(),
-            '--redirect-uri' => ['https://www.example.com/oauth2/callback'],
-            '--grant-type' => [
-                'authorization_code',
-                'password',
-                'refresh_token',
-                'token',
-                'client_credentials',
-            ],
-        ]);
+        $commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                '--redirect-uri' => ['https://www.example.com/oauth2/callback'],
+                '--grant-type' => [
+                    'authorization_code',
+                    'password',
+                    'refresh_token',
+                    'token',
+                    'client_credentials',
+                ],
+            ]
+        );
 
-        $this->assertEquals(0, $commandTester->getStatusCode());
+        self::assertEquals(0, $commandTester->getStatusCode());
 
         $output = $commandTester->getDisplay();
 
-        $this->assertContains('Client ID', $output);
-        $this->assertContains('Client Secret', $output);
+        self::assertStringContainsString('Client ID', $output);
+        self::assertStringContainsString('Client Secret', $output);
     }
 
-    /**
-     * @return array
-     */
-    public function clientProvider()
+    public function clientProvider(): array
     {
         return [
-            ['FOS\OAuthServerBundle\Document\Client'],
-            ['FOS\OAuthServerBundle\Entity\Client'],
-            ['FOS\OAuthServerBundle\Model\Client'],
-            ['FOS\OAuthServerBundle\Propel\Client'],
+            [Client::class],
+            [\FOS\OAuthServerBundle\Model\Client::class],
         ];
     }
 }

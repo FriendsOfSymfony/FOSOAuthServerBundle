@@ -4,6 +4,7 @@ namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\GrantExtensionsCompilerPass;
 use FOS\OAuthServerBundle\Storage\GrantExtensionDispatcherInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -15,14 +16,14 @@ use Symfony\Component\DependencyInjection\Reference;
  * @package FOS\OAuthServerBundle\Tests\DependencyInjection\Compiler
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
+class GrantExtensionsCompilerPassTest extends TestCase
 {
     /**
      * @var GrantExtensionsCompilerPass
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->instance = new GrantExtensionsCompilerPass();
 
@@ -181,7 +182,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->setExpectedException(InvalidArgumentException::class, $exceptionMessage);
+        $this->expectException(InvalidArgumentException::class, $exceptionMessage);
 
         $this->assertNull($this->instance->process($container));
     }

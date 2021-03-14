@@ -16,8 +16,9 @@ use FOS\OAuthServerBundle\Security\Firewall\OAuthListener;
 use FOS\OAuthServerBundle\Tests\TestCase;
 use OAuth2\OAuth2;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class OAuthListenerTest extends TestCase
 {
@@ -29,7 +30,7 @@ class OAuthListenerTest extends TestCase
 
     protected $event;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
@@ -40,9 +41,9 @@ class OAuthListenerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
+        if (interface_exists(TokenStorageInterface::class)) {
             $this->securityContext = $this
-                ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
+                ->getMockBuilder(TokenStorageInterface::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         } else {
@@ -50,68 +51,63 @@ class OAuthListenerTest extends TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
         }
-
-        $this->event = $this
-            ->getMockBuilder(GetResponseEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 
         $this->serverService
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'));
+            ->willReturn('a-token');
 
         $this->authManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('authenticate')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
 
         $this->securityContext
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setToken')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
 
         /** @var OAuthToken $token */
-        $token = $listener->handle($this->event);
+        $token = $listener(new ResponseEvent());
 
-        $this->assertInstanceOf(OAuthToken::class, $token);
-        $this->assertEquals('a-token', $token->getToken());
+        self::assertInstanceOf(OAuthToken::class, $token);
+        self::assertEquals('a-token', $token->getToken());
     }
 
-    public function testHandleResponse()
+    public function testHandleResponse(): void
     {
         $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 
         $this->serverService
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getBearerToken')
-            ->will($this->returnValue('a-token'));
+            ->willReturn('a-token');
 
         $response = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->authManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('authenticate')
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $this->securityContext
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('setToken');
 
         $this->event
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setResponse')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
 
-        $ret = $listener->handle($this->event);
+        $ret = $listener(new ResponseEvent());
 
-        $this->assertEquals($response, $ret);
+        self::assertEquals($response, $ret);
     }
 }

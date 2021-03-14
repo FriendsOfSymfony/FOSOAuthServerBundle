@@ -14,35 +14,30 @@ namespace FOS\OAuthServerBundle\Tests\Command;
 use FOS\OAuthServerBundle\Command\CleanCommand;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\TokenManagerInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CleanCommandTest extends \PHPUnit_Framework_TestCase
+class CleanCommandTest extends TestCase
 {
-    /**
-     * @var CleanCommand
-     */
-    private $command;
+    private CleanCommand $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TokenManagerInterface
      */
     private $accessTokenManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TokenManagerInterface
      */
     private $refreshTokenManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AuthCodeManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|AuthCodeManagerInterface
      */
     private $authCodeManager;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->accessTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
         $this->refreshTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
@@ -59,33 +54,33 @@ class CleanCommandTest extends \PHPUnit_Framework_TestCase
     /**
      * Delete expired tokens for provided classes.
      */
-    public function testItShouldRemoveExpiredToken()
+    public function testItShouldRemoveExpiredToken(): void
     {
         $expiredAccessTokens = 5;
         $this->accessTokenManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAccessTokens));
+            ->willReturn($expiredAccessTokens);
 
         $expiredRefreshTokens = 183;
         $this->refreshTokenManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredRefreshTokens));
+            ->willReturn($expiredRefreshTokens);
 
         $expiredAuthCodes = 0;
         $this->authCodeManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('deleteExpired')
-            ->will($this->returnValue($expiredAuthCodes));
+            ->willReturn($expiredAuthCodes);
 
         $tester = new CommandTester($this->command);
         $tester->execute(array('command' => $this->command->getName()));
 
         $display = $tester->getDisplay();
 
-        $this->assertContains(sprintf('Removed %d items from %s storage.', $expiredAccessTokens, get_class($this->accessTokenManager)), $display);
-        $this->assertContains(sprintf('Removed %d items from %s storage.', $expiredRefreshTokens, get_class($this->refreshTokenManager)), $display);
-        $this->assertContains(sprintf('Removed %d items from %s storage.', $expiredAuthCodes, get_class($this->authCodeManager)), $display);
+        $this->assertStringContainsString(sprintf('Removed %d items from %s storage.', $expiredAccessTokens, get_class($this->accessTokenManager)), $display);
+        $this->assertStringContainsString(sprintf('Removed %d items from %s storage.', $expiredRefreshTokens, get_class($this->refreshTokenManager)), $display);
+        $this->assertStringContainsString(sprintf('Removed %d items from %s storage.', $expiredAuthCodes, get_class($this->authCodeManager)), $display);
     }
 }

@@ -17,7 +17,6 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +28,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Environment;
 
 /**
  * Controller handling basic authorization.
@@ -38,7 +38,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AuthorizeController
 {
     /**
-     * @var ClientInterface
+     * @var Environment
      */
     private $client;
 
@@ -63,7 +63,7 @@ class AuthorizeController
     private $oAuth2Server;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
     private $templating;
 
@@ -100,32 +100,32 @@ class AuthorizeController
     /**
      * This controller had been made as a service due to support symfony 4 where all* services are private by default.
      * Thus, this is considered a bad practice to fetch services directly from container.
+     * @param RequestStack $requestStack
+     * @param Form $authorizeForm
+     * @param AuthorizeFormHandler $authorizeFormHandler
+     * @param OAuth2 $oAuth2Server
+     * @param Environment $templating
+     * @param TokenStorageInterface $tokenStorage
+     * @param UrlGeneratorInterface $router
+     * @param ClientManagerInterface $clientManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param SessionInterface $session
+     * @param string $templateEngineType
      * @todo This controller could be refactored to not rely on so many dependencies
      *
-     * @param RequestStack             $requestStack
-     * @param Form                     $authorizeForm
-     * @param AuthorizeFormHandler     $authorizeFormHandler
-     * @param OAuth2                   $oAuth2Server
-     * @param EngineInterface          $templating
-     * @param TokenStorageInterface    $tokenStorage
-     * @param UrlGeneratorInterface    $router
-     * @param ClientManagerInterface   $clientManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param SessionInterface         $session
-     * @param string                   $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
         Form $authorizeForm,
         AuthorizeFormHandler $authorizeFormHandler,
         OAuth2 $oAuth2Server,
-        EngineInterface $templating,
+        Environment $templating,
         TokenStorageInterface $tokenStorage,
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcherInterface $eventDispatcher,
         SessionInterface $session = null,
-        $templateEngineType = 'twig'
+        string $templateEngineType = 'twig'
     ) {
         $this->requestStack = $requestStack;
         $this->session = $session;
@@ -140,10 +140,7 @@ class AuthorizeController
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * Authorize.
-     */
-    public function authorizeAction(Request $request)
+    public function authorizeAction(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -159,10 +156,7 @@ class AuthorizeController
         $form = $this->authorizeForm;
         $formHandler = $this->authorizeFormHandler;
 
-        $event = $this->eventDispatcher->dispatch(
-            OAuthEvent::PRE_AUTHORIZATION_PROCESS,
-            new OAuthEvent($user, $this->getClient())
-        );
+        $event = $this->eventDispatcher->dispatch(new OAuthEvent($user, $this->getClient()));
 
         if ($event->isAuthorizedClient()) {
             $scope = $request->get('scope', null);
@@ -174,19 +168,21 @@ class AuthorizeController
             return $this->processSuccess($user, $formHandler, $request);
         }
 
-        return $this->templating->renderResponse(
-            'FOSOAuthServerBundle:Authorize:authorize.html.'.$this->templateEngineType,
-            array(
-                'form'   => $form->createView(),
-                'client' => $this->getClient(),
+        return new Response(
+            $this->templating->render(
+                'FOSOAuthServerBundle:Authorize:authorize.html.'.$this->templateEngineType,
+                [
+                    'form' => $form->createView(),
+                    'client' => $this->getClient(),
+                ]
             )
         );
     }
 
     /**
-     * @param UserInterface        $user
+     * @param UserInterface $user
      * @param AuthorizeFormHandler $formHandler
-     * @param Request              $request
+     * @param Request $request
      *
      * @return Response
      */
@@ -228,9 +224,9 @@ class AuthorizeController
     }
 
     /**
-     * @return ClientInterface.
+     * @return ClientInterface.
      */
-    protected function getClient()
+    protected function getClient(): ClientInterface
     {
         if (null !== $this->client) {
             return $this->client;
@@ -242,7 +238,7 @@ class AuthorizeController
 
         if (null === $clientId = $request->get('client_id')) {
             $formData = $request->get($this->authorizeForm->getName(), []);
-            $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
+            $clientId = $formData['client_id'] ?? null;
         }
 
         $this->client = $this->clientManager->findClientByPublicId($clientId);
@@ -257,7 +253,7 @@ class AuthorizeController
     /**
      * @return null|Request
      */
-    private function getCurrentRequest()
+    private function getCurrentRequest(): ?Request
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {

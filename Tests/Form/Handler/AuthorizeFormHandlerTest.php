@@ -1,11 +1,14 @@
-<?php
+<?php /** @noinspection GlobalVariableUsageInspection */
 
 namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Serialization\Author;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
+use ReflectionObject;
+use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -17,30 +20,30 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @package FOS\OAuthServerBundle\Tests\Form\Handler
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
+class AuthorizeFormHandlerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|FormInterface
+     * @var \\PHPUnit\Framework\MockObject\MockObject|FormInterface
      */
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Request|RequestStack
+     * @var \\PHPUnit\Framework\MockObject\MockObject|Request|RequestStack
      */
     protected $request;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     * @var \\PHPUnit\Framework\MockObject\MockObject|ParameterBag
      */
     protected $requestQuery;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     * @var \\PHPUnit\Framework\MockObject\MockObject|ParameterBag
      */
     protected $requestRequest;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface
+     * @var \\PHPUnit\Framework\MockObject\MockObject|ContainerInterface
      */
     protected $container;
 
@@ -49,30 +52,25 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->form = $this->getMockBuilder(FormInterface::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->requestQuery = $this->getMockBuilder(ParameterBag::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->requestRequest = $this->getMockBuilder(ParameterBag::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->request->query = $this->requestQuery;
         $this->request->request = $this->requestRequest;
         $this->container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $this->instance = new AuthorizeFormHandler($this->form, $this->request);
         $this->instance->setContainer($this->container);
@@ -80,185 +78,154 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
     }
 
-    public function testConstructWillAcceptRequestObjectAsRequest()
+    public function testConstructWillAcceptRequestObjectAsRequest(): void
     {
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $this->instance = new AuthorizeFormHandler($this->form, $request);
-
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame($request, 'requestStack', $this->instance);
     }
 
-    public function testConstructWillAcceptRequestStackObjectAsRequest()
+    public function testConstructWillAcceptRequestStackObjectAsRequest(): void
     {
         $requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
-
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame($requestStack, 'requestStack', $this->instance);
     }
 
-    public function testConstructWillAcceptNullAsRequest()
+    public function testConstructWillThrowException(): void
     {
-        $this->instance = new AuthorizeFormHandler($this->form, null);
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame(null, 'requestStack', $this->instance);
+        $this->expectException(InvalidArgumentException::class);
 
-        $this->instance = new AuthorizeFormHandler($this->form);
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame(null, 'requestStack', $this->instance);
+        new AuthorizeFormHandler($this->form, new stdClass());
     }
 
-    public function testConstructWillThrowException()
+    public function testIsAcceptedWillProxyValueToFormData(): void
     {
-        $exceptionMessage = sprintf(
-            'Argument 2 of %s must be an instanceof RequestStack or Request',
-            AuthorizeFormHandler::class
-        );
-
-        $this->setExpectedException(\InvalidArgumentException::class, $exceptionMessage);
-
-        new AuthorizeFormHandler($this->form, new \stdClass());
-    }
-
-    public function testIsAcceptedWillProxyValueToFormData()
-    {
-        $data = new \stdClass();
-        $data->accepted = \random_bytes(10);
+        $data = new stdClass();
+        $data->accepted = random_bytes(10);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getData')
             ->with()
-            ->willReturn($data)
-        ;
+            ->willReturn($data);
 
-        $this->assertSame($data->accepted, $this->instance->isAccepted());
+        self::assertSame($data->accepted, $this->instance->isAccepted());
     }
 
-    public function testIsRejectedWillNegateAcceptedValueFromFormData()
+    public function testIsRejectedWillNegateAcceptedValueFromFormData(): void
     {
-        $dataWithAcceptedValueFalse = new \stdClass();
+        $dataWithAcceptedValueFalse = new stdClass();
         $dataWithAcceptedValueFalse->accepted = false;
 
-        $dataWithAcceptedValueTrue = new \stdClass();
+        $dataWithAcceptedValueTrue = new stdClass();
         $dataWithAcceptedValueTrue->accepted = true;
 
         $this->form
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('getData')
             ->willReturnOnConsecutiveCalls(
                 $dataWithAcceptedValueFalse,
                 $dataWithAcceptedValueTrue
-            )
-        ;
+            );
 
-        $this->assertTrue($this->instance->isRejected());
-        $this->assertFalse($this->instance->isRejected());
+        self::assertTrue($this->instance->isRejected());
+        self::assertFalse($this->instance->isRejected());
     }
 
-    public function testGetScopeWillProxyValueToFormData()
+    public function testGetScopeWillProxyValueToFormData(): void
     {
-        $data = new \stdClass();
-        $data->scope = \random_bytes(10);
+        $data = new stdClass();
+        $data->scope = random_bytes(10);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getData')
             ->with()
-            ->willReturn($data)
-        ;
+            ->willReturn($data);
 
-        $this->assertSame($data->scope, $this->instance->getScope());
+        self::assertSame($data->scope, $this->instance->getScope());
     }
 
-    public function testGetCurrentRequestWillReturnRequestObject()
+    public function testGetCurrentRequestWillReturnRequestObject(): void
     {
         $method = $this->getReflectionMethod('getCurrentRequest');
-        $this->assertSame($this->request, $method->invoke($this->instance));
+        self::assertSame($this->request, $method->invoke($this->instance));
     }
 
-    public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack()
+    public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack(): void
     {
         $requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
-        $request = new \stdClass();
+        $request = new stdClass();
 
         $requestStack
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getCurrentRequest')
             ->with()
-            ->willReturn($request)
-        ;
+            ->willReturn($request);
 
         $method = $this->getReflectionMethod('getCurrentRequest');
-        $this->assertSame($request, $method->invoke($this->instance));
+        self::assertSame($request, $method->invoke($this->instance));
     }
 
-    public function testGetCurrentRequestWillReturnRequestServiceFromContainerIfNoneIsSet()
+    public function testGetCurrentRequestWillReturnRequestServiceFromContainerIfNoneIsSet(): void
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->instance->setContainer($this->container);
 
-        $randomData = \random_bytes(10);
+        $randomData = random_bytes(10);
 
         $this->container
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('get')
             ->with('request')
-            ->willReturn($randomData)
-        ;
+            ->willReturn($randomData);
 
         $method = $this->getReflectionMethod('getCurrentRequest');
-        $this->assertSame($randomData, $method->invoke($this->instance));
+        self::assertSame($randomData, $method->invoke($this->instance));
     }
 
     /**
      * @group legacy
      * @expectedDeprecation FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler::$request is deprecated since 1.4 and will be removed in 2.0.
      */
-    public function testGettingRequestVariableWillWorkButWillTriggerUserWarning()
+    public function testGettingRequestVariableWillWorkButWillTriggerUserWarning(): void
     {
-        $this->assertSame($this->request, $this->instance->__get('request'));
+        self::assertSame($this->request, $this->instance->__get('request'));
     }
 
-    public function testGettingAnyVariableWillReturnNull()
+    public function testGettingAnyVariableWillReturnNull(): void
     {
-        $this->assertNull($this->instance->__get('test'));
+        self::assertNull($this->instance->__get('test'));
     }
 
     /**
      * @TODO Fix this behavior. This method MUST not modify $_GET.
      */
-    public function testOnSuccessWillReplaceGETSuperGlobal()
+    public function testOnSuccessWillReplaceGETSuperGlobal(): void
     {
         $method = $this->getReflectionMethod('onSuccess');
 
-        $data = new \stdClass();
-        $data->client_id = \random_bytes(10);
-        $data->response_type = \random_bytes(10);
-        $data->redirect_uri = \random_bytes(10);
-        $data->state = \random_bytes(10);
-        $data->scope = \random_bytes(10);
+        $data = new stdClass();
+        $data->client_id = random_bytes(10);
+        $data->response_type = random_bytes(10);
+        $data->redirect_uri = random_bytes(10);
+        $data->state = random_bytes(10);
+        $data->scope = random_bytes(10);
 
         $this->form
-            ->expects($this->exactly(5))
+            ->expects(self::exactly(5))
             ->method('getData')
             ->with()
-            ->willReturn($data)
-        ;
+            ->willReturn($data);
 
         $_GET = [];
 
@@ -270,193 +237,178 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             'scope' => $data->scope,
         ];
 
-        $this->assertNull($method->invoke($this->instance));
+        self::assertNull($method->invoke($this->instance));
 
-        $this->assertSame($expectedSuperGlobalValue, $_GET);
+        self::assertSame($expectedSuperGlobalValue, $_GET);
     }
 
-    public function testProcessWillReturnFalseIfRequestIsNull()
+    public function testProcessWillReturnFalseIfRequestIsNull(): void
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->instance->setContainer($this->container);
 
         $this->container
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('get')
             ->with('request')
-            ->willReturn(null)
-        ;
+            ->willReturn(null);
 
-        $this->assertFalse($this->instance->process());
+        self::assertFalse($this->instance->process());
     }
 
-    public function testProcessWillSetFormData()
+    public function testProcessWillSetFormData(): void
     {
         $this->requestRequest
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('has')
             ->with('accepted')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $dataMock = [
-            \random_bytes(10),
-            \random_bytes(10),
+            random_bytes(10),
+            random_bytes(10),
         ];
 
         $this->requestQuery
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('all')
             ->with()
-            ->willReturn($dataMock)
-        ;
+            ->willReturn($dataMock);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setData')
-            ->with(new Authorize(
-                true,
-                $dataMock
-            ))
-            ->willReturn($this->form)
-        ;
+            ->with(
+                new Authorize(
+                    true,
+                    $dataMock
+                )
+            )
+            ->willReturn($this->form);
 
-        $this->assertFalse($this->instance->process());
+        self::assertFalse($this->instance->process());
     }
 
-    public function testProcessWillHandleRequestOnPost()
+    public function testProcessWillHandleRequestOnPost(): void
     {
         $this->requestRequest
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('has')
             ->with('accepted')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $dataMock = [
-            \random_bytes(10),
-            \random_bytes(10),
+            random_bytes(10),
+            random_bytes(10),
         ];
 
         $this->requestQuery
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('all')
             ->with()
-            ->willReturn($dataMock)
-        ;
+            ->willReturn($dataMock);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setData')
-            ->with(new Authorize(
-                true,
-                $dataMock
-            ))
-            ->willReturn($this->form)
-        ;
+            ->with(
+                new Authorize(
+                    true,
+                    $dataMock
+                )
+            )
+            ->willReturn($this->form);
 
         $this->request
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMethod')
             ->with()
-            ->willReturn('POST')
-        ;
+            ->willReturn('POST');
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('handleRequest')
             ->with($this->request)
-            ->willReturn($this->form)
-        ;
+            ->willReturn($this->form);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isSubmitted')
             ->with()
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isValid')
             ->with()
-            ->willReturn(false)
-        ;
+            ->willReturn(false);
 
-        $this->assertFalse($this->instance->process());
+        self::assertFalse($this->instance->process());
     }
 
-    public function testProcessWillHandleRequestOnPostAndWillProcessDataIfFormIsValid()
+    public function testProcessWillHandleRequestOnPostAndWillProcessDataIfFormIsValid(): void
     {
         $this->requestRequest
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('has')
             ->with('accepted')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
-        $query = new \stdClass();
-        $query->client_id = \random_bytes(10);
-        $query->response_type = \random_bytes(10);
-        $query->redirect_uri = \random_bytes(10);
-        $query->state = \random_bytes(10);
-        $query->scope = \random_bytes(10);
+        $query = new stdClass();
+        $query->client_id = random_bytes(10);
+        $query->response_type = random_bytes(10);
+        $query->redirect_uri = random_bytes(10);
+        $query->state = random_bytes(10);
+        $query->scope = random_bytes(10);
 
         $this->requestQuery
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('all')
             ->with()
-            ->willReturn((array) $query)
-        ;
+            ->willReturn((array)$query);
 
         $formData = new Authorize(
             true,
-            (array) $query
+            (array)$query
         );
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setData')
             ->with($formData)
-            ->willReturn($this->form)
-        ;
+            ->willReturn($this->form);
 
         $this->request
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMethod')
             ->with()
-            ->willReturn('POST')
-        ;
+            ->willReturn('POST');
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('handleRequest')
             ->with($this->request)
-            ->willReturn($this->form)
-        ;
+            ->willReturn($this->form);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isSubmitted')
             ->with()
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->form
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isValid')
             ->with()
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->form
-            ->expects($this->exactly(5))
+            ->expects(self::exactly(5))
             ->method('getData')
             ->with()
-            ->willReturn($formData)
-        ;
+            ->willReturn($formData);
 
-        $this->assertSame([], $_GET);
+        self::assertSame([], $_GET);
 
         $expectedSuperGlobalValue = [
             'client_id' => $query->client_id,
@@ -466,20 +418,17 @@ class AuthorizeFormHandlerTest extends \PHPUnit_Framework_TestCase
             'scope' => $query->scope,
         ];
 
-        $this->assertTrue($this->instance->process());
+        self::assertTrue($this->instance->process());
 
-        $this->assertSame($expectedSuperGlobalValue, $_GET);
+        self::assertSame($expectedSuperGlobalValue, $_GET);
     }
 
-    /**
-     * @param string $methodName
-     * @return \ReflectionMethod
-     */
-    protected function getReflectionMethod($methodName)
+    protected function getReflectionMethod(string $methodName): ReflectionMethod
     {
-        $reflectionObject = new \ReflectionObject($this->instance);
+        $reflectionObject = new ReflectionObject($this->instance);
         $reflectionMethod = $reflectionObject->getMethod($methodName);
         $reflectionMethod->setAccessible(true);
+
         return $reflectionMethod;
     }
 }

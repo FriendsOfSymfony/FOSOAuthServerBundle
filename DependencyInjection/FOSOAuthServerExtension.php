@@ -12,19 +12,15 @@
 namespace FOS\OAuthServerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\Config\FileLocator;
-use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 
 class FOSOAuthServerExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
@@ -54,41 +50,26 @@ class FOSOAuthServerExtension extends Extension
 
         $container->setParameter('fos_oauth_server.server.options', $config['service']['options']);
 
-        $this->remapParametersNamespaces($config, $container, array(
-            '' => array(
-                'model_manager_name'  => 'fos_oauth_server.model_manager_name',
-                'client_class'        => 'fos_oauth_server.model.client.class',
-                'access_token_class'  => 'fos_oauth_server.model.access_token.class',
-                'refresh_token_class' => 'fos_oauth_server.model.refresh_token.class',
-                'auth_code_class'     => 'fos_oauth_server.model.auth_code.class',
-            ),
-            'template' => 'fos_oauth_server.template.%s',
-        ));
-
-        // Handle the MongoDB document manager name in a specific way as it does not have a registry to make it easy
-        // TODO: change it when bumping the requirement to Symfony 2.1
-        if ('mongodb' === $config['db_driver']) {
-            if (null === $config['model_manager_name']) {
-                $container->setAlias('fos_oauth_server.document_manager', new Alias('doctrine.odm.mongodb.document_manager', false));
-            } else {
-                $container->setAlias('fos_oauth_server.document_manager', new Alias(
-                    sprintf('doctrine.odm.%s_mongodb.document_manager',
-                    $config['model_manager_name']),
-                    false
-                ));
-            }
-        }
+        $this->remapParametersNamespaces(
+            $config,
+            $container,
+            [
+                '' => [
+                    'model_manager_name' => 'fos_oauth_server.model_manager_name',
+                    'client_class' => 'fos_oauth_server.model.client.class',
+                    'access_token_class' => 'fos_oauth_server.model.access_token.class',
+                    'refresh_token_class' => 'fos_oauth_server.model.refresh_token.class',
+                    'auth_code_class' => 'fos_oauth_server.model.auth_code.class',
+                ],
+                'template' => 'fos_oauth_server.template.%s',
+            ]
+        );
 
         // Entity manager factory definition
         // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
         if ('orm' === $config['db_driver']) {
             $ormEntityManagerDefinition = $container->getDefinition('fos_oauth_server.entity_manager');
-            if (method_exists($ormEntityManagerDefinition, 'setFactory')) {
-                $ormEntityManagerDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
-            } else {
-                $ormEntityManagerDefinition->setFactoryService('doctrine');
-                $ormEntityManagerDefinition->setFactoryMethod('getManager');
-            }
+            $ormEntityManagerDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
         }
 
         if (!empty($config['authorize'])) {
@@ -97,12 +78,7 @@ class FOSOAuthServerExtension extends Extension
             // Authorize form factory definition
             // TODO: Go back to xml configuration when bumping the requirement to Symfony >=2.6
             $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
-            if (method_exists($authorizeFormDefinition, 'setFactory')) {
-                $authorizeFormDefinition->setFactory(array(new Reference('form.factory'), 'createNamed'));
-            } else {
-                $authorizeFormDefinition->setFactoryService('form.factory');
-                $authorizeFormDefinition->setFactoryMethod('createNamed');
-            }
+            $authorizeFormDefinition->setFactory(array(new Reference('form.factory'), 'createNamed'));
         }
     }
 
@@ -114,7 +90,7 @@ class FOSOAuthServerExtension extends Extension
         return 'fos_oauth_server';
     }
 
-    protected function remapParameters(array $config, ContainerBuilder $container, array $map)
+    protected function remapParameters(array $config, ContainerBuilder $container, array $map): void
     {
         foreach ($map as $name => $paramName) {
             if (array_key_exists($name, $config)) {
@@ -123,7 +99,7 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
-    protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces)
+    protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces): void
     {
         foreach ($namespaces as $ns => $map) {
             if ($ns) {
@@ -145,20 +121,24 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
-    protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader): void
     {
         $loader->load('authorize.xml');
 
         $container->setAlias('fos_oauth_server.authorize.form.handler', $config['form']['handler']);
         unset($config['form']['handler']);
 
-        if (!LegacyFormHelper::isLegacy() && $config['form']['type'] === 'fos_oauth_server_authorize') {
+        if ($config['form']['type'] === 'fos_oauth_server_authorize') {
             $authorizeFormTypeDefinition = $container->getDefinition('fos_oauth_server.authorize.form.type');
             $config['form']['type'] = $authorizeFormTypeDefinition->getClass();
         }
 
-        $this->remapParametersNamespaces($config, $container, array(
-            'form' => 'fos_oauth_server.authorize.form.%s',
-        ));
+        $this->remapParametersNamespaces(
+            $config,
+            $container,
+            [
+                'form' => 'fos_oauth_server.authorize.form.%s',
+            ]
+        );
     }
 }

@@ -11,11 +11,11 @@
 
 namespace FOS\OAuthServerBundle\Form\Handler;
 
+use FOS\OAuthServerBundle\Form\Model\Authorize;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use FOS\OAuthServerBundle\Form\Model\Authorize;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
@@ -38,7 +38,7 @@ class AuthorizeFormHandler
     private $requestStack;
 
     /**
-     * @param FormInterface        $form
+     * @param FormInterface $form
      * @param Request|RequestStack $requestStack
      */
     public function __construct(FormInterface $form, $requestStack = null)
@@ -82,10 +82,12 @@ class AuthorizeFormHandler
             return false;
         }
 
-        $this->form->setData(new Authorize(
-            $request->request->has('accepted'),
-            $request->query->all()
-        ));
+        $this->form->setData(
+            new Authorize(
+                $request->request->has('accepted'),
+                $request->query->all()
+            )
+        );
 
         if ('POST' !== $request->getMethod()) {
             return false;
@@ -106,15 +108,6 @@ class AuthorizeFormHandler
         return $this->form->getData()->scope;
     }
 
-    public function __get($name)
-    {
-        if ($name === 'request') {
-            @trigger_error(sprintf('%s::$request is deprecated since 1.4 and will be removed in 2.0.', __CLASS__), E_USER_DEPRECATED);
-
-            return $this->getCurrentRequest();
-        }
-    }
-
     /**
      * Put form data in $_GET so that OAuth2 library will call Request::createFromGlobals().
      *
@@ -123,13 +116,13 @@ class AuthorizeFormHandler
      */
     protected function onSuccess()
     {
-        $_GET = array(
-            'client_id'     => $this->form->getData()->client_id,
+        $_GET = [
+            'client_id' => $this->form->getData()->client_id,
             'response_type' => $this->form->getData()->response_type,
-            'redirect_uri'  => $this->form->getData()->redirect_uri,
-            'state'         => $this->form->getData()->state,
-            'scope'         => $this->form->getData()->scope,
-        );
+            'redirect_uri' => $this->form->getData()->redirect_uri,
+            'state' => $this->form->getData()->state,
+            'scope' => $this->form->getData()->scope,
+        ];
     }
 
     private function getCurrentRequest()

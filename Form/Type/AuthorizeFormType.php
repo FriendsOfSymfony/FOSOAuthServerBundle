@@ -11,20 +11,20 @@
 
 namespace FOS\OAuthServerBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
+use FOS\OAuthServerBundle\Form\Model\Authorize;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use FOS\OAuthServerBundle\Util\LegacyFormHelper;
 
 /**
  * @author Chris Jones <leeked@gmail.com>
  */
 class AuthorizeFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $hiddenType = LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType');
+        $hiddenType = HiddenType::class;
 
         $builder->add('client_id', $hiddenType);
         $builder->add('response_type', $hiddenType);
@@ -33,38 +33,21 @@ class AuthorizeFormType extends AbstractType
         $builder->add('scope', $hiddenType);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $this->configureOptions($resolver);
+        $resolver->setDefaults(
+            [
+                'data_class' => Authorize::class,
+            ]
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'FOS\OAuthServerBundle\Form\Model\Authorize',
-        ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'fos_oauth_server_authorize';
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->getBlockPrefix();
     }

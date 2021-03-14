@@ -11,9 +11,9 @@
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 
@@ -29,12 +29,9 @@ class TokenManager extends BaseTokenManager
      */
     protected $repository;
 
-    /**
-     * @var string
-     */
-    protected $class;
+    protected string $class;
 
-    public function __construct(ObjectManager $em, $class)
+    public function __construct(ObjectManager $em, string $class)
     {
         $this->em = $em;
         $this->repository = $em->getRepository($class);

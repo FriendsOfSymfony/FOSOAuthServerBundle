@@ -12,8 +12,8 @@
 namespace FOS\OAuthServerBundle\Event;
 
 use FOS\OAuthServerBundle\Model\ClientInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class OAuthEvent extends Event
 {

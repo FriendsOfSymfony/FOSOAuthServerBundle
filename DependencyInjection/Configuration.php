@@ -22,19 +22,17 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fos_oauth_server');
+        $treeBuilder = new TreeBuilder('fos_oauth_server');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $supportedDrivers = array('orm', 'mongodb', 'propel', 'custom');
+        $supportedDrivers = ['orm', 'custom'];
 
         $rootNode
             ->validate()
-                ->always(function($v) {
+            ->always(
+                function ($v) {
                     if ('custom' !== $v['db_driver']) {
                         return $v;
                     }
@@ -56,22 +54,23 @@ class Configuration implements ConfigurationInterface
                     }
 
                     return $v;
-                })
+                }
+            )
             ->end()
             ->children()
-                ->scalarNode('db_driver')
-                    ->validate()
-                        ->ifNotInArray($supportedDrivers)
-                        ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers))
-                    ->end()
-                    ->isRequired()
-                    ->cannotBeEmpty()
-                ->end()
-                ->scalarNode('client_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('access_token_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('refresh_token_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('auth_code_class')->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('model_manager_name')->defaultNull()->end()
+            ->scalarNode('db_driver')
+            ->validate()
+            ->ifNotInArray($supportedDrivers)
+            ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers, JSON_THROW_ON_ERROR))
+            ->end()
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->end()
+            ->scalarNode('client_class')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('access_token_class')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('refresh_token_class')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('auth_code_class')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('model_manager_name')->defaultNull()->end()
             ->end();
 
         $this->addAuthorizeSection($rootNode);
@@ -81,66 +80,66 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addAuthorizeSection(ArrayNodeDefinition $node)
+    private function addAuthorizeSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
-                ->arrayNode('authorize')
-                    ->addDefaultsIfNotSet()
-                    ->canBeUnset()
-                    ->children()
-                        ->arrayNode('form')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('type')->defaultValue('fos_oauth_server_authorize')->end()
-                                ->scalarNode('handler')->defaultValue('fos_oauth_server.authorize.form.handler.default')->end()
-                                ->scalarNode('name')->defaultValue('fos_oauth_server_authorize_form')->cannotBeEmpty()->end()
-                                ->arrayNode('validation_groups')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(array('Authorize', 'Default'))
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('authorize')
+            ->addDefaultsIfNotSet()
+            ->canBeUnset()
+            ->children()
+            ->arrayNode('form')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('type')->defaultValue('fos_oauth_server_authorize')->end()
+            ->scalarNode('handler')->defaultValue('fos_oauth_server.authorize.form.handler.default')->end()
+            ->scalarNode('name')->defaultValue('fos_oauth_server_authorize_form')->cannotBeEmpty()->end()
+            ->arrayNode('validation_groups')
+            ->prototype('scalar')->end()
+            ->defaultValue(array('Authorize', 'Default'))
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
             ->end();
     }
 
-    private function addServiceSection(ArrayNodeDefinition $node)
+    private function addServiceSection(ArrayNodeDefinition $node): void
     {
         $node
             ->addDefaultsIfNotSet()
             ->children()
-                ->arrayNode('service')
-                    ->addDefaultsIfNotSet()
-                        ->children()
-                            ->scalarNode('storage')->defaultValue('fos_oauth_server.storage.default')->cannotBeEmpty()->end()
-                            ->scalarNode('user_provider')->defaultNull()->end()
-                            ->scalarNode('client_manager')->defaultValue('fos_oauth_server.client_manager.default')->end()
-                            ->scalarNode('access_token_manager')->defaultValue('fos_oauth_server.access_token_manager.default')->end()
-                            ->scalarNode('refresh_token_manager')->defaultValue('fos_oauth_server.refresh_token_manager.default')->end()
-                            ->scalarNode('auth_code_manager')->defaultValue('fos_oauth_server.auth_code_manager.default')->end()
-                            ->arrayNode('options')
-                                ->useAttributeAsKey('key')
-                                ->treatNullLike(array())
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('service')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('storage')->defaultValue('fos_oauth_server.storage.default')->cannotBeEmpty()->end()
+            ->scalarNode('user_provider')->defaultNull()->end()
+            ->scalarNode('client_manager')->defaultValue('fos_oauth_server.client_manager.default')->end()
+            ->scalarNode('access_token_manager')->defaultValue('fos_oauth_server.access_token_manager.default')->end()
+            ->scalarNode('refresh_token_manager')->defaultValue('fos_oauth_server.refresh_token_manager.default')->end()
+            ->scalarNode('auth_code_manager')->defaultValue('fos_oauth_server.auth_code_manager.default')->end()
+            ->arrayNode('options')
+            ->useAttributeAsKey('key')
+            ->treatNullLike(array())
+            ->prototype('scalar')->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
             ->end();
     }
 
-    private function addTemplateSection(ArrayNodeDefinition $node)
+    private function addTemplateSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
-                ->arrayNode('template')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('engine')->defaultValue('twig')->end()
-                    ->end()
-                ->end()
+            ->arrayNode('template')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('engine')->defaultValue('twig')->end()
+            ->end()
+            ->end()
             ->end();
     }
 }

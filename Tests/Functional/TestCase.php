@@ -23,13 +23,13 @@ abstract class TestCase extends WebTestCase
         return new AppKernel($env, true);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $fs = new Filesystem();
         $fs->remove(sys_get_temp_dir().'/FOSOAuthServerBundle/');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         static::$kernel = null;
     }
