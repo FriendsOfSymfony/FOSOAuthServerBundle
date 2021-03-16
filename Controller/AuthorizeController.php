@@ -165,6 +165,11 @@ class AuthorizeController
         );
 
         if ($event->isAuthorizedClient()) {
+            if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
+                $this->tokenStorage->setToken(null);
+                $this->session->invalidate();
+            }
+
             $scope = $request->get('scope', null);
 
             return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
