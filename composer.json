@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.0",
-        "doctrine/mongodb-odm": "^2.2.0",
+        "doctrine/mongodb-odm": "^2.2",
         "doctrine/orm": "~2.2",
         "phing/phing": "~2.4",
         "php-mock/php-mock-phpunit": "~1.0 || ~2.0",
