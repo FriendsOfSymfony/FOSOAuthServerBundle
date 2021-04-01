@@ -39,11 +39,9 @@ class OAuthEventListener
     public function onPostAuthorization(PostAuthorizationEvent $event)
     {
         if ($event->isAuthorizedClient()) {
-            if (null !== $client = $event->getClient()) {
-                $user = $this->getUser($event);
-                $user->addClient($client);
-                $user->save();
-            }
+            $user = $this->getUser($event);
+            $user->addClient($event->getClient());
+            $user->save();
         }
     }
 
