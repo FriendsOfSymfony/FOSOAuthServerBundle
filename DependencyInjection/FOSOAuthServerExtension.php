@@ -99,6 +99,8 @@ class FOSOAuthServerExtension extends Extension
             $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
             $authorizeFormDefinition->setFactory([new Reference('form.factory'), 'createNamed']);
         }
+
+        $this->loadIntrospection($config, $container, $loader);
     }
 
     /**
@@ -138,6 +140,14 @@ class FOSOAuthServerExtension extends Extension
                 }
             }
         }
+    }
+
+    protected function loadIntrospection(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        $loader->load('introspection.xml');
+
+        $allowedClients = $config['introspection']['allowed_clients'];
+        $container->setParameter('fos_oauth_server.introspection.allowed_clients', $allowedClients);
     }
 
     protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)

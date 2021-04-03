@@ -79,6 +79,8 @@ class Configuration implements ConfigurationInterface
 
         $this->addAuthorizeSection($rootNode);
         $this->addServiceSection($rootNode);
+        $this->addTemplateSection($rootNode);
+        $this->addIntrospectionSection($rootNode);
 
         return $treeBuilder;
     }
@@ -124,6 +126,40 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('refresh_token_manager')->defaultValue('fos_oauth_server.refresh_token_manager.default')->end()
                             ->scalarNode('auth_code_manager')->defaultValue('fos_oauth_server.auth_code_manager.default')->end()
                             ->arrayNode('options')
+                                ->useAttributeAsKey('key')
+                                ->treatNullLike([])
+                                ->prototype('variable')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addTemplateSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('template')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('engine')->defaultValue('twig')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addIntrospectionSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('introspection')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->arrayNode('allowed_clients')
                                 ->useAttributeAsKey('key')
                                 ->treatNullLike([])
                                 ->prototype('variable')->end()

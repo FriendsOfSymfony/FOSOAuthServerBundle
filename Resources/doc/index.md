@@ -624,3 +624,5 @@ The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/confi
 [Adding Grant Extensions](adding_grant_extensions.md)
 
 [Custom DB Driver](custom_db_driver.md)
+
+[Introspection endpoint](introspection_endpoint.md)
