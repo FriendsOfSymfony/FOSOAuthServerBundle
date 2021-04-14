@@ -261,7 +261,7 @@ class AuthorizeControllerTest extends TestCase
             ->expects(self::at(0))
             ->method('render')
             ->with(
-                'FOSOAuthServerBundle:Authorize:authorize.html.twig',
+                'Authorize/authorize.html.twig',
                 [
                     'form' => $this->formView,
                     'client' => $this->client,
@@ -401,7 +401,7 @@ class AuthorizeControllerTest extends TestCase
             ->expects(self::at(0))
             ->method('render')
             ->with(
-                'FOSOAuthServerBundle:Authorize:authorize.html.twig',
+                'Authorize/authorize.html.twig',
                 [
                     'form' => $this->formView,
                     'client' => $this->client,
