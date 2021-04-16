@@ -20,6 +20,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Twig\Environment as TwigEnvironment;
 
 /**
  * Controller handling basic authorization.
@@ -66,6 +66,11 @@ class AuthorizeController
     private $oAuth2Server;
 
     /**
+     * @var EngineInterface
+     */
+    private $templating;
+
+    /**
      * @var RequestStack
      */
     private $requestStack;
@@ -76,11 +81,6 @@ class AuthorizeController
     private $tokenStorage;
 
     /**
-     * @var TwigEnvironment
-     */
-    private $twig;
-
-    /**
      * @var UrlGeneratorInterface
      */
     private $router;
@@ -89,6 +89,11 @@ class AuthorizeController
      * @var ClientManagerInterface
      */
     private $clientManager;
+
+    /**
+     * @var string
+     */
+    private $templateEngineType;
 
     /**
      * @var EventDispatcherInterface
@@ -102,29 +107,32 @@ class AuthorizeController
      * @todo This controller could be refactored to not rely on so many dependencies
      *
      * @param SessionInterface $session
+     * @param string           $templateEngineType
      */
     public function __construct(
         RequestStack $requestStack,
         Form $authorizeForm,
         AuthorizeFormHandler $authorizeFormHandler,
         OAuth2 $oAuth2Server,
+        EngineInterface $templating,
         TokenStorageInterface $tokenStorage,
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcherInterface $eventDispatcher,
-        TwigEnvironment $twig,
-        SessionInterface $session = null
+        SessionInterface $session = null,
+        $templateEngineType = 'twig'
     ) {
         $this->requestStack = $requestStack;
         $this->session = $session;
         $this->authorizeForm = $authorizeForm;
         $this->authorizeFormHandler = $authorizeFormHandler;
         $this->oAuth2Server = $oAuth2Server;
+        $this->templating = $templating;
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
         $this->clientManager = $clientManager;
+        $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
-        $this->twig = $twig;
     }
 
     /**
@@ -159,10 +167,12 @@ class AuthorizeController
             return $this->processSuccess($user, $formHandler, $request);
         }
 
-        return $this->renderAuthorize([
+        $data = [
             'form' => $form->createView(),
             'client' => $this->getClient(),
-        ]);
+        ];
+
+        return $this->renderAuthorize($data, $this->templating, $this->templateEngineType);
     }
 
     /**
@@ -202,7 +212,7 @@ class AuthorizeController
     }
 
     /**
-     * @return ClientInterface
+     * @return ClientInterface
      */
     protected function getClient()
     {
@@ -228,10 +238,14 @@ class AuthorizeController
         return $this->client;
     }
 
-    protected function renderAuthorize(array $context): Response
+    /**
+     * @throws \RuntimeException
+     */
+    protected function renderAuthorize(array $data, EngineInterface $engine, string $engineType): Response
     {
-        return new Response(
-            $this->twig->render('@FOSOAuthServer/Authorize/authorize.html.twig', $context)
+        return $engine->renderResponse(
+            '@FOSOAuthServer/Authorize/authorize.html.'.$engineType,
+            $data
         );
     }
 

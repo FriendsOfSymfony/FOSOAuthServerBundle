@@ -68,6 +68,7 @@ class FOSOAuthServerExtension extends Extension
                 'refresh_token_class' => 'fos_oauth_server.model.refresh_token.class',
                 'auth_code_class' => 'fos_oauth_server.model.auth_code.class',
             ],
+            'template' => 'fos_oauth_server.template.%s',
         ]);
 
         // Handle the MongoDB document manager name in a specific way as it does not have a registry to make it easy
