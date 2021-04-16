@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use FOS\OAuthServerBundle\Tests\CustomAssertions;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Serialization\Author;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
 {
+    use CustomAssertions;
+
     /**
      * @var FormInterface&\PHPUnit\Framework\MockObject\MockObject
      */

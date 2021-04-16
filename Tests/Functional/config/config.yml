@@ -3,6 +3,7 @@ framework:
     secret: test
     router:
         resource: '%kernel.project_dir%/Tests/Functional/config/routing.yml'
+        utf8: true
 
 twig:
     exception_controller: null

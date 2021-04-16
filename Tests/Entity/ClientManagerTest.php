@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Tests\CustomAssertions;
 
 /**
  * Class ClientManagerTest.
@@ -25,6 +26,8 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
  */
 class ClientManagerTest extends \PHPUnit\Framework\TestCase
 {
+    use CustomAssertions;
+
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|EntityManagerInterface
      */
