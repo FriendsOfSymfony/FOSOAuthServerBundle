@@ -12,11 +12,9 @@
 namespace FOS\OAuthServerBundle\Controller;
 
 use FOS\OAuthServerBundle\Event\OAuthEvent;
-use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
-use OAuth2\OAuth2ServerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +22,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Twig\Environment;
 
 /**
  * Controller handling basic authorization.
@@ -37,106 +33,30 @@ use Twig\Environment;
  */
 class AuthorizeController
 {
-    /**
-     * @var Environment
-     */
-    private $client;
+    private ?ClientInterface $client;
+    private ?SessionInterface $session;
+    private Form $authorizeForm;
+    private OAuth2 $oAuth2Server;
+    private RequestStack $requestStack;
+    private TokenStorageInterface $tokenStorage;
+    private ClientManagerInterface $clientManager;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var Form
-     */
-    private $authorizeForm;
-
-    /**
-     * @var AuthorizeFormHandler
-     */
-    private $authorizeFormHandler;
-
-    /**
-     * @var OAuth2
-     */
-    private $oAuth2Server;
-
-    /**
-     * @var Environment
-     */
-    private $templating;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
-     * @var ClientManagerInterface
-     */
-    private $clientManager;
-
-    /**
-     * @var string
-     */
-    private $templateEngineType;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * This controller had been made as a service due to support symfony 4 where all* services are private by default.
-     * Thus, this is considered a bad practice to fetch services directly from container.
-     * @param RequestStack $requestStack
-     * @param Form $authorizeForm
-     * @param AuthorizeFormHandler $authorizeFormHandler
-     * @param OAuth2 $oAuth2Server
-     * @param Environment $templating
-     * @param TokenStorageInterface $tokenStorage
-     * @param UrlGeneratorInterface $router
-     * @param ClientManagerInterface $clientManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param SessionInterface $session
-     * @param string $templateEngineType
-     * @todo This controller could be refactored to not rely on so many dependencies
-     *
-     */
     public function __construct(
         RequestStack $requestStack,
         Form $authorizeForm,
-        AuthorizeFormHandler $authorizeFormHandler,
         OAuth2 $oAuth2Server,
-        Environment $templating,
         TokenStorageInterface $tokenStorage,
-        UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
         EventDispatcherInterface $eventDispatcher,
-        SessionInterface $session = null,
-        string $templateEngineType = 'twig'
+        SessionInterface $session = null
     ) {
         $this->requestStack = $requestStack;
         $this->session = $session;
         $this->authorizeForm = $authorizeForm;
-        $this->authorizeFormHandler = $authorizeFormHandler;
         $this->oAuth2Server = $oAuth2Server;
-        $this->templating = $templating;
         $this->tokenStorage = $tokenStorage;
-        $this->router = $router;
         $this->clientManager = $clientManager;
-        $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -153,76 +73,13 @@ class AuthorizeController
             $this->session->set('_fos_oauth_server.ensure_logout', true);
         }
 
-        $form = $this->authorizeForm;
-        $formHandler = $this->authorizeFormHandler;
-
         $event = $this->eventDispatcher->dispatch(new OAuthEvent($user, $this->getClient()));
 
-        if ($event->isAuthorizedClient()) {
-            $scope = $request->get('scope', null);
+        $scope = $request->get('scope');
 
-            return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
-        }
-
-        if (true === $formHandler->process()) {
-            return $this->processSuccess($user, $formHandler, $request);
-        }
-
-        return new Response(
-            $this->templating->render(
-                'Authorize/authorize.html.twig',
-                [
-                    'form' => $form->createView(),
-                    'client' => $this->getClient(),
-                ]
-            )
-        );
+        return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
     }
 
-    /**
-     * @param UserInterface $user
-     * @param AuthorizeFormHandler $formHandler
-     * @param Request $request
-     *
-     * @return Response
-     */
-    protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request)
-    {
-        if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
-            $this->tokenStorage->setToken(null);
-            $this->session->invalidate();
-        }
-
-        $this->eventDispatcher->dispatch(new OAuthEvent($user, $this->getClient(), $formHandler->isAccepted()));
-
-        $formName = $this->authorizeForm->getName();
-        if (!$request->query->all() && $request->request->has($formName)) {
-            $request->query->add($request->request->get($formName));
-        }
-
-        try {
-            return $this->oAuth2Server
-                ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope());
-        } catch (OAuth2ServerException $e) {
-            return $e->getHttpResponse();
-        }
-    }
-
-    /**
-     * Generate the redirection url when the authorize is completed.
-     *
-     * @param UserInterface $user
-     *
-     * @return string
-     */
-    protected function getRedirectionUrl(UserInterface $user)
-    {
-        return $this->router->generate('fos_oauth_server_profile_show');
-    }
-
-    /**
-     * @return ClientInterface.
-     */
     protected function getClient(): ClientInterface
     {
         if (null !== $this->client) {
@@ -247,9 +104,6 @@ class AuthorizeController
         return $this->client;
     }
 
-    /**
-     * @return null|Request
-     */
     private function getCurrentRequest(): ?Request
     {
         $request = $this->requestStack->getCurrentRequest();
