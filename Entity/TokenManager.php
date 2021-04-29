@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
@@ -21,7 +21,7 @@ use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 class TokenManager extends BaseTokenManager
 {
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
     protected $em;
 
@@ -35,7 +35,7 @@ class TokenManager extends BaseTokenManager
      */
     protected $class;
 
-    public function __construct(EntityManagerInterface $em, $class)
+    public function __construct(ObjectManager $em, $class)
     {
         // NOTE: bug in Doctrine, hinting EntityRepository|ObjectRepository when only EntityRepository is expected
         /** @var EntityRepository $repository */

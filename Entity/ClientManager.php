@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Entity;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
@@ -21,7 +21,7 @@ use FOS\OAuthServerBundle\Model\ClientManager as BaseClientManager;
 class ClientManager extends BaseClientManager
 {
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
     protected $em;
 
@@ -35,7 +35,7 @@ class ClientManager extends BaseClientManager
      */
     protected $class;
 
-    public function __construct(EntityManagerInterface $em, $class)
+    public function __construct(ObjectManager $em, $class)
     {
         // NOTE: bug in Doctrine, hinting EntityRepository|ObjectRepository when only EntityRepository is expected
         /** @var EntityRepository $repository */

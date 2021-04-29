@@ -32,9 +32,9 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
 class TokenManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|EntityManagerInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager
      */
-    protected $entityManager;
+    protected $objectManager;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|EntityRepository
@@ -58,24 +58,24 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->entityManager = $this->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock()
+        $this->objectManager = $this->getMockBuilder(ObjectManager::class)
+                                    ->disableOriginalConstructor()
+                                    ->getMock()
         ;
 
-        $this->entityManager
+        $this->objectManager
             ->expects($this->once())
             ->method('getRepository')
             ->with($this->className)
             ->willReturn($this->repository)
         ;
 
-        $this->instance = new TokenManager($this->entityManager, $this->className);
+        $this->instance = new TokenManager($this->objectManager, $this->className);
     }
 
     public function testConstructWillSetParameters(): void
     {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
+        $this->assertAttributeSame($this->objectManager, 'em', $this->instance);
         $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
@@ -84,13 +84,13 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     {
         $token = new AccessToken();
 
-        $this->entityManager
+        $this->objectManager
             ->expects($this->once())
             ->method('persist')
             ->with($token)
         ;
 
-        $this->entityManager
+        $this->objectManager
             ->expects($this->once())
             ->method('flush')
             ->with()
@@ -129,14 +129,14 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->entityManager
+        $this->objectManager
             ->expects($this->once())
             ->method('persist')
             ->with($token)
             ->willReturn(null)
         ;
 
-        $this->entityManager
+        $this->objectManager
             ->expects($this->once())
             ->method('flush')
             ->with()
@@ -153,14 +153,14 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->entityManager
+        $this->objectManager
             ->expects($this->once())
             ->method('remove')
             ->with($token)
             ->willReturn(null)
         ;
 
-        $this->entityManager
+        $this->objectManager
             ->expects($this->once())
             ->method('flush')
             ->with()
