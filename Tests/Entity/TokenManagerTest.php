@@ -12,7 +12,7 @@
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\TokenManager;
@@ -29,7 +29,7 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
 class TokenManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager
      */
     protected $entityManager;
 
@@ -55,7 +55,7 @@ class TokenManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
+        $this->entityManager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;

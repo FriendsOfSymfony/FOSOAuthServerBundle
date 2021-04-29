@@ -2,7 +2,7 @@
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
@@ -15,7 +15,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
 class ClientManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager
      */
     protected $entityManager;
 
@@ -36,7 +36,7 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
+        $this->entityManager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
