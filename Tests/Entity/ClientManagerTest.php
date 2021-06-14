@@ -57,13 +57,6 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         ;
         $this->className = 'RandomClassName'.\random_bytes(5);
 
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with($this->className)
-            ->willReturn($this->repository)
-        ;
-
         $this->instance = new ClientManager($this->entityManager, $this->className);
 
         parent::setUp();
@@ -72,7 +65,6 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
     public function testConstructWillSetParameters(): void
     {
         $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
@@ -87,6 +79,13 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
             \random_bytes(5),
         ];
         $randomResult = \random_bytes(5);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
 
         $this->repository
             ->expects($this->once())
