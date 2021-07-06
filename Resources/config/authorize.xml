@@ -33,7 +33,6 @@
             <argument type="service" id="router" />
             <argument type="service" id="fos_oauth_server.client_manager" />
             <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="session" on-invalid="null" />
         </service>
     </services>
 

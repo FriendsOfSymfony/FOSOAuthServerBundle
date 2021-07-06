@@ -25,7 +25,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -47,11 +46,6 @@ class AuthorizeController
      * @var ClientInterface
      */
     private $client;
-
-    /**
-     * @var SessionInterface
-     */
-    private $session;
 
     /**
      * @var Form
@@ -113,7 +107,6 @@ class AuthorizeController
      * @param UrlGeneratorInterface    $router
      * @param ClientManagerInterface   $clientManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param SessionInterface|null    $session
      */
     public function __construct(
         RequestStack $requestStack,
@@ -124,11 +117,9 @@ class AuthorizeController
         TokenStorageInterface $tokenStorage,
         UrlGeneratorInterface $router,
         ClientManagerInterface $clientManager,
-        EventDispatcherInterface $eventDispatcher,
-        SessionInterface $session = null
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->requestStack = $requestStack;
-        $this->session = $session;
         $this->authorizeForm = $authorizeForm;
         $this->authorizeFormHandler = $authorizeFormHandler;
         $this->oAuth2Server = $oAuth2Server;
@@ -153,9 +144,9 @@ class AuthorizeController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
-            $this->session->invalidate(600);
-            $this->session->set('_fos_oauth_server.ensure_logout', true);
+        if ($request->getSession() && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
+            $request->getSession()->invalidate(600);
+            $request->getSession()->set('_fos_oauth_server.ensure_logout', true);
         }
 
         $form = $this->authorizeForm;
@@ -194,9 +185,9 @@ class AuthorizeController
      */
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request): Response
     {
-        if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
+        if ($request->getSession() && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
-            $this->session->invalidate();
+            $request->getSession()->invalidate();
         }
 
         $this->eventDispatcher->dispatch(
