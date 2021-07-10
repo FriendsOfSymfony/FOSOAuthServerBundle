@@ -97,16 +97,6 @@ class AuthorizeController
      * Thus, this is considered a bad practice to fetch services directly from container.
      *
      * @todo This controller could be refactored to not rely on so many dependencies
-     *
-     * @param RequestStack             $requestStack
-     * @param Form                     $authorizeForm
-     * @param AuthorizeFormHandler     $authorizeFormHandler
-     * @param OAuth2                   $oAuth2Server
-     * @param Environment              $twig
-     * @param TokenStorageInterface    $tokenStorage
-     * @param UrlGeneratorInterface    $router
-     * @param ClientManagerInterface   $clientManager
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         RequestStack $requestStack,
@@ -132,8 +122,7 @@ class AuthorizeController
 
     /**
      * Authorize.
-     * @param Request $request
-     * @return Response
+     *
      * @throws OAuth2RedirectException
      */
     public function authorizeAction(Request $request): Response
@@ -144,7 +133,7 @@ class AuthorizeController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        if ( ! empty( $request->getSession() ) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
+        if (!empty($request->getSession()) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
             $request->getSession()->invalidate(600);
             $request->getSession()->set('_fos_oauth_server.ensure_logout', true);
         }
@@ -176,16 +165,9 @@ class AuthorizeController
         return $this->renderAuthorize($data);
     }
 
-    /**
-     * @param UserInterface        $user
-     * @param AuthorizeFormHandler $formHandler
-     * @param Request              $request
-     *
-     * @return Response
-     */
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request): Response
     {
-        if ( ! empty( $request->getSession() ) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
+        if (!empty($request->getSession()) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
             $request->getSession()->invalidate();
         }
@@ -211,19 +193,12 @@ class AuthorizeController
 
     /**
      * Generate the redirection url when the authorize is completed.
-     *
-     * @param UserInterface $user
-     *
-     * @return string
      */
-    protected function getRedirectionUrl(UserInterface $user)
+    protected function getRedirectionUrl(UserInterface $user): string
     {
         return $this->router->generate('fos_oauth_server_profile_show');
     }
 
-    /**
-     * @return ClientInterface
-     */
     protected function getClient(): ClientInterface
     {
         if (null !== $this->client) {
@@ -249,8 +224,6 @@ class AuthorizeController
     }
 
     /**
-     * @param array $data
-     * @return Response
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -265,10 +238,7 @@ class AuthorizeController
         return $response instanceof Response ? $response : new Response($response);
     }
 
-    /**
-     * @return Request|null
-     */
-    private function getCurrentRequest()
+    private function getCurrentRequest(): ?Request
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {

@@ -189,7 +189,7 @@ class ConfigurationTest extends TestCase
                 'storage' => 'fos_oauth_server.storage.default',
                 'user_provider' => null,
                 'options' => [],
-            ]
+            ],
         ];
 
         foreach ($expected as $key => $value) {

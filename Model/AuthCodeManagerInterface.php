@@ -20,54 +20,36 @@ interface AuthCodeManagerInterface
 {
     /**
      * Create a new auth code.
-     *
-     * @return AuthCodeInterface
      */
-    public function createAuthCode();
+    public function createAuthCode(): AuthCodeInterface;
 
     /**
      * Return the class name.
-     *
-     * @return string
      */
-    public function getClass();
+    public function getClass(): string;
 
     /**
      * Retrieve an auth code using a set of criteria.
-     *
-     * @param array $criteria
-     *
-     * @return AuthCodeInterface|null
      */
-    public function findAuthCodeBy(array $criteria);
+    public function findAuthCodeBy(array $criteria): ?AuthCodeInterface;
 
     /**
      * Retrieve an auth code by its token.
-     *
-     * @param string $token
-     *
-     * @return AuthCodeInterface|null
      */
-    public function findAuthCodeByToken($token);
+    public function findAuthCodeByToken(string $token): ?AuthCodeInterface;
 
     /**
      * Update a given auth code.
-     *
-     * @param AuthCodeInterface $authCode
      */
     public function updateAuthCode(AuthCodeInterface $authCode);
 
     /**
      * Delete a given auth code.
-     *
-     * @param AuthCodeInterface $authCode
      */
     public function deleteAuthCode(AuthCodeInterface $authCode);
 
     /**
      * Delete expired auth codes.
-     *
-     * @return int the number of auth codes deleted
      */
-    public function deleteExpired();
+    public function deleteExpired(): int;
 }

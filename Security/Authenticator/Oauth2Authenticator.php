@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Security\Authenticator;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
@@ -15,8 +26,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
@@ -39,7 +48,7 @@ class Oauth2Authenticator extends AbstractAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supports(Request $request): ?bool
     {
@@ -47,15 +56,10 @@ class Oauth2Authenticator extends AbstractAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function authenticate(Request $request): PassportInterface
     {
-        return new SelfValidatingPassport(
-            new UserBadge('admin-workflow')
-        );
-
-//        die( 'test public function authenticate(Request $request): PassportInterface' );
         try {
             $tokenString = str_replace('Bearer ', '', $request->headers->get('Authorization'));
 
@@ -70,21 +74,15 @@ class Oauth2Authenticator extends AbstractAuthenticator
                 try {
                     $this->userChecker->checkPreAuth($user);
                 } catch (AccountStatusException $e) {
-                    throw new OAuth2AuthenticateException(
-                        Response::HTTP_UNAUTHORIZED,
-                        OAuth2::TOKEN_TYPE_BEARER,
-                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                        'access_denied',
-                        $e->getMessage()
-                    );
+                    throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED, OAuth2::TOKEN_TYPE_BEARER, $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM), 'access_denied', $e->getMessage());
                 }
             }
 
             $roles = (null !== $user) ? $user->getRoles() : [];
 
-            if (! empty($scope)) {
+            if (!empty($scope)) {
                 foreach (explode(' ', $scope) as $role) {
-                    $roles[] = 'ROLE_' . mb_strtoupper($role);
+                    $roles[] = 'ROLE_'.mb_strtoupper($role);
                 }
             }
 
@@ -93,17 +91,13 @@ class Oauth2Authenticator extends AbstractAuthenticator
             if (null !== $user) {
                 try {
                     $this->userChecker->checkPostAuth($user);
+
                     return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier()));
                 } catch (AccountStatusException $e) {
-                    throw new OAuth2AuthenticateException(
-                        Response::HTTP_UNAUTHORIZED,
-                        OAuth2::TOKEN_TYPE_BEARER,
-                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                        'access_denied',
-                        $e->getMessage()
-                    );
+                    throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED, OAuth2::TOKEN_TYPE_BEARER, $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM), 'access_denied', $e->getMessage());
                 }
             }
+
             return new SelfValidatingPassport(new UserBadge($tokenString));
         } catch (OAuth2ServerException $e) {
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
@@ -118,24 +112,21 @@ class Oauth2Authenticator extends AbstractAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        die('test');
         return null;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        dump($exception);
-        die();
         $data = [
             // you may want to customize or obfuscate the message first
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
 
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())

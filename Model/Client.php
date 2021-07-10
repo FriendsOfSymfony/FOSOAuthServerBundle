@@ -67,7 +67,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getRandomId()
+    public function getRandomId(): string
     {
         return $this->randomId;
     }
@@ -91,7 +91,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getSecret()
+    public function getSecret(): string
     {
         return $this->secret;
     }
@@ -99,7 +99,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function checkSecret($secret)
+    public function checkSecret(string $secret): bool
     {
         return null === $this->secret || $secret === $this->secret;
     }
@@ -131,7 +131,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedGrantTypes()
+    public function getAllowedGrantTypes(): array
     {
         return $this->allowedGrantTypes;
     }
