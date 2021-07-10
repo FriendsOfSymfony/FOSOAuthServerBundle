@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Storage;
 
 use FOS\OAuthServerBundle\Model\AccessTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+use FOS\OAuthServerBundle\Model\RefreshTokenInterface;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\TokenInterface;
 use OAuth2\IOAuth2GrantClient;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\IOAuth2GrantExtension;
@@ -95,7 +98,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $this->grantExtensions[$uri] = $grantExtension;
     }
 
-    public function getClient($clientId)
+    public function getClient($clientId): ?ClientInterface
     {
         return $this->clientManager->findClientByPublicId($clientId);
     }
@@ -114,7 +117,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $this->checkClientCredentials($client, $client_secret);
     }
 
-    public function getAccessToken($token)
+    public function getAccessToken($token): ?TokenInterface
     {
         return $this->accessTokenManager->findTokenByToken($token);
     }
@@ -174,7 +177,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function getAuthCode($code)
+    public function getAuthCode($code): ?AuthCodeInterface
     {
         return $this->authCodeManager->findAuthCodeByToken($code);
     }
@@ -203,7 +206,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function getRefreshToken($tokenString)
+    public function getRefreshToken($tokenString): ?RefreshTokenInterface
     {
         return $this->refreshTokenManager->findTokenByToken($tokenString);
     }

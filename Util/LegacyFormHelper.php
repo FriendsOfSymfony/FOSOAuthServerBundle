@@ -20,6 +20,9 @@ namespace FOS\OAuthServerBundle\Util;
  */
 final class LegacyFormHelper
 {
+    /**
+     * @var string[]
+     */
     private static $map = [
         'Symfony\Component\Form\Extension\Core\Type\HiddenType' => 'hidden',
         'FOS\OAuthServerBundle\Form\Type\AuthorizeFormType' => 'fos_oauth_server_authorize',
@@ -33,7 +36,7 @@ final class LegacyFormHelper
     {
     }
 
-    public static function getType($class)
+    public static function getType(string $class): string
     {
         if (!self::isLegacy()) {
             return $class;
@@ -46,7 +49,7 @@ final class LegacyFormHelper
         return self::$map[$class];
     }
 
-    public static function isLegacy()
+    public static function isLegacy(): bool
     {
         return !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
     }

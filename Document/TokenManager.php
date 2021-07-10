@@ -49,7 +49,7 @@ class TokenManager extends BaseTokenManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -57,7 +57,7 @@ class TokenManager extends BaseTokenManager
     /**
      * {@inheritdoc}
      */
-    public function findTokenBy(array $criteria)
+    public function findTokenBy(array $criteria): ?TokenInterface
     {
         return $this->repository->findOneBy($criteria);
     }
@@ -83,7 +83,7 @@ class TokenManager extends BaseTokenManager
     /**
      * {@inheritdoc}
      */
-    public function deleteExpired()
+    public function deleteExpired(): int
     {
         $result = $this
             ->repository

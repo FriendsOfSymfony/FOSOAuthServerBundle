@@ -49,7 +49,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -57,7 +57,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function findAuthCodeBy(array $criteria)
+    public function findAuthCodeBy(array $criteria): ?AuthCodeInterface
     {
         return $this->repository->findOneBy($criteria);
     }
@@ -83,7 +83,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteExpired()
+    public function deleteExpired(): int
     {
         $result = $this
             ->repository

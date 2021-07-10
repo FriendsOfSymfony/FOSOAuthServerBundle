@@ -49,7 +49,7 @@ class ClientManager extends BaseClientManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -57,7 +57,7 @@ class ClientManager extends BaseClientManager
     /**
      * {@inheritdoc}
      */
-    public function findClientBy(array $criteria)
+    public function findClientBy(array $criteria): ?ClientInterface
     {
         return $this->repository->findOneBy($criteria);
     }
