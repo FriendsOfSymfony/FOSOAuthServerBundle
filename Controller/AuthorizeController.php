@@ -144,7 +144,7 @@ class AuthorizeController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        if ($request->getSession() && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
+        if ( ! empty( $request->getSession() ) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
             $request->getSession()->invalidate(600);
             $request->getSession()->set('_fos_oauth_server.ensure_logout', true);
         }
@@ -185,7 +185,7 @@ class AuthorizeController
      */
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request): Response
     {
-        if ($request->getSession() && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
+        if ( ! empty( $request->getSession() ) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
             $request->getSession()->invalidate();
         }
@@ -197,7 +197,7 @@ class AuthorizeController
 
         $formName = $this->authorizeForm->getName();
         if (!$request->query->all() && $request->request->has($formName)) {
-            $request->query->add($request->request->get($formName));
+            $request->query->add($request->request->all($formName));
         }
 
         try {
@@ -224,7 +224,7 @@ class AuthorizeController
     /**
      * @return ClientInterface
      */
-    protected function getClient()
+    protected function getClient(): ClientInterface
     {
         if (null !== $this->client) {
             return $this->client;

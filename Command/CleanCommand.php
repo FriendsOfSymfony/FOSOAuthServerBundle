@@ -21,8 +21,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanCommand extends Command
 {
+    /**
+     * @var TokenManagerInterface
+     */
     private $accessTokenManager;
+
+    /**
+     * @var TokenManagerInterface
+     */
     private $refreshTokenManager;
+
+    /**
+     * @var AuthCodeManagerInterface
+     */
     private $authCodeManager;
 
     public function __construct(
@@ -40,7 +51,7 @@ class CleanCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
