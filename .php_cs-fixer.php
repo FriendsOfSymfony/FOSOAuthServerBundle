@@ -33,7 +33,7 @@ return PhpCsFixer\Config::create()
             'combine_consecutive_unsets' => true,
             'declare_strict_types' => true,
             'dir_constant' => true,
-            'general_phpdoc_annotation_remove' => ['@author'],
+            'annotations' => ['@author'],
             'header_comment' => ['header' => $header],
             'linebreak_after_opening_tag' => true,
             'mb_str_functions' => true,

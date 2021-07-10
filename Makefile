@@ -12,10 +12,10 @@ cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"
 
 cs-full:
-	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff"
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=no --diff"
 
 cs-full-check:
-	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff --dry-run"
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=no --diff --dry-run"
 
 composer-compat:
 	composer config "platform.ext-mongo" "1.6.16"
