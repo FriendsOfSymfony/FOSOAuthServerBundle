@@ -51,7 +51,7 @@ class AuthCodeManagerTest extends TestCase
      */
     protected $instance;
 
-    public function setUp():void
+    public function setUp(): void
     {
         if (!class_exists('\Doctrine\ODM\MongoDB\DocumentManager')) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');

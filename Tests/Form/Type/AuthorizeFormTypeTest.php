@@ -28,7 +28,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
      */
     protected $instance;
 
-    protected function setUp():void
+    protected function setUp(): void
     {
         parent::setUp();
 

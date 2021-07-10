@@ -23,7 +23,7 @@ class OAuthTokenTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp():void
+    public function setUp(): void
     {
         $this->instance = new OAuthToken();
 

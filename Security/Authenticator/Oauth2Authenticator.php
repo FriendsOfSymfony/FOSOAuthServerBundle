@@ -20,10 +20,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-
 class Oauth2Authenticator extends AbstractAuthenticator
 {
-
     /**
      * @var UserCheckerInterface
      */
@@ -34,7 +32,7 @@ class Oauth2Authenticator extends AbstractAuthenticator
      */
     protected $serverService;
 
-    public function __construct( OAuth2 $serverService, UserCheckerInterface $userChecker )
+    public function __construct(OAuth2 $serverService, UserCheckerInterface $userChecker)
     {
         $this->serverService = $serverService;
         $this->userChecker = $userChecker;
@@ -43,85 +41,86 @@ class Oauth2Authenticator extends AbstractAuthenticator
     /**
      * @inheritDoc
      */
-    public function supports( Request $request ): ?bool
+    public function supports(Request $request): ?bool
     {
-        return $request->headers->has( 'Authorization' );
+        return $request->headers->has('Authorization');
     }
 
     /**
      * @inheritDoc
      */
-    public function authenticate( Request $request ): PassportInterface
+    public function authenticate(Request $request): PassportInterface
     {
         return new SelfValidatingPassport(
-            new UserBadge( 'admin-workflow' )
+            new UserBadge('admin-workflow')
         );
 
 //        die( 'test public function authenticate(Request $request): PassportInterface' );
         try {
-            $tokenString = str_replace( 'Bearer ', '', $request->headers->get( 'Authorization' ) );
+            $tokenString = str_replace('Bearer ', '', $request->headers->get('Authorization'));
 
             // TODO: this is nasty, create a proper interface here
             /** @var OAuthToken&TokenInterface&\OAuth2\Model\IOAuth2AccessToken $accessToken */
-            $accessToken = $this->serverService->verifyAccessToken( $tokenString );
+            $accessToken = $this->serverService->verifyAccessToken($tokenString);
 
             $scope = $accessToken->getScope();
             $user = $accessToken->getUser();
 
-            if ( null !== $user ) {
+            if (null !== $user) {
                 try {
-                    $this->userChecker->checkPreAuth( $user );
-                } catch ( AccountStatusException $e ) {
-                    throw new OAuth2AuthenticateException( Response::HTTP_UNAUTHORIZED,
+                    $this->userChecker->checkPreAuth($user);
+                } catch (AccountStatusException $e) {
+                    throw new OAuth2AuthenticateException(
+                        Response::HTTP_UNAUTHORIZED,
                         OAuth2::TOKEN_TYPE_BEARER,
-                        $this->serverService->getVariable( OAuth2::CONFIG_WWW_REALM ),
+                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                         'access_denied',
                         $e->getMessage()
                     );
                 }
             }
 
-            $roles = ( null !== $user ) ? $user->getRoles() : [];
+            $roles = (null !== $user) ? $user->getRoles() : [];
 
-            if ( ! empty( $scope ) ) {
-                foreach ( explode( ' ', $scope ) as $role ) {
-                    $roles[] = 'ROLE_' . mb_strtoupper( $role );
+            if (! empty($scope)) {
+                foreach (explode(' ', $scope) as $role) {
+                    $roles[] = 'ROLE_' . mb_strtoupper($role);
                 }
             }
 
-            $roles = array_unique( $roles, SORT_REGULAR );
+            $roles = array_unique($roles, SORT_REGULAR);
 
-            if ( null !== $user ) {
+            if (null !== $user) {
                 try {
-                    $this->userChecker->checkPostAuth( $user );
-                    return new SelfValidatingPassport( new UserBadge( $user->getUserIdentifier() ) );
-                } catch ( AccountStatusException $e ) {
-                    throw new OAuth2AuthenticateException( Response::HTTP_UNAUTHORIZED,
+                    $this->userChecker->checkPostAuth($user);
+                    return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier()));
+                } catch (AccountStatusException $e) {
+                    throw new OAuth2AuthenticateException(
+                        Response::HTTP_UNAUTHORIZED,
                         OAuth2::TOKEN_TYPE_BEARER,
-                        $this->serverService->getVariable( OAuth2::CONFIG_WWW_REALM ),
+                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
                         'access_denied',
                         $e->getMessage()
                     );
                 }
             }
-            return new SelfValidatingPassport( new UserBadge( $tokenString ) );
-
-        } catch ( OAuth2ServerException $e ) {
-            throw new AuthenticationException( 'OAuth2 authentication failed', 0, $e );
+            return new SelfValidatingPassport(new UserBadge($tokenString));
+        } catch (OAuth2ServerException $e) {
+            throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
         }
 
-        throw new AuthenticationException( 'OAuth2 authentication failed' );
+        throw new AuthenticationException('OAuth2 authentication failed');
     }
 
-    public function createAuthenticatedToken( PassportInterface $passport, string $firewallName ): TokenInterface
+    public function createAuthenticatedToken(PassportInterface $passport, string $firewallName): TokenInterface
     {
-        return parent::createAuthenticatedToken( $passport, $firewallName ); // TODO: Change the autogenerated stub
+        return parent::createAuthenticatedToken($passport, $firewallName); // TODO: Change the autogenerated stub
     }
 
     /**
      * @inheritDoc
      */
-    public function onAuthenticationSuccess( Request $request, TokenInterface $token, string $firewallName ): ?Response
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         die('test');
         return null;
@@ -130,18 +129,18 @@ class Oauth2Authenticator extends AbstractAuthenticator
     /**
      * @inheritDoc
      */
-    public function onAuthenticationFailure( Request $request, AuthenticationException $exception ): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         dump($exception);
         die();
         $data = [
             // you may want to customize or obfuscate the message first
-            'message' => strtr( $exception->getMessageKey(), $exception->getMessageData() )
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
 
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
         ];
 
-        return new JsonResponse( $data, Response::HTTP_UNAUTHORIZED );
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -79,8 +79,10 @@ class FOSOAuthServerExtension extends Extension
                 $container->setAlias('fos_oauth_server.document_manager', new Alias('doctrine.odm.mongodb.document_manager', false));
             } else {
                 $container->setAlias('fos_oauth_server.document_manager', new Alias(
-                    sprintf('doctrine.odm.%s_mongodb.document_manager',
-                    $config['model_manager_name']),
+                    sprintf(
+                        'doctrine.odm.%s_mongodb.document_manager',
+                        $config['model_manager_name']
+                    ),
                     false
                 ));
             }

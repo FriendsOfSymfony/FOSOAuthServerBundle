@@ -31,6 +31,7 @@
         "doctrine/doctrine-bundle": "~2.0",
         "doctrine/mongodb-odm": "~2.0",
         "doctrine/orm": "~2.2",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "phing/phing": "~2.4",
         "php-mock/php-mock-phpunit": "~1.0|~2.0",
         "phpunit/phpunit": "~6.0|~8.0",

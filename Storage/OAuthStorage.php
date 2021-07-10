@@ -77,9 +77,14 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
      * @param UserProviderInterface|null   $userProvider
      * @param PasswordHasherFactoryInterface|null $passwordHasherFactory
      */
-    public function __construct(ClientManagerInterface $clientManager, AccessTokenManagerInterface $accessTokenManager,
-        RefreshTokenManagerInterface $refreshTokenManager, AuthCodeManagerInterface $authCodeManager,
-        UserProviderInterface $userProvider = null, PasswordHasherFactoryInterface $passwordHasherFactory = null)
+    public function __construct(
+        ClientManagerInterface $clientManager,
+        AccessTokenManagerInterface $accessTokenManager,
+        RefreshTokenManagerInterface $refreshTokenManager,
+        AuthCodeManagerInterface $authCodeManager,
+        UserProviderInterface $userProvider = null,
+        PasswordHasherFactoryInterface $passwordHasherFactory = null
+    )
     {
         $this->clientManager = $clientManager;
         $this->accessTokenManager = $accessTokenManager;
@@ -166,7 +171,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         }
 
         $encoder = $this->passwordHasherFactory->getPasswordHasher($user);
-        if ($encoder->verify( $user->getPassword(), $password ) ) {
+        if ($encoder->verify($user->getPassword(), $password)) {
             return [
                 'data' => $user,
             ];

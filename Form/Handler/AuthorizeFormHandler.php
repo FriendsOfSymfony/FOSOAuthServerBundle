@@ -94,7 +94,7 @@ class AuthorizeFormHandler
         }
 
         $this->form->handleRequest($request);
-        if ( $this->form->isSubmitted() && ! $this->form->isValid()) {
+        if ($this->form->isSubmitted() && ! $this->form->isValid()) {
             return false;
         }
 

@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
             // BC layer for symfony/config 4.1 and older
             $rootNode = $treeBuilder->root('fos_oauth_server');
         }
-        
+
         $supportedDrivers = ['orm', 'mongodb', 'custom'];
 
         $rootNode

@@ -159,7 +159,7 @@ class AuthorizeController
         );
 
         if ($event->isAuthorizedClient()) {
-            $scope = $request->get('scope' );
+            $scope = $request->get('scope');
 
             return $this->oAuth2Server->finishClientAuthorization(true, $user, $request, $scope);
         }

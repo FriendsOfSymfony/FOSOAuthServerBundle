@@ -85,12 +85,13 @@ class OAuthProvider implements AuthenticationProviderInterface
                 try {
                     $this->userChecker->checkPreAuth($user);
                 } catch (AccountStatusException $e) {
-                    throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED,
-                            OAuth2::TOKEN_TYPE_BEARER,
-                            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                            'access_denied',
-                            $e->getMessage()
-                        );
+                    throw new OAuth2AuthenticateException(
+                        Response::HTTP_UNAUTHORIZED,
+                        OAuth2::TOKEN_TYPE_BEARER,
+                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
+                        'access_denied',
+                        $e->getMessage()
+                    );
                 }
 
                 $token->setUser($user);
@@ -114,12 +115,13 @@ class OAuthProvider implements AuthenticationProviderInterface
                 try {
                     $this->userChecker->checkPostAuth($user);
                 } catch (AccountStatusException $e) {
-                    throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED,
-                            OAuth2::TOKEN_TYPE_BEARER,
-                            $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                            'access_denied',
-                            $e->getMessage()
-                        );
+                    throw new OAuth2AuthenticateException(
+                        Response::HTTP_UNAUTHORIZED,
+                        OAuth2::TOKEN_TYPE_BEARER,
+                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
+                        'access_denied',
+                        $e->getMessage()
+                    );
                 }
 
                 $token->setUser($user);

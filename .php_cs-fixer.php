@@ -19,10 +19,13 @@ file that was distributed with this source code.
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('vendor')
-    ->in(__DIR__);
+    ->in(__DIR__)
+    ->exclude('vendor');
 
-return PhpCsFixer\Config::create()
+$config = new \PhpCsFixer\Config();
+
+return $config
+    ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setUsingCache(false)
     ->setRules(
@@ -39,32 +42,27 @@ return PhpCsFixer\Config::create()
             'mb_str_functions' => true,
             'modernize_types_casting' => true,
             // 'native_function_invocation' => true,
-            'no_extra_consecutive_blank_lines' => ['continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block'],
+            'no_extra_blank_lines' => ['continue', 'extra', 'return', 'throw', 'use', 'parenthesis_brace_block', 'square_brace_block', 'curly_brace_block'],
             'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
             'no_php4_constructor' => true,
-            'no_short_echo_tag' => true,
+            'echo_tag_syntax' => ['format' => 'long'],
             'no_unreachable_default_argument_value' => true,
             'no_useless_else' => true,
             'no_useless_return' => true,
             'not_operator_with_space' => false,
             'not_operator_with_successor_space' => false,
-            'ordered_class_elements' => true,
             'ordered_imports' => true,
-            'php_unit_construct' => true,
-            'php_unit_strict' => true,
             'phpdoc_add_missing_param_annotation' => true,
             'phpdoc_annotation_without_dot' => true,
-            'phpdoc_inline_tag' => false,
+            'general_phpdoc_tag_rename' => false,
             'phpdoc_no_empty_return' => false,
             'phpdoc_order' => true,
             'phpdoc_to_comment' => false,
-            'psr4' => true,
-            'random_api_migration' => true,
+            'psr_autoloading' => true,
             'semicolon_after_instruction' => true,
             'single_import_per_statement' => true,
             'strict_comparison' => true,
             'strict_param' => true,
             'yoda_style' => false
         ]
-    )
-    ->setFinder($finder);
+    );

@@ -43,7 +43,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 
     protected $storage;
 
-    public function setUp():void
+    public function setUp(): void
     {
         $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)
             ->disableOriginalConstructor()

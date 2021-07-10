@@ -37,7 +37,7 @@ class TokenStorageCompilerPassTest extends TestCase
      */
     protected $container;
 
-    public function setUp():void
+    public function setUp(): void
     {
         $this->container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()

@@ -25,7 +25,7 @@ class RandomTest extends \PHPUnit\Framework\TestCase
 {
     use PHPMock;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
     }

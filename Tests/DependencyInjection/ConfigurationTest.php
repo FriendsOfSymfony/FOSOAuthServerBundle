@@ -70,9 +70,9 @@ class ConfigurationTest extends TestCase
             ],
         ];
 
-        foreach ( $expected as $key => $value ) {
-            $this->assertArrayHasKey( $key, $config );
-            $this->assertSame( $value, $config[$key] );
+        foreach ($expected as $key => $value) {
+            $this->assertArrayHasKey($key, $config);
+            $this->assertSame($value, $config[$key]);
         }
     }
 

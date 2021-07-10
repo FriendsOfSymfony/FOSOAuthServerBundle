@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class OAuthFactory implements SecurityFactoryInterface, AuthenticatorFactoryInterface
 {
-    public function createAuthenticator( ContainerBuilder $container, string $firewallName, array $config, string $userProviderId )
+    public function createAuthenticator(ContainerBuilder $container, string $firewallName, array $config, string $userProviderId)
     {
         $authenticatorId = 'security.authenticator.oauth2.'.$firewallName;
         $firewallEventDispatcherId = 'security.event_dispatcher.'.$firewallName;
@@ -68,7 +68,7 @@ class OAuthFactory implements SecurityFactoryInterface, AuthenticatorFactoryInte
 
         return $authenticatorId;
     }
-    
+
     /**
      * {@inheritdoc}
      */

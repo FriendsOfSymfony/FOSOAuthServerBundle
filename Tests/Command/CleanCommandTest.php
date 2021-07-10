@@ -46,7 +46,7 @@ class CleanCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp():void
+    protected function setUp(): void
     {
         $this->accessTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
         $this->refreshTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();

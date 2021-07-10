@@ -128,7 +128,7 @@ class AuthorizeControllerTest extends TestCase
      */
     protected $formView;
 
-    public function setUp():void
+    public function setUp(): void
     {
         $this->requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()

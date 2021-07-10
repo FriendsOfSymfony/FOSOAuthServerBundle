@@ -42,7 +42,7 @@ class OAuthFactoryTest extends TestCase
      */
     protected $childDefinitionClass;
 
-    public function setUp():void
+    public function setUp(): void
     {
         $this->definitionDecoratorClass = 'Symfony\Component\DependencyInjection\DefinitionDecorator';
         $this->childDefinitionClass = 'Symfony\Component\DependencyInjection\ChildDefinition';

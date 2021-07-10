@@ -44,7 +44,7 @@ class AuthorizeFormHandlerTest extends TestCase
      */
     protected $instance;
 
-    public function setUp():void
+    public function setUp(): void
     {
         $this->form = $this->getMockBuilder(FormInterface::class)
             ->disableOriginalConstructor()
