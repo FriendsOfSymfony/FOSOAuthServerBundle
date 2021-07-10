@@ -16,10 +16,12 @@ namespace FOS\OAuthServerBundle\Tests\Command;
 use FOS\OAuthServerBundle\Command\CleanCommand;
 use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\TokenManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CleanCommandTest extends \PHPUnit\Framework\TestCase
+class CleanCommandTest extends TestCase
 {
     /**
      * @var CleanCommand
@@ -27,24 +29,24 @@ class CleanCommandTest extends \PHPUnit\Framework\TestCase
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
+     * @var MockObject|TokenManagerInterface
      */
     private $accessTokenManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenManagerInterface
+     * @var MockObject|TokenManagerInterface
      */
     private $refreshTokenManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AuthCodeManagerInterface
+     * @var MockObject|AuthCodeManagerInterface
      */
     private $authCodeManager;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp():void
     {
         $this->accessTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();
         $this->refreshTokenManager = $this->getMockBuilder(TokenManagerInterface::class)->disableOriginalConstructor()->getMock();

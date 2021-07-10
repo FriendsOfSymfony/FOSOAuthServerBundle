@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Security\Factory;
 
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -24,7 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
+class OAuthFactoryTest extends TestCase
 {
     /**
      * @var OAuthFactory
@@ -41,7 +42,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
      */
     protected $childDefinitionClass;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->definitionDecoratorClass = 'Symfony\Component\DependencyInjection\DefinitionDecorator';
         $this->childDefinitionClass = 'Symfony\Component\DependencyInjection\ChildDefinition';

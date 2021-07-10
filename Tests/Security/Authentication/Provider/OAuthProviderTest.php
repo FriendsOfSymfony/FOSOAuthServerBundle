@@ -49,7 +49,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $userChecker;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()

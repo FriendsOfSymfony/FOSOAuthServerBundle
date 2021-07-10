@@ -33,7 +33,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->instance = new GrantExtensionsCompilerPass();
 

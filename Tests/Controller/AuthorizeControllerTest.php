@@ -19,6 +19,8 @@ use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
@@ -34,55 +36,55 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
 
-class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
+class AuthorizeControllerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|RequestStack
+     * @var MockObject|RequestStack
      */
     protected $requestStack;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|SessionInterface
+     * @var MockObject|SessionInterface
      */
     protected $session;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Form
+     * @var MockObject|Form
      */
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AuthorizeFormHandler
+     * @var MockObject|AuthorizeFormHandler
      */
     protected $authorizeFormHandler;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|OAuth2
+     * @var MockObject|OAuth2
      */
     protected $oAuth2Server;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Environment
+     * @var MockObject|Environment
      */
     protected $twig;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface
+     * @var MockObject|TokenStorageInterface
      */
     protected $tokenStorage;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UrlGeneratorInterface
+     * @var MockObject|UrlGeneratorInterface
      */
     protected $router;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
+     * @var MockObject|ClientManagerInterface
      */
     protected $clientManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventDispatcherInterface
+     * @var MockObject|EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -92,41 +94,41 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
     protected $instance;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Request
+     * @var MockObject|Request
      */
     protected $request;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     * @var MockObject|ParameterBag
      */
     protected $requestQuery;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ParameterBag
+     * @var MockObject|ParameterBag
      */
     protected $requestRequest;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UserInterface
+     * @var MockObject|UserInterface
      */
     protected $user;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientInterface
+     * @var MockObject|ClientInterface
      */
     protected $client;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|OAuthEvent
+     * @var MockObject|OAuthEvent
      */
     protected $event;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|FormView
+     * @var MockObject|FormView
      */
     protected $formView;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
@@ -178,12 +180,10 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             $this->tokenStorage,
             $this->router,
             $this->clientManager,
-            $this->eventDispatcher,
-            $this->session,
-            $this->twigType
+            $this->eventDispatcher
         );
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject&Request $request */
+        /** @var MockObject&Request $request */
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock()

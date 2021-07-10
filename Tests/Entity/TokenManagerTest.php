@@ -21,6 +21,8 @@ use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
 use FOS\OAuthServerBundle\Model\TokenInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group time-sensitive
@@ -29,15 +31,15 @@ use FOS\OAuthServerBundle\Model\TokenInterface;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class TokenManagerTest extends \PHPUnit\Framework\TestCase
+class TokenManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
+     * @var MockObject|EntityRepository
      */
     protected $repository;
 
@@ -51,7 +53,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->className = AccessToken::class;
         $this->repository = $this->getMockBuilder(EntityRepository::class)

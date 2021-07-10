@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
             $rootNode = $treeBuilder->root('fos_oauth_server');
         }
         
-        $supportedDrivers = ['orm', 'mongodb', 'propel', 'custom'];
+        $supportedDrivers = ['orm', 'mongodb', 'custom'];
 
         $rootNode
             ->validate()

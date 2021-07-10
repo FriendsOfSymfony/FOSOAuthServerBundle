@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -26,7 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
+class AuthorizeFormHandlerTest extends TestCase
 {
     protected $form;
 
@@ -43,7 +44,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->form = $this->getMockBuilder(FormInterface::class)
             ->disableOriginalConstructor()

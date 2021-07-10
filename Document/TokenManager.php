@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use FOS\OAuthServerBundle\Model\TokenManager as BaseTokenManager;
 

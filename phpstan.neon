@@ -6,9 +6,6 @@ parameters:
     excludes_analyse:
         - vendor/
 
-        # Propel stuff seems broken as-is, ignoring for now
-        - Propel/
-        - Tests/Propel/
     ignoreErrors:
         # temporary
         - '#Parameter \#1 \$httpStatusCode of class OAuth2\\OAuth2ServerException constructor expects string, int given#'

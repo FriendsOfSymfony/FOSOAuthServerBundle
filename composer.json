@@ -7,8 +7,12 @@
     "license": "MIT",
     "authors": [
         {
-          "name": "Arnaud Le Blanc",
-          "email": "arnaud.lb@gmail.com"
+            "name": "Klapaudius",
+            "email": "klapaudius@gmail.com"
+        },
+        {
+            "name": "Arnaud Le Blanc",
+            "email": "arnaud.lb@gmail.com"
         },
         {
             "name": "FriendsOfSymfony Community",
@@ -16,41 +20,37 @@
         }
     ],
     "require": {
-        "php": "^7.1|^8.0",
+        "php": "^7.2.5|^8.0",
         "friendsofsymfony/oauth2-php": "~1.1",
-        "symfony/dependency-injection": "~5.0",
-        "symfony/framework-bundle": "~5.0",
-        "symfony/security-bundle": "~5.0",
-        "symfony/twig-bundle": "~5.0"
+        "symfony/dependency-injection": "~5.3",
+        "symfony/framework-bundle": "~5.3",
+        "symfony/security-bundle": "~5.3",
+        "symfony/twig-bundle": "~5.3"
     },
     "require-dev": {
-        "doctrine/doctrine-bundle": "~1.0",
-        "doctrine/mongodb-odm": "~1.0",
+        "doctrine/doctrine-bundle": "~2.0",
+        "doctrine/mongodb-odm": "~2.0",
         "doctrine/orm": "~2.2",
         "phing/phing": "~2.4",
         "php-mock/php-mock-phpunit": "~1.0|~2.0",
-        "phpstan/phpstan-phpunit": "~0.9",
-        "phpstan/phpstan-shim": "~0.9",
-        "phpunit/phpunit": "~5.0|~6.0",
-        "propel/propel1": "~1.6",
-        "symfony/class-loader": "~5.0",
-        "symfony/console": "~5.0",
-        "symfony/form": "~5.0",
-        "symfony/phpunit-bridge": "~5.0",
-        "symfony/templating": "~5.0",
-        "symfony/yaml": "~5.0",
-        "willdurand/propel-typehintable-behavior": "~1.0"
+        "phpunit/phpunit": "~6.0|~8.0",
+        "symfony/class-loader": "^2.0",
+        "symfony/console": "^5.3",
+        "symfony/form": "^5.3",
+        "symfony/phpunit-bridge": "^5.3",
+        "symfony/templating": "^5.3",
+        "symfony/yaml": "^5.3"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
-        "propel/propel-bundle": "If you want to use Propel with Symfony2, then you will have to install the PropelBundle",
-        "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces",
         "symfony/form" : "Needed to be able to use the AuthorizeFormType",
         "symfony/console": "Needed to be able to use commands"
     },
     "autoload": {
-        "psr-4": { "FOS\\OAuthServerBundle\\": "" },
+        "psr-4": {
+            "FOS\\OAuthServerBundle\\": ""
+        },
         "exclude-from-classmap": ["/Tests/"]
     },
     "config": {
@@ -58,7 +58,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }

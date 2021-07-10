@@ -43,7 +43,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 
     protected $storage;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)
             ->disableOriginalConstructor()
@@ -625,6 +625,11 @@ class User implements UserInterface
     }
 
     public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function getUserIdentifier()
     {
         return $this->username;
     }

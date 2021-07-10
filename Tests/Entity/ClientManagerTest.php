@@ -17,16 +17,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ClientManagerTest.
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class ClientManagerTest extends \PHPUnit\Framework\TestCase
+class ClientManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     protected $entityManager;
 
@@ -36,7 +38,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityRepository
+     * @var MockObject|EntityRepository
      */
     protected $repository;
 
@@ -45,7 +47,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()

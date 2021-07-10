@@ -31,7 +31,7 @@ class OAuthListenerTest extends TestCase
 
     protected $event;
 
-    public function setUp()
+    public function setUp():void
     {
         $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
