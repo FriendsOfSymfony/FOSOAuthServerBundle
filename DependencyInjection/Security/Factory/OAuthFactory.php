@@ -58,7 +58,8 @@ class OAuthFactory implements SecurityFactoryInterface, AuthenticatorFactoryInte
         $container
             ->setDefinition('security.listener.user_checker.'.$firewallName, new ChildDefinition('security.listener.user_checker'))
             ->replaceArgument(0, new Reference('security.user_checker.'.$firewallName))
-            ->addTag('kernel.event_subscriber', ['dispatcher' => $firewallEventDispatcherId]);
+            ->addTag('kernel.event_subscriber', ['dispatcher' => $firewallEventDispatcherId])
+        ;
 
         // Add authenticators to the debug:firewall command
         if ($container->hasDefinition('security.command.debug_firewall')) {
