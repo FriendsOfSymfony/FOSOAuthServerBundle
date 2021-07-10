@@ -29,8 +29,7 @@ class CleanCommand extends Command
         TokenManagerInterface $accessTokenManager,
         TokenManagerInterface $refreshTokenManager,
         AuthCodeManagerInterface $authCodeManager
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->accessTokenManager = $accessTokenManager;
