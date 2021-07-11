@@ -75,14 +75,14 @@ class TokenManagerTest extends TestCase
         $this->instance = new TokenManager($this->entityManager, $this->className);
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
         $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
         $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = new AccessToken();
 
@@ -101,12 +101,12 @@ class TokenManagerTest extends TestCase
         $this->assertNull($this->instance->updateToken($token));
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindTokenBy()
+    public function testFindTokenBy(): void
     {
         $randomResult = \random_bytes(5);
 
@@ -124,7 +124,7 @@ class TokenManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findTokenBy($criteria));
     }
 
-    public function testUpdateToken()
+    public function testUpdateToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -148,7 +148,7 @@ class TokenManagerTest extends TestCase
         $this->assertNull($this->instance->updateToken($token));
     }
 
-    public function testDeleteToken()
+    public function testDeleteToken(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -172,7 +172,7 @@ class TokenManagerTest extends TestCase
         $this->assertNull($this->instance->deleteToken($token));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $randomResult = \random_bytes(10);
 

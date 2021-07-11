@@ -77,7 +77,7 @@ class TokenManagerTest extends TestCase
         $this->instance = new TokenManager($this->documentManager, $this->className);
     }
 
-    public function testFindTokenByToken()
+    public function testFindTokenByToken(): void
     {
         $randomToken = \random_bytes(5);
         $randomResult = \random_bytes(5);
@@ -94,7 +94,7 @@ class TokenManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()

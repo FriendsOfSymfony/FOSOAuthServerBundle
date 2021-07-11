@@ -40,7 +40,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testProcessWillNotDoAnythingIfTheStorageDoesNotImplementOurInterface()
+    public function testProcessWillNotDoAnythingIfTheStorageDoesNotImplementOurInterface(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -93,7 +93,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->process($container));
     }
 
-    public function testProcessWillFailIfUriIsEmpty()
+    public function testProcessWillFailIfUriIsEmpty(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
@@ -197,7 +197,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->process($container));
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()

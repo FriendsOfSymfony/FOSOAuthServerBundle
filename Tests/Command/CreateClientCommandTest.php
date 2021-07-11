@@ -54,7 +54,7 @@ class CreateClientCommandTest extends TestCase
      *
      * @param string $client a fully qualified class name
      */
-    public function testItShouldCreateClient($client)
+    public function testItShouldCreateClient($client): void
     {
         $this
             ->clientManager

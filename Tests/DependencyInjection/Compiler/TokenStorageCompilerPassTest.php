@@ -52,7 +52,7 @@ class TokenStorageCompilerPassTest extends TestCase
         parent::setUp();
     }
 
-    public function testProcessWithExistingTokenStorage()
+    public function testProcessWithExistingTokenStorage(): void
     {
         $authenticationListenerDefinition = $this->getMockBuilder(Definition::class)
             ->disableOriginalConstructor()
@@ -76,7 +76,7 @@ class TokenStorageCompilerPassTest extends TestCase
         $this->assertNull($this->instance->process($this->container));
     }
 
-    public function testProcessWithoutExistingTokenStorage()
+    public function testProcessWithoutExistingTokenStorage(): void
     {
         $authenticationListenerDefinition = $this->getMockBuilder(Definition::class)
             ->disableOriginalConstructor()

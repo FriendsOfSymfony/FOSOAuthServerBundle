@@ -79,18 +79,18 @@ class AuthCodeManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
         $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
-    public function testGetClassWillReturnClassName()
+    public function testGetClassWillReturnClassName(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindAuthCodeBy()
+    public function testFindAuthCodeBy(): void
     {
         $randomResult = \random_bytes(10);
         $criteria = [
@@ -107,7 +107,7 @@ class AuthCodeManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
     }
 
-    public function testUpdateAuthCode()
+    public function testUpdateAuthCode(): void
     {
         $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
@@ -131,7 +131,7 @@ class AuthCodeManagerTest extends TestCase
         $this->assertNull($this->instance->updateAuthCode($authCode));
     }
 
-    public function testDeleteAuthCode()
+    public function testDeleteAuthCode(): void
     {
         $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
@@ -155,7 +155,7 @@ class AuthCodeManagerTest extends TestCase
         $this->assertNull($this->instance->deleteAuthCode($authCode));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $queryBuilder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()

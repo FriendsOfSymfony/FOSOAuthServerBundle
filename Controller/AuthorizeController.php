@@ -205,9 +205,7 @@ class AuthorizeController
             return $this->client;
         }
 
-        if (null === $request = $this->getCurrentRequest()) {
-            throw new NotFoundHttpException('Client not found.');
-        }
+        $request = $this->getCurrentRequest();
 
         if (null === $clientId = $request->get('client_id')) {
             $formData = $request->get($this->authorizeForm->getName(), []);
@@ -224,6 +222,7 @@ class AuthorizeController
     }
 
     /**
+     * @param array<string , mixed> $data Various data to be passed to the twig template
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -235,10 +234,10 @@ class AuthorizeController
             $data
         );
 
-        return $response instanceof Response ? $response : new Response($response);
+        return new Response($response);
     }
 
-    private function getCurrentRequest(): ?Request
+    private function getCurrentRequest(): Request
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {

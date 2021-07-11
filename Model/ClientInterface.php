@@ -19,17 +19,17 @@ interface ClientInterface extends IOAuth2Client
 {
     public function setRandomId(string $random);
 
-    public function getRandomId(): string;
+    public function getRandomId(): ?string;
 
     public function setSecret(string $secret);
 
     public function checkSecret(string $secret): bool;
 
-    public function getSecret(): string;
+    public function getSecret(): ?string;
 
     public function setRedirectUris(array $redirectUris);
 
     public function setAllowedGrantTypes(array $grantTypes);
 
-    public function getAllowedGrantTypes(): array;
+    public function getAllowedGrantTypes(): ?array;
 }
