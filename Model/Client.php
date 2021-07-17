@@ -135,4 +135,34 @@ class Client implements ClientInterface
     {
         return $this->allowedGrantTypes;
     }
+
+    public function getRoles()
+    {
+        return [ 'ROLE_USER' ];
+    }
+
+    public function getPassword()
+    {
+        return $this->getSecret();
+    }
+
+    public function getSalt()
+    {
+        // Will use auto salt system
+    }
+
+    public function eraseCredentials()
+    {
+        // nothind to erase
+    }
+
+    public function getUsername()
+    {
+        return $this->getRandomId();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getRandomId();
+    }
 }

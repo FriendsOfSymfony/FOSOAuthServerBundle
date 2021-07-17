@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": "^7.2.5|^8.0",
-        "friendsofsymfony/oauth2-php": "~1.1",
+        "klapaudius/oauth2-php": "~1.4",
         "symfony/dependency-injection": "~5.3",
         "symfony/framework-bundle": "~5.3",
         "symfony/security-bundle": "~5.3",
