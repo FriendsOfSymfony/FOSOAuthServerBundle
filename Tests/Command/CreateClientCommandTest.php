@@ -54,7 +54,7 @@ class CreateClientCommandTest extends TestCase
      *
      * @param string $client a fully qualified class name
      */
-    public function testItShouldCreateClient($client)
+    public function testItShouldCreateClient($client): void
     {
         $this
             ->clientManager
@@ -93,7 +93,7 @@ class CreateClientCommandTest extends TestCase
         return [
             ['FOS\OAuthServerBundle\Document\Client'],
             ['FOS\OAuthServerBundle\Entity\Client'],
-            ['FOS\OAuthServerBundle\Model\Client']
+            ['FOS\OAuthServerBundle\Model\Client'],
         ];
     }
 }

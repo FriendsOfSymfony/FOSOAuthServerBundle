@@ -52,30 +52,30 @@ class OAuthFactoryTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetPosition()
+    public function testGetPosition(): void
     {
         $this->assertSame('pre_auth', $this->instance->getPosition());
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         $this->assertSame('fos_oauth', $this->instance->getKey());
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         if (class_exists($this->childDefinitionClass)) {
-            return $this->useChildDefinition();
+            $this->useChildDefinition();
         }
 
         if (class_exists($this->definitionDecoratorClass)) {
-            return $this->useDefinitionDecorator();
+            $this->useDefinitionDecorator();
         }
 
         throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
     }
 
-    public function testAddConfigurationDoesNothing()
+    public function testAddConfigurationDoesNothing(): void
     {
         $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
             ->disableOriginalConstructor()
@@ -136,7 +136,7 @@ class OAuthFactoryTest extends TestCase
         ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
     }
 
-    protected function useChildDefinition()
+    protected function useChildDefinition(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()

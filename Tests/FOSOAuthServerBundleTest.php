@@ -26,7 +26,7 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstruction()
+    public function testConstruction(): void
     {
         $bundle = new FOSOAuthServerBundle();
 

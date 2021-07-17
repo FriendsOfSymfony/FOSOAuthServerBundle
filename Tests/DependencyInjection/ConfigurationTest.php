@@ -22,14 +22,14 @@ use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
-    public function testShouldImplementConfigurationInterface()
+    public function testShouldImplementConfigurationInterface(): void
     {
         $rc = new ReflectionClass(Configuration::class);
 
         $this->assertTrue($rc->implementsInterface(ConfigurationInterface::class));
     }
 
-    public function testCouldBeConstructedWithoutAnyArguments()
+    public function testCouldBeConstructedWithoutAnyArguments(): void
     {
         try {
             new Configuration();
@@ -41,7 +41,7 @@ class ConfigurationTest extends TestCase
         }
     }
 
-    public function testShouldNotMandatoryServiceIfNotCustomDriverIsUsed()
+    public function testShouldNotMandatoryServiceIfNotCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -76,7 +76,7 @@ class ConfigurationTest extends TestCase
         }
     }
 
-    public function testShouldMakeClientManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeClientManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -93,7 +93,7 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
-    public function testShouldMakeAccessTokenManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeAccessTokenManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -113,7 +113,7 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
-    public function testShouldMakeRefreshTokenManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeRefreshTokenManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -134,7 +134,7 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
-    public function testShouldMakeAuthCodeManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeAuthCodeManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -156,7 +156,7 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
-    public function testShouldLoadCustomDriverConfig()
+    public function testShouldLoadCustomDriverConfig(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -189,7 +189,7 @@ class ConfigurationTest extends TestCase
                 'storage' => 'fos_oauth_server.storage.default',
                 'user_provider' => null,
                 'options' => [],
-            ]
+            ],
         ];
 
         foreach ($expected as $key => $value) {

@@ -15,8 +15,8 @@ namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -77,7 +77,7 @@ class TokenManagerTest extends TestCase
         $this->instance = new TokenManager($this->documentManager, $this->className);
     }
 
-    public function testFindTokenByToken()
+    public function testFindTokenByToken(): void
     {
         $randomToken = \random_bytes(5);
         $randomResult = \random_bytes(5);
@@ -94,7 +94,7 @@ class TokenManagerTest extends TestCase
         $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()

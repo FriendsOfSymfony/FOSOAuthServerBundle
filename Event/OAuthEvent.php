@@ -40,9 +40,6 @@ class OAuthEvent extends Event
 
     /**
      * OAuthEvent constructor.
-     * @param UserInterface $user
-     * @param ClientInterface $client
-     * @param bool $isAuthorizedClient
      */
     public function __construct(UserInterface $user, ClientInterface $client, bool $isAuthorizedClient = false)
     {

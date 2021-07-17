@@ -71,7 +71,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getExpiresAt()
+    public function getExpiresAt(): int
     {
         return $this->expiresAt;
     }
@@ -143,7 +143,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getUser()
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }

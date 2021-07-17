@@ -17,18 +17,31 @@ use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use FOS\OAuthServerBundle\Security\Firewall\OAuthListener;
 use FOS\OAuthServerBundle\Tests\TestCase;
 use OAuth2\OAuth2;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 
 class OAuthListenerTest extends TestCase
 {
+    /**
+     * @var OAuth2|MockObject
+     */
     protected $serverService;
 
+    /**
+     * @var MockObject|AuthenticationManagerInterface
+     */
     protected $authManager;
 
+    /**
+     * @var MockObject
+     */
     protected $securityContext;
 
+    /**
+     * @var MockObject|RequestEvent
+     */
     protected $event;
 
     public function setUp(): void
@@ -64,7 +77,7 @@ class OAuthListenerTest extends TestCase
         ;
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 
@@ -93,7 +106,7 @@ class OAuthListenerTest extends TestCase
         $this->assertSame('a-token', $token->getToken());
     }
 
-    public function testHandleResponse()
+    public function testHandleResponse(): void
     {
         $listener = new OAuthListener($this->securityContext, $this->authManager, $this->serverService);
 

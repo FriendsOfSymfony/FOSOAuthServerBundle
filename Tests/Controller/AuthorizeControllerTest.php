@@ -219,7 +219,7 @@ class AuthorizeControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function testAuthorizeActionWillThrowAccessDeniedException()
+    public function testAuthorizeActionWillThrowAccessDeniedException(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -244,7 +244,7 @@ class AuthorizeControllerTest extends TestCase
         $this->instance->authorizeAction($this->request);
     }
 
-    public function testAuthorizeActionWillRenderTemplate()
+    public function testAuthorizeActionWillRenderTemplate(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -319,7 +319,7 @@ class AuthorizeControllerTest extends TestCase
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
-    public function testAuthorizeActionWillFinishClientAuthorization()
+    public function testAuthorizeActionWillFinishClientAuthorization(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -389,7 +389,7 @@ class AuthorizeControllerTest extends TestCase
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
-    public function testAuthorizeActionWillEnsureLogout()
+    public function testAuthorizeActionWillEnsureLogout(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -478,7 +478,7 @@ class AuthorizeControllerTest extends TestCase
         $this->assertSame($response, $this->instance->authorizeAction($this->request));
     }
 
-    public function testAuthorizeActionWillProcessAuthorizationForm()
+    public function testAuthorizeActionWillProcessAuthorizationForm(): void
     {
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()

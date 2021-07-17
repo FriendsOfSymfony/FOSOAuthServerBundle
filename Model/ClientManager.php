@@ -18,7 +18,7 @@ abstract class ClientManager implements ClientManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function createClient()
+    public function createClient(): ClientInterface
     {
         $class = $this->getClass();
 
@@ -28,7 +28,7 @@ abstract class ClientManager implements ClientManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findClientByPublicId($publicId)
+    public function findClientByPublicId($publicId): ?ClientInterface
     {
         if (false === $pos = mb_strpos($publicId, '_')) {
             return null;

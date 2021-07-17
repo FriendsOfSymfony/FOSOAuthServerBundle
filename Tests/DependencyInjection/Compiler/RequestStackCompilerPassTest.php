@@ -51,7 +51,7 @@ class RequestStackCompilerPassTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testProcessWithoutRequestStackDoesNothing()
+    public function testProcessWithoutRequestStackDoesNothing(): void
     {
         $this->container
             ->expects($this->once())
@@ -63,7 +63,7 @@ class RequestStackCompilerPassTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->process($this->container));
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $this->container
             ->expects($this->once())
