@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\DependencyInjection\Security\Factory;
 
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -24,8 +25,24 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuthFactory implements SecurityFactoryInterface
+class OAuthFactory implements AuthenticatorFactoryInterface, SecurityFactoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function createAuthenticator(ContainerBuilder $container, string $id, array $config, string $userProviderId)
+    {
+        $providerId = 'fos_oauth_server.security.authentication.provider.'.$id;
+        $container
+            ->setDefinition($providerId, new ChildDefinition('fos_oauth_server.security.authentication.provider'))
+            ->replaceArgument(0, new Reference($userProviderId))
+            ->replaceArgument(1, new Reference('security.user_checker.'.$id))
+            ->replaceArgument(2, $id)
+        ;
+
+        return $providerId;
+    }
+
     /**
      * {@inheritdoc}
      */

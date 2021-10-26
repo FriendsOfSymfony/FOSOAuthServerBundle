@@ -113,6 +113,64 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
     }
 
+    public function testCreateAuthenticator(): void
+    {
+        $container = $this->getMockBuilder(ContainerBuilder::class)
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'setDefinition',
+            ])
+            ->getMock()
+        ;
+        $id = '12';
+        $config = [];
+        $userProvider = 'mock.user.provider.service';
+
+        $definition = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $container
+            ->expects($this->once())
+            ->method('setDefinition')
+            ->with(
+                'fos_oauth_server.security.authentication.provider.'.$id,
+                new ChildDefinition('fos_oauth_server.security.authentication.provider')
+            )
+            ->will($this->returnValue($definition))
+        ;
+
+        $definition
+            ->expects($this->exactly(3))
+            ->method('replaceArgument')
+            ->withConsecutive(
+                [
+                    0,
+                    new Reference($userProvider),
+                ],
+                [
+                    1,
+                    new Reference('security.user_checker.'.$id),
+                ],
+                [
+                    2,
+                    $id,
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $definition,
+                $definition,
+                $definition
+            )
+        ;
+
+        $this->assertSame(
+            'fos_oauth_server.security.authentication.provider.'.$id,
+            $this->instance->createAuthenticator($container, $id, $config, $userProvider)
+        );
+    }
+
     public function testAddConfigurationDoesNothing(): void
     {
         $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
