@@ -124,7 +124,6 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ;
         $id = '12';
         $config = [];
-        $userProvider = 'mock.user.provider.service';
 
         $definition = $this->getMockBuilder(Definition::class)
             ->disableOriginalConstructor()
@@ -135,8 +134,8 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('setDefinition')
             ->with(
-                'fos_oauth_server.security.authentication.provider.'.$id,
-                new ChildDefinition('fos_oauth_server.security.authentication.provider')
+                'fos_oauth_server.security.authentication.authenticator.'.$id,
+                new ChildDefinition('fos_oauth_server.security.authentication.authenticator')
             )
             ->will($this->returnValue($definition))
         ;
@@ -147,15 +146,15 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
             ->withConsecutive(
                 [
                     0,
-                    new Reference($userProvider),
+                    new Reference('fos_oauth_server.server'),
                 ],
                 [
                     1,
-                    new Reference('security.user_checker.'.$id),
+                    new Reference('security.token_storage'),
                 ],
                 [
                     2,
-                    $id,
+                    new Reference('security.user_checker.'.$id),
                 ]
             )
             ->willReturnOnConsecutiveCalls(
@@ -166,8 +165,8 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->assertSame(
-            'fos_oauth_server.security.authentication.provider.'.$id,
-            $this->instance->createAuthenticator($container, $id, $config, $userProvider)
+            'fos_oauth_server.security.authentication.authenticator.'.$id,
+            $this->instance->createAuthenticator($container, $id, $config, 'ignored.user.provider.service')
         );
     }
 

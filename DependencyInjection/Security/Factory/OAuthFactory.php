@@ -32,12 +32,12 @@ class OAuthFactory implements AuthenticatorFactoryInterface, SecurityFactoryInte
      */
     public function createAuthenticator(ContainerBuilder $container, string $id, array $config, string $userProviderId)
     {
-        $providerId = 'fos_oauth_server.security.authentication.provider.'.$id;
+        $providerId = 'fos_oauth_server.security.authentication.authenticator.'.$id;
         $container
-            ->setDefinition($providerId, new ChildDefinition('fos_oauth_server.security.authentication.provider'))
-            ->replaceArgument(0, new Reference($userProviderId))
-            ->replaceArgument(1, new Reference('security.user_checker.'.$id))
-            ->replaceArgument(2, $id)
+            ->setDefinition($providerId, new ChildDefinition('fos_oauth_server.security.authentication.authenticator'))
+            ->replaceArgument(0, new Reference('fos_oauth_server.server'))
+            ->replaceArgument(1, new Reference('security.token_storage'))
+            ->replaceArgument(2, new Reference('security.user_checker.'.$id))
         ;
 
         return $providerId;
