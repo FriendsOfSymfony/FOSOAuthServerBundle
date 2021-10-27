@@ -38,6 +38,7 @@ class OAuthFactory implements AuthenticatorFactoryInterface, SecurityFactoryInte
             ->replaceArgument(0, new Reference('fos_oauth_server.server'))
             ->replaceArgument(1, new Reference('security.token_storage'))
             ->replaceArgument(2, new Reference('security.user_checker.'.$id))
+            ->replaceArgument(3, new Reference($userProviderId))
         ;
 
         return $providerId;

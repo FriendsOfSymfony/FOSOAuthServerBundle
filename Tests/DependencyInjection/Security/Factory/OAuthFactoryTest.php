@@ -124,6 +124,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ;
         $id = '12';
         $config = [];
+        $userProviderId = 'mock.user.provider.service';
 
         $definition = $this->getMockBuilder(Definition::class)
             ->disableOriginalConstructor()
@@ -141,7 +142,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ;
 
         $definition
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(4))
             ->method('replaceArgument')
             ->withConsecutive(
                 [
@@ -155,9 +156,14 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
                 [
                     2,
                     new Reference('security.user_checker.'.$id),
+                ],
+                [
+                    3,
+                    new Reference($userProviderId),
                 ]
             )
             ->willReturnOnConsecutiveCalls(
+                $definition,
                 $definition,
                 $definition,
                 $definition
@@ -166,7 +172,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame(
             'fos_oauth_server.security.authentication.authenticator.'.$id,
-            $this->instance->createAuthenticator($container, $id, $config, 'ignored.user.provider.service')
+            $this->instance->createAuthenticator($container, $id, $config, $userProviderId)
         );
     }
 
