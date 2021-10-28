@@ -21,7 +21,6 @@ use OAuth2\OAuth2;
 use OAuth2\OAuth2AuthenticateException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CredentialsExpiredException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
@@ -43,11 +42,6 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
      * @var \PHPUnit\Framework\MockObject\MockObject|OAuth2
      */
     protected $serverService;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|TokenStorageInterface
-     */
-    protected $tokenStorage;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|User
@@ -75,7 +69,6 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
             ])
             ->getMock()
         ;
-        $this->tokenStorage = $this->getMockBuilder(TokenStorageInterface::class)->disableOriginalConstructor()->getMock();
         $this->userChecker = $this->getMockBuilder(UserCheckerInterface::class)->disableOriginalConstructor()->getMock();
         $this->userProvider = $this->getMockBuilder(UserProviderInterface::class)->disableOriginalConstructor()->getMock();
 
@@ -85,7 +78,6 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
         $this->authenticator = new OAuthAuthenticator(
             $this->serverService,
-            $this->tokenStorage,
             $this->userChecker,
             $this->userProvider
         );
@@ -261,12 +253,6 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $this->user->expects($this->once())
             ->method('getRoles')
             ->will($this->returnValue(['ROLE_USER']))
-        ;
-
-        // expect a new authenticated token to be stored
-        $this->tokenStorage->expects($this->once())
-            ->method('setToken')
-            ->with($this->isInstanceOf(OAuthToken::class))
         ;
 
         // configure the passport

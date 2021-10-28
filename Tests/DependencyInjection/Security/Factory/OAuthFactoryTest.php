@@ -142,7 +142,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ;
 
         $definition
-            ->expects($this->exactly(4))
+            ->expects($this->exactly(3))
             ->method('replaceArgument')
             ->withConsecutive(
                 [
@@ -151,19 +151,14 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
                 ],
                 [
                     1,
-                    new Reference('security.token_storage'),
-                ],
-                [
-                    2,
                     new Reference('security.user_checker.'.$id),
                 ],
                 [
-                    3,
+                    2,
                     new Reference($userProviderId),
                 ]
             )
             ->willReturnOnConsecutiveCalls(
-                $definition,
                 $definition,
                 $definition,
                 $definition

@@ -14,7 +14,6 @@
     <services>
         <service id="fos_oauth_server.security.authentication.authenticator" class="%fos_oauth_server.security.authentication.authenticator.class%" public="false">
             <argument type="service" id="fos_oauth_server.server" />
-            <argument type="service" id="security.token_storage"/>
             <argument type="service" id="security.user_checker" />
             <argument /> <!-- user provider -->
         </service>

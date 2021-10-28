@@ -20,7 +20,6 @@ use OAuth2\OAuth2AuthenticateException;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -46,11 +45,6 @@ class OAuthAuthenticator implements AuthenticatorInterface
     protected $serverService;
 
     /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
      * @var UserCheckerInterface
      */
     protected $userChecker;
@@ -62,12 +56,10 @@ class OAuthAuthenticator implements AuthenticatorInterface
 
     public function __construct(
         OAuth2 $serverService,
-        TokenStorageInterface $tokenStorage,
         UserCheckerInterface $userChecker,
         UserProviderInterface $userProvider
     ) {
         $this->serverService = $serverService;
-        $this->tokenStorage = $tokenStorage;
         $this->userChecker = $userChecker;
         $this->userProvider = $userProvider;
     }
@@ -160,8 +152,6 @@ class OAuthAuthenticator implements AuthenticatorInterface
         $token->setAuthenticated(true);
         $token->setToken($credentials->getTokenString());
         $token->setUser($user);
-
-        $this->tokenStorage->setToken($token);
 
         return $token;
     }
