@@ -62,8 +62,12 @@ class OAuthCredentialsTest extends \PHPUnit\Framework\TestCase
 
         $credentials->markResolved();
 
+        // marking credentials as resolved should not change any other state,
+        // as the transported data is still needed for creating the
+        // authenticated token when the AuthenticatorManager progresses in
+        // executing the OAuthAuthenticator
         $this->assertTrue($credentials->isResolved());
-        $this->assertNull($credentials->getTokenString());
-        $this->assertSame([], $credentials->getRoles($this->user));
+        $this->assertSame('mock_token', $credentials->getTokenString());
+        $this->assertSame(['ROLE_SCOPE_1', 'ROLE_SCOPE_2'], $credentials->getRoles($this->user));
     }
 }

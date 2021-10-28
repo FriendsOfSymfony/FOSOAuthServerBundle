@@ -25,6 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -76,42 +77,42 @@ class OAuthAuthenticator implements AuthenticatorInterface
      */
     public function authenticate(Request $request): UserPassportInterface
     {
+        // remove the authorization header from the request on this check
+        $tokenString = $this->serverService->getBearerToken($request, true);
+        $accessToken = $scope = $user = $username = null;
+
         try {
-            $token = $this->tokenStorage->getToken();
-            $tokenString = $token->getToken();
-
             $accessToken = $this->serverService->verifyAccessToken($tokenString);
-
-            /** @var \Symfony\Component\Security\Core\User\UserInterface **/
+            $scope = $accessToken->getScope();
             $user = $accessToken->getUser();
-
-            if (null === $user) {
-                throw new AuthenticationException('OAuth2 authentication failed');
-            }
-
-            // check the user
-            try {
-                $this->userChecker->checkPreAuth($user);
-            } catch (AccountStatusException $e) {
-                throw new OAuth2AuthenticateException(
-                    Response::HTTP_UNAUTHORIZED,
-                    OAuth2::TOKEN_TYPE_BEARER,
-                    $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                    'access_denied',
-                    $e->getMessage()
-                );
-            }
-
-            return new Passport(
-                new UserBadge($user->getUsername()),
-                new OAuthCredentials($tokenString, $accessToken->getScope())
-            );
-        } catch (OAuth2ServerException $e) {
-            throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
+            // allow for dependency on deprecated getUsername method
+            $username = $user instanceof UserInterface
+                ? (method_exists($user, 'getUserIdentifier') ? $user->getUserIdentifier() : $user->getUsername())
+                : null
+            ;
+        } catch (OAuth2AuthenticateException $e) {
+            // do nothing - credentials will remain unresolved below
         }
 
-        // this should never be reached
-        throw new AuthenticationException('OAuth2 authentication failed');
+        // configure the passport badges, ensuring requisite string types
+        $userBadge = new UserBadge($username ?? '');
+        $credentials = new OAuthCredentials($tokenString ?? '', $scope ?? '');
+
+        // check the user if not null
+        if ($user instanceof UserInterface) {
+            try {
+                $this->userChecker->checkPreAuth($user);
+
+                // mark the credentials as resolved
+                $credentials->markResolved();
+            } catch (AccountStatusException $e) {
+                // do nothing - credentials remain unresolved
+            }
+        }
+
+        // passport will only be valid if all badges are resolved (user badge
+        // is always resolved, credentials badge if passing the above check)
+        return new Passport($userBadge, $credentials);
     }
 
     /**
@@ -160,7 +161,7 @@ class OAuthAuthenticator implements AuthenticatorInterface
         $token->setToken($credentials->getTokenString());
         $token->setUser($user);
 
-        $credentials->markResolved();
+        $this->tokenStorage->setToken($token);
 
         return $token;
     }
@@ -194,6 +195,9 @@ class OAuthAuthenticator implements AuthenticatorInterface
      */
     public function supports(Request $request): ?bool
     {
-        return $this->tokenStorage->getToken() instanceof OAuthToken;
+        // do not remove the authorization header from the request on this check
+        $tokenString = $this->serverService->getBearerToken($request);
+
+        return is_string($tokenString) && !empty($tokenString);
     }
 }

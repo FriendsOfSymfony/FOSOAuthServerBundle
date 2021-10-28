@@ -69,8 +69,6 @@ class OAuthCredentials implements CredentialsInterface
     public function markResolved(): void
     {
         $this->resolved = true;
-        $this->scope = null;
-        $this->tokenString = null;
     }
 
     public function isResolved(): bool

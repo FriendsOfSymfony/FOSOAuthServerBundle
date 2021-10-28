@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CredentialsExpiredException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
@@ -50,7 +50,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
     protected $tokenStorage;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UserInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|User
      */
     protected $user;
 
@@ -69,15 +69,19 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $this->serverService = $this->getMockBuilder(OAuth2::class)
             ->disableOriginalConstructor()
             ->setMethods([
+                'getBearerToken',
                 'getVariable',
-                'verifyAccessToken'
+                'verifyAccessToken',
             ])
             ->getMock()
         ;
         $this->tokenStorage = $this->getMockBuilder(TokenStorageInterface::class)->disableOriginalConstructor()->getMock();
-        $this->user = $this->getMockBuilder(UserInterface::class)->disableOriginalConstructor()->getMock();
         $this->userChecker = $this->getMockBuilder(UserCheckerInterface::class)->disableOriginalConstructor()->getMock();
         $this->userProvider = $this->getMockBuilder(UserProviderInterface::class)->disableOriginalConstructor()->getMock();
+
+        // mock the core user object rather than the user interface that the new
+        // getUserIdentifier method is used rather than the deprecated getUsername
+        $this->user = $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();
 
         $this->authenticator = new OAuthAuthenticator(
             $this->serverService,
@@ -89,12 +93,15 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
     public function testAuthenticateReturnsPassportIfValid(): void
     {
-        // expect a token from the token storage
-        $token = new OAuthToken();
-        $token->setToken('mock_token_string');
-        $this->tokenStorage->expects($this->once())
-            ->method('getToken')
-            ->will($this->returnValue($token))
+        // expect the OAuth2 service to get the token from the request header,
+        // flagging the authorization header to be removed at the same time
+        $this->serverService->expects($this->once())
+            ->method('getBearerToken')
+            ->with(
+                $this->isInstanceOf(Request::class),
+                $this->equalTo(true)
+            )
+            ->will($this->returnValue('mock_token_string'))
         ;
 
         // expect the OAuth2 service to verify the token, returning an access token
@@ -107,16 +114,16 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($accessToken))
         ;
 
+        // expect the username from the user
+        $this->user->expects($this->once())
+            ->method('getUserIdentifier')
+            ->will($this->returnValue('test_user'))
+        ;
+
         // expect the user checker to pass
         $this->userChecker->expects($this->once())
             ->method('checkPreAuth')
             ->with($this->user)
-        ;
-
-        // expect the username from the user
-        $this->user->expects($this->once())
-            ->method('getUsername')
-            ->will($this->returnValue('test_user'))
         ;
 
         $passport = $this->authenticator->authenticate(new Request());
@@ -128,16 +135,20 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('test_user', $passport->getBadge(UserBadge::class)->getUserIdentifier());
         $this->assertSame('mock_token_string', $passport->getBadge(OAuthCredentials::class)->getTokenString());
         $this->assertSame(['ROLE_SCOPE_1', 'ROLE_SCOPE_2'], $passport->getBadge(OAuthCredentials::class)->getRoles($this->user));
+        $this->assertTrue($passport->getBadge(OAuthCredentials::class)->isResolved());
     }
 
-    public function testAuthenticateReturnsTokenInvalidWhenNullData(): void
+    public function testAuthenticateReturnsUnresolvedPassportWhenNullUser(): void
     {
-        // expect a token from the token storage
-        $token = new OAuthToken();
-        $token->setToken('mock_token_string');
-        $this->tokenStorage->expects($this->once())
-            ->method('getToken')
-            ->will($this->returnValue($token))
+        // expect the OAuth2 service to get the token from the request header,
+        // flagging the authorization header to be removed at the same time
+        $this->serverService->expects($this->once())
+            ->method('getBearerToken')
+            ->with(
+                $this->isInstanceOf(Request::class),
+                $this->equalTo(true)
+            )
+            ->will($this->returnValue('mock_token_string'))
         ;
 
         // expect the OAuth2 service to verify the token, returning an access
@@ -149,26 +160,29 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($accessToken))
         ;
 
-        // expect an authentication exception
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('OAuth2 authentication failed');
+        // expect the null user value to not be processed
+        $this->userChecker->expects($this->never())->method('checkPreAuth');
 
-        $this->authenticator->authenticate(new Request());
+        $passport = $this->authenticator->authenticate(new Request());
+
+        // confirm that the returned passport won't pass validation
+        $this->assertFalse($passport->getBadge(OAuthCredentials::class)->isResolved());
     }
 
-    public function testAuthenticateTransformsOAuthServerException(): void
+    public function testAuthenticateReturnsUnresolvedPassportWhenInvalidToken(): void
     {
-        // expect a token from the token storage
-        $token = new OAuthToken();
-        $token->setToken('mock_token_string');
-        $this->tokenStorage->expects($this->once())
-            ->method('getToken')
-            ->will($this->returnValue($token))
+        // expect the OAuth2 service to get the token from the request header,
+        // flagging the authorization header to be removed at the same time
+        $this->serverService->expects($this->once())
+            ->method('getBearerToken')
+            ->with(
+                $this->isInstanceOf(Request::class),
+                $this->equalTo(true)
+            )
+            ->will($this->returnValue('mock_token_string'))
         ;
 
-        // expect the OAuth2 service to verify the token, returning an access
-        // token, but without a related user
-        $accessToken = new AccessToken();
+        // expect the OAuth2 service to not verify the token, throwing an exception
         $this->serverService->expects($this->once())
             ->method('verifyAccessToken')
             ->with('mock_token_string')
@@ -182,21 +196,26 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
             ))
         ;
 
-        // expect the thrown exception to be transformed into an authentication exception
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('OAuth2 authentication failed');
+        // expect the null user value to not be processed
+        $this->userChecker->expects($this->never())->method('checkPreAuth');
 
-        $this->authenticator->authenticate(new Request());
+        $passport = $this->authenticator->authenticate(new Request());
+
+        // confirm that the returned passport won't pass validation
+        $this->assertFalse($passport->getBadge(OAuthCredentials::class)->isResolved());
     }
 
     public function testAuthenticateTransformsAccountStatusException(): void
     {
-        // expect a token from the token storage
-        $token = new OAuthToken();
-        $token->setToken('mock_token_string');
-        $this->tokenStorage->expects($this->once())
-            ->method('getToken')
-            ->will($this->returnValue($token))
+        // expect the OAuth2 service to get the token from the request header,
+        // flagging the authorization header to be removed at the same time
+        $this->serverService->expects($this->once())
+            ->method('getBearerToken')
+            ->with(
+                $this->isInstanceOf(Request::class),
+                $this->equalTo(true)
+            )
+            ->will($this->returnValue('mock_token_string'))
         ;
 
         // expect the OAuth2 service to verify the token, returning an access token
@@ -216,11 +235,10 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
             ->willThrowException(new DisabledException('User account is disabled.'))
         ;
 
-        // expect the thrown exception to be transformed into an authentication exception
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('OAuth2 authentication failed');
+        $passport = $this->authenticator->authenticate(new Request());
 
-        $this->authenticator->authenticate(new Request());
+        // confirm that the returned passport won't pass validation
+        $this->assertFalse($passport->getBadge(OAuthCredentials::class)->isResolved());
     }
 
     public function testCreateAuthenticatedTokenWithValidPassport(): void
@@ -243,6 +261,12 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $this->user->expects($this->once())
             ->method('getRoles')
             ->will($this->returnValue(['ROLE_USER']))
+        ;
+
+        // expect a new authenticated token to be stored
+        $this->tokenStorage->expects($this->once())
+            ->method('setToken')
+            ->with($this->isInstanceOf(OAuthToken::class))
         ;
 
         // configure the passport
