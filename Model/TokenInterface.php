@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface TokenInterface extends IOAuth2Token
 {
-    public function setExpiresAt($timestamp);
+    public function setExpiresAt(int $timestamp);
 
     public function getExpiresAt(): int;
 

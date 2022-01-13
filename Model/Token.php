@@ -35,17 +35,17 @@ class Token implements TokenInterface
     /**
      * @var int
      */
-    protected $expiresAt;
+    protected int $expiresAt;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $scope;
+    protected ?string $scope = null;
 
     /**
      * @var UserInterface
      */
-    protected $user;
+    protected ?UserInterface $user = null;
 
     public function getId()
     {
@@ -63,7 +63,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function setExpiresAt($timestamp)
+    public function setExpiresAt( int $timestamp)
     {
         $this->expiresAt = $timestamp;
     }
@@ -103,7 +103,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function setToken($token)
+    public function setToken(string $token)
     {
         $this->token = $token;
     }
@@ -119,7 +119,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function setScope($scope)
+    public function setScope(?string $scope)
     {
         $this->scope = $scope;
     }
@@ -135,7 +135,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function setUser(UserInterface $user)
+    public function setUser(?UserInterface $user)
     {
         $this->user = $user;
     }

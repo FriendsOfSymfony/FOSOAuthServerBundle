@@ -40,37 +40,37 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * @var ClientManagerInterface
      */
-    protected $clientManager;
+    protected ClientManagerInterface $clientManager;
 
     /**
      * @var AccessTokenManagerInterface
      */
-    protected $accessTokenManager;
+    protected AccessTokenManagerInterface $accessTokenManager;
 
     /**
      * @var RefreshTokenManagerInterface
      */
-    protected $refreshTokenManager;
+    protected RefreshTokenManagerInterface $refreshTokenManager;
 
     /**
      * @var AuthCodeManagerInterface;
      */
-    protected $authCodeManager;
+    protected AuthCodeManagerInterface $authCodeManager;
 
     /**
      * @var UserProviderInterface
      */
-    protected $userProvider;
+    protected UserProviderInterface $userProvider;
 
     /**
      * @var PasswordHasherFactoryInterface
      */
-    protected $passwordHasherFactory;
+    protected PasswordHasherFactoryInterface $passwordHasherFactory;
 
     /**
      * @var array [uri] => GrantExtensionInterface
      */
-    protected $grantExtensions;
+    protected array $grantExtensions = [];
 
     public function __construct(
         ClientManagerInterface $clientManager,
@@ -86,8 +86,6 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $this->authCodeManager = $authCodeManager;
         $this->userProvider = $userProvider;
         $this->passwordHasherFactory = $passwordHasherFactory;
-
-        $this->grantExtensions = [];
     }
 
     /**
@@ -103,7 +101,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $this->clientManager->findClientByPublicId($clientId);
     }
 
-    public function checkClientCredentials(IOAuth2Client $client, $client_secret = null)
+    public function checkClientCredentials(IOAuth2Client $client, $client_secret = null): bool
     {
         if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException('Client has to implement the ClientInterface');
@@ -112,7 +110,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $client->checkSecret($client_secret);
     }
 
-    public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret)
+    public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret): bool
     {
         return $this->checkClientCredentials($client, $client_secret);
     }
@@ -143,7 +141,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $token;
     }
 
-    public function checkRestrictedGrantType(IOAuth2Client $client, $grant_type)
+    public function checkRestrictedGrantType(IOAuth2Client $client, $grant_type): bool
     {
         if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException('Client has to implement the ClientInterface');
@@ -152,6 +150,12 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return in_array($grant_type, $client->getAllowedGrantTypes(), true);
     }
 
+    /**
+     * @param IOAuth2Client $client
+     * @param $username
+     * @param $password
+     * @return array|false
+     */
     public function checkUserCredentials(IOAuth2Client $client, $username, $password)
     {
         if (!$client instanceof ClientInterface) {
@@ -250,7 +254,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders)
+    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders): bool
     {
         if (!isset($this->grantExtensions[$uri])) {
             throw new OAuth2ServerException(Response::HTTP_BAD_REQUEST, OAuth2::ERROR_UNSUPPORTED_GRANT_TYPE);
