@@ -35,7 +35,7 @@ class FOSOAuthServerBundle extends Bundle
 
         /** @var SecurityExtension $extension */
         $extension = $container->getExtension('security');
-        $extension->addSecurityListenerFactory(new OAuthFactory());
+        $extension->addAuthenticatorFactory(new OAuthFactory());
 
         $container->addCompilerPass(new GrantExtensionsCompilerPass());
         $container->addCompilerPass(new TokenStorageCompilerPass());

@@ -30,7 +30,7 @@ class Token implements TokenInterface
     /**
      * @var string
      */
-    protected $token;
+    protected string $token;
 
     /**
      * @var int
@@ -55,7 +55,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getClientId()
+    public function getClientId(): string
     {
         return $this->getClient()->getPublicId();
     }
@@ -79,7 +79,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getExpiresIn()
+    public function getExpiresIn(): int
     {
         if ($this->expiresAt) {
             return $this->expiresAt - time();
@@ -91,7 +91,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function hasExpired()
+    public function hasExpired(): bool
     {
         if ($this->expiresAt) {
             return time() > $this->expiresAt;
@@ -111,7 +111,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -127,7 +127,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getScope()
+    public function getScope(): ?string
     {
         return $this->scope;
     }
@@ -150,6 +150,7 @@ class Token implements TokenInterface
 
     /**
      * {@inheritdoc}
+     * @return mixed
      */
     public function getData()
     {

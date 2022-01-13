@@ -26,22 +26,22 @@ class Client implements ClientInterface
     /**
      * @var string
      */
-    protected $randomId;
+    protected string $randomId;
 
     /**
      * @var string
      */
-    protected $secret;
+    protected string $secret;
 
     /**
      * @var array
      */
-    protected $redirectUris = [];
+    protected array $redirectUris = [];
 
     /**
      * @var array
      */
-    protected $allowedGrantTypes = [];
+    protected array $allowedGrantTypes = [];
 
     public function __construct()
     {
@@ -75,7 +75,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getPublicId()
+    public function getPublicId(): string
     {
         return sprintf('%s_%s', $this->getId(), $this->getRandomId());
     }
@@ -115,7 +115,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getRedirectUris()
+    public function getRedirectUris(): array
     {
         return $this->redirectUris;
     }
@@ -136,17 +136,17 @@ class Client implements ClientInterface
         return $this->allowedGrantTypes;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return [ 'ROLE_USER' ];
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->getSecret();
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         // Will use auto salt system
     }
@@ -156,7 +156,7 @@ class Client implements ClientInterface
         // nothind to erase
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->getRandomId();
     }
