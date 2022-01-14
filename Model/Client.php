@@ -24,14 +24,14 @@ class Client implements ClientInterface
     protected $id;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $randomId;
+    protected ?string $randomId = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $secret;
+    protected ?string $secret = null;
 
     /**
      * @var array
@@ -59,7 +59,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function setRandomId($random)
+    public function setRandomId( string $random )
     {
         $this->randomId = $random;
     }
@@ -67,7 +67,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getRandomId(): string
+    public function getRandomId(): ?string
     {
         return $this->randomId;
     }
@@ -91,7 +91,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getSecret(): string
+    public function getSecret(): ?string
     {
         return $this->secret;
     }

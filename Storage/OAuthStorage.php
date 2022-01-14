@@ -58,14 +58,14 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     protected AuthCodeManagerInterface $authCodeManager;
 
     /**
-     * @var UserProviderInterface
+     * @var UserProviderInterface|null
      */
-    protected UserProviderInterface $userProvider;
+    protected ?UserProviderInterface $userProvider;
 
     /**
-     * @var PasswordHasherFactoryInterface
+     * @var PasswordHasherFactoryInterface|null
      */
-    protected PasswordHasherFactoryInterface $passwordHasherFactory;
+    protected ?PasswordHasherFactoryInterface $passwordHasherFactory;
 
     /**
      * @var array [uri] => GrantExtensionInterface
