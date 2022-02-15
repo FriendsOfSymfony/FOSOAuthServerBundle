@@ -17,6 +17,7 @@ This changelog references the relevant changes done in 6.0 versions.
     - `OAuthEvent::PRE_AUTHORIZATION_PROCESS` => `FOS\OAuthServerBundle\Event\PreAuthorizationEvent`
     - `OAuthEvent::POST_AUTHORIZATION_PROCESS` => `FOS\OAuthServerBundle\Event\PostAuthorizationEvent`
 * **[BC break]** Removed support for templating engine [[#653](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/653)]
+* **[BC break]** Removed support for Propel [[#689](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/pull/689)]
 
 ### 2.0.0-ALPHA0 (2018-05-01)
 

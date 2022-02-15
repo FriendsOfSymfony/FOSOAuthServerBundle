@@ -39,20 +39,16 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "~0.9",
         "phpunit/phpunit": "^9.0",
-        "propel/propel1": "~1.6",
         "symfony/console": "^4.4 || ^5.1",
         "symfony/form": "^4.4 || ^5.1",
         "symfony/phpunit-bridge": "^4.4 || ^5.1",
-        "symfony/yaml": "^4.4 || ^5.1",
-        "willdurand/propel-typehintable-behavior": "~1.0"
+        "symfony/yaml": "^4.4 || ^5.1"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
-        "propel/propel-bundle": "If you want to use Propel with Symfony2, then you will have to install the PropelBundle",
         "symfony/console": "Needed to be able to use commands",
-        "symfony/form": "Needed to be able to use the AuthorizeFormType",
-        "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces"
+        "symfony/form": "Needed to be able to use the AuthorizeFormType"
     },
     "config": {
         "sort-packages": true
