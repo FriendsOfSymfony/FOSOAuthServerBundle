@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use FOS\OAuthServerBundle\Tests\CustomAssertions;
 
 /**
  * @group time-sensitive
@@ -30,6 +31,8 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
  */
 class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 {
+    use CustomAssertions;
+
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|EntityManagerInterface
      */

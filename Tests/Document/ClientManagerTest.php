@@ -17,6 +17,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Tests\CustomAssertions;
 
 /**
  * Class ClientManagerTest.
@@ -25,6 +26,8 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
  */
 class ClientManagerTest extends \PHPUnit\Framework\TestCase
 {
+    use CustomAssertions;
+
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|DocumentManager
      */

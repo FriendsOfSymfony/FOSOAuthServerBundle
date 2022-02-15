@@ -31,6 +31,7 @@
         "twig/twig": "<1.40 || >=2.0,<2.9"
     },
     "require-dev": {
+        "dms/phpunit-arraysubset-asserts": "^0.1 || ^0.2",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/mongodb-odm": "^2.2",
         "doctrine/orm": "~2.2",

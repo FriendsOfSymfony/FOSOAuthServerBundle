@@ -15,10 +15,11 @@ namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ORM\AbstractQuery;
 use FOS\OAuthServerBundle\Document\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use FOS\OAuthServerBundle\Tests\CustomAssertions;
 
 /**
  * @group time-sensitive
@@ -29,6 +30,8 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
  */
 class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 {
+    use CustomAssertions;
+
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|DocumentManager
      */
