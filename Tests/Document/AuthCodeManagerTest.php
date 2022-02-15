@@ -191,7 +191,8 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $collection = $this->createMock(Collection::class);
         $collection->expects(self::once())
             ->method('deleteMany')
-            ->willReturn($data);
+            ->willReturn($data)
+        ;
 
         $query = new Query(
             $this->documentManager,

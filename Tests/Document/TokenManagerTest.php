@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
@@ -187,7 +187,8 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $collection = $this->createMock(Collection::class);
         $collection->expects(self::once())
             ->method('deleteMany')
-            ->willReturn($data);
+            ->willReturn($data)
+        ;
 
         $query = new Query(
             $this->documentManager,
