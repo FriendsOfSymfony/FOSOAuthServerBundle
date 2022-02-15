@@ -40,6 +40,8 @@ jobs:
             - run: |
                 if [ "${{ matrix.dependencies }}" = "beta" ]; then make composer-config-beta; fi;
 
+            - run: 'composer req symfony/form doctrine/annotations'
+
             - uses: 'ramsey/composer-install@v2'
               with:
                   dependency-versions: '${{ matrix.dependencies }}'
