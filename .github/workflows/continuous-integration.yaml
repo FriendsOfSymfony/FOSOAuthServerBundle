@@ -14,7 +14,7 @@ jobs:
           php-version: '7.4'
           coverage: 'none'
           extensions: 'json, mbstring, tokenizer'
-          tools: 'phpstan'
+          tools: 'composer-normalize, php-cs-fixer:2.16.4'
         env:
           update: true
 
