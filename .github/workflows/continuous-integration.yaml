@@ -42,14 +42,13 @@ jobs:
           php-version: '7.4'
           coverage: 'none'
           extensions: 'json, mbstring, tokenizer'
-          tools: 'phpstan'
         env:
           update: true
 
       - name: 'Display tools versions'
-        run: 'phpstan --version'
+        run: 'vendor/bin/phpstan --version'
 
       - run: 'make composer-install'
 
       - name: 'Run PHPStan'
-        run: 'phpstan analyse --configuration phpstan.neon'
+        run: 'vendor/bin/phpstan analyse --configuration phpstan.neon'
