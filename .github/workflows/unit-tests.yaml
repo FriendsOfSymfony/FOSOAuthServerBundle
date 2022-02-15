@@ -1,0 +1,38 @@
+name: Unit Tests
+on:
+    pull_request:
+
+jobs:
+    unit-tests:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php:
+                    - '7.2'
+                    - '7.3'
+                    - '7.4'
+                    - '8.0'
+                    - '8.1'
+                include:
+                    - dependencies: beta
+        steps:
+            -   name: 'Checkout'
+                uses: 'actions/checkout@v2'
+
+            -   name: 'Setup PHP'
+                uses: 'shivammathur/setup-php@v2'
+                with:
+                    php-version: '${{ matrix.php }}'
+                    coverage: 'none'
+                    tools: 'composer:2'
+                    extensions: 'mongodb'
+                env:
+                    update: true
+
+            - run: 'make composer-compat'
+
+            - run: |
+                if [ "${{ matrix.dependencies }}" = "beta" ]; then make composer-config-beta; fi;
+
+            - run: make composer-install
+            - run: make ci
