@@ -15,6 +15,10 @@ jobs:
                     - '8.1'
                 include:
                     - dependencies: 'beta'
+                    - symfony_version: '4.4'
+                    - symfony_version: '5.1'
+        env:
+            SYMFONY_VERSION: '${{ matrix.symfony_version }}'
         steps:
             -   name: 'Checkout'
                 uses: 'actions/checkout@v2'
