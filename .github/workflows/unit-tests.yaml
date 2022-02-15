@@ -39,7 +39,7 @@ jobs:
             - run: |
                 if [ "${{ matrix.dependencies }}" = "beta" ]; then make composer-config-beta; fi;
 
-            - run: 'composer rem symfony/form -n --no-update && composer req symfony/form doctrine/annotations --no-update -n'
+            - run: 'composer rem symfony/form -n --no-update && composer req "symfony/form: ^4.4 || ^5.1" doctrine/annotations --no-update -n'
 
             - uses: 'ramsey/composer-install@v2'
               with:
