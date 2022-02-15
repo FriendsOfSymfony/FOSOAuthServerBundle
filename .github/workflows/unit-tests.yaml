@@ -15,8 +15,8 @@ jobs:
                     - '8.1'
                 include:
                     - dependencies: 'beta'
-                    - symfony_version: '4.4'
-                    - symfony_version: '5.1'
+                    - symfony_version: '^4.4'
+                    - symfony_version: '^5.1'
         env:
             SYMFONY_VERSION: '${{ matrix.symfony_version }}'
         steps:
@@ -38,5 +38,6 @@ jobs:
             - run: |
                 if [ "${{ matrix.dependencies }}" = "beta" ]; then make composer-config-beta; fi;
 
-            - run: 'make composer-install'
+            - name: 'Install Dependencies'
+              run: 'make composer-install'
             - run: 'make phpunit-coverage'
