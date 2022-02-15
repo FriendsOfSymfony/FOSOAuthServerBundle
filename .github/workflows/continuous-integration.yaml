@@ -14,7 +14,7 @@ jobs:
           php-version: '7.4'
           coverage: 'none'
           extensions: 'json, mbstring, tokenizer'
-          tools: 'composer-normalize, php-cs-fixer:2.16.4'
+          tools: 'phpstan'
         env:
           update: true
 
@@ -28,3 +28,28 @@ jobs:
 
       - name: 'Check composer.json'
         run: 'composer-normalize --diff --dry-run --no-update-lock'
+
+  cq:
+    runs-on: 'ubuntu-latest'
+    name: 'Code Quality'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v2'
+
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
+        with:
+          php-version: '7.4'
+          coverage: 'none'
+          extensions: 'json, mbstring, tokenizer'
+          tools: 'phpstan'
+        env:
+          update: true
+
+      - name: 'Display tools versions'
+        run: 'phpstan --version'
+
+      - run: 'make composer-install'
+
+      - name: 'Run PHPStan'
+        run: 'phpstan analyse --configuration phpstan.neon'

@@ -1,6 +1,9 @@
 includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
+    level: 6
+    paths:
+        - .
     autoload_files:
         - vendor/autoload.php
     excludes_analyse:
