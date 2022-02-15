@@ -93,7 +93,6 @@ class CreateClientCommandTest extends TestCase
             ['FOS\OAuthServerBundle\Document\Client'],
             ['FOS\OAuthServerBundle\Entity\Client'],
             ['FOS\OAuthServerBundle\Model\Client'],
-            ['FOS\OAuthServerBundle\Propel\Client'],
         ];
     }
 }

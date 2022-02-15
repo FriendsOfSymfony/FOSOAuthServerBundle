@@ -14,7 +14,7 @@ Assuming we have a _Many to Many_ relation between clients, and users. A `PreAut
 a `ClientInterface` instance, a `UserInterface` instance (coming from the [Security Component](http://symfony.com/doc/current/book/security.html)),
 and a flag to determine whether the client has been accepted, or not.
 
-The following class shows a Propel implementation of a basic listener:
+The following class shows an implementation of a basic listener:
 
 ``` php
 <?php

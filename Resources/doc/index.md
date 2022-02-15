@@ -237,47 +237,6 @@ class AuthCode extends BaseAuthCode
 __Note__: If you don't have `auto_mapping` activated in your doctrine configuration you need to add
 `FOSOAuthServerBundle` to your mappings in `config.yml`.
 
-#### Propel
-
-A `schema.xml` is provided with this bundle to generate Propel classes.
-You have to install the [TypehintableBehavior](https://github.com/willdurand/TypehintableBehavior) before to build your model.
-
-By using [Composer](http://getcomposer.org), you just have to add the following line in your `composer.json`:
-
-``` json
-{
-    "require": {
-        "willdurand/propel-typehintable-behavior": "*"
-    }
-}
-```
-
-By using Git submodules:
-
-    $ git submodule add http://github.com/willdurand/TypehintableBehavior.git vendor/willdurand/propel-typehintable-behavior
-
-By using the Symfony2 vendor management:
-
-```ini
-[TypehintableBehavior]
-    git=http://github.com/willdurand/TypehintableBehavior.git
-    target=/willdurand/propel-typehintable-behavior
-```
-
-Then, register it:
-
-```ini
-# app/config/propel.ini
-propel.behavior.typehintable.class = vendor.willdurand.propel-typehintable-behavior.src.TypehintableBehavior
-```
-
-You now can run the following command to create the model:
-
-    $ php app/console propel:model:build
-
-> To create SQL, run the command propel:sql:build and insert it or use migration commands if you have an existing schema in your database.
-
-
 #### Doctrine ODM classes
 ``` php
 <?php
@@ -536,23 +495,11 @@ Add FOSOAuthServerBundle settings in app/config/config.yml:
 ``` yaml
 # app/config/config.yml
 fos_oauth_server:
-    db_driver: orm       # Drivers available: orm, mongodb, or propel
+    db_driver: orm       # Drivers available: orm or mongodb
     client_class:        Acme\ApiBundle\Entity\Client
     access_token_class:  Acme\ApiBundle\Entity\AccessToken
     refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
     auth_code_class:     Acme\ApiBundle\Entity\AuthCode
-```
-
-With Propel for example, you can use the default classes:
-
-``` yaml
-# app/config/config.yml
-fos_oauth_server:
-    db_driver: propel
-    client_class:        FOS\OAuthServerBundle\Propel\Client
-    access_token_class:  FOS\OAuthServerBundle\Propel\AccessToken
-    refresh_token_class: FOS\OAuthServerBundle\Propel\RefreshToken
-    auth_code_class:     FOS\OAuthServerBundle\Propel\AuthCode
 ```
 
 If you're authenticating users, don't forget to set the user provider.
