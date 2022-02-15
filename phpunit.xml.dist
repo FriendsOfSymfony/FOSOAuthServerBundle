@@ -17,6 +17,10 @@
         </whitelist>
     </filter>
 
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=65&amp;max[self]=32&amp;max[direct]=14"/>
+    </php>
+
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
