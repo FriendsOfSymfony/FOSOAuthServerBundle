@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 
@@ -73,13 +73,6 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters(): void
-    {
-        $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
-    }
-
     public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -87,7 +80,7 @@ class ClientManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindClientBy(): void
     {
-        $randomResult = \random_bytes(5);
+        $randomResult = new \stdClass();
         $criteria = [
             \random_bytes(5),
         ];

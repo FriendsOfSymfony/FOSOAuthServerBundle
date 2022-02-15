@@ -1,5 +1,6 @@
 framework:
-    form: ~
+    form:
+        enabled: true
     secret: test
     router:
         resource: '%kernel.project_dir%/Tests/Functional/config/routing.yml'
