@@ -27,6 +27,7 @@ composer-config-beta:
 composer-install:
 	rm -f composer.lock && cp composer.json composer.json~
 	[[ -v SYMFONY_VERSION ]] && composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update || true
+	[[ -v SYMFONY_VERSION ]] && composer require "symfony/form:${SYMFONY_VERSION}" "doctrine/annotations" --no-update || true
 	composer update --prefer-dist --no-interaction
 	mv composer.json~ composer.json
 
