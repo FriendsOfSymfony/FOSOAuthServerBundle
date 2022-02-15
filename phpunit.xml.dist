@@ -18,7 +18,7 @@
     </filter>
 
     <php>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=65&amp;max[self]=32&amp;max[direct]=14"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=293&amp;max[self]=32&amp;max[direct]=36"/>
     </php>
 
     <listeners>
