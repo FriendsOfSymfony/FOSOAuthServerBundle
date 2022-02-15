@@ -161,7 +161,22 @@ parameters:
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$config with no typehint specified\\.$#"
+			count: 1
+			path: DependencyInjection/Security/Factory/OAuthFactory.php
+
+		-
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$defaultEntryPoint with no typehint specified\\.$#"
+			count: 1
+			path: DependencyInjection/Security/Factory/OAuthFactory.php
+
+		-
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			count: 1
+			path: DependencyInjection/Security/Factory/OAuthFactory.php
+
+		-
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$userProvider with no typehint specified\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
@@ -406,11 +421,6 @@ parameters:
 			path: FOSOAuthServerBundle.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:__construct\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
-			count: 1
-			path: Form/Handler/AuthorizeFormHandler.php
-
-		-
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:getCurrentRequest\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
@@ -441,11 +451,6 @@ parameters:
 			path: Form/Handler/AuthorizeFormHandler.php
 
 		-
-			message: "#^Property FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:\\$form type has no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
-			count: 1
-			path: Form/Handler/AuthorizeFormHandler.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
@@ -457,16 +462,6 @@ parameters:
 
 		-
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Type\\\\AuthorizeFormType\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Form/Type/AuthorizeFormType.php
-
-		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Type\\\\AuthorizeFormType\\:\\:buildForm\\(\\) has parameter \\$builder with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormBuilderInterface\\.$#"
-			count: 1
-			path: Form/Type/AuthorizeFormType.php
-
-		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Type\\\\AuthorizeFormType\\:\\:buildForm\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Form/Type/AuthorizeFormType.php
 
@@ -679,11 +674,6 @@ parameters:
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenManagerInterface\\:\\:updateToken\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: Model/TokenManagerInterface.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: Security/Authentication/Provider/OAuthProvider.php
 
 		-
 			message: "#^Parameter \\#1 \\$httpCode of class OAuth2\\\\OAuth2AuthenticateException constructor expects string, int given\\.$#"
@@ -921,11 +911,6 @@ parameters:
 			path: Tests/Form/Handler/AuthorizeFormHandlerTest.php
 
 		-
-			message: "#^Property FOS\\\\OAuthServerBundle\\\\Tests\\\\Form\\\\Handler\\\\AuthorizeFormHandlerTest\\:\\:\\$form type has no value type specified in iterable type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
-			count: 1
-			path: Tests/Form/Handler/AuthorizeFormHandlerTest.php
-
-		-
 			message: "#^Property Symfony\\\\Component\\\\HttpFoundation\\\\Request\\:\\:\\$query \\(Symfony\\\\Component\\\\HttpFoundation\\\\InputBag\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&Symfony\\\\Component\\\\HttpFoundation\\\\ParameterBag\\.$#"
 			count: 1
 			path: Tests/Form/Handler/AuthorizeFormHandlerTest.php
@@ -939,11 +924,6 @@ parameters:
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Tests\\\\Functional\\\\TestBundle\\\\Entity\\\\User\\:\\:getUsername\\(\\) should return string but returns int\\|null\\.$#"
 			count: 1
 			path: Tests/Functional/TestBundle/Entity/User.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string\\|Stringable\\|Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface will always evaluate to false\\.$#"
-			count: 3
-			path: Tests/Security/Authentication/Provider/OAuthProviderTest.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
