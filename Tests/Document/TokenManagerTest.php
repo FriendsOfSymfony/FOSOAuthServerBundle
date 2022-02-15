@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
+use MongoDB\Collection;
 
 /**
  * @group time-sensitive
@@ -178,10 +180,26 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->getMockBuilder(Query::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $data = [
+            'n' => \random_bytes(5),
+        ];
+
+        $collection = $this->createMock(Collection::class);
+        $collection->expects(self::once())
+            ->method('deleteMany')
+            ->willReturn($data);
+
+        $query = new Query(
+            $this->documentManager,
+            $this->createMock(ClassMetadata::class),
+            $collection,
+            [
+                'type' => Query::TYPE_REMOVE,
+                'query' => null,
+            ],
+            [],
+            false
+        );
 
         $queryBuilder
             ->expects($this->once())
@@ -190,17 +208,6 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
                 'safe' => true,
             ])
             ->willReturn($query)
-        ;
-
-        $data = [
-            'n' => \random_bytes(5),
-        ];
-
-        $query
-            ->expects($this->once())
-            ->method('execute')
-            ->with()
-            ->willReturn($data)
         ;
 
         $this->assertSame($data['n'], $this->instance->deleteExpired());
