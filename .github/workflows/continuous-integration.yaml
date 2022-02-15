@@ -45,10 +45,10 @@ jobs:
         env:
           update: true
 
+      - uses: 'ramsey/composer-install@v2'
+
       - name: 'Display tools versions'
         run: 'vendor/bin/phpstan --version'
-
-      - run: 'make composer-install'
 
       - name: 'Run PHPStan'
         run: 'vendor/bin/phpstan analyse --configuration phpstan.neon'
