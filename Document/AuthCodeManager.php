@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use FOS\OAuthServerBundle\Model\AuthCodeManager as BaseAuthCodeManager;
 
@@ -26,23 +25,13 @@ class AuthCodeManager extends BaseAuthCodeManager
     protected $dm;
 
     /**
-     * @var DocumentRepository
-     */
-    protected $repository;
-
-    /**
      * @var string
      */
     protected $class;
 
     public function __construct(DocumentManager $dm, $class)
     {
-        // NOTE: bug in Doctrine, hinting DocumentRepository|ObjectRepository when only DocumentRepository is expected
-        /** @var DocumentRepository $repository */
-        $repository = $dm->getRepository($class);
-
         $this->dm = $dm;
-        $this->repository = $repository;
         $this->class = $class;
     }
 
@@ -59,7 +48,7 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     public function findAuthCodeBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->dm->getRepository($this->class)->findOneBy($criteria);
     }
 
     /**
@@ -85,8 +74,10 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     public function deleteExpired()
     {
-        $result = $this
-            ->repository
+        /** @var \Doctrine\ODM\MongoDB\DocumentRepository $repository */
+        $repository = $this->dm->getRepository($this->class);
+
+        $result = $repository
             ->createQueryBuilder()
             ->remove()
             ->field('expiresAt')->lt(time())

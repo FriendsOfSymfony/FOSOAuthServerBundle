@@ -63,20 +63,12 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with($this->className)
-            ->willReturn($this->repository)
-        ;
-
         $this->instance = new TokenManager($this->entityManager, $this->className);
     }
 
     public function testConstructWillSetParameters(): void
     {
         $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
@@ -111,6 +103,13 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $criteria = [
             \random_bytes(5),
         ];
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
 
         $this->repository
             ->expects($this->once())
@@ -173,6 +172,13 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     public function testDeleteExpired(): void
     {
         $randomResult = \random_bytes(10);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with($this->className)
+            ->willReturn($this->repository)
+        ;
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
