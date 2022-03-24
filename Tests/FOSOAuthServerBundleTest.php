@@ -64,8 +64,8 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
             ->expects($this->at(1))
             ->method('addCompilerPass')
             ->withConsecutive(
-                new Compiler\GrantExtensionsCompilerPass(),
-                new Compiler\RequestStackCompilerPass()
+                [new Compiler\GrantExtensionsCompilerPass()],
+                [new Compiler\RequestStackCompilerPass()]
             )
             ->willReturnOnConsecutiveCalls(
                 $containerBuilder,

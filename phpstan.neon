@@ -1,18 +1,12 @@
 includes:
+    - phpstan-baseline.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
+    level: 6
+    paths:
+        - .
     autoload_files:
         - vendor/autoload.php
     excludes_analyse:
         - vendor/
 
-    ignoreErrors:
-        # temporary
-        - '#Parameter \#1 \$httpStatusCode of class OAuth2\\OAuth2ServerException constructor expects string, int given#'
-        - '#Parameter \#1 \$httpCode of class OAuth2\\OAuth2AuthenticateException constructor expects string, int given#'
-        # how to avoid excluding these?
-        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::scalarNode()#'
-        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::end()#'
-        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children().#'
-        # expected
-        - '#Parameter \#2 $requestStack of class FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler constructor expects Symfony\Component\HttpFoundation\Request|Symfony\Component\HttpFoundation\RequestStack|null, stdClass given.#'

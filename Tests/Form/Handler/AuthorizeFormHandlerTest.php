@@ -89,43 +89,6 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillAcceptRequestObjectAsRequest(): void
-    {
-        $request = $this->getMockBuilder(Request::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->instance = new AuthorizeFormHandler($this->form, $request);
-
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame($request, 'requestStack', $this->instance);
-    }
-
-    public function testConstructWillAcceptRequestStackObjectAsRequest(): void
-    {
-        $requestStack = $this->getMockBuilder(RequestStack::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
-
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame($requestStack, 'requestStack', $this->instance);
-    }
-
-    public function testConstructWillAcceptNullAsRequest(): void
-    {
-        $this->instance = new AuthorizeFormHandler($this->form, null);
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame(null, 'requestStack', $this->instance);
-
-        $this->instance = new AuthorizeFormHandler($this->form);
-        $this->assertAttributeSame($this->form, 'form', $this->instance);
-        $this->assertAttributeSame(null, 'requestStack', $this->instance);
-    }
-
     public function testConstructWillThrowException(): void
     {
         $exceptionMessage = sprintf(

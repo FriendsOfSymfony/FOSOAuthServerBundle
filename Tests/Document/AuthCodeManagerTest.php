@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\Query\Query;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use MongoDB\Collection;
 
 /**
  * @group time-sensitive
@@ -77,12 +79,6 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters(): void
-    {
-        $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
-    }
-
     public function testGetClassWillReturnClassName(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -90,7 +86,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testFindAuthCodeBy(): void
     {
-        $randomResult = \random_bytes(10);
+        $randomResult = new \stdClass();
         $criteria = [
             \random_bytes(10),
         ];
@@ -188,10 +184,27 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->getMockBuilder(AbstractQuery::class)
-            ->disableOriginalConstructor()
-            ->getMock()
+        $data = [
+            'n' => \random_bytes(10),
+        ];
+
+        $collection = $this->createMock(Collection::class);
+        $collection->expects(self::once())
+            ->method('deleteMany')
+            ->willReturn($data)
         ;
+
+        $query = new Query(
+            $this->documentManager,
+            $this->createMock(ClassMetadata::class),
+            $collection,
+            [
+                'type' => Query::TYPE_REMOVE,
+                'query' => null,
+            ],
+            [],
+            false
+        );
 
         $queryBuilder
             ->expects($this->once())
@@ -200,17 +213,6 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
                 'safe' => true,
             ])
             ->willReturn($query)
-        ;
-
-        $data = [
-            'n' => \random_bytes(10),
-        ];
-
-        $query
-            ->expects($this->once())
-            ->method('execute')
-            ->with()
-            ->willReturn($data)
         ;
 
         $this->assertSame($data['n'], $this->instance->deleteExpired());

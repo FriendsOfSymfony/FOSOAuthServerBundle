@@ -73,13 +73,6 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->instance = new TokenManager($this->entityManager, $this->className);
     }
 
-    public function testConstructWillSetParameters(): void
-    {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
-    }
-
     public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = new AccessToken();

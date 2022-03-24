@@ -28,3 +28,73 @@ jobs:
 
       - name: 'Check composer.json'
         run: 'composer-normalize --diff --dry-run --no-update-lock'
+
+  code-quality:
+    runs-on: 'ubuntu-latest'
+    name: 'Code Quality'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v2'
+
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
+        with:
+          php-version: '7.4'
+          coverage: 'none'
+          extensions: 'json, mbstring, tokenizer'
+        env:
+          update: true
+
+      - uses: 'ramsey/composer-install@v2'
+
+      - name: 'Display tools versions'
+        run: 'vendor/bin/phpstan --version'
+
+      - name: 'Run PHPStan'
+        run: 'vendor/bin/phpstan analyse --configuration phpstan.neon'
+
+  unit-tests:
+    runs-on: 'ubuntu-latest'
+    name: 'Unit Tests'
+    strategy:
+      matrix:
+        php:
+          - '7.2'
+          - '7.3'
+          - '7.4'
+          - '8.0'
+        dependencies:
+          - 'lowest'
+          - 'highest'
+          - 'beta'
+        include:
+          - dependencies: 'beta'
+    env:
+      SYMFONY_VERSION: '${{ matrix.symfony_version }}'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v2'
+
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: 'none'
+          tools: 'composer:2'
+          extensions: 'mongodb'
+        env:
+          update: true
+
+      - run: 'make composer-compat'
+
+      - run: |
+          if [ "${{ matrix.dependencies }}" = "beta" ]; then make composer-config-beta; fi;
+
+      - run: 'composer rem symfony/form -n --no-update && composer req "symfony/form: ^4.4 || ^5.1" doctrine/annotations --no-update -n'
+
+      - uses: 'ramsey/composer-install@v2'
+        with:
+          dependency-versions: '${{ matrix.dependencies }}'
+          composer-options: '${{ matrix.composer-options }}'
+
+      - run: 'make phpunit-coverage'

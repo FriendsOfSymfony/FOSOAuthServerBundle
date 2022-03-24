@@ -52,12 +52,24 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
             'auth_code_class' => 'anAuthCodeClass',
         ]]);
 
-        $this->assertArraySubset([
+        $this->assertSame([
             'db_driver' => 'orm',
             'client_class' => 'aClientClass',
             'access_token_class' => 'anAccessTokenClass',
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
+            'model_manager_name' => null,
+            'authorize' => [
+                'form' => [
+                    'type' => 'fos_oauth_server_authorize',
+                    'handler' => 'fos_oauth_server.authorize.form.handler.default',
+                    'name' => 'fos_oauth_server_authorize_form',
+                    'validation_groups' => [
+                        'Authorize',
+                        'Default',
+                    ],
+                ],
+            ],
             'service' => [
                 'storage' => 'fos_oauth_server.storage.default',
                 'user_provider' => null,
@@ -65,6 +77,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
                 'access_token_manager' => 'fos_oauth_server.access_token_manager.default',
                 'refresh_token_manager' => 'fos_oauth_server.refresh_token_manager.default',
                 'auth_code_manager' => 'fos_oauth_server.auth_code_manager.default',
+                'options' => [],
             ],
         ], $config);
     }
@@ -168,19 +181,32 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
             ],
         ]]);
 
-        $this->assertArraySubset([
+        $this->assertSame([
             'db_driver' => 'custom',
             'client_class' => 'aClientClass',
             'access_token_class' => 'anAccessTokenClass',
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
             'service' => [
-                'storage' => 'fos_oauth_server.storage.default',
-                'user_provider' => null,
                 'client_manager' => 'a_client_manager_id',
                 'access_token_manager' => 'an_access_token_manager_id',
                 'refresh_token_manager' => 'a_refresh_token_manager_id',
                 'auth_code_manager' => 'an_auth_code_manager_id',
+                'storage' => 'fos_oauth_server.storage.default',
+                'user_provider' => null,
+                'options' => [],
+            ],
+            'model_manager_name' => null,
+            'authorize' => [
+                'form' => [
+                    'type' => 'fos_oauth_server_authorize',
+                    'handler' => 'fos_oauth_server.authorize.form.handler.default',
+                    'name' => 'fos_oauth_server_authorize_form',
+                    'validation_groups' => [
+                        'Authorize',
+                        'Default',
+                    ],
+                ],
             ],
         ], $config);
     }

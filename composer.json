@@ -1,14 +1,13 @@
 {
     "name": "friendsofsymfony/oauth-server-bundle",
-    "type": "symfony-bundle",
     "description": "Symfony2 OAuth Server Bundle",
+    "license": "MIT",
+    "type": "symfony-bundle",
     "keywords": [
         "oauth",
         "oauth2",
         "server"
     ],
-    "homepage": "http://friendsofsymfony.github.com",
-    "license": "MIT",
     "authors": [
         {
             "name": "Arnaud Le Blanc",
@@ -19,6 +18,7 @@
             "homepage": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/contributors"
         }
     ],
+    "homepage": "http://friendsofsymfony.github.com",
     "require": {
         "php": "^7.2 || ^8.0",
         "friendsofsymfony/oauth2-php": "~1.1",
@@ -27,36 +27,30 @@
         "symfony/security-bundle": "^4.4 || ^5.1",
         "symfony/twig-bundle": "^4.4 || ^5.1"
     },
-    "conflict": {
-        "twig/twig": "<1.40 || >=2.0,<2.9"
-    },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/mongodb-odm": "^2.2",
         "doctrine/orm": "~2.2",
         "phing/phing": "~2.4",
-        "php-mock/php-mock-phpunit": "~1.0 || ~2.0",
+        "php-mock/php-mock-phpunit": "^2.5",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "~0.9",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^8.5.23 || ^9.0",
         "symfony/console": "^4.4 || ^5.1",
         "symfony/form": "^4.4 || ^5.1",
+        "symfony/http-kernel": "^4.4 || ^5.1",
         "symfony/phpunit-bridge": "^4.4 || ^5.1",
+        "symfony/security-core": "^4.4 || ^5.1",
         "symfony/yaml": "^4.4 || ^5.1"
+    },
+    "conflict": {
+        "twig/twig": "<1.40 || >=2.0,<2.9"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
         "doctrine/mongodb-odm-bundle": "*",
         "symfony/console": "Needed to be able to use commands",
         "symfony/form": "Needed to be able to use the AuthorizeFormType"
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0.x-dev"
-        }
     },
     "autoload": {
         "psr-4": {
@@ -65,5 +59,13 @@
         "exclude-from-classmap": [
             "/Tests/"
         ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
     }
 }
