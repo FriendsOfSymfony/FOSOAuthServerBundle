@@ -30,7 +30,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment as TwigEnvironment;
 
 /**
@@ -96,6 +99,11 @@ class AuthorizeController
     private $eventDispatcher;
 
     /**
+     * @var CsrfTokenManagerInterface
+     */
+    private $csrfTokenManager;
+
+    /**
      * This controller had been made as a service due to support symfony 4 where all* services are private by default.
      * Thus, this is considered a bad practice to fetch services directly from container.
      *
@@ -113,6 +121,7 @@ class AuthorizeController
         ClientManagerInterface $clientManager,
         EventDispatcherInterface $eventDispatcher,
         TwigEnvironment $twig,
+        CsrfTokenManagerInterface $csrfTokenManager,
         SessionInterface $session = null
     ) {
         $this->requestStack = $requestStack;
@@ -124,6 +133,7 @@ class AuthorizeController
         $this->router = $router;
         $this->clientManager = $clientManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->csrfTokenManager = $csrfTokenManager;
         $this->twig = $twig;
     }
 
@@ -134,17 +144,21 @@ class AuthorizeController
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
+        $form = $this->authorizeForm;
+        $formHandler = $this->authorizeFormHandler;
+
         if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
         if ($this->session && true === $this->session->get('_fos_oauth_server.ensure_logout')) {
+            $this->checkCsrfTokenBeforeInvalidingTheSession($form, $request);
+
             $this->session->invalidate(600);
             $this->session->set('_fos_oauth_server.ensure_logout', true);
-        }
 
-        $form = $this->authorizeForm;
-        $formHandler = $this->authorizeFormHandler;
+            $this->regenerateTokenForInvalidatedSession($form, $request);
+        }
 
         /** @var PreAuthorizationEvent $event */
         $event = $this->eventDispatcher->dispatch(new PreAuthorizationEvent($user, $this->getClient()));
@@ -216,7 +230,7 @@ class AuthorizeController
 
         if (null === $clientId = $request->get('client_id')) {
             $formData = $request->get($this->authorizeForm->getName(), []);
-            $clientId = isset($formData['client_id']) ? $formData['client_id'] : null;
+            $clientId = $formData['client_id'] ?? null;
         }
 
         $this->client = $this->clientManager->findClientByPublicId($clientId);
@@ -246,5 +260,68 @@ class AuthorizeController
         }
 
         return $request;
+    }
+
+    /**
+     * Validate if the current POST CSRF token is valid.
+     * We need to do this now as the session will be regenerated due to the `ensure_logout` parameter.
+     */
+    private function checkCsrfTokenBeforeInvalidingTheSession(Form $form, Request $request): void
+    {
+        if (!$request->isMethod('POST')) {
+            // no need to check the CSRF token if we are not on a POST request (ie. submitting the form)
+            return;
+        }
+
+        if (!$form->getConfig()->getOption('csrf_protection')) {
+            // no csrf security, no need to validate token
+            return;
+        }
+
+        $tokenFieldName = $form->getConfig()->getOption('csrf_field_name');
+        $tokenId = $form->getConfig()->getOption('csrf_token_id') ?? $form->getName();
+
+        $formData = $request->request->get($form->getName());
+        $tokenValue = $formData[$tokenFieldName] ?? null;
+
+        $token = new CsrfToken($tokenId, $tokenValue);
+
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException();
+        }
+    }
+
+    /**
+     * This method will inject a newly regenerated CSRF token into the actual form
+     * as Symfony's form manager will check this token upon the current session.
+     *
+     * As we have regenerate a session, we need to inject the newly generated token into
+     * the form data.
+     *
+     * It does bypass Symfony form CSRF protection, but the CSRF token is validated
+     * in the `checkCsrfTokenBeforeInvalidingTheSession` method
+     */
+    private function regenerateTokenForInvalidatedSession(Form $form, Request $request): void
+    {
+        if (!$request->isMethod('POST')) {
+            // no need to check the CSRF token if we are not on a POST request (ie. submitting the form)
+            return;
+        }
+
+        if (!$form->getConfig()->getOption('csrf_protection')) {
+            // no csrf security, no need to regenerate a valid token
+            return;
+        }
+
+        $tokenFieldName = $form->getConfig()->getOption('csrf_field_name');
+        $tokenId = $form->getConfig()->getOption('csrf_token_id') ?? $form->getName();
+
+        // regenerate a new token and replace the form data as Symfony's form manager will check this token.
+        // the request token has already been checked.
+        $newToken = $this->csrfTokenManager->refreshToken($tokenId);
+
+        $formData = $request->request->get($form->getName());
+        $formData[$tokenFieldName] = $newToken->getValue();
+        $request->request->set($form->getName(), $formData);
     }
 }

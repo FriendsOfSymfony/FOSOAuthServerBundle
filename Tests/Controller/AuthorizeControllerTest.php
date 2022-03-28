@@ -33,6 +33,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment as TwigEnvironment;
 
 class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
@@ -132,6 +133,11 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
      */
     protected $formView;
 
+    /**
+     * @var \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     */
+    protected $csrfTokenManager;
+
     public function setUp(): void
     {
         $this->requestStack = $this->getMockBuilder(RequestStack::class)
@@ -170,6 +176,10 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $this->csrfTokenManager = $this->getMockBuilder(CsrfTokenManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->session = $this->getMockBuilder(SessionInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -185,6 +195,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             $this->clientManager,
             $this->eventDispatcher,
             $this->twig,
+            $this->csrfTokenManager,
             $this->session
         );
 
