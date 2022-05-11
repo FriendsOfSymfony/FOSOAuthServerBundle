@@ -98,7 +98,6 @@ class Oauth2Authenticator extends AbstractAuthenticator
         /** @var AccessTokenBadge $accessTokenBadge */
         $accessTokenBadge = $passport->getBadge( AccessTokenBadge::class );
         $token = new OAuthToken( $accessTokenBadge->getRoles() );
-        $token->setAuthenticated(true);
         $token->setToken( $accessTokenBadge->getAccessToken()->getToken() );
 
         return $token;
