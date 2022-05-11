@@ -47,7 +47,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function setRandomId(string $random )
+    public function setRandomId(string $random)
     {
         $this->randomId = $random;
     }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Security\Authenticator;
 
-
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportTrait;
 
