@@ -37,34 +37,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode, IOAuth2GrantImplicit, IOAuth2GrantClient, IOAuth2GrantExtension, GrantExtensionDispatcherInterface
 {
-    /**
-     * @var ClientManagerInterface
-     */
     protected ClientManagerInterface $clientManager;
 
-    /**
-     * @var AccessTokenManagerInterface
-     */
     protected AccessTokenManagerInterface $accessTokenManager;
 
-    /**
-     * @var RefreshTokenManagerInterface
-     */
     protected RefreshTokenManagerInterface $refreshTokenManager;
 
-    /**
-     * @var AuthCodeManagerInterface;
-     */
     protected AuthCodeManagerInterface $authCodeManager;
 
-    /**
-     * @var UserProviderInterface|null
-     */
     protected ?UserProviderInterface $userProvider;
 
-    /**
-     * @var PasswordHasherFactoryInterface|null
-     */
     protected ?PasswordHasherFactoryInterface $passwordHasherFactory;
 
     /**
@@ -151,9 +133,9 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     }
 
     /**
-     * @param IOAuth2Client $client
      * @param $username
      * @param $password
+     *
      * @return array|false
      */
     public function checkUserCredentials(IOAuth2Client $client, $username, $password)

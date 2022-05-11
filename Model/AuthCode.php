@@ -18,9 +18,6 @@ namespace FOS\OAuthServerBundle\Model;
  */
 class AuthCode extends Token implements AuthCodeInterface
 {
-    /**
-     * @var string
-     */
     protected string $redirectUri;
 
     /**

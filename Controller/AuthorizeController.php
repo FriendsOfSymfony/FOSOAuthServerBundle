@@ -223,6 +223,7 @@ class AuthorizeController
 
     /**
      * @param array<string , mixed> $data Various data to be passed to the twig template
+     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError

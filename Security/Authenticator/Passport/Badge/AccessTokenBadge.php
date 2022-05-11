@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace FOS\OAuthServerBundle\Security\Authenticator\Passport\Badge;
 
@@ -9,20 +19,12 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
 class AccessTokenBadge implements BadgeInterface
 {
-    /**
-     * @var AccessToken
-     */
-    private $AccessToken;
+    private AccessToken $AccessToken;
 
-    /**
-     * @var array
-     */
-    private $roles;
+    private array $roles;
 
     /**
      * AccessTokenBadge constructor.
-     * @param AccessToken $AccessToken
-     * @param array $roles
      */
     public function __construct( AccessToken $AccessToken, array $roles )
     {
@@ -31,16 +33,13 @@ class AccessTokenBadge implements BadgeInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isResolved(): bool
     {
-        return ! empty ( $this->roles );
+        return !empty($this->roles);
     }
 
-    /**
-     * @return AccessToken
-     */
     public function getAccessToken(): AccessToken
     {
         return $this->AccessToken;

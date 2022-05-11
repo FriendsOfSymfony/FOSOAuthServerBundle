@@ -22,9 +22,6 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
  */
 class OAuthToken extends AbstractToken
 {
-    /**
-     * @var string
-     */
     protected string $token;
 
     public function setToken(string $token)
