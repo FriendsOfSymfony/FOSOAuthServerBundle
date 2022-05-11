@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         /** @var ArrayNodeDefinition $rootNode */
         $treeBuilder = new TreeBuilder('fos_oauth_server');
@@ -38,8 +38,8 @@ class Configuration implements ConfigurationInterface
             // BC layer for symfony/config 4.1 and older
             $rootNode = $treeBuilder->root('fos_oauth_server');
         }
-        
-        $supportedDrivers = ['orm', 'mongodb', 'propel', 'custom'];
+
+        $supportedDrivers = ['orm', 'mongodb', 'custom'];
 
         $rootNode
             ->validate()

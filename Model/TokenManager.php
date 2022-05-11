@@ -18,7 +18,7 @@ abstract class TokenManager implements TokenManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function createToken()
+    public function createToken(): TokenInterface
     {
         $class = $this->getClass();
 
@@ -28,7 +28,7 @@ abstract class TokenManager implements TokenManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findTokenByToken($token)
+    public function findTokenByToken($token): ?TokenInterface
     {
         return $this->findTokenBy(['token' => $token]);
     }

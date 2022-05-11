@@ -33,7 +33,11 @@
             <argument type="service" id="router" />
             <argument type="service" id="fos_oauth_server.client_manager" />
             <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="session" on-invalid="null" />
+        </service>
+
+        <service id="fos_oauth_server.security.authenticator.manager" class="FOS\OAuthServerBundle\Security\Authenticator\Oauth2Authenticator">
+            <argument type="service" id="fos_oauth_server.server" />
+            <argument type="service" id="security.user_checker" />
         </service>
     </services>
 

@@ -15,10 +15,12 @@ namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group time-sensitive
@@ -27,7 +29,7 @@ use FOS\OAuthServerBundle\Document\TokenManager;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class TokenManagerTest extends \PHPUnit\Framework\TestCase
+class TokenManagerTest extends TestCase
 {
     /**
      * @var string
@@ -35,12 +37,12 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
     protected $className;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     * @var MockObject|DocumentManager
      */
     protected $documentManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     * @var MockObject|DocumentRepository
      */
     protected $repository;
 
@@ -49,7 +51,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('\Doctrine\ODM\MongoDB\DocumentManager')) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
@@ -75,7 +77,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->instance = new TokenManager($this->documentManager, $this->className);
     }
 
-    public function testFindTokenByToken()
+    public function testFindTokenByToken(): void
     {
         $randomToken = \random_bytes(5);
         $randomResult = \random_bytes(5);
@@ -92,7 +94,7 @@ class TokenManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($randomResult, $this->instance->findTokenByToken($randomToken));
     }
 
-    public function testUpdateTokenPersistsAndFlushes()
+    public function testUpdateTokenPersistsAndFlushes(): void
     {
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()

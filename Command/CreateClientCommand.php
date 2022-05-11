@@ -22,6 +22,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CreateClientCommand extends Command
 {
+    /**
+     * @var ClientManagerInterface
+     */
     private $clientManager;
 
     public function __construct(ClientManagerInterface $clientManager)
@@ -34,7 +37,7 @@ class CreateClientCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -55,7 +58,8 @@ class CreateClientCommand extends Command
                 'Sets allowed grant type for client. Use this option multiple times to set multiple grant types..',
                 null
             )
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command creates a new client.
 
 <info>php %command.full_name% [--redirect-uri=...] [--grant-type=...]</info>
@@ -68,7 +72,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

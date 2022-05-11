@@ -25,12 +25,12 @@ class TokenStorageCompilerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        $definition = $container->getDefinition('fos_oauth_server.security.authentication.listener');
-
-        if ($container->hasDefinition('security.token_storage') === false) {
-            $definition->replaceArgument(0, new Reference('security.context'));
-        }
+//        $definition = $container->getDefinition('fos_oauth_server.security.authentication.listener');
+//
+//        if ($container->hasDefinition('security.token_storage') === false) {
+//            $definition->replaceArgument(0, new Reference('security.context'));
+//        }
     }
 }

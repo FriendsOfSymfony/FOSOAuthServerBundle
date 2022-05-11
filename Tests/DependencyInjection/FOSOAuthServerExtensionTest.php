@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,11 +22,11 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 
-class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
+class FOSOAuthServerExtensionTest extends TestCase
 {
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $parameterBag = new ParameterBag();
         $this->container = new ContainerBuilder($parameterBag);
@@ -33,14 +34,14 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testShouldImplementConfigurationInterface()
+    public function testShouldImplementConfigurationInterface(): void
     {
         $rc = new \ReflectionClass(FOSOAuthServerExtension::class);
 
         $this->assertTrue($rc->isSubclassOf(Extension::class));
     }
 
-    public function testCouldBeConstructedWithoutAnyArguments()
+    public function testCouldBeConstructedWithoutAnyArguments(): void
     {
         try {
             new FOSOAuthServerExtension();
@@ -52,7 +53,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function testShouldLoadAuthorizeRelatedServicesIfAuthorizationIsEnabled()
+    public function testShouldLoadAuthorizeRelatedServicesIfAuthorizationIsEnabled(): void
     {
         $container = new ContainerBuilder();
 
@@ -72,7 +73,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($container->hasDefinition('fos_oauth_server.controller.authorize'));
     }
 
-    public function testShouldNotLoadAuthorizeRelatedServicesIfAuthorizationIsDisabled()
+    public function testShouldNotLoadAuthorizeRelatedServicesIfAuthorizationIsDisabled(): void
     {
         $container = new ContainerBuilder();
 
@@ -92,7 +93,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($container->hasDefinition('fos_oauth_server.controller.authorize'));
     }
 
-    public function testLoadAuthorizeRouting()
+    public function testLoadAuthorizeRouting(): void
     {
         $locator = new FileLocator();
         $loader = new XmlFileLoader($locator);
@@ -103,7 +104,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['GET', 'POST'], $authorizeRoute->getMethods());
     }
 
-    public function testLoadTokenRouting()
+    public function testLoadTokenRouting(): void
     {
         $locator = new FileLocator();
         $loader = new XmlFileLoader($locator);
@@ -114,7 +115,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['GET', 'POST'], $tokenRoute->getMethods());
     }
 
-    public function testWithoutService()
+    public function testWithoutService(): void
     {
         $config = [
             'db_driver' => 'orm',
@@ -132,7 +133,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testStringSupportedScopes()
+    public function testStringSupportedScopes(): void
     {
         $scopes = 'scope1 scope2 scope3 scope4';
 
@@ -160,7 +161,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testArraySupportedScopes()
+    public function testArraySupportedScopes(): void
     {
         $scopes = ['scope1', 'scope2', 'scope3', 'scope4'];
 
@@ -189,7 +190,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testArraySupportedScopesWithSpace()
+    public function testArraySupportedScopesWithSpace(): void
     {
         $scopes = ['scope1 scope2', 'scope3', 'scope4'];
 
@@ -213,7 +214,7 @@ class FOSOAuthServerExtensionTest extends \PHPUnit\Framework\TestCase
         $instance->load([$config], $this->container);
     }
 
-    public function testShouldAliasServivesWhenCustomDriverIsUsed()
+    public function testShouldAliasServivesWhenCustomDriverIsUsed(): void
     {
         $container = new ContainerBuilder();
         $extension = new FOSOAuthServerExtension();

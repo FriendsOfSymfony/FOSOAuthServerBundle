@@ -16,6 +16,7 @@ namespace FOS\OAuthServerBundle\Tests\Command;
 use FOS\OAuthServerBundle\Command\CreateClientCommand;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -27,14 +28,14 @@ class CreateClientCommandTest extends TestCase
     private $command;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientManagerInterface
+     * @var MockObject|ClientManagerInterface
      */
     private $clientManager;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->clientManager = $this->getMockBuilder(ClientManagerInterface::class)->disableOriginalConstructor()->getMock();
         $command = new CreateClientCommand($this->clientManager);
@@ -53,7 +54,7 @@ class CreateClientCommandTest extends TestCase
      *
      * @param string $client a fully qualified class name
      */
-    public function testItShouldCreateClient($client)
+    public function testItShouldCreateClient($client): void
     {
         $this
             ->clientManager
@@ -93,7 +94,6 @@ class CreateClientCommandTest extends TestCase
             ['FOS\OAuthServerBundle\Document\Client'],
             ['FOS\OAuthServerBundle\Entity\Client'],
             ['FOS\OAuthServerBundle\Model\Client'],
-            ['FOS\OAuthServerBundle\Propel\Client'],
         ];
     }
 }

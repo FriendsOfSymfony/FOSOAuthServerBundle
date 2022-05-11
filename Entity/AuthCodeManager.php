@@ -29,11 +29,7 @@ class AuthCodeManager extends BaseAuthCodeManager
      */
     protected $class;
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param string                 $class
-     */
-    public function __construct(EntityManagerInterface $em, $class)
+    public function __construct(EntityManagerInterface $em, string $class)
     {
         $this->em = $em;
         $this->class = $class;
@@ -42,7 +38,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -50,7 +46,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function findAuthCodeBy(array $criteria)
+    public function findAuthCodeBy(array $criteria): ?AuthCodeInterface
     {
         return $this->em->getRepository($this->class)->findOneBy($criteria);
     }
@@ -76,7 +72,7 @@ class AuthCodeManager extends BaseAuthCodeManager
     /**
      * {@inheritdoc}
      */
-    public function deleteExpired()
+    public function deleteExpired(): int
     {
         /** @var \Doctrine\ORM\EntityRepository $repository */
         $repository = $this->em->getRepository($this->class);

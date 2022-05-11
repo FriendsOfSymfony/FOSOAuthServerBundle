@@ -18,9 +18,6 @@ use FOS\OAuthServerBundle\Tests\TestCase;
 
 /**
  * @group time-sensitive
- *
- * If you update the following class, please don't forget
- * to update: FOS\OAuthServerBundle\Tests\Propel\TokenTest.
  */
 class TokenTest extends TestCase
 {
@@ -30,7 +27,7 @@ class TokenTest extends TestCase
      * @param mixed $expiresAt
      * @param mixed $expect
      */
-    public function testHasExpired($expiresAt, $expect)
+    public function testHasExpired($expiresAt, $expect): void
     {
         $token = new Token();
         $token->setExpiresAt($expiresAt);
@@ -38,7 +35,7 @@ class TokenTest extends TestCase
         $this->assertSame($expect, $token->hasExpired());
     }
 
-    public static function getTestHasExpiredData()
+    public static function getTestHasExpiredData(): array
     {
         return [
             [time() + 60, false],
@@ -47,14 +44,14 @@ class TokenTest extends TestCase
         ];
     }
 
-    public function testExpiresIn()
+    public function testExpiresIn(): void
     {
         $token = new Token();
 
         $this->assertSame(PHP_INT_MAX, $token->getExpiresIn());
     }
 
-    public function testExpiresInWithExpiresAt()
+    public function testExpiresInWithExpiresAt(): void
     {
         $token = new Token();
         $token->setExpiresAt(time() + 60);

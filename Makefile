@@ -9,13 +9,13 @@ phpstan:
 	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level 6 ."
 
 cs:
-	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff --config .php_cs-fixer.php"
 
 cs-full:
-	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff"
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=no --diff --config .php_cs-fixer.php"
 
 cs-full-check:
-	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff --dry-run"
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=no --diff --dry-run --config .php_cs-fixer.php"
 
 composer-compat:
 	composer config "platform.ext-mongo" "1.6.16"

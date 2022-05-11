@@ -24,24 +24,24 @@ class Client implements ClientInterface
     protected $id;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $randomId;
+    protected ?string $randomId = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $secret;
-
-    /**
-     * @var array
-     */
-    protected $redirectUris = [];
+    protected ?string $secret = null;
 
     /**
      * @var array
      */
-    protected $allowedGrantTypes = [];
+    protected array $redirectUris = [];
+
+    /**
+     * @var array
+     */
+    protected array $allowedGrantTypes = [];
 
     public function __construct()
     {
@@ -59,7 +59,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function setRandomId($random)
+    public function setRandomId( string $random )
     {
         $this->randomId = $random;
     }
@@ -67,7 +67,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getRandomId()
+    public function getRandomId(): ?string
     {
         return $this->randomId;
     }
@@ -75,7 +75,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getPublicId()
+    public function getPublicId(): string
     {
         return sprintf('%s_%s', $this->getId(), $this->getRandomId());
     }
@@ -91,7 +91,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getSecret()
+    public function getSecret(): ?string
     {
         return $this->secret;
     }
@@ -99,7 +99,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function checkSecret($secret)
+    public function checkSecret(string $secret): bool
     {
         return null === $this->secret || $secret === $this->secret;
     }
@@ -115,7 +115,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getRedirectUris()
+    public function getRedirectUris(): array
     {
         return $this->redirectUris;
     }
@@ -131,8 +131,38 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedGrantTypes()
+    public function getAllowedGrantTypes(): array
     {
         return $this->allowedGrantTypes;
+    }
+
+    public function getRoles(): array
+    {
+        return [ 'ROLE_USER' ];
+    }
+
+    public function getPassword(): string
+    {
+        return $this->getSecret();
+    }
+
+    public function getSalt(): ?string
+    {
+        // Will use auto salt system
+    }
+
+    public function eraseCredentials()
+    {
+        // nothind to erase
+    }
+
+    public function getUsername(): string
+    {
+        return $this->getRandomId();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getRandomId();
     }
 }

@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\Form\Handler;
 
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
 use FOS\OAuthServerBundle\Form\Model\Authorize;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -26,7 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
+class AuthorizeFormHandlerTest extends TestCase
 {
     protected $form;
 
@@ -43,7 +44,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->form = $this->getMockBuilder(FormInterface::class)
             ->disableOriginalConstructor()
@@ -77,7 +78,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillAcceptRequestObjectAsRequest()
+    public function testConstructWillAcceptRequestObjectAsRequest(): void
     {
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -90,7 +91,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertAttributeSame($request, 'requestStack', $this->instance);
     }
 
-    public function testConstructWillAcceptRequestStackObjectAsRequest()
+    public function testConstructWillAcceptRequestStackObjectAsRequest(): void
     {
         $requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
@@ -103,7 +104,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertAttributeSame($requestStack, 'requestStack', $this->instance);
     }
 
-    public function testConstructWillAcceptNullAsRequest()
+    public function testConstructWillAcceptNullAsRequest(): void
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->assertAttributeSame($this->form, 'form', $this->instance);
@@ -114,7 +115,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertAttributeSame(null, 'requestStack', $this->instance);
     }
 
-    public function testConstructWillThrowException()
+    public function testConstructWillThrowException(): void
     {
         $exceptionMessage = sprintf(
             'Argument 2 of %s must be an instanceof RequestStack or Request',
@@ -127,7 +128,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         new AuthorizeFormHandler($this->form, new \stdClass());
     }
 
-    public function testIsAcceptedWillProxyValueToFormData()
+    public function testIsAcceptedWillProxyValueToFormData(): void
     {
         $data = new \stdClass();
         $data->accepted = \random_bytes(10);
@@ -142,7 +143,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($data->accepted, $this->instance->isAccepted());
     }
 
-    public function testIsRejectedWillNegateAcceptedValueFromFormData()
+    public function testIsRejectedWillNegateAcceptedValueFromFormData(): void
     {
         $dataWithAcceptedValueFalse = new \stdClass();
         $dataWithAcceptedValueFalse->accepted = false;
@@ -163,7 +164,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->instance->isRejected());
     }
 
-    public function testGetScopeWillProxyValueToFormData()
+    public function testGetScopeWillProxyValueToFormData(): void
     {
         $data = new \stdClass();
         $data->scope = \random_bytes(10);
@@ -178,13 +179,13 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($data->scope, $this->instance->getScope());
     }
 
-    public function testGetCurrentRequestWillReturnRequestObject()
+    public function testGetCurrentRequestWillReturnRequestObject(): void
     {
         $method = $this->getReflectionMethod('getCurrentRequest');
         $this->assertSame($this->request, $method->invoke($this->instance));
     }
 
-    public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack()
+    public function testGetCurrentRequestWillReturnCurrentRequestFromRequestStack(): void
     {
         $requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
@@ -205,7 +206,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($request, $method->invoke($this->instance));
     }
 
-    public function testGetCurrentRequestWillReturnRequestServiceFromContainerIfNoneIsSet()
+    public function testGetCurrentRequestWillReturnRequestServiceFromContainerIfNoneIsSet(): void
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->instance->setContainer($this->container);
@@ -226,7 +227,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
     /**
      * @TODO Fix this behavior. This method MUST not modify $_GET.
      */
-    public function testOnSuccessWillReplaceGETSuperGlobal()
+    public function testOnSuccessWillReplaceGETSuperGlobal(): void
     {
         $method = $this->getReflectionMethod('onSuccess');
 
@@ -259,7 +260,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedSuperGlobalValue, $_GET);
     }
 
-    public function testProcessWillReturnFalseIfRequestIsNull()
+    public function testProcessWillReturnFalseIfRequestIsNull(): void
     {
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->instance->setContainer($this->container);
@@ -274,7 +275,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->instance->process());
     }
 
-    public function testProcessWillSetFormData()
+    public function testProcessWillSetFormData(): void
     {
         $this->requestRequest
             ->expects($this->once())
@@ -308,7 +309,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->instance->process());
     }
 
-    public function testProcessWillHandleRequestOnPost()
+    public function testProcessWillHandleRequestOnPost(): void
     {
         $this->requestRequest
             ->expects($this->once())
@@ -370,7 +371,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->instance->process());
     }
 
-    public function testProcessWillHandleRequestOnPostAndWillProcessDataIfFormIsValid()
+    public function testProcessWillHandleRequestOnPostAndWillProcessDataIfFormIsValid(): void
     {
         $this->requestRequest
             ->expects($this->once())

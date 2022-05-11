@@ -17,20 +17,22 @@ use FOS\OAuthServerBundle\Model\AccessToken;
 use FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use OAuth2\OAuth2;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class OAuthProviderTest extends \PHPUnit\Framework\TestCase
+class OAuthProviderTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UserInterface
+     * @var MockObject|UserInterface
      */
     protected $user;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UserProviderInterface
+     * @var MockObject|UserProviderInterface
      */
     protected $userProvider;
 
@@ -40,7 +42,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
     protected $provider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|OAuth2
+     * @var MockObject|OAuth2
      */
     protected $serverService;
 
@@ -49,7 +51,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $userChecker;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()
@@ -71,7 +73,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->provider = new OAuthProvider($this->userProvider, $this->serverService, $this->userChecker);
     }
 
-    public function testAuthenticateReturnsTokenIfValid()
+    public function testAuthenticateReturnsTokenIfValid(): void
     {
         $token = new OAuthToken();
         $token->setToken('x');
@@ -101,7 +103,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('ROLE_USER', $roles[0]->getRole());
     }
 
-    public function testAuthenticateReturnsTokenIfValidEvenIfNullData()
+    public function testAuthenticateReturnsTokenIfValidEvenIfNullData(): void
     {
         $token = new OAuthToken();
         $token->setToken('x');
@@ -121,7 +123,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(0, $result->getRoles());
     }
 
-    public function testAuthenticateTransformsScopesAsRoles()
+    public function testAuthenticateTransformsScopesAsRoles(): void
     {
         $token = new OAuthToken();
         $token->setToken('x');
@@ -148,7 +150,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('ROLE_BAR', $roles[1]->getRole());
     }
 
-    public function testAuthenticateWithNullScope()
+    public function testAuthenticateWithNullScope(): void
     {
         $this->markTestIncomplete('Scope is not nullable');
 
@@ -173,7 +175,7 @@ class OAuthProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(0, $roles);
     }
 
-    public function testAuthenticateWithEmptyScope()
+    public function testAuthenticateWithEmptyScope(): void
     {
         $token = new OAuthToken();
         $token->setToken('x');

@@ -15,10 +15,12 @@ namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ORM\AbstractQuery;
 use FOS\OAuthServerBundle\Document\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group time-sensitive
@@ -27,15 +29,15 @@ use FOS\OAuthServerBundle\Model\AuthCodeInterface;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
+class AuthCodeManagerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentManager
+     * @var MockObject|DocumentManager
      */
     protected $documentManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DocumentRepository
+     * @var MockObject|DocumentRepository
      */
     protected $repository;
 
@@ -49,7 +51,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
      */
     protected $instance;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('\Doctrine\ODM\MongoDB\DocumentManager')) {
             $this->markTestSkipped('Doctrine MongoDB ODM has to be installed for this test to run.');
@@ -77,18 +79,18 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters()
+    public function testConstructWillSetParameters(): void
     {
         $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
         $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
-    public function testGetClassWillReturnClassName()
+    public function testGetClassWillReturnClassName(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testFindAuthCodeBy()
+    public function testFindAuthCodeBy(): void
     {
         $randomResult = \random_bytes(10);
         $criteria = [
@@ -105,7 +107,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($randomResult, $this->instance->findAuthCodeBy($criteria));
     }
 
-    public function testUpdateAuthCode()
+    public function testUpdateAuthCode(): void
     {
         $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
@@ -129,7 +131,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->updateAuthCode($authCode));
     }
 
-    public function testDeleteAuthCode()
+    public function testDeleteAuthCode(): void
     {
         $authCode = $this->getMockBuilder(AuthCodeInterface::class)
             ->disableOriginalConstructor()
@@ -153,7 +155,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->instance->deleteAuthCode($authCode));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $queryBuilder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()

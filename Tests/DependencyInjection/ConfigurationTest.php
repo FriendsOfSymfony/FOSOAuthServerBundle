@@ -14,20 +14,22 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection;
 
 use FOS\OAuthServerBundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-class ConfigurationTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends TestCase
 {
-    public function testShouldImplementConfigurationInterface()
+    public function testShouldImplementConfigurationInterface(): void
     {
-        $rc = new \ReflectionClass(Configuration::class);
+        $rc = new ReflectionClass(Configuration::class);
 
         $this->assertTrue($rc->implementsInterface(ConfigurationInterface::class));
     }
 
-    public function testCouldBeConstructedWithoutAnyArguments()
+    public function testCouldBeConstructedWithoutAnyArguments(): void
     {
         try {
             new Configuration();
@@ -39,7 +41,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function testShouldNotMandatoryServiceIfNotCustomDriverIsUsed()
+    public function testShouldNotMandatoryServiceIfNotCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -52,7 +54,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
             'auth_code_class' => 'anAuthCodeClass',
         ]]);
 
-        $this->assertArraySubset([
+        $expected = [
             'db_driver' => 'orm',
             'client_class' => 'aClientClass',
             'access_token_class' => 'anAccessTokenClass',
@@ -66,10 +68,15 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
                 'refresh_token_manager' => 'fos_oauth_server.refresh_token_manager.default',
                 'auth_code_manager' => 'fos_oauth_server.auth_code_manager.default',
             ],
-        ], $config);
+        ];
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayHasKey($key, $config);
+            $this->assertSame($value, $config[$key]);
+        }
     }
 
-    public function testShouldMakeClientManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeClientManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -86,7 +93,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldMakeAccessTokenManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeAccessTokenManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -106,7 +113,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldMakeRefreshTokenManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeRefreshTokenManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -127,7 +134,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldMakeAuthCodeManagerServiceMandatoryIfCustomDriverIsUsed()
+    public function testShouldMakeAuthCodeManagerServiceMandatoryIfCustomDriverIsUsed(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -149,7 +156,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         ]]);
     }
 
-    public function testShouldLoadCustomDriverConfig()
+    public function testShouldLoadCustomDriverConfig(): void
     {
         $configuration = new Configuration();
         $processor = new Processor();
@@ -168,20 +175,26 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
             ],
         ]]);
 
-        $this->assertArraySubset([
+        $expected = [
             'db_driver' => 'custom',
             'client_class' => 'aClientClass',
             'access_token_class' => 'anAccessTokenClass',
             'refresh_token_class' => 'aRefreshTokenClass',
             'auth_code_class' => 'anAuthCodeClass',
             'service' => [
-                'storage' => 'fos_oauth_server.storage.default',
-                'user_provider' => null,
                 'client_manager' => 'a_client_manager_id',
                 'access_token_manager' => 'an_access_token_manager_id',
                 'refresh_token_manager' => 'a_refresh_token_manager_id',
                 'auth_code_manager' => 'an_auth_code_manager_id',
+                'storage' => 'fos_oauth_server.storage.default',
+                'user_provider' => null,
+                'options' => [],
             ],
-        ], $config);
+        ];
+
+        foreach ($expected as $key => $value) {
+            $this->assertArrayHasKey($key, $config);
+            $this->assertSame($value, $config[$key]);
+        }
     }
 }

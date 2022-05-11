@@ -2,8 +2,10 @@ language: php
 
 sudo: true
 php:
-  - 7.1
   - 7.2
+  - 7.3
+  - 7.4
+  - 8.0
 
 service:
   - docker
@@ -12,12 +14,14 @@ service:
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
-      env: SYMFONY_VERSION=3.4.*
     - php: 7.2
-      env: SYMFONY_VERSION=4.0.*
-    - php: 7.2
-      env: SYMFONY_VERSION=4.0.* DEPENDENCIES=beta
+      env: SYMFONY_VERSION=5.3.*
+    - php: 7.3
+      env: SYMFONY_VERSION=5.3.*
+    - php: 7.4
+      env: SYMFONY_VERSION=5.3.*
+    - php: 8.0
+      env: SYMFONY_VERSION=5.3.*
 
 cache:
   directories:

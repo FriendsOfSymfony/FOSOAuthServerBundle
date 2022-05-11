@@ -14,50 +14,6 @@ Assuming we have a _Many to Many_ relation between clients, and users. An `OAuth
 a `ClientInterface` instance, a `UserInterface` instance (coming from the [Security Component](http://symfony.com/doc/current/book/security.html)),
 and a flag to determine whether the client has been accepted, or not.
 
-The following class shows a Propel implementation of a basic listener:
-
-``` php
-<?php
-
-namespace Acme\DemoBundle\EventListener;
-
-use FOS\OAuthServerBundle\Event\OAuthEvent;
-
-class OAuthEventListener
-{
-    public function onPreAuthorizationProcess(OAuthEvent $event)
-    {
-        if ($user = $this->getUser($event)) {
-            $event->setAuthorizedClient(
-                $user->isAuthorizedClient($event->getClient())
-            );
-        }
-    }
-
-    public function onPostAuthorizationProcess(OAuthEvent $event)
-    {
-        if ($event->isAuthorizedClient()) {
-            if (null !== $client = $event->getClient()) {
-                $user = $this->getUser($event);
-                $user->addClient($client);
-                $user->save();
-            }
-        }
-    }
-
-    protected function getUser(OAuthEvent $event)
-    {
-        return UserQuery::create()
-            ->filterByUsername($event->getUser()->getUsername())
-            ->findOne();
-    }
-}
-```
-
-The `$user` variable has a method `isAuthorizedClient()` which contains your logic to determine whether
-the given client (`ClientInterface`) is allowed by the user, or not. This `$user` is part of your
-own model layer, and loaded using the `username` property (see `getUser()`).
-
 ### Registering the listener
 
 ``` yaml

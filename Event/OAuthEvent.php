@@ -19,9 +19,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class OAuthEvent extends Event
 {
-    const PRE_AUTHORIZATION_PROCESS = 'fos_oauth_server.pre_authorization_process';
+    public const PRE_AUTHORIZATION_PROCESS = 'fos_oauth_server.pre_authorization_process';
 
-    const POST_AUTHORIZATION_PROCESS = 'fos_oauth_server.post_authorization_process';
+    public const POST_AUTHORIZATION_PROCESS = 'fos_oauth_server.post_authorization_process';
 
     /**
      * @var UserInterface
@@ -39,11 +39,9 @@ class OAuthEvent extends Event
     private $isAuthorizedClient;
 
     /**
-     * @param UserInterface   $user
-     * @param ClientInterface $client
-     * @param bool            $isAuthorizedClient
+     * OAuthEvent constructor.
      */
-    public function __construct(UserInterface $user, ClientInterface $client, $isAuthorizedClient = false)
+    public function __construct(UserInterface $user, ClientInterface $client, bool $isAuthorizedClient = false)
     {
         $this->user = $user;
         $this->client = $client;

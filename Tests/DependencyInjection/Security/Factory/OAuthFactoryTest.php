@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\DependencyInjection\Security\Factory;
 
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -24,7 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Nikola Petkanski <nikola@petkanski.com>
  */
-class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
+class OAuthFactoryTest extends TestCase
 {
     /**
      * @var OAuthFactory
@@ -41,7 +42,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
      */
     protected $childDefinitionClass;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->definitionDecoratorClass = 'Symfony\Component\DependencyInjection\DefinitionDecorator';
         $this->childDefinitionClass = 'Symfony\Component\DependencyInjection\ChildDefinition';
@@ -51,30 +52,30 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testGetPosition()
+    public function testGetPosition(): void
     {
         $this->assertSame('pre_auth', $this->instance->getPosition());
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         $this->assertSame('fos_oauth', $this->instance->getKey());
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         if (class_exists($this->childDefinitionClass)) {
-            return $this->useChildDefinition();
+            $this->useChildDefinition();
         }
 
         if (class_exists($this->definitionDecoratorClass)) {
-            return $this->useDefinitionDecorator();
+            $this->useDefinitionDecorator();
         }
 
         throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
     }
 
-    public function testAddConfigurationDoesNothing()
+    public function testAddConfigurationDoesNothing(): void
     {
         $nodeDefinition = $this->getMockBuilder(NodeDefinition::class)
             ->disableOriginalConstructor()
@@ -135,7 +136,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
         ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
     }
 
-    protected function useChildDefinition()
+    protected function useChildDefinition(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
