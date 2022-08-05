@@ -32,13 +32,13 @@ Installation is a quick 5 steps process:
 ### Step 1: Install FOSOAuthServerBundle
 
 The preferred way to install this bundle is to rely on [Composer](http://getcomposer.org).
-Just check on [Packagist](http://packagist.org/packages/friendsofsymfony/oauth-server-bundle) the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
+Just check on [Packagist](http://packagist.org/packages/klapaudius/oauth-server-bundle) the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
 
 ``` js
 {
     "require": {
         // ...
-        "friendsofsymfony/oauth-server-bundle": "dev-master"
+        "klapaudius/oauth-server-bundle": "dev-master"
     }
 }
 ```
@@ -108,6 +108,68 @@ class Client extends BaseClient
         // your own logic
     }
 }
+```
+
+``` php
+<?php
+// src/Model/ClientManager.php
+
+namespace App\Model;
+
+use App\Entity\Client;
+use App\Repository\ClientRepository;-
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+
+class ClientManager implements ClientManagerInterface
+{
+    private ClientRepository $repository;
+
+    public function __construct ( ClientRepository $repository )
+    {
+        $this->repository = $repository;
+    }
+
+    public function createClient(): ClientInterface
+    {
+        return new Client();
+    }
+
+    public function getClass(): string
+    {
+        return Client::class;
+    }
+
+    public function findClientBy( array $criteria ): ?ClientInterface
+    {
+        return $this->repository->findOneBy( $criteria );
+    }
+
+    public function findClientByPublicId( $publicId ): ?ClientInterface
+    {
+        return $this->repository->findOneBy([
+                'publicId' => $publicId,
+        ]);
+    }
+
+    public function updateClient( ClientInterface $client ): ClientInterface
+    {
+        /** @var Client $client */
+        $this->repository->add( $client, true );
+
+        return $client;
+    }
+
+    public function deleteClient( ClientInterface $client ): ClientInterface
+    {
+        /** @var Client $client */
+        $this->repository->remove( $client, true );
+
+        return $client;
+    }
+}
+
+
 ```
 
 ``` php
@@ -409,7 +471,7 @@ security:
         - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
 ```
 
-The URLs under `/api` will use OAuth2 to authenticate users.
+The URLs under `/api` will use OAuth2 to authenticate clients.
 
 #### Anonymous access
 
@@ -482,6 +544,12 @@ fos_oauth_server:
     access_token_class:  App\Entity\AccessToken
     refresh_token_class: App\Entity\RefreshToken
     auth_code_class:     App\Entity\AuthCode
+    
+services:
+    fos_oauth_server.client_manager:
+        class: App\Model\ClientManager
+        arguments:
+            - '@App\Repository\ClientRepository'
 ```
 
 If you're authenticating users, don't forget to set the user provider.
@@ -494,6 +562,51 @@ fos_oauth_server:
 
     service:
         user_provider: fos_user.user_provider.username
+        
+services:
+    fos_oauth_server.user_provider.default:
+        class: App\Model\UserManager
+        arguments:
+            - '@App\Repository\UserRepository'
+```
+
+``` php
+<?php
+
+// src/Model/UserManager
+
+namespace App\Model;
+
+use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+
+class UserManager implements UserProviderInterface
+{
+    private UserRepository $repository;
+
+    public function __construct ( UserRepository $repository )
+    {
+        $this->repository = $repository;
+    }
+
+    public function refreshUser( UserInterface $user ) {
+        return $user;
+    }
+
+    public function supportsClass( string $class ) {
+        return true;
+    }
+
+    public function loadUserByIdentifier( string $identifier ): UserInterface {
+        return $this->repository->findOneBy( ['username' => $identifier] );
+    }
+
+    public function loadUserByUsername( $username ) {
+        return $this->repository->findOneBy( ['username' => $username] );
+    }
+}
+
 ```
 
 ## Creating A Client

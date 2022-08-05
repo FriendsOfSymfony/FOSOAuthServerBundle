@@ -6,7 +6,7 @@ data with a third-party consumer. This is most of the time a page with two butto
 
 By default, the FOSOAuthServerBundle's authorization page is really basic, and it's probably a good idea to improve it.
 
-The first step is to copy the [`authorize_content.html.twig`](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/master/Resources/views/Authorize/authorize_content.html.twig) template to the `app/Resources/FOSOAuthServerBundle/views/Authorize/` directory.
+The first step is to copy the [`authorize_content.html.twig`](https://github.com/klapaudius/FOSOAuthServerBundle/blob/master/Resources/views/Authorize/authorize_content.html.twig) template to the `app/Resources/FOSOAuthServerBundle/views/Authorize/` directory.
 
 You're almost done, now you just have to customize it. By default a _client_ in the FOSOAuthServerBundle
 doesn't have any _name_ or _title_ because it depends on your application, and what you really need.
