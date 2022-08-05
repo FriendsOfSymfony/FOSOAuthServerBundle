@@ -184,8 +184,7 @@ class AuthorizeController
 
         try {
             return $this->oAuth2Server
-                ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope())
-                ;
+                ->finishClientAuthorization($formHandler->isAccepted(), $user, $request, $formHandler->getScope());
         } catch (OAuth2ServerException $e) {
             return $e->getHttpResponse();
         }
