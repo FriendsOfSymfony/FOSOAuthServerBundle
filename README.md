@@ -8,7 +8,7 @@ FOSOAuthServerBundle
 
 The bulk of the documentation is stored in the `Resources/doc/index.md` file in this bundle:
 
-[Read the Documentation for master](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/blob/master/Resources/doc/index.md)
+[Read the Documentation for master](https://github.com/klapaudius/FOSOAuthServerBundle/blob/master/Resources/doc/index.md)
 
 ## Repository history
 
@@ -31,6 +31,6 @@ This bundle is under the MIT license. See the complete license in the bundle:
 
 ## Credits
 
-- Arnaud Le Blanc, and [all contributors](https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/contributors)
+- Arnaud Le Blanc, and [all contributors](https://github.com/klapaudius/FOSOAuthServerBundle/contributors)
 - Inspired by [BazingaOAuthBundle](https://github.com/willdurand/BazingaOAuthServerBundle) and [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle)
 - Installation doc adapted from [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle) doc.
