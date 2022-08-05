@@ -22,10 +22,10 @@
     "require": {
         "php": "^7.4.25|^8.0",
         "klapaudius/oauth2-php": "~1.4",
-        "symfony/dependency-injection": "~5.3",
-        "symfony/framework-bundle": "~5.3",
-        "symfony/security-bundle": "~5.3",
-        "symfony/twig-bundle": "~5.3"
+        "symfony/dependency-injection": "~5.3|~6.0",
+        "symfony/framework-bundle": "~5.3|~6.0",
+        "symfony/security-bundle": "~5.3|~6.0",
+        "symfony/twig-bundle": "~5.3|~6.0"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "~2.0",

@@ -23,24 +23,12 @@ class Client implements ClientInterface
      */
     protected $id;
 
-    /**
-     * @var string|null
-     */
     protected ?string $randomId = null;
 
-    /**
-     * @var string|null
-     */
     protected ?string $secret = null;
 
-    /**
-     * @var array
-     */
     protected array $redirectUris = [];
 
-    /**
-     * @var array
-     */
     protected array $allowedGrantTypes = [];
 
     public function __construct()
@@ -59,7 +47,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function setRandomId( string $random )
+    public function setRandomId(string $random)
     {
         $this->randomId = $random;
     }
@@ -138,7 +126,7 @@ class Client implements ClientInterface
 
     public function getRoles(): array
     {
-        return [ 'ROLE_USER' ];
+        return ['ROLE_USER'];
     }
 
     public function getPassword(): string
