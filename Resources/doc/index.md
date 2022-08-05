@@ -117,7 +117,7 @@ class Client extends BaseClient
 namespace App\Model;
 
 use App\Entity\Client;
-use App\Repository\ClientRepository;-
+use App\Repository\ClientRepository;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 
