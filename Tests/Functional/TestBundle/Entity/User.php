@@ -64,12 +64,12 @@ class User implements UserInterface
 
     public function getUsername(): string
     {
-        return (string)$this->getId();
+        return (string) $this->getId();
     }
 
     public function getUserIdentifier(): string
     {
-        return (string)$this->getId();
+        return (string) $this->getId();
     }
 
     public function eraseCredentials(): void

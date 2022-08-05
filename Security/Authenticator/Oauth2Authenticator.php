@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the FOSOAuthServerBundle package.
+ *
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FOS\OAuthServerBundle\Security\Authenticator;
 
 use FOS\OAuthServerBundle\Model\AccessToken;
@@ -32,14 +43,14 @@ class Oauth2Authenticator extends AbstractAuthenticator
      */
     protected $serverService;
 
-    public function __construct(OAuth2 $serverService, UserCheckerInterface $userChecker )
+    public function __construct(OAuth2 $serverService, UserCheckerInterface $userChecker)
     {
         $this->serverService = $serverService;
         $this->userChecker = $userChecker;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supports(Request $request): ?bool
     {
@@ -47,7 +58,7 @@ class Oauth2Authenticator extends AbstractAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function authenticate(Request $request): PassportInterface
     {
@@ -64,30 +75,24 @@ class Oauth2Authenticator extends AbstractAuthenticator
                 try {
                     $this->userChecker->checkPreAuth($user);
                 } catch (AccountStatusException $e) {
-                    throw new OAuth2AuthenticateException(
-                        Response::HTTP_UNAUTHORIZED,
-                        OAuth2::TOKEN_TYPE_BEARER,
-                        $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                        'access_denied',
-                        $e->getMessage()
-                    );
+                    throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED, OAuth2::TOKEN_TYPE_BEARER, $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM), 'access_denied', $e->getMessage());
                 }
             }
 
             $roles = (null !== $user) ? $user->getRoles() : [];
             $scope = $accessToken->getScope();
 
-            if (! empty($scope)) {
+            if (!empty($scope)) {
                 foreach (explode(' ', $scope) as $role) {
-                    $roles[] = 'ROLE_' . mb_strtoupper($role);
+                    $roles[] = 'ROLE_'.mb_strtoupper($role);
                 }
             }
 
             $roles = array_unique($roles, SORT_REGULAR);
 
-            $accessTokenBadge = new AccessTokenBadge( $accessToken, $roles );
+            $accessTokenBadge = new AccessTokenBadge($accessToken, $roles);
 
-            return new SelfValidatingPassport( new UserBadge( $client->getUserIdentifier() ), [ $accessTokenBadge ] );
+            return new SelfValidatingPassport(new UserBadge($client->getUserIdentifier()), [$accessTokenBadge]);
         } catch (OAuth2ServerException $e) {
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
         }
@@ -96,15 +101,15 @@ class Oauth2Authenticator extends AbstractAuthenticator
     public function createAuthenticatedToken(PassportInterface $passport, string $firewallName): TokenInterface
     {
         /** @var AccessTokenBadge $accessTokenBadge */
-        $accessTokenBadge = $passport->getBadge( AccessTokenBadge::class );
-        $token = new OAuthToken( $accessTokenBadge->getRoles() );
-        $token->setToken( $accessTokenBadge->getAccessToken()->getToken() );
+        $accessTokenBadge = $passport->getBadge(AccessTokenBadge::class);
+        $token = new OAuthToken($accessTokenBadge->getRoles());
+        $token->setToken($accessTokenBadge->getAccessToken()->getToken());
 
         return $token;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
@@ -112,13 +117,13 @@ class Oauth2Authenticator extends AbstractAuthenticator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $data = [
             // you may want to customize or obfuscate the message first
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
 
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
