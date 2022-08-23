@@ -29,7 +29,7 @@ use OAuth2\Model\IOAuth2Client;
  */
 class BingoGrantExtension implements GrantExtensionInterface
 {
-    /*
+    /**
      * {@inheritdoc}
      */
     public function checkGrantExtension(IOAuth2Client $client, array $inputData, array $authHeaders)
@@ -41,10 +41,6 @@ class BingoGrantExtension implements GrantExtensionInterface
 
         $numberToGuess1 = rand(0, 100);
         $numberToGuess2 = rand(0, 100);
-
-        if ($numberToGuess1 != $inputData['number_1'] && $numberToGuess2 != $inputData['number_2']) {
-            return false; // No number guessed, grant will fail
-        }
 
         if ($numberToGuess1 == $inputData['number_1'] && $numberToGuess2 == $inputData['number_2']) {
             // Both numbers were guessed, we grant an access_token linked
