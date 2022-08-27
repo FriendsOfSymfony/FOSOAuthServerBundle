@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="Tests/bootstrap.php" colors="true">
-    <testsuites>
-        <testsuite name="FOSOAuthServerBundle Test Suite">
-            <directory suffix="Test.php">./Tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="false" colors="true"
+         bootstrap="Tests/bootstrap.php" timeoutForSmallTests="120" timeoutForMediumTests="180"
+         timeoutForLargeTests="240">
+<coverage>
+    <include>
+        <directory suffix=".php">./</directory>
+    </include>
+    <exclude>
+        <directory>./Resources</directory>
+        <directory>./Tests</directory>
+        <directory>./Tests-old</directory>
+        <directory>./vendor</directory>
+    </exclude>
+</coverage>
+<php>
+    <ini name="error_reporting" value="-1"/>
+    <env name="KERNEL_CLASS" value="App\Kernel"/>
+    <env name="APP_ENV" value="test"/>
+    <env name="APP_DEBUG" value="1"/>
+    <env name="APP_SECRET" value="s$cretf0rt3st"/>
+    <env name="SHELL_VERBOSITY" value="-1"/>
+</php>
+<testsuites>
+    <testsuite name="OAuth2 Server Tests Suite">
+        <directory>./Tests</directory>
+    </testsuite>
+</testsuites>
+<listeners>
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+</listeners>
 </phpunit>
+
