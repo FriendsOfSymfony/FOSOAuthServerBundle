@@ -67,6 +67,7 @@ class ConfigurationTest extends TestCase
                 'access_token_manager' => 'fos_oauth_server.access_token_manager.default',
                 'refresh_token_manager' => 'fos_oauth_server.refresh_token_manager.default',
                 'auth_code_manager' => 'fos_oauth_server.auth_code_manager.default',
+                'options' => []
             ],
         ];
 

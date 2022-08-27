@@ -1,5 +1,6 @@
 phpunit.xml
 Tests/autoload.php
+reports/
 vendor/
 composer.lock
 /.php-cs-fixer.cache

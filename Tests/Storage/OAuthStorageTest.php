@@ -24,47 +24,22 @@ use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthStorageTest extends TestCase
 {
-    /**
-     * @var ClientManagerInterface|MockObject
-     */
-    protected $clientManager;
-
-    /**
-     * @var AccessTokenManagerInterface|MockObject
-     */
-    protected $accessTokenManager;
-
-    /**
-     * @var RefreshTokenManagerInterface|MockObject
-     */
-    protected $refreshTokenManager;
-
-    /**
-     * @var AuthCodeManagerInterface|MockObject
-     */
-    protected $authCodeManager;
-
-    /**
-     * @var MockObject|UserProviderInterface
-     */
-    protected $userProvider;
-
-    /**
-     * @var MockObject|EncoderFactoryInterface
-     */
-    protected $encoderFactory;
-
-    /**
-     * @var OAuthStorage
-     */
-    protected $storage;
+    protected ClientManagerInterface|MockObject $clientManager;
+    protected AccessTokenManagerInterface|MockObject $accessTokenManager;
+    protected RefreshTokenManagerInterface|MockObject $refreshTokenManager;
+    protected AuthCodeManagerInterface|MockObject $authCodeManager;
+    protected UserProviderInterface|MockObject $userProvider;
+    protected PasswordHasherFactoryInterface|MockObject $passwordHasherFactory;
+    protected OAuthStorage $storage;
 
     public function setUp(): void
     {
@@ -88,12 +63,12 @@ class OAuthStorageTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
+        $this->passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
 
-        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
+        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->userProvider, $this->passwordHasherFactory);
     }
 
     public function testGetClientReturnsClientWithGivenId(): void
@@ -111,8 +86,6 @@ class OAuthStorageTest extends TestCase
 
     public function testGetClientReturnsNullIfNotExists(): void
     {
-        $client = new Client();
-
         $this->clientManager->expects($this->once())
             ->method('findClientByPublicId')
             ->with('123_abc')
@@ -164,8 +137,6 @@ class OAuthStorageTest extends TestCase
 
     public function testGetAccessTokenReturnsNullIfNotExists(): void
     {
-        $token = new AccessToken();
-
         $this->accessTokenManager->expects($this->once())
             ->method('findTokenByToken')
             ->with('123_abc')
@@ -371,7 +342,7 @@ class OAuthStorageTest extends TestCase
 
         $this->userProvider
             ->expects(self::once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willThrowException(new AuthenticationException('No such user'))
         ;
@@ -384,35 +355,29 @@ class OAuthStorageTest extends TestCase
     public function testCheckUserCredentialsReturnsTrueOnValidCredentials(): void
     {
         $client = new Client();
-        $user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $user->expects($this->once())
-            ->method('getPassword')->with()->will($this->returnValue('foo'));
-        $user->expects($this->once())
-            ->method('getSalt')->with()->will($this->returnValue('bar'));
+        $user = new User('Joe');
 
-        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $encoder->expects($this->once())
-            ->method('isPasswordValid')
-            ->with('foo', 'baz', 'bar')
+        $hasher->expects($this->once())
+            ->method('verify')
+            ->with('baz')
             ->will($this->returnValue(true))
         ;
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->will($this->returnValue($user))
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
+        $this->passwordHasherFactory
+            //->expects($this->any())
+            ->method('getPasswordHasher')
             ->with($user)
-            ->will($this->returnValue($encoder))
+            ->will($this->returnValue($hasher))
         ;
 
         $this->assertSame([
@@ -423,35 +388,29 @@ class OAuthStorageTest extends TestCase
     public function testCheckUserCredentialsReturnsFalseOnInvalidCredentials(): void
     {
         $client = new Client();
-        $user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
-            ->disableOriginalConstructor()
-            ->getMock()
+        $user = new User('Joe');
         ;
-        $user->expects($this->once())
-            ->method('getPassword')->with()->will($this->returnValue('foo'));
-        $user->expects($this->once())
-            ->method('getSalt')->with()->will($this->returnValue('bar'));
 
-        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $encoder->expects($this->once())
-            ->method('isPasswordValid')
-            ->with('foo', 'baz', 'bar')
+        $hasher->expects($this->once())
+            ->method('verify')
+            ->with('baz')
             ->will($this->returnValue(false))
         ;
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->will($this->returnValue($user))
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
+        $this->passwordHasherFactory->expects($this->once())
+            ->method('getPasswordHasher')
             ->with($user)
-            ->will($this->returnValue($encoder))
+            ->will($this->returnValue($hasher))
         ;
 
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
@@ -462,7 +421,7 @@ class OAuthStorageTest extends TestCase
         $client = new Client();
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willThrowException(new AuthenticationException('No such user'))
         ;
@@ -626,12 +585,9 @@ class OAuthStorageTest extends TestCase
     }
 }
 
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @var mixed
-     */
-    private $username;
+    private string $username;
 
     public function __construct(string $username)
     {
@@ -645,7 +601,7 @@ class User implements UserInterface
 
     public function getPassword(): string
     {
-        return '';
+        return 'baz';
     }
 
     public function getSalt(): string

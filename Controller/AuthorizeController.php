@@ -128,7 +128,6 @@ class AuthorizeController
     public function authorizeAction(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()->getUser();
-
         if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }

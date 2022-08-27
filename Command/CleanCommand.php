@@ -21,20 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanCommand extends Command
 {
-    /**
-     * @var TokenManagerInterface
-     */
-    private $accessTokenManager;
-
-    /**
-     * @var TokenManagerInterface
-     */
-    private $refreshTokenManager;
-
-    /**
-     * @var AuthCodeManagerInterface
-     */
-    private $authCodeManager;
+    private TokenManagerInterface $accessTokenManager;
+    private TokenManagerInterface $refreshTokenManager;
+    private AuthCodeManagerInterface $authCodeManager;
 
     public function __construct(
         TokenManagerInterface $accessTokenManager,
