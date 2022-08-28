@@ -95,14 +95,11 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
 
     public function testProcessWillFailIfUriIsEmpty(): void
     {
-        $container = $this->getMockBuilder(ContainerBuilder::class)
-            ->disableOriginalConstructor()
-            ->setMethods([
+        $container = $this->createPartialMock(ContainerBuilder::class, [
                 'findDefinition',
                 'getParameterBag',
                 'findTaggedServiceIds',
-            ])
-            ->getMock()
+        ])
         ;
         $storageDefinition = $this->getMockBuilder(Definition::class)
             ->disableOriginalConstructor()
@@ -170,26 +167,29 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
         $exceptionMessage = 'Service "%s" must define the "uri" attribute on "fos_oauth_server.grant_extension" tags.';
 
         $idx = 0;
+        $args = [];
         foreach ($data as $id => $tags) {
             foreach ($tags as $tag) {
                 if (empty($tag['uri'])) {
                     $exceptionMessage = sprintf($exceptionMessage, $id);
                     break;
                 }
-
-                $storageDefinition
-                    ->expects($this->at(++$idx))
-                    ->method('addMethodCall')
-                    ->with(
-                        'setGrantExtension',
-                        [
-                            $tag['uri'],
-                            new Reference($id),
-                        ]
-                    )
-                ;
+                ++$idx;
+                $args[] = [
+                    'setGrantExtension',
+                    [
+                        $tag['uri'],
+                        new Reference($id),
+                    ]
+                ];
             }
         }
+
+        $storageDefinition
+            ->expects($this->exactly($idx))
+            ->method('addMethodCall')
+            ->withConsecutive(...$args)
+        ;
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($exceptionMessage);
@@ -280,21 +280,24 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
         ;
 
         $idx = 0;
+        $args = [];
         foreach ($data as $id => $tags) {
             foreach ($tags as $tag) {
-                $storageDefinition
-                    ->expects($this->at(++$idx))
-                    ->method('addMethodCall')
-                    ->with(
+                ++$idx;
+                $args[] = [
                         'setGrantExtension',
                         [
-                            $tag['uri'],
-                            new Reference($id),
+                                $tag['uri'],
+                                new Reference($id),
                         ]
-                    )
-                ;
+                ];
             }
         }
+        $storageDefinition
+                ->expects($this->exactly($idx))
+                ->method('addMethodCall')
+                ->withConsecutive(...$args)
+        ;
 
         $this->assertNull($this->instance->process($container));
     }

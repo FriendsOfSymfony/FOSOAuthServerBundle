@@ -15,7 +15,6 @@ namespace FOS\OAuthServerBundle;
 
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\GrantExtensionsCompilerPass;
 use FOS\OAuthServerBundle\DependencyInjection\Compiler\RequestStackCompilerPass;
-use FOS\OAuthServerBundle\DependencyInjection\Compiler\TokenStorageCompilerPass;
 use FOS\OAuthServerBundle\DependencyInjection\FOSOAuthServerExtension;
 use FOS\OAuthServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
@@ -38,7 +37,6 @@ class FOSOAuthServerBundle extends Bundle
         $extension->addAuthenticatorFactory(new OAuthFactory());
 
         $container->addCompilerPass(new GrantExtensionsCompilerPass());
-        $container->addCompilerPass(new TokenStorageCompilerPass());
         $container->addCompilerPass(new RequestStackCompilerPass());
     }
 }

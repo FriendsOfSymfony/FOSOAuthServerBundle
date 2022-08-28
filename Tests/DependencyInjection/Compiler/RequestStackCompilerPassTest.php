@@ -93,7 +93,7 @@ class RequestStackCompilerPassTest extends \PHPUnit\Framework\TestCase
                     new Reference('service_container'),
                 ]
             )
-            ->willReturn(null)
+            ->willReturnSelf()
         ;
 
         $this->assertNull($this->instance->process($this->container));
