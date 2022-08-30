@@ -3,7 +3,7 @@ Getting Started With FOSOAuthServerBundle
 
 ## Prerequisites
 
-This version of the bundle requires Symfony 4.4 or Symfony 5
+This version of the bundle requires Symfony 6
 
 #### Translations
 
@@ -180,6 +180,8 @@ namespace App\Entity;
 
 use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -197,13 +199,13 @@ class AccessToken extends BaseAccessToken
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $client;
+    protected ClientInterface $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $user;
+    protected ?UserInterface $user = null;
 }
 ```
 
@@ -215,6 +217,8 @@ namespace App\Entity;
 
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -232,13 +236,13 @@ class RefreshToken extends BaseRefreshToken
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $client;
+    protected ClientInterface $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $user;
+    protected ?UserInterface $user = null;
 }
 ```
 
@@ -250,6 +254,8 @@ namespace App\Entity;
 
 use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -267,13 +273,13 @@ class AuthCode extends BaseAuthCode
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $client;
+    protected ClientInterface $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="Your\Own\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $user;
+    protected ?UserInterface $user = null;
 }
 ```
 
@@ -320,20 +326,32 @@ namespace App\Document;
 
 use FOS\OAuthServerBundle\Document\AuthCode as BaseAuthCode;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AuthCode extends BaseAuthCode
 {
     protected $id;
-    protected $client;
+    protected ClientInterface $client;
+    protected ?UserInterface $user = null;
 
-    public function getClient()
+    public function getClient(): ClientInterface
     {
         return $this->client;
     }
 
-    public function setClient(ClientInterface $client)
+    public function setClient(ClientInterface $client): void
     {
         $this->client = $client;
+    }
+
+    public function getUser(): ?UserInterface
+    {
+        return $this->user;
+    }
+
+    public function setUser(?UserInterface $user): void
+    {
+        $this->user = $user;
     }
 }
 ```
@@ -363,11 +381,13 @@ namespace App\Document;
 
 use FOS\OAuthServerBundle\Document\AccessToken as BaseAccessToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AccessToken extends BaseAccessToken
 {
     protected $id;
-    protected $client;
+    protected ClientInterface $client;
+    protected ?UserInterface $user = null;
 
     public function getClient()
     {
@@ -377,6 +397,16 @@ class AccessToken extends BaseAccessToken
     public function setClient(ClientInterface $client)
     {
         $this->client = $client;
+    }
+
+    public function getUser(): ?UserInterface
+    {
+        return $this->user;
+    }
+
+    public function setUser(?UserInterface $user): void
+    {
+        $this->user = $user;
     }
 }
 ```
@@ -406,11 +436,13 @@ namespace App\Document;
 
 use FOS\OAuthServerBundle\Document\RefreshToken as BaseRefreshToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class RefreshToken extends BaseRefreshToken
 {
     protected $id;
-    protected $client;
+    protected ClientInterface $client;
+    protected ?UserInterface $user = null;
 
     public function getClient()
     {
@@ -420,6 +452,16 @@ class RefreshToken extends BaseRefreshToken
     public function setClient(ClientInterface $client)
     {
         $this->client = $client;
+    }
+
+    public function getUser(): ?UserInterface
+    {
+        return $this->user;
+    }
+
+    public function setUser(?UserInterface $user): void
+    {
+        $this->user = $user;
     }
 }
 ```
