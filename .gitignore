@@ -3,7 +3,6 @@ Tests/autoload.php
 reports/
 vendor/
 composer.lock
-/.php-cs-fixer.cache
-/.phpunit.result.cache
-
+.php-cs-fixer.cache
+.phpunit.result.cache
 .DS_Store
