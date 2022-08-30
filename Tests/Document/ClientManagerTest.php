@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
+use FOS\OAuthServerBundle\Document\Client;
 use FOS\OAuthServerBundle\Document\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,25 +28,10 @@ use PHPUnit\Framework\TestCase;
  */
 class ClientManagerTest extends TestCase
 {
-    /**
-     * @var MockObject|DocumentManager
-     */
-    protected $documentManager;
-
-    /**
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @var MockObject|DocumentRepository
-     */
-    protected $repository;
-
-    /**
-     * @var ClientManager
-     */
-    protected $instance;
+    protected MockObject|DocumentManager $documentManager;
+    protected string $className;
+    protected MockObject|DocumentRepository $repository;
+    protected ClientManager $instance;
 
     public function setUp(): void
     {
@@ -75,13 +61,6 @@ class ClientManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters(): void
-    {
-        $this->assertAttributeSame($this->documentManager, 'dm', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
-    }
-
     public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -89,7 +68,7 @@ class ClientManagerTest extends TestCase
 
     public function testFindClientBy(): void
     {
-        $randomResult = \random_bytes(5);
+        $randomResult = new Client();
         $criteria = [
             \random_bytes(5),
         ];

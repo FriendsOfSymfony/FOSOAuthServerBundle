@@ -137,6 +137,7 @@ class Client implements ClientInterface
     public function getSalt(): ?string
     {
         // Will use auto salt system
+        return null;
     }
 
     public function eraseCredentials()

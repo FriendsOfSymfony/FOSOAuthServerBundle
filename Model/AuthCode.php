@@ -23,7 +23,7 @@ class AuthCode extends Token implements AuthCodeInterface
     /**
      * {@inheritdoc}
      */
-    public function setRedirectUri($redirectUri)
+    public function setRedirectUri( string $redirectUri)
     {
         $this->redirectUri = $redirectUri;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 /*
  * This file is part of the FOSOAuthServerBundle package.
@@ -23,5 +23,5 @@ interface AuthCodeInterface extends TokenInterface, IOAuth2AuthCode
     /**
      * @param string $redirectUri
      */
-    public function setRedirectUri($redirectUri);
+    public function setRedirectUri( string $redirectUri );
 }

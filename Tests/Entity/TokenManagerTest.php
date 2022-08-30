@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use FOS\OAuthServerBundle\Entity\AccessToken;
 use FOS\OAuthServerBundle\Entity\TokenManager;
+use FOS\OAuthServerBundle\Model\Token;
 use FOS\OAuthServerBundle\Model\TokenInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -33,25 +34,10 @@ use PHPUnit\Framework\TestCase;
  */
 class TokenManagerTest extends TestCase
 {
-    /**
-     * @var MockObject|EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var MockObject|EntityRepository
-     */
-    protected $repository;
-
-    /**
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @var TokenManager
-     */
-    protected $instance;
+    protected MockObject|EntityManagerInterface $entityManager;
+    protected MockObject|EntityRepository $repository;
+    protected string $className;
+    protected TokenManager $instance;
 
     public function setUp(): void
     {
@@ -73,13 +59,6 @@ class TokenManagerTest extends TestCase
         ;
 
         $this->instance = new TokenManager($this->entityManager, $this->className);
-    }
-
-    public function testConstructWillSetParameters(): void
-    {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
     public function testUpdateTokenPersistsAndFlushes(): void
@@ -108,7 +87,7 @@ class TokenManagerTest extends TestCase
 
     public function testFindTokenBy(): void
     {
-        $randomResult = \random_bytes(5);
+        $randomResult = new Token();
 
         $criteria = [
             \random_bytes(5),
@@ -174,7 +153,7 @@ class TokenManagerTest extends TestCase
 
     public function testDeleteExpired(): void
     {
-        $randomResult = \random_bytes(10);
+        $randomResult = \random_int(0,10);
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()

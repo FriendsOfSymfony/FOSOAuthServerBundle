@@ -1,11 +1,11 @@
 FOSOAuthServerBundle
 ====================
 
-[![Build Status](https://secure.travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle.png)](http://travis-ci.org/FriendsOfSymfony/FOSOAuthServerBundle)
+#### Branches : 4.0 [![Build Status](https://app.travis-ci.com/klapaudius/FOSOAuthServerBundle.svg?branch=4.0)](https://app.travis-ci.com/klapaudius/FOSOAuthServerBundle.svg?branch=4.0) 3.0 [![Build Status](https://app.travis-ci.com/klapaudius/FOSOAuthServerBundle.svg?branch=3.0)](https://app.travis-ci.com/klapaudius/FOSOAuthServerBundle.svg?branch=3.0)
 
 
 ## Documentation
-
+ 
 The bulk of the documentation is stored in the `Resources/doc/index.md` file in this bundle:
 
 [Read the Documentation for master](https://github.com/klapaudius/FOSOAuthServerBundle/blob/master/Resources/doc/index.md)
