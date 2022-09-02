@@ -5,8 +5,8 @@ parameters:
     level: 6
     paths:
         - .
-    autoload_files:
+    bootstrapFiles:
         - vendor/autoload.php
-    excludes_analyse:
+    excludePaths:
         - vendor/
 
