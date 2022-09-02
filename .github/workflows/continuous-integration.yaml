@@ -24,7 +24,7 @@ jobs:
           php-cs-fixer --version
 
       - name: 'Check PHP code'
-        run: 'php-cs-fixer fix --diff --dry-run --using-cache=no'
+        run: 'php-cs-fixer fix --diff --dry-run --using-cache=no --config=.php-cs-fixer.dist-php'
 
       - name: 'Check composer.json'
         run: 'composer-normalize --diff --dry-run --no-update-lock'
