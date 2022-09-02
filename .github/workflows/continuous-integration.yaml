@@ -11,10 +11,10 @@ jobs:
       - name: 'Setup PHP'
         uses: 'shivammathur/setup-php@v2'
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           coverage: 'none'
           extensions: 'json, mbstring, tokenizer'
-          tools: 'composer-normalize, php-cs-fixer:2.16.4'
+          tools: 'composer-normalize, php-cs-fixer:3.10.0'
         env:
           update: true
 
@@ -39,7 +39,7 @@ jobs:
       - name: 'Setup PHP'
         uses: 'shivammathur/setup-php@v2'
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           coverage: 'none'
           extensions: 'json, mbstring, tokenizer'
         env:
@@ -59,16 +59,18 @@ jobs:
     strategy:
       matrix:
         php:
-          - '7.2'
-          - '7.3'
           - '7.4'
           - '8.0'
+          - '8.1'
         dependencies:
           - 'lowest'
           - 'highest'
           - 'beta'
         include:
           - dependencies: 'beta'
+        symfony_version:
+          - 5.4
+          - 6.0
     env:
       SYMFONY_VERSION: '${{ matrix.symfony_version }}'
     steps:
