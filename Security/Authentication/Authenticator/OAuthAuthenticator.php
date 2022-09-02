@@ -117,13 +117,7 @@ class OAuthAuthenticator implements AuthenticatorInterface
             if (!$passport->hasBadge(OAuthCredentials::class)
                 || !$passport->hasBadge(UserBadge::class)
             ) {
-                throw new OAuth2AuthenticateException(
-                    Response::HTTP_UNAUTHORIZED,
-                    OAuth2::TOKEN_TYPE_BEARER,
-                    $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                    'access_denied',
-                    'Unexpected credentials type.'
-                );
+                throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED, OAuth2::TOKEN_TYPE_BEARER, $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM), 'access_denied', 'Unexpected credentials type.');
             }
 
             // get the passport badges
@@ -136,13 +130,7 @@ class OAuthAuthenticator implements AuthenticatorInterface
             try {
                 $this->userChecker->checkPostAuth($user);
             } catch (AccountStatusException $e) {
-                throw new OAuth2AuthenticateException(
-                    Response::HTTP_UNAUTHORIZED,
-                    OAuth2::TOKEN_TYPE_BEARER,
-                    $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM),
-                    'access_denied',
-                    $e->getMessage()
-                );
+                throw new OAuth2AuthenticateException(Response::HTTP_UNAUTHORIZED, OAuth2::TOKEN_TYPE_BEARER, $this->serverService->getVariable(OAuth2::CONFIG_WWW_REALM), 'access_denied', $e->getMessage());
             }
         } catch (OAuth2ServerException $e) {
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);

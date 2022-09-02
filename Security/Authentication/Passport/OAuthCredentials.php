@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Security\Authentication\Passport;
 
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CredentialsInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CredentialsInterface;
 
 /**
  * Implements credentials checking for an OAuth token.

@@ -105,7 +105,7 @@ class AuthorizeFormTypeTest extends TypeTestCase
      */
     protected function getTypes()
     {
-        return  [
+        return [
             new AuthorizeFormType(),
         ];
     }
