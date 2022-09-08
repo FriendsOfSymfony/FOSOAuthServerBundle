@@ -15,6 +15,8 @@ namespace FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -32,11 +34,15 @@ class RefreshToken extends BaseRefreshToken
     /**
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @var ClientInterface
      */
     protected $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
+     *
+     * @var UserInterface
      */
     protected $user;
 }

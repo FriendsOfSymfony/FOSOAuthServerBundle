@@ -200,7 +200,7 @@ class AuthCodeManagerTest extends \PHPUnit\Framework\TestCase
             $collection,
             [
                 'type' => Query::TYPE_REMOVE,
-                'query' => null,
+                'query' => [],
             ],
             [],
             false

@@ -178,7 +178,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
             ->method('verifyAccessToken')
             ->with('mock_token_string')
             ->willThrowException(new OAuth2AuthenticateException(
-                Response::HTTP_UNAUTHORIZED,
+                (string) Response::HTTP_UNAUTHORIZED,
                 'mock_token_type',
                 'mock_realm',
                 'invalid_grant',
