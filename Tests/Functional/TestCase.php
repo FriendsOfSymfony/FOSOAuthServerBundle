@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class TestCase extends WebTestCase
 {
@@ -27,7 +28,7 @@ abstract class TestCase extends WebTestCase
     /**
      * @param array<mixed> $options
      */
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         $env = @$options['env'] ?: 'test';
 
