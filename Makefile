@@ -26,6 +26,14 @@ composer-compat:
 composer-config-beta:
 	composer config "minimum-stability" "beta"
 
+composer-php7:
+	# when php 7 and 8 are both installed, to test with php7 - for example:
+	# $ make composer-compat
+	# $ make composer-php7
+	# $ SYMFONY_VERSION=5.3 make composer-install
+	# $ php7.4 vendor/bin/phpunit
+	composer config platform.php 7.4
+
 composer-install:
 	rm -f composer.lock && cp composer.json composer.json~
 ifdef SYMFONY_VERSION

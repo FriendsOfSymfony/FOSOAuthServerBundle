@@ -58,10 +58,6 @@ jobs:
     name: 'Unit Tests'
     strategy:
       matrix:
-        php:
-          - '7.4'
-          - '8.0'
-          - '8.1'
         dependencies:
           - 'lowest'
           - 'highest'
@@ -69,11 +65,8 @@ jobs:
         include:
           - dependencies: 'beta'
         symfony_version:
-          - 5.1
-          - 5.2
           - 5.3
           - 5.4
-          - 6.0
     env:
       SYMFONY_VERSION: '${{ matrix.symfony_version }}'
     steps:
@@ -83,7 +76,7 @@ jobs:
       - name: 'Setup PHP'
         uses: 'shivammathur/setup-php@v2'
         with:
-          php-version: '${{ matrix.php }}'
+          php-version: '7.4'
           coverage: 'none'
           tools: 'composer:2'
           extensions: 'mongodb'
@@ -95,7 +88,7 @@ jobs:
       - run: |
           if [ "${{ matrix.dependencies }}" = "beta" ]; then make composer-config-beta; fi;
 
-      - run: 'composer rem symfony/form -n --no-update && composer req "symfony/form: ^4.4 || ^5.1" doctrine/annotations --no-update -n'
+      - run: 'composer rem symfony/form -n --no-update && composer req "symfony/form: ^5.3 || ^6.0" doctrine/annotations --no-update -n'
 
       - uses: 'ramsey/composer-install@v2'
         with:
