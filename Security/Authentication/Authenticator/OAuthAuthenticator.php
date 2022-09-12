@@ -122,7 +122,7 @@ class OAuthAuthenticator implements AuthenticatorInterface
 
             // get the passport badges
             $credentials = $passport->getBadge(OAuthCredentials::class);
-            $user = $this->userProvider->loadUserByUsername(
+            $user = $this->userProvider->loadUserByIdentifier(
                 $passport->getBadge(UserBadge::class)->getUserIdentifier()
             );
 

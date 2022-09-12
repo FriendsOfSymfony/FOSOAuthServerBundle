@@ -78,6 +78,12 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         ;
         $this->userProvider = $this->getMockBuilder(UserProviderInterface::class)
             ->disableOriginalConstructor()
+            ->setMethods([
+                'loadUserByIdentifier',
+                'loadUserByUsername',
+                'refreshUser',
+                'supportsClass'
+            ])
             ->getMock()
         ;
         $this->encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
@@ -363,7 +369,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 
         $this->userProvider
             ->expects(self::once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willThrowException(new AuthenticationException('No such user'))
         ;
@@ -396,7 +402,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->will($this->returnValue($user))
         ;
@@ -435,7 +441,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->will($this->returnValue($user))
         ;
@@ -454,7 +460,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         $client = new Client();
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willThrowException(new AuthenticationException('No such user'))
         ;
