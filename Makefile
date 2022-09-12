@@ -21,6 +21,7 @@ cs-full-check:
 
 composer-compat:
 	composer config "platform.ext-mongo" "1.6.16"
+	composer config --no-plugins allow-plugins.symfony/runtime true
 	composer require alcaeus/mongo-php-adapter  --no-update
 
 composer-config-beta:

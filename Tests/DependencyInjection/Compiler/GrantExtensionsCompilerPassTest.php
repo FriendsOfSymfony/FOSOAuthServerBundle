@@ -182,7 +182,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
                     $this->equalTo([
                         $tag['uri'],
                         new Reference($id),
-                    ])
+                    ]),
                 ];
             }
         }
@@ -290,7 +290,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
                         $tag['uri'],
                         new Reference($id),
                     ]),
-                    $this->equalTo(false)
+                    $this->equalTo(false),
                 ];
             }
         }

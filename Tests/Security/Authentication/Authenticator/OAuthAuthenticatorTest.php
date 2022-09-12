@@ -75,7 +75,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
                 'loadUserByIdentifier',
                 'loadUserByUsername',
                 'refreshUser',
-                'supportsClass'
+                'supportsClass',
             ])
             ->getMock()
         ;
