@@ -59,7 +59,6 @@ jobs:
     strategy:
       matrix:
         dependencies:
-          - 'lowest'
           - 'highest'
           - 'beta'
         include:
