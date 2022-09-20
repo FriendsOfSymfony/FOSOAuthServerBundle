@@ -169,7 +169,7 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
 
         $exceptionMessage = 'Service "%s" must define the "uri" attribute on "fos_oauth_server.grant_extension" tags.';
 
-        $idx = 0;
+        $addMethodCallWiths = [];
         foreach ($data as $id => $tags) {
             foreach ($tags as $tag) {
                 if (empty($tag['uri'])) {
@@ -177,19 +177,21 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
                     break;
                 }
 
-                $storageDefinition
-                    ->expects($this->at(++$idx))
-                    ->method('addMethodCall')
-                    ->with(
-                        'setGrantExtension',
-                        [
-                            $tag['uri'],
-                            new Reference($id),
-                        ]
-                    )
-                ;
+                $addMethodCallWiths[] = [
+                    $this->equalTo('setGrantExtension'),
+                    $this->equalTo([
+                        $tag['uri'],
+                        new Reference($id),
+                    ]),
+                ];
             }
         }
+
+        $storageDefinition
+            ->expects($this->exactly(count($addMethodCallWiths)))
+            ->method('addMethodCall')
+            ->withConsecutive(...$addMethodCallWiths)
+        ;
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($exceptionMessage);
@@ -279,22 +281,25 @@ class GrantExtensionsCompilerPassTest extends \PHPUnit\Framework\TestCase
             ->willReturn($data)
         ;
 
-        $idx = 0;
+        $addMethodCallWiths = [];
         foreach ($data as $id => $tags) {
             foreach ($tags as $tag) {
-                $storageDefinition
-                    ->expects($this->at(++$idx))
-                    ->method('addMethodCall')
-                    ->with(
-                        'setGrantExtension',
-                        [
-                            $tag['uri'],
-                            new Reference($id),
-                        ]
-                    )
-                ;
+                $addMethodCallWiths[] = [
+                    $this->equalTo('setGrantExtension'),
+                    $this->equalTo([
+                        $tag['uri'],
+                        new Reference($id),
+                    ]),
+                    $this->equalTo(false),
+                ];
             }
         }
+
+        $storageDefinition
+            ->expects($this->exactly(count($addMethodCallWiths)))
+            ->method('addMethodCall')
+            ->withConsecutive(...$addMethodCallWiths)
+        ;
 
         $this->assertNull($this->instance->process($container));
     }

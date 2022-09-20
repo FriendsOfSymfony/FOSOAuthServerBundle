@@ -1,32 +1,32 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:configure\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:configure\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Command/CleanCommand.php
 
 		-
-			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:\\$accessTokenManager has no typehint specified\\.$#"
+			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:\\$accessTokenManager has no type(|hint) specified\\.$#"
 			count: 1
 			path: Command/CleanCommand.php
 
 		-
-			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:\\$authCodeManager has no typehint specified\\.$#"
+			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:\\$authCodeManager has no type(|hint) specified\\.$#"
 			count: 1
 			path: Command/CleanCommand.php
 
 		-
-			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:\\$refreshTokenManager has no typehint specified\\.$#"
+			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CleanCommand\\:\\:\\$refreshTokenManager has no type(|hint) specified\\.$#"
 			count: 1
 			path: Command/CleanCommand.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Command\\\\CreateClientCommand\\:\\:configure\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Command\\\\CreateClientCommand\\:\\:configure\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Command/CreateClientCommand.php
 
 		-
-			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CreateClientCommand\\:\\:\\$clientManager has no typehint specified\\.$#"
+			message: "#^Property FOS\\\\OAuthServerBundle\\\\Command\\\\CreateClientCommand\\:\\:\\$clientManager has no type(|hint) specified\\.$#"
 			count: 1
 			path: Command/CreateClientCommand.php
 
@@ -36,12 +36,12 @@ parameters:
 			path: Controller/AuthorizeController.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Controller\\\\AuthorizeController\\:\\:authorizeAction\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Controller\\\\AuthorizeController\\:\\:authorizeAction\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Controller/AuthorizeController.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Controller\\\\AuthorizeController\\:\\:getCurrentRequest\\(\\) never returns null so it can be removed from the return typehint\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Controller\\\\AuthorizeController\\:\\:getCurrentRequest\\(\\) never returns null so it can be removed from the return type(|hint)\\.$#"
 			count: 1
 			path: Controller/AuthorizeController.php
 
@@ -56,12 +56,12 @@ parameters:
 			path: Controller/AuthorizeController.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Compiler\\\\GrantExtensionsCompilerPass\\:\\:process\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Compiler\\\\GrantExtensionsCompilerPass\\:\\:process\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Compiler/GrantExtensionsCompilerPass.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Compiler\\\\RequestStackCompilerPass\\:\\:process\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Compiler\\\\RequestStackCompilerPass\\:\\:process\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Compiler/RequestStackCompilerPass.php
 
@@ -76,12 +76,12 @@ parameters:
 			path: DependencyInjection/Configuration.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Configuration\\:\\:addAuthorizeSection\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Configuration\\:\\:addAuthorizeSection\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Configuration.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Configuration\\:\\:addServiceSection\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Configuration\\:\\:addServiceSection\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Configuration.php
 
@@ -96,7 +96,7 @@ parameters:
 			path: DependencyInjection/Configuration.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:computeArraySupportedScopes\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:computeArraySupportedScopes\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
@@ -106,7 +106,7 @@ parameters:
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:load\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:load\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
@@ -116,7 +116,7 @@ parameters:
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:loadAuthorize\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:loadAuthorize\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
@@ -126,7 +126,7 @@ parameters:
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:remapParameters\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:remapParameters\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
@@ -141,7 +141,7 @@ parameters:
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:remapParametersNamespaces\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\FOSOAuthServerExtension\\:\\:remapParametersNamespaces\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
@@ -156,32 +156,37 @@ parameters:
 			path: DependencyInjection/FOSOAuthServerExtension.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:addConfiguration\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:addConfiguration\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$config with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$config with no type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$defaultEntryPoint with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$defaultEntryPoint with no type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$id with no type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$userProvider with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) has parameter \\$userProvider with no type(|hint) specified\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
 		-
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:create\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: DependencyInjection/Security/Factory/OAuthFactory.php
+
+		-
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\OAuthFactory\\:\\:createAuthenticator\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/OAuthFactory.php
 
@@ -196,12 +201,12 @@ parameters:
 			path: Document/AuthCodeManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\AuthCodeManager\\:\\:__construct\\(\\) has parameter \\$class with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\AuthCodeManager\\:\\:__construct\\(\\) has parameter \\$class with no type(|hint) specified\\.$#"
 			count: 1
 			path: Document/AuthCodeManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\AuthCodeManager\\:\\:deleteAuthCode\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\AuthCodeManager\\:\\:deleteAuthCode\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Document/AuthCodeManager.php
 
@@ -211,7 +216,7 @@ parameters:
 			path: Document/AuthCodeManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\AuthCodeManager\\:\\:updateAuthCode\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\AuthCodeManager\\:\\:updateAuthCode\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Document/AuthCodeManager.php
 
@@ -236,12 +241,12 @@ parameters:
 			path: Document/ClientManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\ClientManager\\:\\:__construct\\(\\) has parameter \\$class with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\ClientManager\\:\\:__construct\\(\\) has parameter \\$class with no type(|hint) specified\\.$#"
 			count: 1
 			path: Document/ClientManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\ClientManager\\:\\:deleteClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\ClientManager\\:\\:deleteClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Document/ClientManager.php
 
@@ -251,7 +256,7 @@ parameters:
 			path: Document/ClientManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\ClientManager\\:\\:updateClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\ClientManager\\:\\:updateClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Document/ClientManager.php
 
@@ -281,12 +286,12 @@ parameters:
 			path: Document/TokenManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\TokenManager\\:\\:__construct\\(\\) has parameter \\$class with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\TokenManager\\:\\:__construct\\(\\) has parameter \\$class with no type(|hint) specified\\.$#"
 			count: 1
 			path: Document/TokenManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\TokenManager\\:\\:deleteToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\TokenManager\\:\\:deleteToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Document/TokenManager.php
 
@@ -296,7 +301,7 @@ parameters:
 			path: Document/TokenManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\TokenManager\\:\\:updateToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Document\\\\TokenManager\\:\\:updateToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Document/TokenManager.php
 
@@ -316,7 +321,7 @@ parameters:
 			path: Document/TokenManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\AuthCodeManager\\:\\:deleteAuthCode\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\AuthCodeManager\\:\\:deleteAuthCode\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/AuthCodeManager.php
 
@@ -326,7 +331,7 @@ parameters:
 			path: Entity/AuthCodeManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\AuthCodeManager\\:\\:updateAuthCode\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\AuthCodeManager\\:\\:updateAuthCode\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/AuthCodeManager.php
 
@@ -341,12 +346,12 @@ parameters:
 			path: Entity/AuthCodeManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\ClientManager\\:\\:__construct\\(\\) has parameter \\$class with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\ClientManager\\:\\:__construct\\(\\) has parameter \\$class with no type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/ClientManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\ClientManager\\:\\:deleteClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\ClientManager\\:\\:deleteClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/ClientManager.php
 
@@ -356,7 +361,7 @@ parameters:
 			path: Entity/ClientManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\ClientManager\\:\\:updateClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\ClientManager\\:\\:updateClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/ClientManager.php
 
@@ -376,12 +381,12 @@ parameters:
 			path: Entity/ClientManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\TokenManager\\:\\:__construct\\(\\) has parameter \\$class with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\TokenManager\\:\\:__construct\\(\\) has parameter \\$class with no type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/TokenManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\TokenManager\\:\\:deleteToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\TokenManager\\:\\:deleteToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/TokenManager.php
 
@@ -391,7 +396,7 @@ parameters:
 			path: Entity/TokenManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\TokenManager\\:\\:updateToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Entity\\\\TokenManager\\:\\:updateToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Entity/TokenManager.php
 
@@ -411,42 +416,42 @@ parameters:
 			path: Entity/TokenManager.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Event\\\\AbstractAuthorizationEvent\\:\\:setAuthorizedClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Event\\\\AbstractAuthorizationEvent\\:\\:setAuthorizedClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Event/AbstractAuthorizationEvent.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\FOSOAuthServerBundle\\:\\:build\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\FOSOAuthServerBundle\\:\\:build\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: FOSOAuthServerBundle.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:getCurrentRequest\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:getCurrentRequest\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:getScope\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:getScope\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:isAccepted\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:isAccepted\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:isRejected\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:isRejected\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:onSuccess\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:onSuccess\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:setContainer\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Handler\\\\AuthorizeFormHandler\\:\\:setContainer\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Handler/AuthorizeFormHandler.php
 
@@ -461,27 +466,27 @@ parameters:
 			path: Form/Model/Authorize.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Type\\\\AuthorizeFormType\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Type\\\\AuthorizeFormType\\:\\:buildForm\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Type/AuthorizeFormType.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Type\\\\AuthorizeFormType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Form\\\\Type\\\\AuthorizeFormType\\:\\:configureOptions\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Form/Type/AuthorizeFormType.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCode\\:\\:setRedirectUri\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCode\\:\\:setRedirectUri\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/AuthCode.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeInterface\\:\\:setRedirectUri\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeInterface\\:\\:setRedirectUri\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/AuthCodeInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeManagerInterface\\:\\:deleteAuthCode\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeManagerInterface\\:\\:deleteAuthCode\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/AuthCodeManagerInterface.php
 
@@ -491,7 +496,7 @@ parameters:
 			path: Model/AuthCodeManagerInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeManagerInterface\\:\\:updateAuthCode\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeManagerInterface\\:\\:updateAuthCode\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/AuthCodeManagerInterface.php
 
@@ -501,7 +506,7 @@ parameters:
 			path: Model/Client.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:getId\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:getId\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Client.php
 
@@ -511,7 +516,7 @@ parameters:
 			path: Model/Client.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setAllowedGrantTypes\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setAllowedGrantTypes\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Client.php
 
@@ -521,12 +526,12 @@ parameters:
 			path: Model/Client.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setRandomId\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setRandomId\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Client.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setRedirectUris\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setRedirectUris\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Client.php
 
@@ -536,7 +541,7 @@ parameters:
 			path: Model/Client.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setSecret\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Client\\:\\:setSecret\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Client.php
 
@@ -556,7 +561,7 @@ parameters:
 			path: Model/ClientInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setAllowedGrantTypes\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setAllowedGrantTypes\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/ClientInterface.php
 
@@ -566,12 +571,12 @@ parameters:
 			path: Model/ClientInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setRandomId\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setRandomId\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/ClientInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setRedirectUris\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setRedirectUris\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/ClientInterface.php
 
@@ -581,12 +586,12 @@ parameters:
 			path: Model/ClientInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setSecret\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\:\\:setSecret\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/ClientInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientManagerInterface\\:\\:deleteClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientManagerInterface\\:\\:deleteClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/ClientManagerInterface.php
 
@@ -596,72 +601,72 @@ parameters:
 			path: Model/ClientManagerInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientManagerInterface\\:\\:updateClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\ClientManagerInterface\\:\\:updateClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/ClientManagerInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:getClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:getClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Token.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:getId\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:getId\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Token.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Token.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setExpiresAt\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setExpiresAt\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Token.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setScope\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setScope\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Token.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Token.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setUser\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\Token\\:\\:setUser\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/Token.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setClient\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setClient\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/TokenInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setExpiresAt\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setExpiresAt\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/TokenInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setScope\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setScope\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/TokenInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/TokenInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setUser\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\:\\:setUser\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/TokenInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenManagerInterface\\:\\:deleteToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenManagerInterface\\:\\:deleteToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/TokenManagerInterface.php
 
@@ -671,9 +676,24 @@ parameters:
 			path: Model/TokenManagerInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenManagerInterface\\:\\:updateToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Model\\\\TokenManagerInterface\\:\\:updateToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Model/TokenManagerInterface.php
+
+		-
+			message: "#^Call to an undefined method OAuth2\\\\Model\\\\IOAuth2AccessToken\\:\\:getUser\\(\\)\\.$#"
+			count: 1
+			path: Security/Authentication/Authenticator/OAuthAuthenticator.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:get(UserIdentifier|Roles|TokenString)\\(\\)\\.$#"
+			count: 3
+			path: Security/Authentication/Authenticator/OAuthAuthenticator.php
+
+		-
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Passport\\\\OAuthCredentials\\:\\:getRoles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Security/Authentication/Passport/OAuthCredentials.php
 
 		-
 			message: "#^Parameter \\#1 \\$httpCode of class OAuth2\\\\OAuth2AuthenticateException constructor expects string, int given\\.$#"
@@ -686,17 +706,17 @@ parameters:
 			path: Security/Authentication/Provider/OAuthProvider.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Token\\\\OAuthToken\\:\\:getToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Token\\\\OAuthToken\\:\\:getToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Security/Authentication/Token/OAuthToken.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Token\\\\OAuthToken\\:\\:setToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Token\\\\OAuthToken\\:\\:setToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Security/Authentication/Token/OAuthToken.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Token\\\\OAuthToken\\:\\:setToken\\(\\) has parameter \\$token with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Token\\\\OAuthToken\\:\\:setToken\\(\\) has parameter \\$token with no type(|hint) specified\\.$#"
 			count: 1
 			path: Security/Authentication/Token/OAuthToken.php
 
@@ -706,7 +726,7 @@ parameters:
 			path: Security/EntryPoint/OAuthEntryPoint.php
 
 		-
-			message: "#^Property FOS\\\\OAuthServerBundle\\\\Security\\\\EntryPoint\\\\OAuthEntryPoint\\:\\:\\$serverService has no typehint specified\\.$#"
+			message: "#^Property FOS\\\\OAuthServerBundle\\\\Security\\\\EntryPoint\\\\OAuthEntryPoint\\:\\:\\$serverService has no type(|hint) specified\\.$#"
 			count: 1
 			path: Security/EntryPoint/OAuthEntryPoint.php
 
@@ -716,7 +736,7 @@ parameters:
 			path: Security/Firewall/OAuthListener.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Firewall\\\\OAuthListener\\:\\:__invoke\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Firewall\\\\OAuthListener\\:\\:__invoke\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Security/Firewall/OAuthListener.php
 
@@ -726,17 +746,17 @@ parameters:
 			path: Security/Firewall/OAuthListener.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\GrantExtensionDispatcherInterface\\:\\:setGrantExtension\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\GrantExtensionDispatcherInterface\\:\\:setGrantExtension\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/GrantExtensionDispatcherInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\GrantExtensionDispatcherInterface\\:\\:setGrantExtension\\(\\) has parameter \\$uri with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\GrantExtensionDispatcherInterface\\:\\:setGrantExtension\\(\\) has parameter \\$uri with no type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/GrantExtensionDispatcherInterface.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\GrantExtensionInterface\\:\\:checkGrantExtension\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\GrantExtensionInterface\\:\\:checkGrantExtension\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/GrantExtensionInterface.php
 
@@ -776,17 +796,17 @@ parameters:
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:createAccessToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:createAccessToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:createAuthCode\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:createAuthCode\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:createRefreshToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:createRefreshToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
 
@@ -796,22 +816,22 @@ parameters:
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:markAuthCodeAsUsed\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:markAuthCodeAsUsed\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:setGrantExtension\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:setGrantExtension\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:setGrantExtension\\(\\) has parameter \\$uri with no typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:setGrantExtension\\(\\) has parameter \\$uri with no type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:unsetRefreshToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:unsetRefreshToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
 
@@ -824,6 +844,10 @@ parameters:
 			message: "#^Property FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:\\$grantExtensions type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
+
+		-
+			message: "#Test::test.*has parameter.*with no value type specified in iterable type array#"
+			path: Tests/
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
@@ -846,7 +870,7 @@ parameters:
 			path: Tests/Controller/AuthorizeControllerTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with string and int will always evaluate to false\\.$#"
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with (|non-empty-)string and int will always evaluate to false\\.$#"
 			count: 1
 			path: Tests/Document/AuthCodeManagerTest.php
 
@@ -861,7 +885,7 @@ parameters:
 			path: Tests/Document/ClientManagerTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with string and int will always evaluate to false\\.$#"
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with (|non-empty-)string and int will always evaluate to false\\.$#"
 			count: 1
 			path: Tests/Document/TokenManagerTest.php
 
@@ -871,17 +895,17 @@ parameters:
 			path: Tests/Document/TokenManagerTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with string and FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeInterface\\|null will always evaluate to false\\.$#"
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with (|non-empty-)string and FOS\\\\OAuthServerBundle\\\\Model\\\\AuthCodeInterface\\|null will always evaluate to false\\.$#"
 			count: 1
 			path: Tests/Entity/AuthCodeManagerTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with string and int will always evaluate to false\\.$#"
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with (|non-empty-)string and int will always evaluate to false\\.$#"
 			count: 1
 			path: Tests/Entity/AuthCodeManagerTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with string and FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\|null will always evaluate to false\\.$#"
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with (|non-empty-)string and FOS\\\\OAuthServerBundle\\\\Model\\\\ClientInterface\\|null will always evaluate to false\\.$#"
 			count: 1
 			path: Tests/Entity/ClientManagerTest.php
 
@@ -891,12 +915,12 @@ parameters:
 			path: Tests/Entity/ClientManagerTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with string and FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\|null will always evaluate to false\\.$#"
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with (|non-empty-)string and FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\|null will always evaluate to false\\.$#"
 			count: 1
 			path: Tests/Entity/TokenManagerTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with string and int will always evaluate to false\\.$#"
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with (|non-empty-)string and int will always evaluate to false\\.$#"
 			count: 1
 			path: Tests/Entity/TokenManagerTest.php
 
@@ -924,6 +948,16 @@ parameters:
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Tests\\\\Functional\\\\TestBundle\\\\Entity\\\\User\\:\\:getUsername\\(\\) should return string but returns int\\|null\\.$#"
 			count: 1
 			path: Tests/Functional/TestBundle/Entity/User.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\:\\:getToken\\(\\)\\.$#"
+			count: 1
+			path: Tests/Security/Authentication/Authenticator/OAuthAuthenticatorTest.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:get(UserIdentifier|TokenString|Roles)\\(\\)\\.$#"
+			count: 3
+			path: Tests/Security/Authentication/Authenticator/OAuthAuthenticatorTest.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
@@ -961,7 +995,7 @@ parameters:
 			path: Tests/Storage/OAuthStorageTest.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Util\\\\Random\\:\\:generateToken\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method FOS\\\\OAuthServerBundle\\\\Util\\\\Random\\:\\:generateToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Util/Random.php
 

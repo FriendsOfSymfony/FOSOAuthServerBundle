@@ -236,13 +236,13 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->tokenStorage
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn($token)
         ;
 
         $token
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn(null)
         ;
@@ -261,19 +261,19 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->tokenStorage
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn($token)
         ;
 
         $token
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn($this->user)
         ;
 
         $this->session
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('get')
             ->with('_fos_oauth_server.ensure_logout')
             ->willReturn(false)
@@ -297,14 +297,14 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->authorizeFormHandler
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('process')
             ->with()
             ->willReturn(false)
         ;
 
         $this->form
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('createView')
             ->willReturn($this->formView)
         ;
@@ -333,19 +333,19 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->tokenStorage
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn($token)
         ;
 
         $token
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn($this->user)
         ;
 
         $this->session
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('get')
             ->with('_fos_oauth_server.ensure_logout')
             ->willReturn(false)
@@ -371,7 +371,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $randomScope = 'scope'.\random_bytes(10);
 
         $this->request
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('get')
             ->with('scope', null)
             ->willReturn($randomScope)
@@ -380,7 +380,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $response = new Response();
 
         $this->oAuth2Server
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('finishClientAuthorization')
             ->with(
                 true,
@@ -402,33 +402,33 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->tokenStorage
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn($token)
         ;
 
         $token
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn($this->user)
         ;
 
         $this->session
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('get')
             ->with('_fos_oauth_server.ensure_logout')
             ->willReturn(true)
         ;
 
         $this->session
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('invalidate')
             ->with(600)
             ->willReturn(true)
         ;
 
         $this->session
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('set')
             ->with('_fos_oauth_server.ensure_logout', true)
             ->willReturn(null)
@@ -452,14 +452,14 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->authorizeFormHandler
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('process')
             ->with()
             ->willReturn(false)
         ;
 
         $this->form
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('createView')
             ->willReturn($this->formView)
         ;
@@ -510,18 +510,12 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         $propertyReflection->setAccessible(true);
         $propertyReflection->setValue($this->instance, $this->client);
 
-        $this->eventDispatcher
-            ->expects($this->at(0))
-            ->method('dispatch')
-            ->with(new PreAuthorizationEvent($this->user, $this->client))
-            ->willReturn($this->preAuthorizationEvent)
-        ;
-
         $this->preAuthorizationEvent
             ->expects($this->once())
             ->method('isAuthorizedClient')
             ->willReturn(false)
         ;
+        $postAuthorizationEvent = new PostAuthorizationEvent($this->user, $this->client, true);
 
         $this->authorizeFormHandler
             ->expects($this->once())
@@ -536,9 +530,16 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->eventDispatcher
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('dispatch')
-            ->with(new PostAuthorizationEvent($this->user, $this->client, true))
+            ->withConsecutive(
+                [$this->equalTo(new PreAuthorizationEvent($this->user, $this->client))],
+                [$this->equalTo($postAuthorizationEvent)]
+            )
+            ->willReturn(
+                $this->preAuthorizationEvent,
+                $postAuthorizationEvent
+            )
         ;
 
         $formName = 'formName'.\random_bytes(10);

@@ -188,7 +188,7 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $randomData = \random_bytes(10);
 
         $this->container
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('get')
             ->with('request')
             ->willReturn($randomData)

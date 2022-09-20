@@ -12,17 +12,28 @@ cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"
 
 cs-full:
-	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff"
+	if [ ! -f .php-cs-fixer.php ]; then cp .php-cs-fixer.dist-php .php-cs-fixer.php; fi
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=no --diff"
 
 cs-full-check:
-	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff --dry-run"
+	if [ ! -f .php-cs-fixer.php ]; then cp .php-cs-fixer.dist-php .php-cs-fixer.php; fi
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=no --diff --dry-run"
 
 composer-compat:
 	composer config "platform.ext-mongo" "1.6.16"
+	composer config --no-plugins allow-plugins.symfony/runtime true
 	composer require alcaeus/mongo-php-adapter  --no-update
 
 composer-config-beta:
 	composer config "minimum-stability" "beta"
+
+composer-php7:
+	# when php 7 and 8 are both installed, to test with php7 - for example:
+	# $ make composer-compat
+	# $ make composer-php7
+	# $ SYMFONY_VERSION=5.3 make composer-install
+	# $ php7.4 vendor/bin/phpunit
+	composer config platform.php 7.4
 
 composer-install:
 	rm -f composer.lock && cp composer.json composer.json~
