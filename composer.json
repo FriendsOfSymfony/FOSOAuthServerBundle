@@ -21,11 +21,11 @@
     "homepage": "http://friendsofsymfony.github.com",
     "require": {
         "php": "^7.4 || ^8.0",
+        "doctrine/annotations": "^1.13",
         "friendsofsymfony/oauth2-php": "~1.1",
         "symfony/dependency-injection": "^5.3",
         "symfony/framework-bundle": "^5.3",
         "symfony/security-bundle": "^5.3",
-        "symfony/symfony": "^5.3",
         "symfony/twig-bundle": "^5.3"
     },
     "require-dev": {
