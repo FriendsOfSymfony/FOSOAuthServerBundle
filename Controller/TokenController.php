@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Controller;
 
-use OAuth2\OAuth2;
+use OAuth2\IOAuth2;
 use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\Response;
 class TokenController
 {
     /**
-     * @var OAuth2
+     * @var IOAuth2
      */
     protected $server;
 
-    public function __construct(OAuth2 $server)
+    public function __construct(IOAuth2 $server)
     {
         $this->server = $server;
     }
