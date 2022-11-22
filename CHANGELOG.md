@@ -1,3 +1,8 @@
+CHANGELOG for 3.0.x
+===================
+### 3.0.0
+* Added support for php 8.1 and symfony 6.1
+
 CHANGELOG for 2.0.x
 ===================
 

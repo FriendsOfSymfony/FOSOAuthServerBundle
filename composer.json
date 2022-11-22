@@ -20,12 +20,12 @@
     ],
     "homepage": "http://friendsofsymfony.github.com",
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^7.2 || ^8.1",
         "friendsofsymfony/oauth2-php": "~1.1",
-        "symfony/dependency-injection": "^4.4 || ^5.1",
-        "symfony/framework-bundle": "^4.4 || ^5.1",
-        "symfony/security-bundle": "^4.4 || ^5.1",
-        "symfony/twig-bundle": "^4.4 || ^5.1"
+        "symfony/dependency-injection": "^4.4 || ^5.1 || ^6.1",
+        "symfony/framework-bundle": "^4.4 || ^5.1 || ^6.1",
+        "symfony/security-bundle": "^4.4 || ^5.1 || ^6.1",
+        "symfony/twig-bundle": "^4.4 || ^5.1 || ^6.1"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.0",
@@ -36,12 +36,12 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-phpunit": "~0.9",
         "phpunit/phpunit": "^8.5.23 || ^9.0",
-        "symfony/console": "^4.4 || ^5.1",
-        "symfony/form": "^4.4 || ^5.1",
-        "symfony/http-kernel": "^4.4 || ^5.1",
-        "symfony/phpunit-bridge": "^4.4 || ^5.1",
-        "symfony/security-core": "^4.4 || ^5.1",
-        "symfony/yaml": "^4.4 || ^5.1"
+        "symfony/console": "^4.4 || ^5.1 || ^6.1",
+        "symfony/form": "^4.4 || ^5.1 || ^6.1",
+        "symfony/http-kernel": "^4.4 || ^5.1 || ^6.1",
+        "symfony/phpunit-bridge": "^4.4 || ^5.1 || ^6.1",
+        "symfony/security-core": "^4.4 || ^5.1 || ^6.1",
+        "symfony/yaml": "^4.4 || ^5.1 || ^6.1"
     },
     "conflict": {
         "twig/twig": "<1.40 || >=2.0,<2.9"
