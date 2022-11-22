@@ -1,5 +1,5 @@
 {
-    "name": "friendsofsymfony/oauth-server-bundle",
+    "name": "mapado/oauth-server-bundle",
     "description": "Symfony2 OAuth Server Bundle",
     "license": "MIT",
     "type": "symfony-bundle",
@@ -8,17 +8,6 @@
         "oauth2",
         "server"
     ],
-    "authors": [
-        {
-            "name": "Arnaud Le Blanc",
-            "email": "arnaud.lb@gmail.com"
-        },
-        {
-            "name": "FriendsOfSymfony Community",
-            "homepage": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/contributors"
-        }
-    ],
-    "homepage": "http://friendsofsymfony.github.com",
     "require": {
         "php": "^7.2 || ^8.1",
         "friendsofsymfony/oauth2-php": "~1.1",
