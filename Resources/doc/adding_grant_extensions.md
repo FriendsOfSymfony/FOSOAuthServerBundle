@@ -23,6 +23,8 @@ namespace Acme\ApiBundle\OAuth;
 
 use FOS\OAuthServerBundle\Storage\GrantExtensionInterface;
 use OAuth2\Model\IOAuth2Client;
+use OAuth2\OAuth2;
+use OAuth2\OAuth2ServerException;
 
 /**
  * Play at bingo to get an access_token: May the luck be with you!
@@ -34,34 +36,38 @@ class BingoGrantExtension implements GrantExtensionInterface
      */
     public function checkGrantExtension(IOAuth2Client $client, array $inputData, array $authHeaders)
     {
-        // Check that the input data is correct
-        if (!isset($inputData['number_1']) || !isset($inputData['number_2'])) {
-            return false;
+        try {
+            // Check that the input data is correct
+            if (!isset($inputData['number_1']) || !isset($inputData['number_2'])) {
+                throw new \Exception('Wrong input data');
+            }
+
+            $numberToGuess1 = rand(0, 100);
+            $numberToGuess2 = rand(0, 100);
+
+            if ($numberToGuess1 != $inputData['number_1'] && $numberToGuess2 != $inputData['number_2']) {
+                throw new \Exception('No number guessed');
+            }
+
+            if ($numberToGuess1 == $inputData['number_1'] && $numberToGuess2 == $inputData['number_2']) {
+                // Both numbers were guessed, we grant an access_token linked
+                // to a user
+                return array(
+                    'data' => $userManager->findRandomUser()
+                );
+            }
+
+            if ($numberToGuess1 == $inputData['number_1'] || $numberToGuess2 == $inputData['number_2']) {
+                // Only one of the numbers were guessed
+                // We grant a simple access token
+
+                return true;
+            }
+        } catch (\Exception $e) {
+            // As OAuth2ServerException's third parameter you can enter a scalar value, array or serializable object.
+            // This will give the client an "error_description" object in the OAuth error.
+            throw new OAuth2ServerException(OAuth2::HTTP_BAD_REQUEST, OAuth2::ERROR_INVALID_REQUEST, $e->getMessage());
         }
-
-        $numberToGuess1 = rand(0, 100);
-        $numberToGuess2 = rand(0, 100);
-
-        if ($numberToGuess1 != $inputData['number_1'] && $numberToGuess2 != $inputData['number_2']) {
-            return false; // No number guessed, grant will fail
-        }
-
-        if ($numberToGuess1 == $inputData['number_1'] && $numberToGuess2 == $inputData['number_2']) {
-            // Both numbers were guessed, we grant an access_token linked
-            // to a user
-            return array(
-                'data' => $userManager->findRandomUser()
-            );
-        }
-
-        if ($numberToGuess1 == $inputData['number_1'] || $numberToGuess2 == $inputData['number_2']) {
-            // Only one of the numbers were guessed
-            // We grant a simple access token
-
-            return true;
-        }
-
-        return false; // No number guessed, the grant will fail
     }
 }
 ```
