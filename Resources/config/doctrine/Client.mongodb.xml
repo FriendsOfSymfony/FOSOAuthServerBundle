@@ -5,9 +5,9 @@
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
     <mapped-superclass name="FOS\OAuthServerBundle\Document\Client">
-        <field name="randomId" fieldName="randomId" type="string" />
-        <field name="redirectUris" fieldName="redirectUris" type="collection" />
-        <field name="secret" fieldName="secret" type="string" />
-        <field name="allowedGrantTypes" fieldName="allowedGrantTypes" type="collection" />
+        <field name="randomId" field-name="randomId" type="string" />
+        <field name="redirectUris" field-name="redirectUris" type="collection" />
+        <field name="secret" field-name="secret" type="string" />
+        <field name="allowedGrantTypes" field-name="allowedGrantTypes" type="collection" />
     </mapped-superclass>
 </doctrine-mongo-mapping>
