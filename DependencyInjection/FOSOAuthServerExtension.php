@@ -28,7 +28,7 @@ class FOSOAuthServerExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $processor = new Processor();
         $configuration = new Configuration();
@@ -78,13 +78,15 @@ class FOSOAuthServerExtension extends Extension
             if (null === $config['model_manager_name']) {
                 $container->setAlias('fos_oauth_server.document_manager', new Alias('doctrine.odm.mongodb.document_manager', false));
             } else {
-                $container->setAlias('fos_oauth_server.document_manager', new Alias(
-                    sprintf(
-                        'doctrine.odm.%s_mongodb.document_manager',
-                        $config['model_manager_name']
-                    ),
-                    false
-                ));
+                $container->setAlias(
+                    'fos_oauth_server.document_manager',
+                    new Alias(
+                        sprintf(
+                            'doctrine.odm.%s_mongodb.document_manager',
+                            $config['model_manager_name']
+                        ),
+                        false
+                    ));
             }
         }
 
