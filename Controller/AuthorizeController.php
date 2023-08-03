@@ -128,12 +128,11 @@ class AuthorizeController
     public function authorizeAction(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()->getUser();
-
         if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        if (!empty($request->getSession()) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
+        if (true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
             $request->getSession()->invalidate(600);
             $request->getSession()->set('_fos_oauth_server.ensure_logout', true);
         }
@@ -167,7 +166,7 @@ class AuthorizeController
 
     protected function processSuccess(UserInterface $user, AuthorizeFormHandler $formHandler, Request $request): Response
     {
-        if (!empty($request->getSession()) && true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
+        if (true === $request->getSession()->get('_fos_oauth_server.ensure_logout')) {
             $this->tokenStorage->setToken(null);
             $request->getSession()->invalidate();
         }

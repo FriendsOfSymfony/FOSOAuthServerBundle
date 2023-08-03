@@ -15,6 +15,7 @@ namespace FOS\OAuthServerBundle\Tests\Entity;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use FOS\OAuthServerBundle\Document\Client;
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,25 +28,10 @@ use PHPUnit\Framework\TestCase;
  */
 class ClientManagerTest extends TestCase
 {
-    /**
-     * @var MockObject|EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @var MockObject|EntityRepository
-     */
-    protected $repository;
-
-    /**
-     * @var ClientManager
-     */
-    protected $instance;
+    protected MockObject|EntityManagerInterface $entityManager;
+    protected string $className;
+    protected MockObject|EntityRepository $repository;
+    protected ClientManager $instance;
 
     public function setUp(): void
     {
@@ -71,13 +57,6 @@ class ClientManagerTest extends TestCase
         parent::setUp();
     }
 
-    public function testConstructWillSetParameters(): void
-    {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->repository, 'repository', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
-    }
-
     public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
@@ -88,7 +67,7 @@ class ClientManagerTest extends TestCase
         $criteria = [
             \random_bytes(5),
         ];
-        $randomResult = \random_bytes(5);
+        $randomResult = new Client();
 
         $this->repository
             ->expects($this->once())

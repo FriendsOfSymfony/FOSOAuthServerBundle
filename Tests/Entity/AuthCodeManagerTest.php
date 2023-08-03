@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Entity;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ObjectRepository;
+use FOS\OAuthServerBundle\Document\AuthCode;
 use FOS\OAuthServerBundle\Entity\AuthCodeManager;
 use FOS\OAuthServerBundle\Model\AuthCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -32,20 +33,9 @@ use PHPUnit\Framework\TestCase;
  */
 class AuthCodeManagerTest extends TestCase
 {
-    /**
-     * @var MockObject|EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @var AuthCodeManager
-     */
-    protected $instance;
+    protected MockObject|EntityManagerInterface $entityManager;
+    protected string $className;
+    protected AuthCodeManager $instance;
 
     public function setUp(): void
     {
@@ -58,12 +48,6 @@ class AuthCodeManagerTest extends TestCase
         $this->instance = new AuthCodeManager($this->entityManager, $this->className);
 
         parent::setUp();
-    }
-
-    public function testConstructWillSetParameters(): void
-    {
-        $this->assertAttributeSame($this->entityManager, 'em', $this->instance);
-        $this->assertAttributeSame($this->className, 'class', $this->instance);
     }
 
     public function testGetClassWillReturnClassName(): void
@@ -88,7 +72,7 @@ class AuthCodeManagerTest extends TestCase
         $criteria = [
             \random_bytes(10),
         ];
-        $randomResult = \random_bytes(10);
+        $randomResult = new AuthCode();
 
         $repository
             ->expects($this->once())
@@ -150,7 +134,7 @@ class AuthCodeManagerTest extends TestCase
 
     public function testDeleteExpired(): void
     {
-        $randomResult = \random_bytes(10);
+        $randomResult = \random_int(0, 10);
 
         $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()

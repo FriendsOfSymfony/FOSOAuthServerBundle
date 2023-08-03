@@ -21,28 +21,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class OAuthListenerTest extends TestCase
 {
-    /**
-     * @var OAuth2|MockObject
-     */
-    protected $serverService;
-
-    /**
-     * @var MockObject|AuthenticationManagerInterface
-     */
-    protected $authManager;
-
-    /**
-     * @var MockObject
-     */
-    protected $securityContext;
-
-    /**
-     * @var MockObject|RequestEvent
-     */
-    protected $event;
+    protected OAuth2|MockObject $serverService;
+    protected MockObject|AuthenticationManagerInterface $authManager;
+    protected MockObject|TokenStorageInterface $securityContext;
+    protected MockObject|RequestEvent $event;
 
     public function setUp(): void
     {
@@ -57,9 +43,9 @@ class OAuthListenerTest extends TestCase
             ->getMock()
         ;
 
-        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
+        if (interface_exists(TokenStorageInterface::class)) {
             $this->securityContext = $this
-                ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
+                ->getMockBuilder(TokenStorageInterface::class)
                 ->disableOriginalConstructor()
                 ->getMock()
             ;

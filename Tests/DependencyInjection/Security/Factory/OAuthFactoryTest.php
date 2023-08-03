@@ -19,6 +19,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * Class OAuthFactoryTest.
@@ -27,20 +28,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class OAuthFactoryTest extends TestCase
 {
-    /**
-     * @var OAuthFactory
-     */
-    protected $instance;
-
-    /**
-     * @var string
-     */
-    protected $definitionDecoratorClass;
-
-    /**
-     * @var string
-     */
-    protected $childDefinitionClass;
+    protected OAuthFactory $instance;
+    protected string $definitionDecoratorClass;
+    protected string $childDefinitionClass;
 
     public function setUp(): void
     {
@@ -52,9 +42,9 @@ class OAuthFactoryTest extends TestCase
         parent::setUp();
     }
 
-    public function testGetPosition(): void
+    public function testGetPriority(): void
     {
-        $this->assertSame('pre_auth', $this->instance->getPosition());
+        $this->assertSame(0, $this->instance->getPriority());
     }
 
     public function testGetKey(): void
@@ -62,17 +52,22 @@ class OAuthFactoryTest extends TestCase
         $this->assertSame('fos_oauth', $this->instance->getKey());
     }
 
-    public function testCreate(): void
+    public function testCreateAuthenticator(): void
     {
+        $checked = false;
         if (class_exists($this->childDefinitionClass)) {
+            $checked = true;
             $this->useChildDefinition();
         }
 
         if (class_exists($this->definitionDecoratorClass)) {
+            $checked = true;
             $this->useDefinitionDecorator();
         }
 
-        throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
+        if (!$checked) {
+            throw new \Exception('Neither DefinitionDecorator nor ChildDefinition exist');
+        }
     }
 
     public function testAddConfigurationDoesNothing(): void
@@ -88,15 +83,11 @@ class OAuthFactoryTest extends TestCase
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
-            ->setMethods([
-                'setDefinition',
-            ])
             ->getMock()
         ;
         $id = '12';
         $config = [];
         $userProvider = 'mock.user.provider.service';
-        $defaultEntryPoint = '';
 
         $definition = $this->getMockBuilder(Definition::class)
             ->disableOriginalConstructor()
@@ -108,8 +99,8 @@ class OAuthFactoryTest extends TestCase
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    'security.authentication.provider.fos_oauth_server.'.$id,
-                    new $this->definitionDecoratorClass('fos_oauth_server.security.authentication.provider'),
+                    'security.authenticator.oauth2.'.$id,
+                    new $this->definitionDecoratorClass('fos_oauth_server.security.authenticator.manager'),
                 ],
                 [
                     'security.authentication.listener.fos_oauth_server.'.$id,
@@ -126,65 +117,81 @@ class OAuthFactoryTest extends TestCase
             ->expects($this->once())
             ->method('replaceArgument')
             ->with(0, new Reference($userProvider))
-            ->willReturn(null)
+            ->willReturnSelf()
         ;
 
         $this->assertSame([
-            'security.authentication.provider.fos_oauth_server.'.$id,
+            'security.authenticator.oauth2.'.$id,
             'security.authentication.listener.fos_oauth_server.'.$id,
             'fos_oauth_server.security.entry_point',
-        ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
+        ], $this->instance->createAuthenticator($container, $id, $config, $userProvider));
     }
 
     protected function useChildDefinition(): void
     {
         $container = $this->getMockBuilder(ContainerBuilder::class)
             ->disableOriginalConstructor()
-            ->setMethods([
-                'setDefinition',
-            ])
             ->getMock()
         ;
         $id = '12';
         $config = [];
         $userProvider = 'mock.user.provider.service';
-        $defaultEntryPoint = '';
 
         $definition = $this->getMockBuilder(Definition::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
 
+        $authManagerLocator = $this->getMockBuilder(Definition::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $authManagerLocator
+            ->expects($this->once())
+            ->method('getArgument')
+            ->with(0)
+            ->willReturn([])
+        ;
+
         $container
-            ->expects($this->exactly(2))
+            ->expects($this->once())
+            ->method('getDefinition')
+            ->with('security.authenticator.managers_locator')
+            ->willReturn($authManagerLocator)
+        ;
+
+        $container
+            ->expects($this->exactly(3))
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    'security.authentication.provider.fos_oauth_server.'.$id,
-                    new $this->childDefinitionClass('fos_oauth_server.security.authentication.provider'),
+                    'security.authenticator.oauth2.'.$id,
+                    new $this->childDefinitionClass('fos_oauth_server.security.authenticator.manager'),
                 ],
                 [
-                    'security.authentication.listener.fos_oauth_server.'.$id,
-                    new $this->childDefinitionClass('fos_oauth_server.security.authentication.listener'),
+                    'security.firewall.authenticator.'.$id,
+                    new $this->childDefinitionClass('security.firewall.authenticator'),
+                ],
+                [
+                    'security.listener.user_checker.'.$id,
+                    new $this->childDefinitionClass('security.listener.user_checker'),
                 ]
             )
-            ->willReturnOnConsecutiveCalls(
-                $definition,
-                null
+            ->willReturn(
+                $definition
             )
         ;
 
         $definition
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('replaceArgument')
-            ->with(0, new Reference($userProvider))
-            ->willReturn(null)
+            ->withConsecutive(
+                [0, 'security.authenticator.oauth2.'.$id],
+                [0, 'security.user_checker.'.$id],
+            )
+            ->willReturnSelf()
         ;
 
-        $this->assertSame([
-            'security.authentication.provider.fos_oauth_server.'.$id,
-            'security.authentication.listener.fos_oauth_server.'.$id,
-            'fos_oauth_server.security.entry_point',
-        ], $this->instance->create($container, $id, $config, $userProvider, $defaultEntryPoint));
+        $this->assertSame('security.authenticator.oauth2.'.$id, $this->instance->createAuthenticator($container, $id, $config, $userProvider));
     }
 }

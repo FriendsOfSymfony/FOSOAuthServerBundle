@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace FOS\OAuthServerBundle\Tests\Document;
 
-use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use FOS\OAuthServerBundle\Document\AccessToken;
 use FOS\OAuthServerBundle\Document\TokenManager;
+use FOS\OAuthServerBundle\Model\Token;
+use MongoDB\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -31,25 +34,10 @@ use PHPUnit\Framework\TestCase;
  */
 class TokenManagerTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @var MockObject|DocumentManager
-     */
-    protected $documentManager;
-
-    /**
-     * @var MockObject|DocumentRepository
-     */
-    protected $repository;
-
-    /**
-     * @var TokenManager
-     */
-    protected $instance;
+    protected string $className;
+    protected MockObject|DocumentManager $documentManager;
+    protected MockObject|DocumentRepository $repository;
+    protected TokenManager $instance;
 
     public function setUp(): void
     {
@@ -80,7 +68,7 @@ class TokenManagerTest extends TestCase
     public function testFindTokenByToken(): void
     {
         $randomToken = \random_bytes(5);
-        $randomResult = \random_bytes(5);
+        $randomResult = new Token();
 
         $this->repository
             ->expects($this->once())
@@ -116,12 +104,12 @@ class TokenManagerTest extends TestCase
         $this->assertNull($this->instance->updateToken($token));
     }
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $this->assertSame($this->className, $this->instance->getClass());
     }
 
-    public function testDeleteToken()
+    public function testDeleteToken(): void
     {
         $token = $this->getMockBuilder(AccessToken::class)
             ->disableOriginalConstructor()
@@ -145,7 +133,7 @@ class TokenManagerTest extends TestCase
         $this->assertNull($this->instance->deleteToken($token));
     }
 
-    public function testDeleteExpired()
+    public function testDeleteExpired(): void
     {
         $queryBuilder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -180,10 +168,27 @@ class TokenManagerTest extends TestCase
             ->willReturn($queryBuilder)
         ;
 
-        $query = $this->getMockBuilder(Query::class)
-            ->disableOriginalConstructor()
-            ->getMock()
+        $data = [
+            'n' => \random_int(0, 5),
+        ];
+
+        $collection = $this->createMock(Collection::class);
+        $collection->expects(self::once())
+            ->method('deleteMany')
+            ->willReturn($data)
         ;
+
+        $query = new Query(
+            $this->documentManager,
+            $this->createMock(ClassMetadata::class),
+            $collection,
+            [
+                'type' => Query::TYPE_REMOVE,
+                'query' => null,
+            ],
+            [],
+            false
+        );
 
         $queryBuilder
             ->expects($this->once())
@@ -192,17 +197,6 @@ class TokenManagerTest extends TestCase
                 'safe' => true,
             ])
             ->willReturn($query)
-        ;
-
-        $data = [
-            'n' => \random_bytes(5),
-        ];
-
-        $query
-            ->expects($this->once())
-            ->method('execute')
-            ->with()
-            ->willReturn($data)
         ;
 
         $this->assertSame($data['n'], $this->instance->deleteExpired());

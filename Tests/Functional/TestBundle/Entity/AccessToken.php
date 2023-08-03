@@ -15,6 +15,8 @@ namespace FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
+use FOS\OAuthServerBundle\Model\ClientInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -33,10 +35,10 @@ class AccessToken extends BaseAccessToken
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $client;
+    protected ClientInterface $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      */
-    protected $user;
+    protected ?UserInterface $user;
 }

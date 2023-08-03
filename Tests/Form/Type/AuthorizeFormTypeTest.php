@@ -23,10 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AuthorizeFormTypeTest extends TypeTestCase
 {
-    /**
-     * @var AuthorizeFormType
-     */
-    protected $instance;
+    protected AuthorizeFormType $instance;
 
     protected function setUp(): void
     {
