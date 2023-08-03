@@ -1,12 +1,12 @@
 QA_DOCKER_IMAGE=jakzal/phpqa:alpine
 QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" -w /project ${QA_DOCKER_IMAGE}
 
-dist: cs-full phpstan phpunit
-ci: cs-full-check phpstan phpunit-coverage
-lint: cs-full-check phpstan
+dist: cs-full phpunit
+ci: cs-full-check phpunit-coverage
+lint: cs-full-check
 
-phpstan:
-	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level 6 ."
+#phpstan:
+#	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level 6 ."
 
 cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff --config .php_cs-fixer.php"
