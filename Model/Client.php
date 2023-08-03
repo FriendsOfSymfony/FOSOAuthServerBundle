@@ -140,7 +140,7 @@ class Client implements ClientInterface
         return null;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // nothind to erase
     }
