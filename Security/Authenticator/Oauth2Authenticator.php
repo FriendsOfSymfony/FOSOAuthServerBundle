@@ -55,7 +55,7 @@ class Oauth2Authenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return $request->headers->has('Authorization');
+        return null !== $this->serverService->getBearerToken($request);
     }
 
     /**
@@ -64,7 +64,10 @@ class Oauth2Authenticator extends AbstractAuthenticator
     public function authenticate(Request $request): Passport
     {
         try {
-            $tokenString = str_replace('Bearer ', '', $request->headers->get('Authorization'));
+            $tokenString = $this->serverService->getBearerToken($request);
+            if (null === $tokenString) {
+                throw new AuthenticationException('OAuth2 authentication failed: missing access token.');
+            }
 
             /** @var AccessToken $accessToken */
             $accessToken = $this->serverService->verifyAccessToken($tokenString);

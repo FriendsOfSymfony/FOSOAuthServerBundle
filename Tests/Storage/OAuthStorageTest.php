@@ -515,6 +515,30 @@ class OAuthStorageTest extends TestCase
         $this->assertTrue($this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/foo', [], []));
     }
 
+    public function testValidGrantExtensionWithData(): void
+    {
+        $grantExtension = $this->getMockBuilder('FOS\OAuthServerBundle\Storage\GrantExtensionInterface')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $grantExtensionData = ['data' => 'Foo'];
+        $grantExtension
+            ->expects($this->once())
+            ->method('checkGrantExtension')
+            ->will($this->returnValue($grantExtensionData))
+        ;
+        $this->storage->setGrantExtension('https://friendsofsymfony.com/grants/foo', $grantExtension);
+
+        $client = $this->getMockBuilder('OAuth2\Model\IOAuth2Client')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->assertEquals(
+            $grantExtensionData,
+            $this->storage->checkGrantExtension($client, 'https://friendsofsymfony.com/grants/foo', [], [])
+        );
+    }
+
     public function testInvalidGrantExtension(): void
     {
         $this->expectException(\OAuth2\OAuth2ServerException::class);

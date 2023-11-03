@@ -236,7 +236,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders): bool
+    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders): bool|array
     {
         if (!isset($this->grantExtensions[$uri])) {
             throw new OAuth2ServerException(Response::HTTP_BAD_REQUEST, OAuth2::ERROR_UNSUPPORTED_GRANT_TYPE);
